@@ -1,0 +1,51 @@
+declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
+declare persistent Text PERSISTENT_CHALLENGE_DIRECTIVES for LocalUser;
+
+while(True) {
+	foreach(Event,PendingEvents) {
+		if(Event.Type == CMlScriptEvent::Type::MouseClick) {
+			if(Event.ControlId == "Test") {
+				PERSISTENT_CHALLENGE_CODE = (Page.GetFirstChild("Script") as CMlTextEdit).Value;
+				SendCustomEvent("Test", []);
+			}
+			if(Event.ControlId == "Designer") {
+				SendCustomEvent("Designer", []);
+			}
+			if(Event.ControlId == "QUAD_MAINCODE") {
+				if(Page.GetFirstChild("Script").DataAttributeGet("codetype") == "DIRECTIVES") {
+					Page.GetFirstChild("Script").DataAttributeSet("codetype","MAINCODE");
+					PERSISTENT_CHALLENGE_DIRECTIVES = (Page.GetFirstChild("Script") as CMlTextEdit).Value;
+					(Page.GetFirstChild("Script") as CMlTextEdit).Value = PERSISTENT_CHALLENGE_CODE;
+				}
+			}
+			if(Event.ControlId == "QUAD_DIRECTIVES") {
+				if(Page.GetFirstChild("Script").DataAttributeGet("codetype") == "MAINCODE") {
+					Page.GetFirstChild("Script").DataAttributeSet("codetype","DIRECTIVES");
+					PERSISTENT_CHALLENGE_CODE = (Page.GetFirstChild("Script") as CMlTextEdit).Value;
+					(Page.GetFirstChild("Script") as CMlTextEdit).Value = PERSISTENT_CHALLENGE_DIRECTIVES;
+				}
+			}
+			if(Event.ControlId == "Button_CreateChallenge_Back") {
+				SendCustomEvent("Button_CreateChallenge_Back", []);
+			}
+			if(Event.ControlId == "QUAD_LIGHT") {
+				declare QuadBackground = (Page.GetFirstChild("QUAD_BACKGROUND") as CMlQuad);
+				declare QuadLight = (Page.GetFirstChild("QUAD_LIGHT") as CMlQuad);
+				if(QuadLight.ModulateColor == <1.0,1.0,1.0>) {
+					QuadLight.ModulateColor = <0.3,0.3,0.3>;
+					AnimMgr.Add(QuadBackground, "<quad opacity=\"1\" />", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+				}
+				else {
+					QuadLight.ModulateColor = <1.0,1.0,1.0>;
+					AnimMgr.Add(QuadBackground, "<quad opacity=\"0\" />", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+				}
+			}
+		}
+		if(Event.Type == CMlScriptEvent::Type::PluginCustomEvent) {
+			if(Event.CustomEventType == "Code_SetText") {
+				(Page.GetFirstChild("Script") as CMlTextEdit).Value = Event.CustomEventData[0];
+			}
+		}
+	}
+	yield;
+}

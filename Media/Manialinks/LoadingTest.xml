@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<manialink version="3">
+<frame pos="0 2.5">
+	<quad pos="0 0" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/Challenge.png" halign="center" valign="center"/>
+	<quad pos="0.5 -0.5" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/Challenge.png" halign="center" modulatecolor="036" valign="center"/>
+</frame>
+<frame pos="0 -5" clip="True" clipsizen="85 15">
+	<frame pos="-55" id="FRAME_LOADING">
+		<quad pos="0 0" z-index="0" size="20 2" bgcolor="FFF" halign="center"/>
+		<quad pos="0.5 -0.5" z-index="0" size="20 2" bgcolor="036" halign="center"/>
+	</frame>
+</frame>
+<script>
+<!--
+	while(True) {
+		Page.GetFirstChild("FRAME_LOADING").RelativePosition_V3.X+=Period/15.0;
+		if(Page.GetFirstChild("FRAME_LOADING").RelativePosition_V3.X >= 55)
+			Page.GetFirstChild("FRAME_LOADING").RelativePosition_V3.X = -55.0;
+		yield;
+	}
+-->
+</script>
+</manialink>

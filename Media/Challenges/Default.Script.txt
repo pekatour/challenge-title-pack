@@ -1,0 +1,13 @@
+Void Metadata() {
+	ScriptName("Default");
+	ScriptAuthor("BigBang1112");
+	ScriptDescription("");
+}
+
+Void Main() {
+	Message("Hello world!");
+}
+
+Void Main_Fast() {
+	
+}

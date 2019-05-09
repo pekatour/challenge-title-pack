@@ -1,0 +1,7 @@
+<frame pos="150 -80">
+	<label z-index="0" size="95 5" text="MODIFYING..." textsize="3" valign="center2" textfont="RajdhaniMono" pos="-7 10" halign="right" textprefix="$i" id="LABEL_STATUS" class="opacity"/>
+	<label z-index="0" size="90 5" text="" textsize="2" valign="center2" textfont="BiryaniDemiBold" pos="-7.5 4.5" halign="right" id="LABEL_MESSAGE" class="opacity"/>
+	<quad pos="0 0" z-index="-1" size="110 15" bgcolor="FFFA" style="Bgs1" substyle="BgCardList" valign="bottom" halign="right" class="opacity"/>
+	<quad pos="0 0" z-index="0" size="110 15" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" valign="bottom" halign="right" class="opacity"/>
+	<gauge pos="-110 4" z-index="1" size="110 6" drawbg="0" id="GAUGE_PROGRESS" class="opacity"/>
+</frame>

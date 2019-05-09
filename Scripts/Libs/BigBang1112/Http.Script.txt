@@ -1,0 +1,168 @@
+#Include "Libs/BigBang1112/Internet.Script.txt" as Internet
+
+declare CHttpRequest[Text] G_AsyncRequests;
+
+CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
+	//if(Internet::IsOffline()) return Null;
+	if(Http.SlotsAvailable == 0) return Null;
+	
+	declare Request = Http.CreateGet(_Url, _UseCache, _AdditionalHeaders);
+	wait(Request.IsCompleted);
+	return Request;
+}
+
+CHttpRequest SyncGET(Text _Url, Boolean _UseCache) {
+    return SyncGET(_Url, _UseCache, "");
+}
+
+CHttpRequest SyncGET(Text _Url) {
+    return SyncGET(_Url, False, "");
+}
+
+Text SyncGET_Result(Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
+	declare Request = SyncGET(_Url, _UseCache, _AdditionalHeaders);
+	if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
+		declare Result = Request.Result;
+		Http.Destroy(Request);
+		return Result;
+	}
+	return "";
+}
+
+Text SyncGET_Result(Text _Url, Boolean _UseCache) {
+    return SyncGET_Result(_Url, _UseCache, "");
+}
+
+Text SyncGET_Result(Text _Url) {
+    return SyncGET_Result(_Url, False, "");
+}
+
+CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders) {
+	//if(Internet::IsOffline()) return Null;
+	if(Http.SlotsAvailable == 0) return Null;
+	
+	declare Request = Http.CreatePost(_Url, _Resource, _AdditionalHeaders);
+	wait(Request.IsCompleted);
+	return Request;
+}
+
+CHttpRequest SyncPOST(Text _Url, Text _Resource) {
+    return SyncPOST(_Url, _Resource, "");
+}
+
+Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders) {
+	declare Request = SyncPOST(_Url, _Resource, _AdditionalHeaders);
+	if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
+		declare Result = Request.Result;
+		Http.Destroy(Request);
+		return Result;
+	}
+	return "";
+}
+
+Text SyncPOST_Result(Text _Url, Text _Resource) {
+    return SyncPOST_Result(_Url, _Resource, "");
+}
+
+CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders) {
+	//if(Internet::IsOffline()) return Null;
+	if(Http.SlotsAvailable == 0) return Null;
+	
+	declare Request = Http.CreatePostFile(_Url, _FileName, _AdditionalHeaders);
+	wait(Request.IsCompleted);
+	return Request;
+}
+
+CHttpRequest SyncPOSTFile(Text _Url, Text _FileName) {
+    return SyncPOSTFile(_Url, _FileName, "");
+}
+
+Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders) {
+	declare Request = SyncPOSTFile(_Url, _FileName, _AdditionalHeaders);
+	if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
+		declare Result = Request.Result;
+		Http.Destroy(Request);
+		return Result;
+	}
+	return "";
+}
+
+Text SyncPOSTFile_Result(Text _Url, Text _FileName) {
+    return SyncPOSTFile_Result(_Url, _FileName, "");
+}
+
+Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
+	//if(Internet::IsOffline()) return False;
+	if(Http.SlotsAvailable == 0) return False;
+	
+	if(G_AsyncRequests.existskey(_Name)) Http.Destroy(G_AsyncRequests[_Name]);
+	G_AsyncRequests[_Name] = Http.CreateGet(_Url, _UseCache, _AdditionalHeaders);
+    return True;
+}
+
+Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache) {
+    return AsyncGET(_Name, _Url, _UseCache, "");
+}
+
+Boolean AsyncGET(Text _Name, Text _Url) {
+    return AsyncGET(_Name, _Url, False, "");
+}
+
+Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders) {
+	//if(Internet::IsOffline()) return False;
+	if(Http.SlotsAvailable == 0) return False;
+	
+	if(G_AsyncRequests.existskey(_Name)) Http.Destroy(G_AsyncRequests[_Name]);
+	
+	G_AsyncRequests[_Name] = Http.CreatePost(_Url, _Resource, _AdditionalHeaders);
+
+    return True;
+}
+
+Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource) {
+    return AsyncPOST(_Name, _Url, _Resource, "");
+}
+
+Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHeaders) {
+	//if(Internet::IsOffline()) return False;
+	if(Http.SlotsAvailable == 0) return False;
+	
+	if(G_AsyncRequests.existskey(_Name)) Http.Destroy(G_AsyncRequests[_Name]);
+	
+	G_AsyncRequests[_Name] = Http.CreatePostFile(_Url, _FileName, _AdditionalHeaders);
+
+    return True;
+}
+
+Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName) {
+    return AsyncPOST(_Name, _Url, _FileName, "");
+}
+
+CHttpRequest Get(Text _Name) {
+	if(!G_AsyncRequests.existskey(_Name)) return Null;
+    return G_AsyncRequests[_Name];
+}
+
+Void Destroy(Text _Name) {
+	if(!G_AsyncRequests.existskey(_Name)) return;
+    Http.Destroy(G_AsyncRequests[_Name]);
+    declare Removed = G_AsyncRequests.removekey(_Name);
+}
+
+Boolean IsCompleted(Text _Name) {
+	if(!G_AsyncRequests.existskey(_Name)) return False;
+	return Get(_Name).IsCompleted;
+}
+
+Boolean IsSuccessful(Text _Name) {
+	if(!G_AsyncRequests.existskey(_Name)) return False;
+	return Get(_Name).IsCompleted
+	&& Get(_Name).StatusCode >= 200
+	&& Get(_Name).StatusCode < 300;
+}
+
+Integer GetStatusCode(Text _Name) {
+	if(!G_AsyncRequests.existskey(_Name)) return 0;
+	if(Get(_Name).IsCompleted) return Get(_Name).StatusCode;
+	return 0;
+}

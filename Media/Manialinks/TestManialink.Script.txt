@@ -1,0 +1,4 @@
+while(True) {
+    Page.GetFirstChild("Test").RelativeRotation += Period/10.0*2;
+    yield;
+}

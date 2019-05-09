@@ -1,0 +1,43 @@
+﻿Boolean Main() {
+	declare Pairs = [
+		"Canyon" => [
+			["RoadRaceStart","RoadRaceFinish"],
+			["RoadRaceStartMirror","RoadRaceFinishMirror"],
+			["ArenaStart","ArenaFinish"],
+			["RoadMainStart","RoadMainFinish"],
+			["","RoadCaveFinish"],
+			["","RoadCaveDoubleFinish"]
+		],
+		"Stadium" => [
+			["StadiumRoadMainStartLine","StadiumRoadMainFinishLine"]
+		],
+		"Valley" => [
+			["Road2WayStart","Road2WayFinish"],
+			["Road2WayForestStart","Road2WayForestFinish"],
+			["Road4WayStart","Road4WayFinish"],
+			["RoadForestLargeStart","RoadForestLargeFinish"]
+		],
+		"Lagoon" => [
+			["RoadMainStart","RoadMainFinish"],
+			["FreeWayStart","FreeWayFinish"],
+			["RoadThemeParkStart","RoadThemeParkFinish"],
+			["","RoadThemeParkFlipFinish"],
+			["ArenaStart","ArenaFinish"],
+			["ArenaStart","ArenaFinishX2"],
+			["","RoadTunnelFinish"]
+		]
+	];
+
+	declare StartLines = GetStartLineBlocks();
+	declare FinishLines = GetFinishLineBlocks();
+
+	if(StartLines.count == 0 || FinishLines.count == 0 || StartLines[0].Waypoint == "StartFinish") {
+		return Incompatibility();
+	}
+	else if(FinishLines.count == 1) {
+		Swap(StartLines[0], FinishLines[0]); //swap nelze pou��t kvuli obr�cen� finishe
+		return Success();
+	}
+	
+	return Confusion();
+}

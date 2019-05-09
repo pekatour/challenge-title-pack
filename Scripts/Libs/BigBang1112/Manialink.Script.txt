@@ -1,0 +1,18 @@
+#Include "Libs/BigBang1112/File.Script.txt" as File
+
+Text Construct(Text _Markup, Text _Script) {		
+	return """<manialink version="3">
+			{{{_Markup}}}
+			<script>
+			<!--{{{_Script}}}
+			-->
+			</script>
+		</manialink>""";
+}
+
+Text FromFile(Text _ManialinkName) {
+	declare Markup = File::Read(_ManialinkName^".xml");
+	declare Script = File::Read(_ManialinkName^".Script.txt");
+
+	return Construct(Markup, Script);
+}

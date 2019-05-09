@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<manialink version="3">
+<textedit pos="-140 80" z-index="0" size="289 150" default=""  showlinenumbers="1" textformat="Script" scriptevents="1" id="Script"/>
+<label pos="128 -75" z-index="0" size="20 5" text="Test" halign="center" style="CardButtonMediumL" scriptevents="1" valign="center" id="Test"/>
+<label pos="78 -75" z-index="0" size="20 5" text="Designer" halign="center" style="CardButtonMediumL" scriptevents="1" valign="center" id="Designer"/>
+<label pos="30 -75" z-index="0" size="20 5" text="Solo" halign="center" style="CardButtonMediumL" scriptevents="1" valign="center"/>
+<script>
+<!--
+    declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
+
+    while(True) {
+        foreach(Event,PendingEvents) {
+            if(Event.Type == CMlScriptEvent::Type::MouseClick) {
+                if(Event.ControlId == "Test") {
+                    PERSISTENT_CHALLENGE_CODE = (Page.GetFirstChild("Script") as CMlTextEdit).Value;
+                    SendCustomEvent("Test", []);
+                }
+                if(Event.ControlId == "Designer") {
+                    SendCustomEvent("Designer", []);
+                }
+            }
+            if(Event.Type == CMlScriptEvent::Type::PluginCustomEvent) {
+                if(Event.CustomEventType == "Code_SetText") {
+                    (Page.GetFirstChild("Script") as CMlTextEdit).Value = Event.CustomEventData[0];
+                }
+            }
+        }
+        yield;
+    }
+-->
+</script>
+</manialink>

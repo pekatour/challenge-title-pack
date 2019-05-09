@@ -1,0 +1,15 @@
+Void Metadata() {
+	ScriptName("Checkpointless");
+	ScriptAuthor("BigBang1112");
+	ScriptDescription("Removes all checkpoints yet keeps the holes.");
+}
+
+Void Main() {
+	RemoveAllTerrain();
+	Solution();
+}
+
+Void Main_Fast() {
+	RemoveAllTerrain();
+	Solution();
+}

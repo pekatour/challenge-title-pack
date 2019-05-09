@@ -1,0 +1,20 @@
+#RequireContext CTmMapType
+
+EnableEditorInputsCustomProcessing = True;
+
+while(True) {
+	foreach(Event,PendingEvents) {
+		if(Event.Type == CMapEditorPluginEvent::Type::MapModified) {
+			declare FinishCount = 0;
+			foreach(Block,Blocks) {
+				if(Block != Null)
+					if(Block.BlockModel.WaypointType == CBlockModel::EWayPointType::Finish)
+						FinishCount += 1;
+			}
+			if(FinishCount > 0)
+				ValidationStatus = CMapType::ValidationStatus::Validated;
+		}
+	}
+	
+  yield;
+}

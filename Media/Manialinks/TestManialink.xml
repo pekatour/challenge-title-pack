@@ -1,0 +1,3 @@
+<frame z-index="10">
+    <quad pos="0" z-index="0" size="20 20" bgcolor="FFFA" halign="center" valign="center" style="BgRaceScore2" substyle="SandTimer" id="Test"/>
+</frame>

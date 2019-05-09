@@ -1,0 +1,57 @@
+// Internet.Script.txt
+// Library by BigBang1112
+//
+// Easy library that checks if you're in Online or Offline mode
+
+// Avaliable functions:
+//
+// Text[] GetZones()
+// Boolean IsOnline()
+// Boolean IsOffline()
+
+#Include "TextLib" as TextLib
+
+///////////////////////////////////////////////////
+// Text[] GetZones()
+// ------------------------------------------------
+// Returns your zone (location) as an array of multiple regions
+///////////////////////////////////////////////////
+Text[] GetZones() {
+    return TextLib::Split("|", LocalUser.ZonePath);
+}
+
+///////////////////////////////////////////////////
+// Boolean IsOnline()
+// ------------------------------------------------
+// Returns True if you're in Online mode, otherwise False
+///////////////////////////////////////////////////
+Boolean IsOnline() {
+    return GetZones().count > 0;
+}
+
+///////////////////////////////////////////////////
+// Boolean IsOnline()
+// ------------------------------------------------
+// Returns True if you're in Offline mode, otherwise False
+///////////////////////////////////////////////////
+Boolean IsOffline() {
+    return !IsOnline();
+}
+
+Text Insert() {
+    return """
+
+        Text[] GetZones() {
+            return TextLib::Split("|", LocalUser.ZonePath);
+        }
+    
+        Boolean IsOnline() {
+            return GetZones().count > 0;
+        }
+    
+        Boolean IsOffline() {
+            return !IsOnline();
+        }
+
+    """;
+}

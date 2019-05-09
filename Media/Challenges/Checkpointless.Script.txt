@@ -1,0 +1,29 @@
+Void Metadata() {
+	ScriptName("Checkpointless");
+	ScriptAuthor("BigBang1112");
+	ScriptDescription("Removes all checkpoints yet keeps the holes.");
+}
+
+Void Main() {
+	declare Blocks = GetBlocks();
+
+	for(i,0,Blocks.count-1) {
+		declare Block = Blocks[i];
+		if(Block.Waypoint == "Checkpoint") {
+			RemoveBlock(Block.Coord);
+			SetStatusProgress((i+1.0)/Blocks.count);
+			SetStatusMessage("Checkpoint found. " ^ Block.Name);
+
+			yield;
+		}
+	}
+
+	Solution();
+}
+
+Void Main_Fast() {
+	foreach(Block,GetBlocks())
+		if(Block.Waypoint == "Checkpoint")
+			RemoveBlock(Block.Coord);
+	Solution();
+}

@@ -1,0 +1,17 @@
+<frame pos="-150 -80">
+	<quad pos="0 0" z-index="-1" size="300 10" bgcolor="FFFA" style="Bgs1" substyle="BgCardList" valign="bottom" class="opacity"/>
+	<quad pos="0 0" z-index="0" size="300 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" valign="bottom" class="opacity"/>
+	
+	<frame pos="130 10" z-index="1">
+		<quad z-index="0" size="50 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036" id="QUAD_BUTTON_SAVE" class="opacity"/>
+		<label pos="25 -5.25" z-index="1" size="50 10" text="SAVE" halign="center" valign="center2" textfont="RajdhaniMono" class="opacity"/>
+	</frame>
+	<frame pos="180 10" z-index="1">
+		<quad z-index="0" size="70 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="060" id="QUAD_BUTTON_SAVEPLAY" class="opacity"/>
+		<label pos="35 -5.25" z-index="1" size="70 10" text="SAVE AND PLAY" halign="center" valign="center2" textfont="RajdhaniMono" class="opacity"/>
+	</frame>
+	<frame pos="250 10" z-index="1">
+		<quad z-index="0" size="50 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="800" id="QUAD_BUTTON_EXIT" class="opacity"/>
+		<label pos="25 -5.25" z-index="1" size="50 10" text="EXIT" halign="center" valign="center2" textfont="RajdhaniMono" class="opacity"/>
+	</frame>
+</frame>

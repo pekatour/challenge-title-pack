@@ -1,0 +1,32 @@
+#Include "TextLib" as TextLib
+#Include "MathLib" as MathLib
+
+main() {
+	while(True) {
+		foreach(Event,PendingEvents) {
+			switch(Event.Type) {
+				case CMlScriptEvent::Type::EntrySubmit: {
+				
+				}
+				case CMlScriptEvent::Type::MouseOver: {
+					if(TextLib::StartsWith("QUAD_BUTTON",Event.ControlId)) {
+						//Audio.PlaySoundEvent(CAudioManager::ELibSound::Checkpoint, 0, 1.0);
+					}
+				}
+				case CMlScriptEvent::Type::MouseClick: {
+					if(Event.ControlId == "QUAD_BUTTON_CREATECHALLENGE") {
+						SendCustomEvent("Button_CreateChallenge", []);
+					}
+					if(Event.ControlId == "QUAD_BUTTON_EXIT") {
+						SendCustomEvent("Button_Exit", []);
+					}
+				}
+				
+				case CMlScriptEvent::Type::PluginCustomEvent: {
+					
+				}
+			}
+		}
+		yield;
+	}
+}

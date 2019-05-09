@@ -1,0 +1,5 @@
+<frame>
+<quad pos="0 0" z-index="-1" size="320 180" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgEmpty"/>
+<label z-index="0" size="200 20" text="WELCOME TO BUILDER" textsize="10" halign="center" valign="center2" textfont="RajdhaniMono" pos="0 -0.75"/>
+<quad pos="0 0" z-index="0" size="130 20" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgCardList"/>
+</frame>

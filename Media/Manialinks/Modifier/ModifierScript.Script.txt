@@ -1,0 +1,16 @@
+main() {
+	while(True) {
+		foreach(Event,PendingEvents) {
+			switch(Event.Type) {
+				case CMlScriptEvent::Type::PluginCustomEvent: {
+					switch(Event.CustomEventType) {
+						case "ScriptName": {
+							(Page.GetFirstChild("LABEL_SCRIPTNAME") as CMlLabel).SetText(Event.CustomEventData[0]);
+						}
+					}
+				}
+			}
+		}
+		yield;
+	}
+}

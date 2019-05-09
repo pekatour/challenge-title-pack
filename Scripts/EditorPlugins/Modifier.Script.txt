@@ -1,0 +1,493 @@
+#RequireContext CMapEditorPlugin
+
+#Include "TextLib" as TextLib
+#Include "MapUnits" as MapUnits
+
+#Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
+#Include "Libs/BigBang1112/File.Script.txt" as File
+#Include "Libs/BigBang1112/Layers.Script.txt" as Layers
+
+#Setting S_Build False
+
+#Setting S_ScriptType ""
+#Setting S_ScriptFileName ""
+
+#Struct SChBlock {
+    Text Name;
+    Int3 Coord;
+    Text Direction;
+    Text Waypoint;
+    Boolean IsRoad;
+    Boolean IsTerrain;
+    Boolean IsPodium;
+}
+
+declare CUILayer LayerAPI;
+
+Text GetScriptFileName() {
+	declare Path = TextLib::Split("\\", S_ScriptFileName);
+	if(Path.count != 0) return Path[Path.count-1];
+	return "";
+}
+
+Int3 ToInt3(Text _Int3) {
+	declare Int3 Int;
+	declare NewText = TextLib::Replace(TextLib::SubText(_Int3,1,TextLib::Length(_Int3)-2)," ","");
+	declare Values = TextLib::Split(",",NewText);
+	for(i,0,Values.count-1)
+		Int[i] = TextLib::ToInteger(Values[i]);
+	return Int;
+}
+
+Boolean ToBoolean(Text _Boolean) {
+	return (_Boolean == "True");
+}
+
+Text CBlockCardinalDirectionsToText(CBlock::CardinalDirections _Direction) {
+	switch(_Direction) {
+		case CBlock::CardinalDirections::North: { return "North"; }
+		case CBlock::CardinalDirections::South: { return "South"; }
+		case CBlock::CardinalDirections::West: { return "West"; }
+		case CBlock::CardinalDirections::East: { return "East"; }
+	}
+	return "";
+}
+
+CMapEditorPlugin::CardinalDirections TextToCMapEditorPluginCardinalDirections(Text _Direction) {
+	switch(_Direction) {
+		case "North": { return CMapEditorPlugin::CardinalDirections::North; }
+		case "South": { return CMapEditorPlugin::CardinalDirections::South; }
+		case "West": { return CMapEditorPlugin::CardinalDirections::West; }
+		case "East": { return CMapEditorPlugin::CardinalDirections::East; }
+	}
+	return CMapEditorPlugin::CardinalDirections::North;
+}
+
+SChBlock CBlockToSChBlock(CBlock _Block) {
+	declare SChBlock ChBlock;
+	ChBlock.Name = _Block.BlockModel.Name;
+	ChBlock.Coord = _Block.Coord;
+	ChBlock.Direction = CBlockCardinalDirectionsToText(_Block.Direction);
+	
+	switch(_Block.BlockModel.WaypointType) {
+		case CBlockModel::EWayPointType::Start: { ChBlock.Waypoint = "Start"; }
+		case CBlockModel::EWayPointType::Finish: { ChBlock.Waypoint = "Finish"; }
+		case CBlockModel::EWayPointType::Checkpoint: { ChBlock.Waypoint = "Checkpoint"; }
+		case CBlockModel::EWayPointType::None: { ChBlock.Waypoint = "None"; }
+		case CBlockModel::EWayPointType::StartFinish: { ChBlock.Waypoint = "Multilap"; }
+		case CBlockModel::EWayPointType::Dispenser: { ChBlock.Waypoint = "Dispenser"; }
+	}
+	
+	ChBlock.IsRoad = _Block.BlockModel.IsRoad;
+	ChBlock.IsTerrain = _Block.BlockModel.IsTerrain;
+	ChBlock.IsPodium = _Block.BlockModel.IsPodium;
+	
+	return ChBlock;
+}
+
+Void Prepare() {
+	HideEditorInterface = True;
+	EditMode = CMapEditorPlugin::EditMode::FreeLook;
+	SetMapType("TrackMania/Challenge");
+	Map.MapName ^= "$z - Reverse";
+	
+	Layers::Create("ModifierIntro",Manialink::FromFile("Media/Manialinks/Modifier/ModifierIntro"));
+	Layers::Create("ModifierScript",Manialink::FromFile("Media/Manialinks/Modifier/ModifierScript"));
+	Layers::Create("ModifierStatus",Manialink::FromFile("Media/Manialinks/Modifier/ModifierStatus"));
+	Layers::Create("ModifierMetadata",Manialink::FromFile("Media/Manialinks/Modifier/ModifierMetadata"));
+	Layers::Create("ModifierActions",Manialink::FromFile("Media/Manialinks/Modifier/ModifierActions"));
+	Layers::Create("ModifierResult",Manialink::FromFile("Media/Manialinks/Modifier/ModifierResult"));
+	
+	Layers::SetAnimationInOut("ModifierScript",CUILayer::EUILayerAnimation::DownSlow);
+	Layers::SetAnimationInOut("ModifierStatus",CUILayer::EUILayerAnimation::DownSlow);
+	Layers::SetAnimationInOut("ModifierActions",CUILayer::EUILayerAnimation::RightSlow);
+	Layers::SetAnimationInOut("ModifierMetadata",CUILayer::EUILayerAnimation::UpSlow);
+	
+	Layers::SetAnimationInOut("ModifierResult",CUILayer::EUILayerAnimation::DownSlow);
+}
+
+Void ValidateScript() {
+
+}
+
+Void Begin() {
+	Layers::Show("ModifierIntro");
+	sleep(500);
+	LayerCustomEvent(Layers::Get("ModifierIntro"), "Map", [Map.MapInfo.Name]);
+	LayerCustomEvent(Layers::Get("ModifierIntro"), "Show", []);
+	sleep(2000);
+	LayerCustomEvent(Layers::Get("ModifierIntro"), "Hide", []);
+	Layers::Show("ModifierScript");
+	
+	LayerCustomEvent(Layers::Get("ModifierScript"), "ScriptName", [GetScriptFileName()]);
+	sleep(100);
+	Layers::Show("ModifierStatus");
+	sleep(100);
+	Layers::Show("ModifierActions");
+	sleep(100);
+	Layers::Show("ModifierMetadata");
+	sleep(200);
+	//Layers::Hide("ModifierIntro");
+}
+
+Void Complete() {
+	sleep(500);
+	LayerCustomEvent(Layers::Get("ModifierStatus"), "Status", ["COMPUTING SHADOWS..."]);
+	LayerCustomEvent(Layers::Get("ModifierStatus"), "Message", [""]);
+	sleep(200);
+	//ComputeShadows();
+	//wait(CurrentShadowsQuality != CMapEditorPlugin::ShadowsQuality::NotComputed);
+	LayerCustomEvent(Layers::Get("ModifierStatus"), "Message", ["Shadows computed."]);
+	sleep(500);
+	Layers::Hide("ModifierScript");
+	Layers::Hide("ModifierStatus");
+	Layers::Hide("ModifierActions");
+	Layers::Hide("ModifierMetadata");
+	sleep(500);
+	Layers::Show("ModifierResult");
+	LayerCustomEvent(Layers::Get("ModifierResult"), "Show", []);
+}
+
+Void Success() {
+
+}
+
+Void Confusion() {
+	
+}
+
+Void Revert() {
+	
+}
+
+Void Solution() {
+
+}
+
+Void ProcessCommand(CMapEditorPluginEvent _Event) {
+	declare Event <=> _Event;
+	
+	switch(Event.CustomEventType) {
+		case "Ch_GetStartLineBlocks": {
+			declare SChBlock[] ChBlocks;
+			if(GetStartLineBlock() == Null)
+				LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["False",ChBlocks.tojson()]);
+			else {
+				ChBlocks.add(CBlockToSChBlock(GetStartLineBlock()));
+				LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlocks.tojson()]);
+			}
+		}
+		case "Ch_GetFinishLineBlocks": {
+			declare SChBlock[] ChBlocks;
+			foreach(Block,Blocks)
+				if(Block.BlockModel.WaypointType == CBlockModel::EWayPointType::Finish)					
+					ChBlocks.add(CBlockToSChBlock(Block));
+			
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlocks.tojson()]);
+		}
+		case "Ch_GetBlock": {
+			declare Coord = ToInt3(Event.CustomEventData[0]);
+			declare ChBlock = CBlockToSChBlock(GetBlock(Coord));
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlock.tojson()]);
+		}
+		case "Ch_GetBlocks": {
+			declare SChBlock[] ChBlocks;
+			foreach(Block,Blocks)						
+				ChBlocks.add(CBlockToSChBlock(Block));
+			
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlocks.tojson()]);
+		}
+		case "Ch_GetBlocksByName": {
+			declare SChBlock[] ChBlocks;
+			foreach(Block,Blocks)
+				if(Block.BlockModel.Name == Event.CustomEventData[0])						
+					ChBlocks.add(CBlockToSChBlock(Block));
+			
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlocks.tojson()]);
+		}
+		case "Ch_PlaceBlock": {
+			declare BlockName = Event.CustomEventData[0];
+			declare Coord = ToInt3(Event.CustomEventData[1]);
+			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
+			PlaceBlock(GetBlockModelFromName(BlockName), Coord, Direction);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_PlaceMacroblock": {
+			declare MacroblockName = Event.CustomEventData[0];
+			declare Coord = ToInt3(Event.CustomEventData[1]);
+			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
+			PlaceMacroblock(GetMacroblockModelFromFilePath(MacroblockName), Coord, Direction);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_PlaceRoadBlocks": {
+			declare BlockName = Event.CustomEventData[0];
+			declare StartCoord = ToInt3(Event.CustomEventData[1]);
+			declare EndCoord = ToInt3(Event.CustomEventData[2]);
+			PlaceRoadBlocks(GetBlockModelFromName(BlockName), StartCoord, EndCoord);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_PlaceTerrainBlocks": {
+			declare BlockName = Event.CustomEventData[1];
+			declare StartCoord = ToInt3(Event.CustomEventData[2]);
+			declare EndCoord = ToInt3(Event.CustomEventData[3]);
+			PlaceTerrainBlocks(GetTerrainBlockModelFromName(BlockName), StartCoord, EndCoord);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_PlaceBlock_NoDestruction": {
+			declare BlockName = Event.CustomEventData[0];
+			declare Coord = ToInt3(Event.CustomEventData[1]);
+			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
+			PlaceBlock_NoDestruction(GetBlockModelFromName(BlockName), Coord, Direction);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_PlaceMacroblock_NoDestruction": {
+			declare MacroblockName = Event.CustomEventData[0];
+			declare Coord = ToInt3(Event.CustomEventData[1]);
+			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
+			PlaceMacroblock_NoDestruction(GetMacroblockModelFromFilePath(MacroblockName), Coord, Direction);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_PlaceTerrainBlocks_NoDestruction": {
+			declare BlockName = Event.CustomEventData[0];
+			declare StartCoord = ToInt3(Event.CustomEventData[1]);
+			declare EndCoord = ToInt3(Event.CustomEventData[2]);
+			PlaceTerrainBlocks_NoDestruction(GetTerrainBlockModelFromName(BlockName), StartCoord, EndCoord);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_PlaceMacroblock_NoTerrain": {
+			declare MacroblockName = Event.CustomEventData[0];
+			declare Coord = ToInt3(Event.CustomEventData[1]);
+			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
+			PlaceMacroblock_NoTerrain(GetMacroblockModelFromFilePath(MacroblockName), Coord, Direction);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_RemoveBlock": {
+			declare Coord = ToInt3(Event.CustomEventData[0]);
+			declare Result = RemoveBlock(Coord);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", [Result^""]);
+		}
+		case "Ch_RemoveMacroblock": {
+			declare MacroblockName = Event.CustomEventData[0];
+			declare Coord = ToInt3(Event.CustomEventData[1]);
+			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
+			declare Result = RemoveMacroblock(GetMacroblockModelFromFilePath(MacroblockName), Coord, Direction);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", [Result^""]);
+		}
+		case "Ch_RemoveMacroblock_NoTerrain": {
+			declare MacroblockName = Event.CustomEventData[0];
+			declare Coord = ToInt3(Event.CustomEventData[1]);
+			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
+			declare Result = RemoveMacroblock_NoTerrain(GetMacroblockModelFromFilePath(MacroblockName), Coord, Direction);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", [Result^""]);
+		}
+		case "Ch_RemoveTerrainBlocks": {
+			declare StartCoord = ToInt3(Event.CustomEventData[0]);
+			declare EndCoord = ToInt3(Event.CustomEventData[1]);
+			declare Result = RemoveTerrainBlocks(StartCoord,EndCoord);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", [Result^""]);
+		}
+		case "Ch_RemoveAll": {
+			RemoveAll();
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_RemoveAllBlocks": {
+			RemoveAllBlocks();
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_RemoveAllTerrain": {
+			RemoveAllTerrain();
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_RemoveAllOffZone": {
+			RemoveAllOffZone();
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_RemoveAllObjects": {
+			RemoveAllObjects();
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_RemoveAllBlocksAndTerrain": {
+			RemoveAllBlocksAndTerrain();
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_CanPlaceBlock": {
+
+		}
+		case "Ch_GetBlockList": {
+			declare Text[] ChBlockList;
+			foreach(Model,BlockModels)						
+				ChBlockList.add(Model.Name);
+			
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlockList.tojson()]);
+		}
+		case "Ch_GetTerrainBlockList": {
+			declare Text[] ChBlockList;
+			foreach(Model,TerrainBlockModels)						
+				ChBlockList.add(Model.Name);
+			
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlockList.tojson()]);
+		}
+		case "Ch_GetMacroblockList": {
+			declare Text[] ChBlockList;
+			foreach(Model,MacroblockModels)						
+				ChBlockList.add(Model.Name);
+			
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlockList.tojson()]);
+		}
+		case "Ch_GetGroundHeight": {
+			declare CoordX = TextLib::ToInteger(Event.CustomEventData[0]);
+			declare CoordZ = TextLib::ToInteger(Event.CustomEventData[1]);
+			declare Result = GetGroundHeight(CoordX,CoordZ);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", [Result^""]);
+		}
+		case "Ch_GetBlockGroundHeight": {
+			declare BlockName = Event.CustomEventData[0];
+			declare CoordX = TextLib::ToInteger(Event.CustomEventData[1]);
+			declare CoordZ = TextLib::ToInteger(Event.CustomEventData[2]);
+			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[3]);
+			declare Result = GetBlockGroundHeight(GetBlockModelFromName(BlockName),CoordX,CoordZ,Direction);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", [Result^""]);
+		}
+		case "Ch_SetUndergroundMode": {
+			declare On = ToBoolean(Event.CustomEventData[0]);
+			UndergroundMode = On;
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_Replace": {
+			declare OldBlockName = Event.CustomEventData[0];
+			declare NewBlockName = Event.CustomEventData[1];
+
+			declare SChBlock[] ChBlocks;
+
+			foreach(Block,Blocks) {
+				if(Block.BlockModel.Name == OldBlockName) {
+					declare ChBlock = CBlockToSChBlock(Block);
+					ChBlock.Name = NewBlockName;
+					ChBlocks.add(ChBlock);
+				}
+			}
+
+			foreach(Block,ChBlocks) {
+				PlaceBlock(GetBlockModelFromName(Block.Name), Block.Coord, TextToCMapEditorPluginCardinalDirections(Block.Direction));
+			}
+
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_Swap": {
+			declare SChBlock Block1;
+			Block1.fromjson(Event.CustomEventData[0]);
+			declare SChBlock Block2;
+			Block2.fromjson(Event.CustomEventData[1]);
+			
+			RemoveBlock(Block1.Coord);
+			RemoveBlock(Block2.Coord);
+			
+			PlaceBlock(GetBlockModelFromName(Block1.Name), Block2.Coord, TextToCMapEditorPluginCardinalDirections(Block2.Direction));
+			PlaceBlock(GetBlockModelFromName(Block2.Name), Block1.Coord, TextToCMapEditorPluginCardinalDirections(Block1.Direction));
+
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_SwapFlip": {
+			declare SChBlock Block1;
+			Block1.fromjson(Event.CustomEventData[0]);
+			declare SChBlock Block2;
+			Block2.fromjson(Event.CustomEventData[1]);
+			
+			RemoveBlock(Block1.Coord);
+			RemoveBlock(Block2.Coord);
+			
+			PlaceBlock(GetBlockModelFromName(Block1.Name), Block2.Coord, MapUnits::GetOpposedDir(TextToCMapEditorPluginCardinalDirections(Block2.Direction)));
+			PlaceBlock(GetBlockModelFromName(Block2.Name), Block1.Coord, MapUnits::GetOpposedDir(TextToCMapEditorPluginCardinalDirections(Block1.Direction)));
+
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_Message": {
+			Dialog_Message(Event.CustomEventData[0]);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_Success": {
+			Success();
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_Confusion": {
+			Confusion();
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_Complete": {
+			LayerCustomEvent(Layers::Get("ModifierStatus"), "Message", ["Modification completed."]);
+			LayerCustomEvent(Layers::Get("ModifierStatus"), "Progress", ["1"]);
+			Complete();
+			LayerCustomEvent(LayerAPI, "Ch_Complete_Response", ["True"]);
+		}
+		case "Ch_Solution": {
+			Solution();
+			LayerCustomEvent(LayerAPI, "Ch_Solution_Response", ["True"]);
+		}
+		case "Ch_SetStatusProgress": {
+			LayerCustomEvent(Layers::Get("ModifierStatus"), "Progress", [Event.CustomEventData[0]]);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		case "Ch_SetStatusMessage": {
+			LayerCustomEvent(Layers::Get("ModifierStatus"), "Message", [Event.CustomEventData[0]]);
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		}
+		default: {
+			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["False"]);
+		}
+	}
+}
+
+main() {
+	if(S_Build) {
+		Prepare();
+		ValidateScript();
+		Begin();
+
+		declare Text BuildScript;
+		
+		switch(S_ScriptType) {
+			case "Official": {
+				BuildScript = File::Read("Media/Challenges/"^S_ScriptFileName);
+			}
+			case "Local": {
+				
+			}
+			case "Online": {
+				
+			}
+			case "Test": {
+				declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
+				BuildScript = PERSISTENT_CHALLENGE_CODE;
+			}
+		}
+		
+		LayerAPI = UILayerCreate();
+		LayerAPI.ManialinkPage = Manialink::Construct("",File::Read("Media/API.Script.txt")^"""
+		
+	{{{BuildScript}}}
+		
+	main() {
+		Main();
+		Complete();
+	}""");
+	}
+	
+	while(True) {
+		foreach(Event,PendingEvents) {
+			if(Event.Type == CMapEditorPluginEvent::Type::LayerCustomEvent) {
+				if(TextLib::StartsWith("Ch_", Event.CustomEventType)) {
+					log("[BUILDER] Command: "^Event.CustomEventType);
+					ProcessCommand(Event);
+				}
+				else if(Event.CustomEventType == "Button_Exit") {
+					Quit();
+				}
+				else if(Event.CustomEventType == "Button_SavePlay") {
+					TestMapFromStart();
+				}
+			}
+		}
+	
+		yield;
+	}
+}

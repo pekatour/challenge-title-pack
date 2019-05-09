@@ -1,0 +1,57 @@
+main() {
+	Page.GetClassChildren("opacity", Page.MainFrame, True);
+
+	foreach(Element,Page.GetClassChildren_Result) {
+		if(Element is CMlLabel) {
+			(Element as CMlLabel).Opacity = 0.0;
+		}
+		else if (Element is CMlQuad) {
+			(Element as CMlQuad).Opacity = 0.0;
+		}
+	}
+
+	while(True) {
+		foreach(Event,PendingEvents) {
+			switch(Event.Type) {
+				case CMlScriptEvent::Type::MouseClick: {
+					switch(Event.ControlId) {
+						case "QUAD_BUTTON_SAVE": {
+							Editor.HideEditorInterface = False;
+						}
+						case "QUAD_BUTTON_EXIT": {
+							SendCustomEvent("Button_Exit",[]);
+						}
+						case "QUAD_BUTTON_SAVEPLAY": {
+							SendCustomEvent("Button_SavePlay",[]);
+						}
+					}
+				}
+				case CMlScriptEvent::Type::PluginCustomEvent: {
+					switch(Event.CustomEventType) {
+						case "Show": {
+							foreach(Element,Page.GetClassChildren_Result) {
+								if(Element is CMlLabel) {
+									AnimMgr.Add(Element, "<label opacity=\"1\" hidden=\"0\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+								}
+								else if (Element is CMlQuad) {
+									AnimMgr.Add(Element, "<quad opacity=\"1\" hidden=\"0\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+								}
+							}
+						}
+						case "Hide": {
+							foreach(Element,Page.GetClassChildren_Result) {
+								if(Element is CMlLabel) {
+									AnimMgr.Add(Element, "<label opacity=\"0\" hidden=\"1\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+								}
+								else if (Element is CMlQuad) {
+									AnimMgr.Add(Element, "<quad opacity=\"0\" hidden=\"1\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		yield;
+	}
+}

@@ -1,0 +1,441 @@
+// MX.Script.txt
+// Library by BigBang1112
+//
+// Provides functions usable for receiving information from the site Mania-Exchange.
+// https://www.mania-exchange.com/
+//
+// API INFO: https://api.mania-exchange.com/documents/reference
+
+// Avaliable functions:
+//
+// SMXTrackInfo[] Search(SMXSearchFilter _Filter)
+// SMXTrackInfo TrackInfo(Text _Site, Integer _TrackId)
+// SMXTrackInfo[] TrackInfoMultiple(Text _Site, Integer[] _TrackId)
+// SMXReplay TrackWorldRecord(Text _Site, Integer _TrackId)
+// SMXReplay[] TrackReplays(Text _Site, Integer _TrackId, Integer _Amount)
+// SMXReplay[] TrackReplays(Text _Site, Integer _TrackId)
+// SMXEmbeddedObject[] TrackEmbeddedObjects(Text _Site, Integer _TrackId)
+// Text TrackScreenshot(Text _Site, Integer _TrackId, Text _Type)
+// Text TrackThumbnail(Text _Site, Integer _TrackId)
+// Async::SAsyncHttpRequest GetAsyncMXRequest(Text _Name)
+// Void DestroyAsyncMXRequest(Text _Name)
+// Void IsAsyncRequestCompleted(Text _Name)
+// Boolean SearchAsync(SMXSearchFilter _Filter)
+// Boolean TrackInfoAsync(Text _Name, Text _Site, Integer _TrackId)
+// Boolean TrackInfoMultipleAsync(Text _Name, Text _Site, Integer _TrackId)
+// Boolean TrackWorldRecordAsync(Text _Name, Text _Site, Integer _TrackId)
+// Boolean TrackReplaysAsync(Text _Name, Text _Site, Integer _TrackId, Integer _Amount)
+// Boolean TrackEmbeddedObjectsAsync(Text _Name, Text _Site, Integer _TrackId)
+// Boolean TrackScreenshotAsync(Text _Name, Text _Site, Integer _TrackId, Text _Type)
+// Boolean TrackThumbnailAsync(Text _Name, Text _Site, Integer _TrackId)
+
+#Include "TextLib" as TextLib
+
+#Include "Libs/BigBang1112/Http.Script.txt" as Http
+
+#Struct SMXSearchFilter {
+	Text Mode;
+	Text TrackName;
+	Text Author;
+	Text MPAuthor;
+	Text AnyAuthor;
+	Text Mod;
+	Text AuthorID;
+	Text[] MapType;
+	Text[] TitlePack;
+	Text ReplayType;
+	Text Style;
+	Text Length;
+	Text LengthOperator;
+	Text PrimaryOrder;
+	Text SecondaryOrder;
+	Text[] Environments;
+	Text[] Vehicles;
+	Text Unlimiter;
+	Text Page;
+	Text Limit;
+	Text Unreleased;
+	Text MapGroup;
+	Text CommentsMinLength;
+	Text CustomScreenshot;
+	Text MinExeBuild;
+	Text MaxExeBuild;
+	Text Envmix;
+	Text GhostBlocks;
+	Text EmbeddedObjects;
+	Text GameVersion;
+}
+
+
+#Struct SMXTrackInfo {
+	Integer TrackID;
+	Integer UserID;
+	Text Username;
+	Text UploadedAt;
+	Text UpdatedAt;
+	Text Name;
+	Text TypeName;
+	Text MapType;
+	Text TitlePack;
+	Text StyleName;
+	Text Mood;
+	Integer DisplayCost;
+	Text ModName;
+	Integer Lightmap;
+	Text ExeVersion;
+	Text ExeBuild;
+	Text EnvironmentName;
+	Text VehicleName;
+	Text PlayerModel;
+	Text RouteName;
+	Text LengthName;
+	Integer Laps;
+	Text DifficultyName;
+	Text ReplayTypeName;
+	Integer ReplayWRID;
+	Integer ReplayCount;
+	Integer TrackValue;
+	Text Comments;
+	Integer AwardCount;
+	Integer CommentCount;
+	Integer ReplayWRTime;
+	Integer ReplayWRUserID;
+	Text ReplayWRUsername;
+	Boolean UnlimiterRequired;
+	Text TrackUID;
+	Boolean Unreleased;
+	Text GbxMapName;
+	Integer RatingVoteCount;
+	Integer RatingVoteAverage;
+	Boolean HasScreenshot;
+	Boolean HasThumbnail;
+	Boolean HasGhostBlocks;
+	Integer EmbeddedObjectsCount;
+}
+
+#Struct SMXReplay {
+	Integer ReplayID;
+	Integer UserID;
+	Text Username;
+	Integer TrackID;
+	Text UploadedAt;
+	Integer ReplayTime;
+	Integer StuntScore;
+	Integer Respawns;
+	Integer Position;
+	Integer Beaten;
+	Integer Percentage;
+	Integer ReplayPoints;
+	Integer NadeoPoints;
+}
+
+#Struct SMXEmbeddedObject {
+	Text ObjectPath;
+	Text ObjectAuthor;
+	Text ExternalLink;
+	Text Name;
+}
+
+Text Private_BuildSearchParams(SMXSearchFilter _Filter) {
+	declare Builder = "&format=json";
+	
+	if(_Filter.Mode != "") Builder ^= "&mode="^_Filter.Mode;
+	if(_Filter.TrackName != "") Builder ^= "&trackname="^_Filter.TrackName;
+	if(_Filter.Author != "") Builder ^= "&author="^_Filter.Author;
+	if(_Filter.MPAuthor != "") Builder ^= "&mpauthor="^_Filter.MPAuthor;
+	if(_Filter.AnyAuthor != "") Builder ^= "&anyauthor="^_Filter.AnyAuthor;
+	if(_Filter.Mod != "") Builder ^= "&mod="^_Filter.Mod;
+	if(_Filter.AuthorID != "") Builder ^= "&authorid="^_Filter.AuthorID;
+	if(_Filter.MapType.count > 0) {
+		Builder ^= "&mtype="^_Filter.MapType[0];
+		for(i,1,_Filter.MapType.count) Builder ^= ","^_Filter.MapType[i];
+	}
+	if(_Filter.TitlePack.count > 0) {
+		Builder ^= "&tpack="^_Filter.TitlePack[0];
+		for(i,1,_Filter.TitlePack.count) Builder ^= ","^_Filter.TitlePack[i];
+	}
+	if(_Filter.ReplayType != "") Builder ^= "&rtype="^_Filter.ReplayType;
+	if(_Filter.Style != "") Builder ^= "&style="^_Filter.Style;
+	if(_Filter.Length != "") Builder ^= "&length="^_Filter.Length;
+	if(_Filter.LengthOperator != "") Builder ^= "&lengthop="^_Filter.LengthOperator;
+	if(_Filter.PrimaryOrder != "") Builder ^= "&priord="^_Filter.PrimaryOrder;
+	if(_Filter.SecondaryOrder != "") Builder ^= "&secord="^_Filter.SecondaryOrder;
+	if(_Filter.Environments.count > 0) {
+		Builder ^= "&environments="^_Filter.Environments[0];
+		for(i,1,_Filter.Environments.count) Builder ^= ","^_Filter.Environments[i];
+	}
+	if(_Filter.Vehicles.count > 0) {
+		Builder ^= "&vehicles="^_Filter.Vehicles[0];
+		for(i,1,_Filter.Vehicles.count) Builder ^= ","^_Filter.Vehicles[i];
+	}
+	if(_Filter.Unlimiter != "") Builder ^= "&unlimiter="^_Filter.Unlimiter;
+	if(_Filter.Page != "") Builder ^= "&page="^_Filter.Page;
+	if(_Filter.Limit != "") Builder ^= "&limit="^_Filter.Limit;
+	if(_Filter.Unreleased != "") Builder ^= "&unreleased="^_Filter.Unreleased;
+	if(_Filter.MapGroup != "") Builder ^= "&mapgroup="^_Filter.MapGroup;
+	if(_Filter.CommentsMinLength != "") Builder ^= "&commentsminlength="^_Filter.CommentsMinLength;
+	if(_Filter.CustomScreenshot != "") Builder ^= "&customscreenshot="^_Filter.CustomScreenshot;
+	if(_Filter.MinExeBuild != "") Builder ^= "&minexebuild="^_Filter.MinExeBuild;
+	if(_Filter.Envmix != "") Builder ^= "&envmix="^_Filter.Envmix;
+	if(_Filter.GhostBlocks != "") Builder ^= "&ghostblocks="^_Filter.GhostBlocks;
+	if(_Filter.EmbeddedObjects != "") Builder ^= "&embeddedobjects="^_Filter.EmbeddedObjects;
+	if(_Filter.GameVersion != "") Builder ^= "&gv="^_Filter.GameVersion;
+	
+	return Builder;
+}
+
+Text[] Private_ParseJsonArray(Text _JsonText) {
+	declare Results = TextLib::Split("}{",_JsonText);
+	
+	//As ManiaScript has troubles parsing this type of JSON, we have to hack a bit
+	declare Pos = 0;
+	while(Pos<Results.count) {
+		declare R = Results[Pos];
+		if(R == "[" || R == "]" || R == ",") { declare Removed = Results.removekey(Pos); Pos-=1;}
+		else { Results[Pos] = "{"^Results[Pos]^"}"; }
+		Pos+=1;
+	}
+	
+	return Results;
+}
+
+Text[] Private_ParseJsonArraySearch(Text _JsonText) {
+	declare Results = Private_ParseJsonArray(_JsonText);
+	
+	declare Removed1 = Results.remove("""{"results":[}""");
+	declare Removed2 = Results.remove("{}");
+	declare Removed3 = Results.removekey(Results.count-1);
+	
+	return Results;
+}
+
+SMXTrackInfo[] Search(Text _Site, SMXSearchFilter _Filter, Boolean _UseCache) {
+	declare SMXTrackInfo[] TrackInfos;
+	
+	declare Result = Http::SyncGET_Result("""https://{{{_Site}}}.mania-exchange.com/tracksearch2/search?api=on{{{Private_BuildSearchParams(_Filter)}}}""", _UseCache);
+	
+	foreach(R, Private_ParseJsonArraySearch(Result)) {
+		declare SMXTrackInfo Info;
+		declare JsonSuccess = Info.fromjson(R);
+		TrackInfos.add(Info);
+	}
+	
+	return TrackInfos;
+}
+
+SMXTrackInfo[] TrackInfoMultiple(Text _Site, Integer[] _TrackIds, Boolean _UseCache) {
+	declare SMXTrackInfo[] TrackInfos;
+	
+	declare Text TrackIdText;
+	for(i,0,_TrackIds.count-1) {
+		if(i!=0) TrackIdText ^= ",";
+		TrackIdText ^= _TrackIds[i]^"";
+	}
+	declare Result = Http::SyncGET_Result("""https://api.mania-exchange.com/{{{_Site}}}/maps/{{{TrackIdText}}}""", _UseCache);
+	
+	if(Result == "[]") return TrackInfos;
+	
+	foreach(R, Private_ParseJsonArray(Result)) {
+		declare SMXTrackInfo Info;
+		declare JsonSuccess = Info.fromjson(R);
+		TrackInfos.add(Info);
+	}
+	
+	return TrackInfos;
+}
+
+SMXTrackInfo TrackInfo(Text _Site, Integer _TrackId, Boolean _UseCache) {
+	declare SMXTrackInfo Info;
+	declare Tracks = TrackInfoMultiple(_Site, [_TrackId], _UseCache);
+	if(Tracks.count > 0) Info = Tracks[0];
+	return Info;
+}
+
+SMXReplay TrackWorldRecord(Text _Site, Integer _TrackId, Boolean _UseCache) {
+	declare SMXReplay Replay;
+	declare JsonSuccess = Replay.fromjson(Http::SyncGET_Result("""https://api.mania-exchange.com/{{{_Site}}}/tracks/worldrecord/{{{_TrackId}}}""", _UseCache));
+	return Replay;
+}
+
+SMXReplay[] TrackReplays(Text _Site, Integer _TrackId, Integer _Amount, Boolean _UseCache) {
+	declare SMXReplay[] Replays;
+	
+	declare Result = Http::SyncGET_Result("""https://api.mania-exchange.com/{{{_Site}}}/replays/{{{_TrackId}}}/{{{_Amount}}}""", _UseCache);
+	
+	if(Result == "[]") return Replays;
+	
+	foreach(R, Private_ParseJsonArray(Result)) {
+		declare SMXReplay Info;
+		declare JsonSuccess = Info.fromjson(R);
+		Replays.add(Info);
+	}
+	
+	return Replays;
+}
+
+SMXReplay[] TrackReplays(Text _Site, Integer _TrackId, Boolean _UseCache) {
+	return TrackReplays(_Site, _TrackId, 25, _UseCache);
+}
+
+SMXEmbeddedObject[] TrackEmbeddedObjects(Text _Site, Integer _TrackId, Boolean _UseCache) {
+	declare SMXEmbeddedObject[] Objects;
+	
+	declare Result = Http::SyncGET_Result("""https://api.mania-exchange.com/{{{_Site}}}/tracks/embeddedobjects/{{{_TrackId}}}""", _UseCache);
+	
+	if(Result == "[]") return Objects;
+	
+	foreach(R, Private_ParseJsonArray(Result)) {
+		declare SMXEmbeddedObject Info;
+		declare JsonSuccess = Info.fromjson(R);
+		Objects.add(Info);
+	}
+	
+	return Objects;
+}
+
+Text TrackScreenshotUrl(Text _Site, Integer _TrackId, Text _Type) {
+	return """https://{{{_Site}}}.mania-exchange.com/tracks/screenshot/{{{_Type}}}/{{{_TrackId}}}""";
+}
+
+Text TrackThumbnailUrl(Text _Site, Integer _TrackId) {
+	return """https://{{{_Site}}}.mania-exchange.com/tracks/thumbnail/{{{_TrackId}}}""";
+}
+
+CHttpRequest GetAsyncRequest(Text _Name) {
+	return Http::Get(_Name);
+}
+
+Void DestroyAsyncRequest(Text _Name) {
+	Http::Destroy(_Name);
+}
+
+Boolean IsAsyncRequestCompleted(Text _Name) {
+	return Http::IsCompleted(_Name);
+}
+
+Boolean IsAsyncRequestSuccessful(Text _Name) {
+	return Http::IsSuccessful(_Name);
+}
+
+Integer GetAsyncRequestStatusCode(Text _Name) {
+	return Http::GetStatusCode(_Name);
+}
+
+Boolean AsyncSearch(Text _Name, Text _Site, SMXSearchFilter _Filter, Boolean _UseCache) {
+	return Http::AsyncGET(_Name, """https://{{{_Site}}}.mania-exchange.com/tracksearch2/search?api=on{{{Private_BuildSearchParams(_Filter)}}}""", _UseCache);
+}
+
+SMXTrackInfo[] GetAsyncSearchResult(Text _Name) {
+	declare SMXTrackInfo[] SearchResult;
+	
+	declare Request = GetAsyncRequest(_Name);
+	if(Request.IsCompleted) {
+		if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
+			foreach(R, Private_ParseJsonArraySearch(Request.Result)) {
+				declare SMXTrackInfo Info;
+				declare JsonSuccess = Info.fromjson(R);
+				SearchResult.add(Info);
+			}
+		}
+		DestroyAsyncRequest(_Name);
+	}
+	
+	return SearchResult;
+}
+
+Boolean AsyncTrackInfoMultiple(Text _Name, Text _Site, Integer[] _TrackIds, Boolean _UseCache) {
+	declare Text TrackIdText;
+	for(i,0,_TrackIds.count-1) {
+		if(i!=0) TrackIdText ^= ",";
+		TrackIdText ^= _TrackIds[i]^"";
+	}
+	return Http::AsyncGET(_Name,"""https://api.mania-exchange.com/{{{_Site}}}/maps/{{{TrackIdText}}}""", _UseCache);
+}
+
+SMXTrackInfo[] GetAsyncTrackInfoMultipleResult(Text _Name) {
+	declare SMXTrackInfo[] TrackInfoMultipleResult;
+	
+	declare Request = GetAsyncRequest(_Name);
+	if(Request.IsCompleted) {
+		if(Request.StatusCode >= 200 && Request.StatusCode < 300 && Request.Result != "[]") {
+			foreach(R, Private_ParseJsonArray(Request.Result)) {
+				declare SMXTrackInfo Info;
+				declare JsonSuccess = Info.fromjson(R);
+				TrackInfoMultipleResult.add(Info);
+			}
+		}
+		DestroyAsyncRequest(_Name);
+	}
+	
+	return TrackInfoMultipleResult;
+}
+
+
+
+Boolean AsyncTrackInfo(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache) {
+	return Http::AsyncGET(_Name,"""https://api.mania-exchange.com/{{{_Site}}}/maps/{{{_TrackId}}}""", _UseCache);
+}
+
+SMXTrackInfo GetAsyncTrackInfoResult(Text _Name) {
+	declare SMXTrackInfo Info;
+	declare Tracks = GetAsyncTrackInfoMultipleResult(_Name);
+	if(Tracks.count > 0) Info = Tracks[0];
+	return Info;
+}
+
+Boolean AsyncTrackWorldRecord(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache) {
+	return Http::AsyncGET(_Name,"""https://api.mania-exchange.com/{{{_Site}}}/tracks/worldrecord/{{{_TrackId}}}""", _UseCache);
+}
+
+SMXReplay GetAsyncTrackWorldRecordResult(Text _Name) {
+	declare SMXReplay WorldRecord;
+	declare Request = GetAsyncRequest(_Name);
+	if(Request.IsCompleted) {
+		if(Request.StatusCode >= 200 && Request.StatusCode < 300)
+			declare JsonSuccess = WorldRecord.fromjson(Request.Result);
+		DestroyAsyncRequest(_Name);
+	}
+	return WorldRecord;
+}
+
+Boolean AsyncTrackReplays(Text _Name, Text _Site, Integer _TrackId, Integer _Amount, Boolean _UseCache) {
+	return Http::AsyncGET(_Name,"""https://api.mania-exchange.com/{{{_Site}}}/replays/{{{_TrackId}}}/{{{_Amount}}}""", _UseCache);
+}
+
+SMXReplay[] GetAsyncTrackReplaysResult(Text _Name) {
+	declare SMXReplay[] TrackReplaysResult;
+	
+	declare Request = GetAsyncRequest(_Name);
+	if(Request.IsCompleted) {
+		if(Request.StatusCode >= 200 && Request.StatusCode < 300 && Request.Result != "[]") {
+			foreach(R, Private_ParseJsonArray(Request.Result)) {
+				declare SMXReplay Replay;
+				declare JsonSuccess = Replay.fromjson(R);
+				TrackReplaysResult.add(Replay);
+			}
+		}
+		DestroyAsyncRequest(_Name);
+	}
+	return TrackReplaysResult;
+}
+
+Boolean AsyncTrackEmbeddedObjects(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache) {
+	return Http::AsyncGET(_Name,"""https://api.mania-exchange.com/{{{_Site}}}/tracks/embeddedobjects/{{{_TrackId}}}""", _UseCache);
+}
+
+SMXEmbeddedObject[] GetAsyncTrackEmbeddedObjectsResult(Text _Name) {
+	declare SMXEmbeddedObject[] TrackEmbeddedObjectsResult;
+	
+	declare Request = GetAsyncRequest(_Name);
+	if(Request.IsCompleted) {
+		if(Request.StatusCode >= 200 && Request.StatusCode < 300 && Request.Result != "[]") {
+			foreach(R, Private_ParseJsonArray(Request.Result)) {
+				declare SMXEmbeddedObject Object;
+				declare JsonSuccess = Object.fromjson(R);
+				TrackEmbeddedObjectsResult.add(Object);
+			}
+		}
+		DestroyAsyncRequest(_Name);
+	}
+	return TrackEmbeddedObjectsResult;
+}
