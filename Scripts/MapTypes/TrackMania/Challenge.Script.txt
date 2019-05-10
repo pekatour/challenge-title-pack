@@ -6,13 +6,14 @@ while(True) {
 	foreach(Event,PendingEvents) {
 		if(Event.Type == CMapEditorPluginEvent::Type::MapModified) {
 			declare FinishCount = 0;
-			foreach(Block,Blocks) {
+			foreach(Block,Blocks)
 				if(Block != Null)
-					if(Block.BlockModel.WaypointType == CBlockModel::EWayPointType::Finish)
+					if(Block.BlockModel.WaypointType == CBlockModel::EWayPointType::Finish || Block.BlockModel.WaypointType == CBlockModel::EWayPointType::StartFinish)
 						FinishCount += 1;
-			}
 			if(FinishCount > 0)
 				ValidationStatus = CMapType::ValidationStatus::Validated;
+			else
+				ValidationStatus = CMapType::ValidationStatus::NotValidable;
 		}
 	}
 	
