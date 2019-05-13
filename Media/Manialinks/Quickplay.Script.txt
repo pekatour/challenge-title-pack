@@ -82,7 +82,7 @@ Void UpdateLocalMapsFolder(Integer _Offset) {
 
 	declare Frame_MapList = (Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame);
 	Frame_MapList.ScrollActive = True;
-	Frame_MapList.ScrollMax = <0.,10.*(SubFoldersCount+1 + MapInfosCount)-100>;
+	Frame_MapList.ScrollMax = <0.,10.*(SubFoldersCount+1 + MapInfosCount+1)-100>;
 	Frame_MapList.ScrollMin = <0.,0.>;
 	Frame_MapList.ScrollGridSnap = True;
 	Frame_MapList.ScrollGrid = <0.,10.>;
