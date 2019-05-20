@@ -1,9 +1,6 @@
-#Include "Libs/BigBang1112/Internet.Script.txt" as Internet
-
 declare CHttpRequest[Text] G_AsyncRequests;
 
 CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
-	//if(Internet::IsOffline()) return Null;
 	if(Http.SlotsAvailable == 0) return Null;
 	
 	declare Request = Http.CreateGet(_Url, _UseCache, _AdditionalHeaders);
@@ -38,7 +35,6 @@ Text SyncGET_Result(Text _Url) {
 }
 
 CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders) {
-	//if(Internet::IsOffline()) return Null;
 	if(Http.SlotsAvailable == 0) return Null;
 	
 	declare Request = Http.CreatePost(_Url, _Resource, _AdditionalHeaders);
@@ -65,7 +61,6 @@ Text SyncPOST_Result(Text _Url, Text _Resource) {
 }
 
 CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders) {
-	//if(Internet::IsOffline()) return Null;
 	if(Http.SlotsAvailable == 0) return Null;
 	
 	declare Request = Http.CreatePostFile(_Url, _FileName, _AdditionalHeaders);
@@ -92,7 +87,6 @@ Text SyncPOSTFile_Result(Text _Url, Text _FileName) {
 }
 
 Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
-	//if(Internet::IsOffline()) return False;
 	if(Http.SlotsAvailable == 0) return False;
 	
 	if(G_AsyncRequests.existskey(_Name)) Http.Destroy(G_AsyncRequests[_Name]);
@@ -109,7 +103,6 @@ Boolean AsyncGET(Text _Name, Text _Url) {
 }
 
 Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders) {
-	//if(Internet::IsOffline()) return False;
 	if(Http.SlotsAvailable == 0) return False;
 	
 	if(G_AsyncRequests.existskey(_Name)) Http.Destroy(G_AsyncRequests[_Name]);
@@ -124,7 +117,6 @@ Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource) {
 }
 
 Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHeaders) {
-	//if(Internet::IsOffline()) return False;
 	if(Http.SlotsAvailable == 0) return False;
 	
 	if(G_AsyncRequests.existskey(_Name)) Http.Destroy(G_AsyncRequests[_Name]);
