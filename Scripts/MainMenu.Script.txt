@@ -13,6 +13,10 @@
 #Include "Libs/BigBang1112/Http.Script.txt" as Http
 #Include "Libs/BigBang1112/Auth.Script.txt" as Auth
 
+#Include "Libs/Challenge/Devmode.Script.txt" as Devmode
+
+#Setting S_Devmode True
+
 #Struct SMapInfo {
 	Text Name;
 	Text AuthorLogin;
@@ -30,7 +34,7 @@ Void UpdateLocalMaps(Text _Folder, Text _SearchMapName, Text _SearchAuthorName) 
 }
 
 Void UpdateOfficialScripts(Text[] _Scripts) {
-	LayerCustomEvent(Layers::Get("Quickplay"), "ScriptList_Official_Update", [_Scripts.tojson()]);
+	Layers::SendEvent("Quickplay", "ScriptList_Official_Update", [_Scripts.tojson()]);
 }
 
 main() {
@@ -44,6 +48,10 @@ main() {
 	Layers::Show("Menu");
 	Layers::Show("Quickplay");
 	Layers::Show("Top");
+	
+	if(S_Devmode) {
+		Devmode::Start();
+	}
 	
 	Layers::SendEvent("Editor", "Code_SetText", [File::Read("Media/Challenges/Default.Script.txt")]);
 	

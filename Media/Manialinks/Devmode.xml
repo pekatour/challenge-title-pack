@@ -1,0 +1,10 @@
+<frame>
+	<label pos="-130 30" z-index="0" size="20 5" text="Solo" halign="center" valign="center2" style="CardButtonSmallS" action="menu_solo"/>
+	<label pos="-130 25" z-index="0" size="20 5" text="Competitions" halign="center" valign="center2" style="CardButtonSmallS" action="menu_competitions"/>
+	<label pos="-130 20" z-index="0" size="20 5" text="Local" halign="center" valign="center2" style="CardButtonSmallS" action="menu_local"/>
+	<label pos="-130 15" z-index="0" size="20 5" text="Internet" halign="center" valign="center2" style="CardButtonSmallS" action="menu_internet"/>
+	<label pos="-130 10" z-index="0" size="20 5" text="Editors" halign="center" valign="center2" style="CardButtonSmallS" action="menu_editors"/>
+	<label pos="-130 5" z-index="0" size="20 5" text="Profile" halign="center" valign="center2" style="CardButtonSmallS" action="menu_profile"/>
+	<label pos="-130 0" z-index="0" size="20 5" text="Main" halign="center" valign="center2" style="CardButtonSmallS" action="menu_main"/>
+	<label pos="-130 -5" z-index="0" size="20 5" text="Group" halign="center" valign="center2" style="CardButtonSmallS" action="menu_group"/>
+</frame>

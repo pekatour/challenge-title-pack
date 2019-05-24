@@ -1,0 +1,6 @@
+#Include "Libs/BigBang1112/Layers.Script.txt" as Layers
+#Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
+
+Void Start() {
+	Layers::Create("Devmode", Manialink::FromFile("Media/Manialinks/Devmode"), True);
+}
