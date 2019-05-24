@@ -23,7 +23,7 @@
 		<background_replay name="Replays\Menu.Replay.Gbx"/>
 		<header name="MenuHeader.png"/>
 		<music name=""/>
-		<manialink url="Scripts/MainMenu.Script.txt"/>
+		<manialink url="Scripts/Menu.Script.txt"/>
 	</menu>
 	<menu_style name=""/>
 	<music folder=""/>

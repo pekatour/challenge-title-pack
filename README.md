@@ -6,6 +6,10 @@ Map modification on existing tracks. A multi-title-pack project.
 
 This specific title pack focuses on sandbox play and experimenting with different challenges.
 
+## ...controlled by Universe
+
+A library set programmed by BigBang1112 (also called Universe Library Set, or just Universe) takes a job on almost every corner, helping especially with timing, asynchronous actions and general clarity. [See the folder here.](Scripts/Libs/BigBang1112)
+
 ## Official modification scripts
 
 * [Reverse.Script.txt](Media/Challenges/Reverse.Script.txt)
