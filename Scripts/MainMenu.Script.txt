@@ -10,6 +10,8 @@
 #Include "Libs/BigBang1112/Layers.Script.txt" as Layers
 #Include "Libs/BigBang1112/Task.Script.txt" as Task
 #Include "Libs/BigBang1112/Data.Script.txt" as Data
+#Include "Libs/BigBang1112/Http.Script.txt" as Http
+#Include "Libs/BigBang1112/Auth.Script.txt" as Auth
 
 #Struct SMapInfo {
 	Text Name;
@@ -18,6 +20,17 @@
 	Text FileName;
 	Text MapUid;
 	Boolean IsPlayable;
+}
+
+Void UpdateLocalMaps(Text _Folder, Text _SearchMapName, Text _SearchAuthorName) {
+	declare FlatSearch = (_SearchMapName != "" || _SearchAuthorName != "");
+	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(2,_Folder,FlatSearch));
+	Data::Set("MAPLIST_LOCAL_SEARCHMAPNAME",_SearchMapName);
+	Data::Set("MAPLIST_LOCAL_SEARCHAUTHORNAME",_SearchAuthorName);
+}
+
+Void UpdateOfficialScripts(Text[] _Scripts) {
+	LayerCustomEvent(Layers::Get("Quickplay"), "ScriptList_Official_Update", [_Scripts.tojson()]);
 }
 
 main() {
@@ -41,9 +54,12 @@ main() {
 		"Default.Script.txt"
 	];
 	
+	UpdateLocalMaps("","","");
+	UpdateOfficialScripts(OfficialScripts);
+	
 	//EnableMenuNavigationInputs = True;
 
-	while(True) {	
+	while(True) {
 		foreach(Event,PendingEvents) {
 			if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
 				if(Event.CustomEventType == "Test") {
@@ -113,10 +129,7 @@ main() {
 					declare Folder = Event.CustomEventData[0];
 					declare SearchMapName = Event.CustomEventData[1];
 					declare SearchAuthorName = Event.CustomEventData[2];
-					declare FlatSearch = (SearchMapName != "" || SearchAuthorName != "");
-					Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(2,Folder,FlatSearch));
-					Data::Set("MAPLIST_LOCAL_SEARCHMAPNAME",SearchMapName);
-					Data::Set("MAPLIST_LOCAL_SEARCHAUTHORNAME",SearchAuthorName);
+					UpdateLocalMaps(Folder, SearchMapName, SearchAuthorName);
 				}
 				if(Event.CustomEventType == "MapList_ManiaExchange_Add") {
 					declare MX::SMXSearchFilter Search;
@@ -137,9 +150,6 @@ main() {
 					if(!MX::AsyncSearch("MX_SEARCH_UPDATE", "tm", Search, True)) {
 					
 					}
-				}
-				if(Event.CustomEventType == "ScriptList_Official_Folder") {					
-					LayerCustomEvent(Layers::Get("Quickplay"), "ScriptList_Official_Update", [OfficialScripts.tojson()]);
 				}
 			}
 		}
@@ -192,6 +202,8 @@ main() {
 				Task::Destroy_DataFileMgr("MAPLIST_LOCAL_FOLDER");
 			}
 		}
+		
+		Auth::Loop();
 	
 		yield;
 	}
