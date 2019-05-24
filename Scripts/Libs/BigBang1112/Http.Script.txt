@@ -1,5 +1,65 @@
-declare CHttpRequest[Text] G_AsyncRequests;
+/*
+	Http.Script.txt
+	by BigBang1112
+	part of Universe Library Set
 
+	Better readable and simplified HTTP request flow.
+	Async requests do not require declaring variables.
+	Does not touch problematic event system.
+
+	This library does not depend on any other library from the Universe Library Set.
+	You can use this library independently, although it's recommended to use the whole set.
+*/
+
+/*
+	Constants:
+	- C_StatusCode_Offline
+*/
+
+/*
+	CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
+	CHttpRequest SyncGET(Text _Url, Boolean _UseCache)
+	CHttpRequest SyncGET(Text _Url)
+	Text SyncGET_Result(Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
+	Text SyncGET_Result(Text _Url, Boolean _UseCache)
+	Text SyncGET_Result(Text _Url)
+	CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders)
+	CHttpRequest SyncPOST(Text _Url, Text _Resource)
+	Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders)
+	Text SyncPOST_Result(Text _Url, Text _Resource)
+	CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders)
+	CHttpRequest SyncPOSTFile(Text _Url, Text _FileName)
+	Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders)
+	Text SyncPOSTFile_Result(Text _Url, Text _FileName)
+
+	Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
+	Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache)
+	Boolean AsyncGET(Text _Name, Text _Url)
+	Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders)
+	Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource)
+	Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHeaders)
+	Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName)
+
+	Void Destroy(Text _Name)
+	Boolean IsCompleted(Text _Name)
+	Boolean IsSuccessful(Text _Name)
+	Integer GetStatusCode(Text _Name)
+*/
+
+#Const C_StatusCode_Offline 10006
+
+declare CHttpRequest[Text] G_Requests;
+
+/*
+	CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
+	Requests an URL as GET synchronously.
+
+	Text _Url - Url to request
+	Boolean _UseCache - If to cache the result, True recommended for expensive requests
+	Text _AdditionalHeaders - More info to the request
+
+	Returns finished/completed request, should be destroyed manually after being used
+*/
 CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return Null;
 	
@@ -8,14 +68,41 @@ CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
 	return Request;
 }
 
+/*
+	CHttpRequest SyncGET(Text _Url, Boolean _UseCache)
+	Requests an URL as GET synchronously.
+
+	Text _Url - Url to request
+	Boolean _UseCache - If to cache the result, True recommended for expensive requests
+
+	Returns finished/completed request, should be destroyed manually after being used
+*/
 CHttpRequest SyncGET(Text _Url, Boolean _UseCache) {
     return SyncGET(_Url, _UseCache, "");
 }
 
+/*
+	CHttpRequest SyncGET(Text _Url)
+	Requests an URL as GET synchronously.
+
+	Text _Url - Url to request
+
+	Returns uncached finished/completed request, should be destroyed manually after being used
+*/
 CHttpRequest SyncGET(Text _Url) {
     return SyncGET(_Url, False, "");
 }
 
+/*
+	Text SyncGET_Result(Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
+	Requests an URL as GET synchronously as result.
+
+	Text _Url - Url to request
+	Boolean _UseCache - If to cache the result, True recommended for expensive requests
+	Text _AdditionalHeaders - More info to the request
+
+	Returns request result, or empty string if unsuccessful
+*/
 Text SyncGET_Result(Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
 	declare Request = SyncGET(_Url, _UseCache, _AdditionalHeaders);
 	if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
@@ -26,14 +113,41 @@ Text SyncGET_Result(Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
 	return "";
 }
 
+/*
+	Text SyncGET_Result(Text _Url, Boolean _UseCache)
+	Requests an URL as GET synchronously as result.
+
+	Text _Url - Url to request
+	Boolean _UseCache - If to cache the result, True recommended for expensive requests
+
+	Returns request result, or empty string if unsuccessful
+*/
 Text SyncGET_Result(Text _Url, Boolean _UseCache) {
     return SyncGET_Result(_Url, _UseCache, "");
 }
 
+/*
+	Text SyncGET_Result(Text _Url)
+	Requests an URL as GET synchronously as result.
+
+	Text _Url - Url to request
+
+	Returns request result, or empty string if unsuccessful
+*/
 Text SyncGET_Result(Text _Url) {
     return SyncGET_Result(_Url, False, "");
 }
 
+/*
+	CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders)
+	Requests an URL with text content as POST synchronously.
+
+	Text _Url - Url to request
+	Text _Resource - Text to provide for the request
+	Text _AdditionalHeaders - More info to the request
+
+	Returns finished/completed request, should be destroyed manually after being used
+*/
 CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return Null;
 	
@@ -42,10 +156,29 @@ CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders) {
 	return Request;
 }
 
+/*
+	CHttpRequest SyncPOST(Text _Url, Text _Resource)
+	Requests an URL with text content as POST synchronously.
+
+	Text _Url - Url to request
+	Text _Resource - Text to provide for the request
+
+	Returns finished/completed request, should be destroyed manually after being used
+*/
 CHttpRequest SyncPOST(Text _Url, Text _Resource) {
     return SyncPOST(_Url, _Resource, "");
 }
 
+/*
+	Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders)
+	Requests an URL with text content as POST synchronously as result.
+
+	Text _Url - Url to request
+	Text _Resource - Text to provide for the request
+	Text _AdditionalHeaders - More info to the request
+
+	Returns request result, or empty string if unsuccessful
+*/
 Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders) {
 	declare Request = SyncPOST(_Url, _Resource, _AdditionalHeaders);
 	if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
@@ -56,10 +189,29 @@ Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders) {
 	return "";
 }
 
+/*
+	Text SyncPOST_Result(Text _Url, Text _Resource)
+	Requests an URL with text content as POST synchronously as result.
+
+	Text _Url - Url to request
+	Text _Resource - Text to provide for the request
+
+	Returns request result, or empty string if unsuccessful
+*/
 Text SyncPOST_Result(Text _Url, Text _Resource) {
     return SyncPOST_Result(_Url, _Resource, "");
 }
 
+/*
+	CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders)
+	Requests an URL with file content as POST synchronously.
+
+	Text _Url - Url to request
+	Text _FileName - File name relative to Maniaplanet folder
+	Text _AdditionalHeaders - More info to the request
+
+	Returns finished/completed request, should be destroyed manually after being used
+*/
 CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return Null;
 	
@@ -68,10 +220,29 @@ CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders) {
 	return Request;
 }
 
+/*
+	CHttpRequest SyncPOSTFile(Text _Url, Text _FileName)
+	Requests an URL with file content as POST synchronously.
+
+	Text _Url - Url to request
+	Text _FileName - File name relative to Maniaplanet folder
+
+	Returns finished/completed request, should be destroyed manually after being used
+*/
 CHttpRequest SyncPOSTFile(Text _Url, Text _FileName) {
     return SyncPOSTFile(_Url, _FileName, "");
 }
 
+/*
+	Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders)
+	Requests an URL with file content as POST synchronously as result.
+
+	Text _Url - Url to request
+	Text _FileName - File name relative to Maniaplanet folder
+	Text _AdditionalHeaders - More info to the request
+
+	Returns request result, or empty string if unsuccessful
+*/
 Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders) {
 	declare Request = SyncPOSTFile(_Url, _FileName, _AdditionalHeaders);
 	if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
@@ -82,79 +253,198 @@ Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders) {
 	return "";
 }
 
+/*
+	Text SyncPOSTFile_Result(Text _Url, Text _FileName)
+	Requests an URL with file content as POST synchronously as result.
+
+	Text _Url - Url to request
+	Text _FileName - File name relative to Maniaplanet folder
+
+	Returns request result, or empty string if unsuccessful
+*/
 Text SyncPOSTFile_Result(Text _Url, Text _FileName) {
     return SyncPOSTFile_Result(_Url, _FileName, "");
 }
 
+/*
+	Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
+	Requests an URL as GET asynchronously.
+
+	Text _Name - Identification name
+	Text _Url - Url to request
+	Boolean _UseCache - If to cache the result, True recommended for expensive requests
+	Text _AdditionalHeaders - More info to the request
+
+	Returns False if the request isn't possible to create, otherwise True
+*/
 Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return False;
 	
-	if(G_AsyncRequests.existskey(_Name)) Http.Destroy(G_AsyncRequests[_Name]);
-	G_AsyncRequests[_Name] = Http.CreateGet(_Url, _UseCache, _AdditionalHeaders);
+	if(G_Requests.existskey(_Name)) Http.Destroy(G_Requests[_Name]);
+	G_Requests[_Name] = Http.CreateGet(_Url, _UseCache, _AdditionalHeaders);
     return True;
 }
 
+/*
+	Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache)
+	Requests an URL as GET asynchronously.
+
+	Text _Name - Identification name
+	Text _Url - Url to request
+	Boolean _UseCache - If to cache the result, True recommended for expensive requests
+
+	Returns False if the request isn't possible to create, otherwise True
+*/
 Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache) {
     return AsyncGET(_Name, _Url, _UseCache, "");
 }
 
+/*
+	Boolean AsyncGET(Text _Name, Text _Url)
+	Requests an URL as GET asynchronously.
+
+	Text _Name - Identification name
+	Text _Url - Url to request
+
+	Returns False if the request isn't possible to create, otherwise True
+*/
 Boolean AsyncGET(Text _Name, Text _Url) {
     return AsyncGET(_Name, _Url, False, "");
 }
 
+/*
+	Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders)
+	Requests an URL with text content as POST asynchronously.
+
+	Text _Name - Identification name
+	Text _Url - Url to request
+	Text _Resource - Text to provide for the request
+	Text _AdditionalHeaders - More info to the request
+
+	Returns False if the request isn't possible to create, otherwise True
+*/
 Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return False;
 	
-	if(G_AsyncRequests.existskey(_Name)) Http.Destroy(G_AsyncRequests[_Name]);
+	if(G_Requests.existskey(_Name)) Http.Destroy(G_Requests[_Name]);
 	
-	G_AsyncRequests[_Name] = Http.CreatePost(_Url, _Resource, _AdditionalHeaders);
+	G_Requests[_Name] = Http.CreatePost(_Url, _Resource, _AdditionalHeaders);
 
     return True;
 }
 
+/*
+	Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource)
+	Requests an URL with text content as POST asynchronously.
+
+	Text _Name - Identification name
+	Text _Url - Url to request
+	Text _Resource - Text to provide for the request
+
+	Returns False if the request isn't possible to create, otherwise True
+*/
 Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource) {
     return AsyncPOST(_Name, _Url, _Resource, "");
 }
 
+/*
+	Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHeaders)
+	Requests an URL with file content as POST asynchronously.
+
+	Text _Name - Identification name
+	Text _Url - Url to request
+	Text _FileName - File name relative to Maniaplanet folder
+	Text _AdditionalHeaders - More info to the request
+
+	Returns False if the request isn't possible to create, otherwise True
+*/
 Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHeaders) {
 	if(Http.SlotsAvailable == 0) return False;
 	
-	if(G_AsyncRequests.existskey(_Name)) Http.Destroy(G_AsyncRequests[_Name]);
+	if(G_Requests.existskey(_Name)) Http.Destroy(G_Requests[_Name]);
 	
-	G_AsyncRequests[_Name] = Http.CreatePostFile(_Url, _FileName, _AdditionalHeaders);
+	G_Requests[_Name] = Http.CreatePostFile(_Url, _FileName, _AdditionalHeaders);
 
     return True;
 }
 
+/*
+	Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName)
+	Requests an URL with file content as POST asynchronously.
+
+	Text _Name - Identification name
+	Text _Url - Url to request
+	Text _FileName - File name relative to Maniaplanet folder
+
+	Returns False if the request isn't possible to create, otherwise True
+*/
 Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName) {
     return AsyncPOST(_Name, _Url, _FileName, "");
 }
 
+/*
+	CHttpRequest Get(Text _Name)
+	Gets asynchonous request, completed or pending.
+
+	Text _Name - Identification name
+
+	Returns request that can or cannot be in the progress
+*/
 CHttpRequest Get(Text _Name) {
-	if(!G_AsyncRequests.existskey(_Name)) return Null;
-    return G_AsyncRequests[_Name];
+	if(!G_Requests.existskey(_Name)) return Null;
+    return G_Requests[_Name];
 }
 
+/*
+	Void Destroy(Text _Name)
+	Destroys an aynchonous request.
+
+	Text _Name - Identification name
+*/
 Void Destroy(Text _Name) {
-	if(!G_AsyncRequests.existskey(_Name)) return;
-    Http.Destroy(G_AsyncRequests[_Name]);
-    declare Removed = G_AsyncRequests.removekey(_Name);
+	if(!G_Requests.existskey(_Name)) return;
+    Http.Destroy(G_Requests[_Name]);
+    declare Removed = G_Requests.removekey(_Name);
 }
 
+/*
+	Boolean IsCompleted(Text _Name)
+	Checks if the asynchronous request was completed.
+
+	Text _Name - Identification name
+
+	Returns True if the request is completed but not destroyed.
+*/
 Boolean IsCompleted(Text _Name) {
-	if(!G_AsyncRequests.existskey(_Name)) return False;
+	if(!G_Requests.existskey(_Name)) return False;
 	return Get(_Name).IsCompleted;
 }
 
+/*
+	Boolean IsSuccessful(Text _Name)
+	Checks if the asynchonous request was completed successfully.
+
+	Text _Name - Identification name
+
+	Returns True if the request is completed with a positive response (between 200 inclusively and 300 exclusively HTTP code).
+*/
 Boolean IsSuccessful(Text _Name) {
-	if(!G_AsyncRequests.existskey(_Name)) return False;
+	if(!G_Requests.existskey(_Name)) return False;
 	return Get(_Name).IsCompleted
 	&& Get(_Name).StatusCode >= 200
 	&& Get(_Name).StatusCode < 300;
 }
 
+/*
+	Integer GetStatusCode(Text _Name)
+	Gets status code of the asynchronous request.
+
+	Text _Name - Identification name
+
+	Returns status code number of a completed request, or 0 if the request is not completed or does not exist.
+*/
 Integer GetStatusCode(Text _Name) {
-	if(!G_AsyncRequests.existskey(_Name)) return 0;
-	if(Get(_Name).IsCompleted) return Get(_Name).StatusCode;
-	return 0;
+	if(!G_Requests.existskey(_Name)) return 0;
+	if(!Get(_Name).IsCompleted) return 0;
+	return Get(_Name).StatusCode;
 }
