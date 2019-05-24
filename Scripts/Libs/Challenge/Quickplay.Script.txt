@@ -1,0 +1,165 @@
+#Include "TextLib" as TextLib
+
+#Include "Libs/BigBang1112/MX.Script.txt" as MX
+#Include "Libs/BigBang1112/Task.Script.txt" as Task
+#Include "Libs/BigBang1112/Data.Script.txt" as Data
+#Include "Libs/BigBang1112/Layers.Script.txt" as Layers
+
+#Struct SMapInfo {
+	Text Name;
+	Text AuthorLogin;
+	Text AuthorNickName;
+	Text FileName;
+	Text MapUid;
+	Boolean IsPlayable;
+}
+
+Void UpdateLocalMaps(Text _Folder, Text _SearchMapName, Text _SearchAuthorName) {
+	declare FlatSearch = (_SearchMapName != "" || _SearchAuthorName != "");
+	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(2,_Folder,FlatSearch));
+	Data::Set("MAPLIST_LOCAL_SEARCHMAPNAME",_SearchMapName);
+	Data::Set("MAPLIST_LOCAL_SEARCHAUTHORNAME",_SearchAuthorName);
+}
+
+Void UpdateOfficialScripts(Text[] _Scripts) {
+	Layers::SendEvent("Quickplay", "ScriptList_Official_Update", [_Scripts.tojson()]);
+}
+
+Void StartMap(Text _MapLocation, SMapInfo _MapInfo, Text _ScriptLocation, Text _Script) {
+	if(_MapInfo.MapUid == "") {
+		Dialog_Message("Please select a map.");
+		return;
+	}
+	if(!_MapInfo.IsPlayable) {
+		Dialog_Message("This map wasn't validated in original version.");
+		return;
+	}
+
+	if(TitleFlow.IsReady)
+	TitleFlow.EditMap(_MapInfo.FileName, "Modifier.Script.txt", """<settings>
+	<setting name="S_Build" type="boolean" value="True"/>
+	<setting name="S_ScriptType" type="text" value="{{{_ScriptLocation}}}"/>
+	<setting name="S_ScriptFileName" type="text" value="{{{_Script}}}"/>
+</settings>""");
+}
+
+Void Start() {
+	declare OfficialScripts = [
+		"Checkpointless.Script.txt",
+		"Reverse.Script.txt",
+		"Terrainless.Script.txt",
+		"Default.Script.txt"
+	];
+	
+	UpdateLocalMaps("","","");
+	UpdateOfficialScripts(OfficialScripts);
+}
+
+Void Event(CManiaAppEvent _Event) {
+	declare Event <=> _Event;
+
+	if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
+		switch(Event.CustomEventType) {
+			case "Button_Start": {
+				declare MapLocation = Event.CustomEventData[0];
+				
+				if(MapLocation == "ManiaExchange") {
+					/*TitleControl.ProcessManiaCodeXml("""<?xml version='1.0' encoding='utf-8' ?>
+	<maniacode noconfirmation="1">
+		<install_map>
+			<name>Good Name</name>
+			<url>https://tm.mania-exchange.com/tracks/download/162255</url>
+		</install_map>
+		<show_message>
+			<message>Hello</message>
+		</show_message>
+	</maniacode>""");*/
+				}
+				if(MapLocation == "Local") {
+					declare SMapInfo MapInfo;
+					MapInfo.fromjson(Event.CustomEventData[1]);
+					declare ScriptLocation = Event.CustomEventData[2];
+					declare Script = Event.CustomEventData[3];
+					StartMap(MapLocation, MapInfo, ScriptLocation, Script);
+				}
+			}
+			case "MapList_Local_Folder": {
+				declare Folder = Event.CustomEventData[0];
+				declare SearchMapName = Event.CustomEventData[1];
+				declare SearchAuthorName = Event.CustomEventData[2];
+				UpdateLocalMaps(Folder, SearchMapName, SearchAuthorName);
+			}
+			case "MapList_ManiaExchange_Add": {
+				declare MX::SMXSearchFilter Search;
+				Search.Page = Event.CustomEventData[0];
+				Search.TrackName = Event.CustomEventData[1];
+				Search.Author = Event.CustomEventData[2];
+				Search.Limit = "20";
+				if(!MX::AsyncSearch("MX_SEARCH_ADD", "tm", Search, True)) {
+				
+				}
+			}
+			case "MapList_ManiaExchange_Update": {
+				declare MX::SMXSearchFilter Search;
+				Search.Page = Event.CustomEventData[0];
+				Search.TrackName = Event.CustomEventData[1];
+				Search.Author = Event.CustomEventData[2];
+				Search.Limit = "20";
+				if(!MX::AsyncSearch("MX_SEARCH_UPDATE", "tm", Search, True)) {
+				
+				}
+			}
+		}
+	}
+}
+
+Void Async() {
+	if(MX::IsAsyncRequestCompleted("MX_SEARCH_ADD")) {
+		if(MX::IsAsyncRequestSuccessful("MX_SEARCH_ADD")) {
+			Layers::SendEvent("Quickplay", "MapList_MX_Add", [MX::GetAsyncSearchResult("MX_SEARCH_ADD").tojson()]);
+		}
+		MX::DestroyAsyncRequest("MX_SEARCH_ADD");
+	}
+	if(MX::IsAsyncRequestCompleted("MX_SEARCH_UPDATE")) {
+		if(MX::IsAsyncRequestSuccessful("MX_SEARCH_UPDATE")) {
+			Layers::SendEvent("Quickplay", "MapList_MX_Update", [MX::GetAsyncSearchResult("MX_SEARCH_UPDATE").tojson()]);
+		}
+		MX::DestroyAsyncRequest("MX_SEARCH_UPDATE");
+	}
+	
+	if(Task::IsCompleted("MAPLIST_LOCAL_FOLDER")) {
+		if(Task::IsSuccessful("MAPLIST_LOCAL_FOLDER")) {
+			declare MapList = (Task::Get("MAPLIST_LOCAL_FOLDER") as CTaskResult_MapList);
+			
+			declare Text[] SubFolders;
+			
+			declare SearchMapName = Data::Get("MAPLIST_LOCAL_SEARCHMAPNAME");
+			declare SearchAuthorName = Data::Get("MAPLIST_LOCAL_SEARCHAUTHORNAME");
+			
+			if(SearchMapName == "" && SearchAuthorName == "") {
+				SubFolders.add("...");
+				foreach(Folder,MapList.SubFolders) SubFolders.add(Folder);
+			}
+			
+			declare SMapInfo[] MapInfos;
+			foreach(MapInfo,MapList.MapInfos) {
+				if(SearchMapName != "")
+					if(!TextLib::Find(SearchMapName, MapInfo.Name, False, False)) continue;
+				if(SearchAuthorName != "")
+					if(!TextLib::Find(SearchAuthorName, MapInfo.AuthorLogin ^ MapInfo.AuthorNickName, False, False)) continue;
+			
+				declare SMapInfo Info;
+				Info.Name = MapInfo.Name;
+				Info.AuthorLogin = MapInfo.AuthorLogin;
+				Info.AuthorNickName = MapInfo.AuthorNickName;
+				Info.FileName = MapInfo.FileName;
+				Info.MapUid = MapInfo.MapUid;
+				Info.IsPlayable = MapInfo.IsPlayable;
+				MapInfos.add(Info);
+			}
+					
+			Layers::SendEvent("Quickplay", "MapList_Local_Update", [MapList.Path,SubFolders.tojson(),MapInfos.tojson()]);
+			Task::Destroy_DataFileMgr("MAPLIST_LOCAL_FOLDER");
+		}
+	}
+}

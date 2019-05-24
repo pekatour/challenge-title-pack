@@ -1,0 +1,79 @@
+#RequireContext CManiaAppTitle
+
+#Include "TextLib" as TextLib
+#Include "ColorLib" as ColorLib
+#Include "TimeLib" as TimeLib
+
+#Include "Libs/BigBang1112/MX.Script.txt" as MX
+#Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
+#Include "Libs/BigBang1112/File.Script.txt" as File
+#Include "Libs/BigBang1112/Layers.Script.txt" as Layers
+#Include "Libs/BigBang1112/Task.Script.txt" as Task
+#Include "Libs/BigBang1112/Data.Script.txt" as Data
+#Include "Libs/BigBang1112/Http.Script.txt" as Http
+#Include "Libs/BigBang1112/Auth.Script.txt" as Auth
+
+#Include "Libs/Challenge/Devmode.Script.txt" as Devmode
+#Include "Libs/Challenge/Quickplay.Script.txt" as Quickplay
+
+#Setting S_Devmode True
+
+main() {
+	Layers::Create("Menu", Manialink::FromFile("Media/Manialinks/Menu"));
+	Layers::Create("Quickplay", Manialink::FromFile("Media/Manialinks/Quickplay"));
+	Layers::Create("Top", Manialink::FromFile("Media/Manialinks/Top"));
+	
+	Layers::Create("Editor", Manialink::FromFile("Media/Manialinks/Editor"));
+	Layers::Create("Loading", "file://Media/Manialinks/Loading.xml", True, CUILayer::EUILayerType::LoadingScreen);
+	
+	Layers::Show("Menu");
+	Layers::Show("Quickplay");
+	Layers::Show("Top");
+	
+	Quickplay::Start();
+	
+	if(S_Devmode) {
+		Devmode::Start();
+	}
+	
+	Layers::SendEvent("Editor", "Code_SetText", [File::Read("Media/Challenges/Default.Script.txt")]);
+	
+	//EnableMenuNavigationInputs = True;
+
+	while(True) {
+		foreach(Event,PendingEvents) {
+			if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
+				if(Event.CustomEventType == "Test") {
+					if(TitleFlow.IsReady)
+					TitleFlow.EditMap("A01.Map.Gbx", "Modifier.Script.txt","""<settings>
+	<setting name="S_Build" type="boolean" value="True"/>
+	<setting name="S_ScriptType" type="text" value="Test"/>
+</settings>""");
+				}
+				if(Event.CustomEventType == "Button_Exit") {
+					Menu_Quit();
+				}
+				if(Event.CustomEventType == "Button_CreateChallenge") {
+					Layers::Show("Editor");
+					Layers::Hide("Menu");
+					Layers::Hide("Quickplay");
+					Layers::Hide("Top");
+				}
+				if(Event.CustomEventType == "Button_CreateChallenge_Back") {
+					Layers::Show("Menu");
+					Layers::Show("Quickplay");
+					Layers::Show("Top");
+					Layers::Hide("Editor");
+				}
+			}
+
+			Quickplay::Event(Event);
+		}
+		
+		Quickplay::Async();
+
+		Auth::Loop();
+	
+		yield;
+	}
+}
