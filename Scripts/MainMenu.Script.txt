@@ -45,7 +45,7 @@ main() {
 	Layers::Show("Quickplay");
 	Layers::Show("Top");
 	
-	LayerCustomEvent(Layers::Get("Editor"), "Code_SetText", [File::Read("Media/Challenges/Default.Script.txt")]);
+	Layers::SendEvent("Editor", "Code_SetText", [File::Read("Media/Challenges/Default.Script.txt")]);
 	
 	declare OfficialScripts = [
 		"Checkpointless.Script.txt",
@@ -156,13 +156,13 @@ main() {
 		
 		if(MX::IsAsyncRequestCompleted("MX_SEARCH_ADD")) {
 			if(MX::IsAsyncRequestSuccessful("MX_SEARCH_ADD")) {
-				LayerCustomEvent(Layers::Get("Quickplay"), "MapList_MX_Add", [MX::GetAsyncSearchResult("MX_SEARCH_ADD").tojson()]);
+				Layers::SendEvent("Quickplay", "MapList_MX_Add", [MX::GetAsyncSearchResult("MX_SEARCH_ADD").tojson()]);
 			}
 			MX::DestroyAsyncRequest("MX_SEARCH_ADD");
 		}
 		if(MX::IsAsyncRequestCompleted("MX_SEARCH_UPDATE")) {
 			if(MX::IsAsyncRequestSuccessful("MX_SEARCH_UPDATE")) {
-				LayerCustomEvent(Layers::Get("Quickplay"), "MapList_MX_Update", [MX::GetAsyncSearchResult("MX_SEARCH_UPDATE").tojson()]);
+				Layers::SendEvent("Quickplay", "MapList_MX_Update", [MX::GetAsyncSearchResult("MX_SEARCH_UPDATE").tojson()]);
 			}
 			MX::DestroyAsyncRequest("MX_SEARCH_UPDATE");
 		}
@@ -198,7 +198,7 @@ main() {
 					MapInfos.add(Info);
 				}
 						
-				LayerCustomEvent(Layers::Get("Quickplay"), "MapList_Local_Update", [MapList.Path,SubFolders.tojson(),MapInfos.tojson()]);
+				Layers::SendEvent("Quickplay", "MapList_Local_Update", [MapList.Path,SubFolders.tojson(),MapInfos.tojson()]);
 				Task::Destroy_DataFileMgr("MAPLIST_LOCAL_FOLDER");
 			}
 		}

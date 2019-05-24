@@ -96,3 +96,7 @@ Void ShowOnly(Text _LayerName) {
 Void Hide(Text _LayerName) {
 	Get(_LayerName).IsVisible = False;
 }
+
+Void SendEvent(Text _LayerName, Text _Type, Text[] _Data) {
+	LayerCustomEvent(Get(_LayerName), _Type, _Data);
+}
