@@ -88,8 +88,10 @@
 				</frame>
 				<frame pos="100 -20">
 					<quad size="50 80" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" z-index="-1"/>
-					<quad pos="25 -24" z-index="1" size="42.5 42.5" halign="center" valign="center" opacity=".9" id="QUAD_MAPLIST_THUMBNAIL"/>
 					<quad pos="25 -24" z-index="0" size="44 44" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgMetalBar" opacity=".9" modulatecolor="222"/>
+					<frame pos="25 -24" clipsizen="42.5 42.5" z-index="1">
+						<quad size="42.5 42.5" halign="center" valign="center" opacity=".9" id="QUAD_MAPLIST_THUMBNAIL"/>
+					</frame>
 					<label pos="25 -50" z-index="1" size="40 10" halign="center" valign="center2" text="???" textfont="BiryaniDemiBold" id="LABEL_MAPLIST_MAPNAME" textsize="2"/>
 					<label pos="25 -55" z-index="1" size="40 10" halign="center" valign="center2" text="by ???" textfont="BiryaniDemiBold" id="LABEL_MAPLIST_AUTHORNAME" textsize="1"/>
 				</frame>
@@ -196,7 +198,11 @@
 				</frame>
 				<frame pos="0 -10" z-index="1" hidden="0">
 					<quad z-index="-1" size="100 10" bgcolor="FFF" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="666"/>
-					<entry pos="3 -5" z-index="0" size="93.5 6" default="" valign="center2" id="ENTRY_SCRIPT_SEARCH"/>
+					<entry pos="3 -5" z-index="0" size="61.5 6" default="" valign="center2" id="ENTRY_SCRIPT_SEARCH"/>
+					<frame pos="67 -5">
+						<quad z-index="0" size="32 8" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" id="QUAD_SCRIPT_MULTIPLE"/>
+						<label pos="16 -0.25" z-index="1" size="33.33 10" text="MULTIPLE" halign="center" valign="center2" textfont="RajdhaniMono" textsize="2"/>
+					</frame>
 				</frame>
 			</frame>
 		</frame>

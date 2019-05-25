@@ -24,12 +24,12 @@
 main() {	
 	Layers::Create("Loading", "file://Media/Manialinks/Loading.xml", True, CUILayer::EUILayerType::LoadingScreen);
 	
-	Auth::Start();
-	
 	Menu_Quickplay::Start();
 	Menu_Main::Start();
 	Menu_Top::Start();
 	Menu_Editor::Start();
+	
+	Auth::Start();
 	
 	if(S_Devmode) {
 		Devmode::Start();
