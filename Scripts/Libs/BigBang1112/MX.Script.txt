@@ -349,31 +349,6 @@ Text Private_BuildSearchMappackParams(SMXSearchMappackFilter _Filter) {
 	return Builder;
 }
 
-Text[] Private_ParseJsonArray(Text _JsonText) {
-	declare Results = TextLib::Split("}{",_JsonText);
-	
-	//As ManiaScript has troubles parsing this type of JSON, we have to hack a bit
-	declare Pos = 0;
-	while(Pos<Results.count) {
-		declare R = Results[Pos];
-		if(R == "[" || R == "]" || R == ",") { declare Removed = Results.removekey(Pos); Pos-=1;}
-		else { Results[Pos] = "{"^Results[Pos]^"}"; }
-		Pos+=1;
-	}
-	
-	return Results;
-}
-
-Text[] Private_ParseJsonArraySearch(Text _JsonText) {
-	declare Results = Private_ParseJsonArray(_JsonText);
-	
-	declare Removed1 = Results.remove("""{"results":[}""");
-	declare Removed2 = Results.remove("{}");
-	declare Removed3 = Results.removekey(Results.count-1);
-	
-	return Results;
-}
-
 SMXTrack[] Search(Text _Site, SMXSearchFilter _Filter, Boolean _UseCache) {
 	declare SMXTrack[] Tracks;
 	
@@ -404,14 +379,7 @@ SMXTrack[] TrackMultiple(Text _Site, Integer[] _TrackIds, Boolean _UseCache) {
 	}
 	declare Result = Http::SyncGET_Result("""https://api.mania-exchange.com/{{{_Site}}}/maps/{{{TrackIdText}}}""", _UseCache);
 	
-	if(Result == "[]") return Tracks;
-	
-	foreach(R, Private_ParseJsonArray(Result)) {
-		declare SMXTrack Info;
-		declare JsonSuccess = Info.fromjson(R);
-		Tracks.add(Info);
-	}
-	
+	declare JsonSuccess = Tracks.fromjson(Result);	
 	return Tracks;
 }
 
@@ -422,9 +390,18 @@ SMXTrack Track(Text _Site, Integer _TrackId, Boolean _UseCache) {
 	return Info;
 }
 
-// Doesn't work, waiting for ManiaExchange fix
+// Doesn't work currently
 SMXMappack[] MappackMultiple(Text _Site, Integer[] _MappackIds, Text _Secret, Boolean _UseCache) {
 	declare SMXMappack[] Mappacks;
+	
+	declare Text MappackIdText;
+	for(i,0,_MappackIds.count-1) {
+		if(i!=0) MappackIdText ^= ",";
+		MappackIdText ^= _MappackIds[i]^"";
+	}
+	declare Result = Http::SyncGET_Result("""https://api.mania-exchange.com/{{{_Site}}}/mappacks/{{{MappackIdText}}}""", _UseCache);
+	
+	declare JsonSuccess = Mappacks.fromjson(Result);	
 	return Mappacks;
 }
 
@@ -453,14 +430,7 @@ SMXReplay[] TrackReplays(Text _Site, Integer _TrackId, Integer _Amount, Boolean 
 	
 	declare Result = Http::SyncGET_Result("""https://api.mania-exchange.com/{{{_Site}}}/replays/{{{_TrackId}}}/{{{_Amount}}}""", _UseCache);
 	
-	if(Result == "[]") return Replays;
-	
-	foreach(R, Private_ParseJsonArray(Result)) {
-		declare SMXReplay Info;
-		declare JsonSuccess = Info.fromjson(R);
-		Replays.add(Info);
-	}
-	
+	declare JsonSuccess = Replays.fromjson(Result);
 	return Replays;
 }
 
@@ -473,14 +443,7 @@ SMXEmbeddedObject[] TrackEmbeddedObjects(Text _Site, Integer _TrackId, Boolean _
 	
 	declare Result = Http::SyncGET_Result("""https://api.mania-exchange.com/{{{_Site}}}/tracks/embeddedobjects/{{{_TrackId}}}""", _UseCache);
 	
-	if(Result == "[]") return Objects;
-	
-	foreach(R, Private_ParseJsonArray(Result)) {
-		declare SMXEmbeddedObject Info;
-		declare JsonSuccess = Info.fromjson(R);
-		Objects.add(Info);
-	}
-	
+	declare JsonSuccess = Objects.fromjson(Result);
 	return Objects;
 }
 
