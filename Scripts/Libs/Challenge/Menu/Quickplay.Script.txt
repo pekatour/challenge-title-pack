@@ -127,6 +127,9 @@ Void Async() {
 		if(MX::IsAsyncRequestSuccessful("MX_SEARCH_UPDATE")) {
 			Layers::SendEvent("Quickplay", "MapList_MX_Update", [MX::GetAsyncSearchResult("MX_SEARCH_UPDATE").tojson()]);
 		}
+		else {
+			log("Can't load MX: " ^ MX::GetAsyncRequestStatusCode("MX_SEARCH_UPDATE"));
+		}
 		MX::DestroyAsyncRequest("MX_SEARCH_UPDATE");
 	}
 	

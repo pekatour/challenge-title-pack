@@ -245,12 +245,12 @@ Void AuthorizeInExternal(Text _ClientId, Text _Scopes, Text _RedirectUri) {
     Authorize(_ClientId, _Scopes, _RedirectUri, CManiaApp::ELinkType::ExternalBrowser);
 }
 
-Void Loop() {
-    if(Auth_Token.Value == "") {
-        declare Token = GetNewToken();
-        log("[Auth.Script.txt] First automatic token: "^Token.Value);
-    }
+Void Start() {
+	  declare Token = GetNewToken();
+    if(Auth_Token.Successful) log("[Auth.Script.txt] First automatic token: "^Auth_Token.Value);
+}
 
+Void Loop() {
     if(Auth_Token.Successful) {
         if(Now >= Auth_Token.EndTime + Auth_Token.Length) {
             declare Token = GetNewToken();
@@ -263,12 +263,15 @@ Void Loop() {
                 log("[Auth.Script.txt] Offline mode. Token not generated. Some features have been disabled.");
             }
             default: {
-                declare FirstRefresh = Time::Stamp_CreateOnce("Auth_Request_Refresh",5000);
-                if(Time::Stamp_Reached("Auth_Request_Refresh")) {
 
+                if(Time::Stamp_CreateOnce("Auth_Request_Refresh",5000)) {
+                    log("""[Auth.Script.txt] {{{Auth_Token.Response}}}. Token not generated. Some features have been disabled.""");
+                }
+                if(Time::Stamp_Reached("Auth_Request_Refresh")) {
+                    declare Token = GetNewToken();
+                    if(Auth_Token.Successful) log("[Auth.Script.txt] New automatic token: "^Token.Value);
                 }
             }
         }
-        
     }
 }
