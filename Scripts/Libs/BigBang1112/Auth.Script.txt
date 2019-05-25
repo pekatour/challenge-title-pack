@@ -41,13 +41,13 @@
 // All needed information about authentication token
 ///////////////////////////////////////////////////
 #Struct SAuthToken {
-    Text Value; // Token value
-    Integer Length;
-    Boolean Successful; // If token was received successfully
-    Boolean Verified; // If token was verified as valid
-    Integer Time; // How long the request took
-    Integer EndTime; // When request was finished
-    Text Response; // Short informational response
+	Text Value; // Token value
+	Integer Length;
+	Boolean Successful; // If token was received successfully
+	Boolean Verified; // If token was verified as valid
+	Integer Time; // How long the request took
+	Integer EndTime; // When request was finished
+	Text Response; // Short informational response
 }
 
 ///////////////////////////////////////////////////
@@ -56,9 +56,9 @@
 // Information about verified authentication
 ///////////////////////////////////////////////////
 #Struct SAuthVerification {
-    Text Login;
-    Boolean Successful;
-    Boolean Completed;
+	Text Login;
+	Boolean Successful;
+	Boolean Completed;
 }
 
 declare SAuthToken Auth_Token;
@@ -70,9 +70,9 @@ declare Text Auth_State;
 // Get headers used for authentication
 ///////////////////////////////////////////////////
 Text GetHeader() {
-    if(Auth_Token.Value == "")
-        return "";
-    return """Maniaplanet-Auth: Login="{{{LocalUser.Login}}}", Token="{{{Auth_Token.Value}}}" """;
+	if(Auth_Token.Value == "")
+		return "";
+	return """Maniaplanet-Auth: Login="{{{LocalUser.Login}}}", Token="{{{Auth_Token.Value}}}" """;
 }
 
 ///////////////////////////////////////////////////
@@ -81,44 +81,44 @@ Text GetHeader() {
 // Returns info about the new token
 ///////////////////////////////////////////////////
 SAuthToken GetNewToken() {
-    declare SAuthToken Token;
+	declare SAuthToken Token;
 
-    if(Internet::IsOffline()) {
-        Token.Response = C_Response_Offline;
-        return Token;
-    }
+	if(Internet::IsOffline()) {
+		Token.Response = C_Response_Offline;
+		return Token;
+	}
 
-    declare OldToken = Auth_Token;
+	declare OldToken = Auth_Token;
 
-    declare TimeStart = Now;
-    Time::Stamp_Create("Auth_Timeout",C_Auth_Timeout);
-    Authentication_GetToken(UserMgr.MainUser.Id, "");
+	declare TimeStart = Now;
+	Time::Stamp_Create("Auth_Timeout",C_Auth_Timeout);
+	Authentication_GetToken(UserMgr.MainUser.Id, "");
 
-    while(!Authentication_GetTokenResponseReceived) {
-        if(Time::Stamp_Reached("Auth_Timeout")) {
-            Token.Response = C_Response_Timeout;
-            return Token;
-        } else yield;
-    }
+	while(!Authentication_GetTokenResponseReceived) {
+		if(Time::Stamp_Reached("Auth_Timeout")) {
+			Token.Response = C_Response_Timeout;
+			return Token;
+		} else yield;
+	}
 
-    declare TimeEnd = Now;
+	declare TimeEnd = Now;
 
-    if(Authentication_ErrorCode == 0) {
-        Token.Value = Authentication_Token;
-        Token.Length = 2700000;
-        Token.Successful = True;
-        Token.Response = C_Response_Successful;
-        Token.Time = TimeEnd - TimeStart;
-        Token.EndTime = TimeEnd;
-    }
-    else {
-        Token.Response = C_Response_Error;
-        Token.Time = TimeEnd - TimeStart;
-        Token.EndTime = TimeEnd;
-    }
-    
-    Auth_Token = Token;
-    return Token;
+	if(Authentication_ErrorCode == 0) {
+		Token.Value = Authentication_Token;
+		Token.Length = 2700000;
+		Token.Successful = True;
+		Token.Response = C_Response_Successful;
+		Token.Time = TimeEnd - TimeStart;
+		Token.EndTime = TimeEnd;
+	}
+	else {
+		Token.Response = C_Response_Error;
+		Token.Time = TimeEnd - TimeStart;
+		Token.EndTime = TimeEnd;
+	}
+	
+	Auth_Token = Token;
+	return Token;
 }
 
 ///////////////////////////////////////////////////
@@ -127,7 +127,7 @@ SAuthToken GetNewToken() {
 // Returns info about the token
 ///////////////////////////////////////////////////
 SAuthToken GetToken() {
-    return Auth_Token;
+	return Auth_Token;
 }
 
 ///////////////////////////////////////////////////
@@ -138,20 +138,20 @@ SAuthToken GetToken() {
 // Returns verification info
 ///////////////////////////////////////////////////
 SAuthVerification Verify(SAuthToken _Token) {
-    declare SAuthVerification Verification;
+	declare SAuthVerification Verification;
 
-    declare Request = Http.CreateGet("https://www.maniaplanet.com/ingame/auth", False, GetHeader());
-    wait(Request.IsCompleted);
-    
-    if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
-        Verification.Login = TextLib::SubText(Request.Result, 10, TextLib::Length(Request.Result)-12);
-        Verification.Successful = True;
-        Verification.Completed = True;
-    }
+	declare Request = Http.CreateGet("https://www.maniaplanet.com/ingame/auth", False, GetHeader());
+	wait(Request.IsCompleted);
+	
+	if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
+		Verification.Login = TextLib::SubText(Request.Result, 10, TextLib::Length(Request.Result)-12);
+		Verification.Successful = True;
+		Verification.Completed = True;
+	}
 
 	Http.Destroy(Request);
-    
-    return Verification;
+	
+	return Verification;
 }
 
 ///////////////////////////////////////////////////
@@ -163,7 +163,7 @@ SAuthVerification Verify(SAuthToken _Token) {
 // Returns True if the request was submitted without problems, otherwise false.
 ///////////////////////////////////////////////////
 Boolean VerifyAsync(Text _RequestName, SAuthToken _Token) {
-    return Http::AsyncGET(_RequestName, "https://www.maniaplanet.com/ingame/auth", False, GetHeader());
+	return Http::AsyncGET(_RequestName, "https://www.maniaplanet.com/ingame/auth", False, GetHeader());
 }
 
 ///////////////////////////////////////////////////
@@ -174,24 +174,24 @@ Boolean VerifyAsync(Text _RequestName, SAuthToken _Token) {
 // Returns info about the verification process, can be completed or in progress.
 ///////////////////////////////////////////////////
 SAuthVerification GetAsyncVerification(Text _RequestName) {
-    declare SAuthVerification Verification;
+	declare SAuthVerification Verification;
 
-    if(Http::IsCompleted(_RequestName)) {
-        declare Request = Http::Get(_RequestName);
-        Verification.Login = TextLib::SubText(Request.Result, 10, TextLib::Length(Request.Result)-12);
-        Verification.Successful = True;
-        Verification.Completed = True;
-        Http::Destroy(_RequestName);
-    }
-    else {
-        Verification.Completed = False;
-    }
+	if(Http::IsCompleted(_RequestName)) {
+		declare Request = Http::Get(_RequestName);
+		Verification.Login = TextLib::SubText(Request.Result, 10, TextLib::Length(Request.Result)-12);
+		Verification.Successful = True;
+		Verification.Completed = True;
+		Http::Destroy(_RequestName);
+	}
+	else {
+		Verification.Completed = False;
+	}
 
-    return Verification;
+	return Verification;
 }
 
 Void Private_GenerateStateIfNone() {
-    if(Auth_State == "") Auth_State = Random::String(32);
+	if(Auth_State == "") Auth_State = Random::String(32);
 }
 
 ///////////////////////////////////////////////////
@@ -200,7 +200,7 @@ Void Private_GenerateStateIfNone() {
 // Returns state value curretly associated with the user
 ///////////////////////////////////////////////////
 Text GetState() {
-    return Auth_State;
+	return Auth_State;
 }
 
 ///////////////////////////////////////////////////
@@ -214,9 +214,9 @@ Text GetState() {
 // CManiaApp::ELinkType _LinkType
 ///////////////////////////////////////////////////
 Void Authorize(Text _ClientId, Text _Scopes, Text _RedirectUri, CManiaApp::ELinkType _LinkType) {
-    declare Uri = TextLib::URLEncode(_RedirectUri);
-    Private_GenerateStateIfNone();
-    OpenLink("https://v4.live.maniaplanet.com/login/oauth2/authorize?response_type=code&scope="^_Scopes^"&state="^Auth_State^"&client_id="^_ClientId^"&redirect_uri="^Uri, _LinkType);
+	declare Uri = TextLib::URLEncode(_RedirectUri);
+	Private_GenerateStateIfNone();
+	OpenLink("https://v4.live.maniaplanet.com/login/oauth2/authorize?response_type=code&scope="^_Scopes^"&state="^Auth_State^"&client_id="^_ClientId^"&redirect_uri="^Uri, _LinkType);
 }
 
 ///////////////////////////////////////////////////
@@ -229,7 +229,7 @@ Void Authorize(Text _ClientId, Text _Scopes, Text _RedirectUri, CManiaApp::ELink
 // Text _RedirectUri
 ///////////////////////////////////////////////////
 Void AuthorizeInManialink(Text _ClientId, Text _Scopes, Text _RedirectUri) {
-    Authorize(_ClientId, _Scopes, _RedirectUri, CManiaApp::ELinkType::ManialinkBrowser);
+	Authorize(_ClientId, _Scopes, _RedirectUri, CManiaApp::ELinkType::ManialinkBrowser);
 }
 
 ///////////////////////////////////////////////////
@@ -242,36 +242,36 @@ Void AuthorizeInManialink(Text _ClientId, Text _Scopes, Text _RedirectUri) {
 // Text _RedirectUri
 ///////////////////////////////////////////////////
 Void AuthorizeInExternal(Text _ClientId, Text _Scopes, Text _RedirectUri) {
-    Authorize(_ClientId, _Scopes, _RedirectUri, CManiaApp::ELinkType::ExternalBrowser);
+	Authorize(_ClientId, _Scopes, _RedirectUri, CManiaApp::ELinkType::ExternalBrowser);
 }
 
 Void Start() {
 	  declare Token = GetNewToken();
-    if(Auth_Token.Successful) log("[Auth.Script.txt] First automatic token: "^Auth_Token.Value);
+	if(Auth_Token.Successful) log("[Auth.Script.txt] First automatic token: "^Auth_Token.Value);
 }
 
 Void Loop() {
-    if(Auth_Token.Successful) {
-        if(Now >= Auth_Token.EndTime + Auth_Token.Length) {
-            declare Token = GetNewToken();
-            log("[Auth.Script.txt] New automatic token: "^Token.Value);
-        }
-    }
-    else {
-        switch(Auth_Token.Response) {
-            case C_Response_Offline: {
-                log("[Auth.Script.txt] Offline mode. Token not generated. Some features have been disabled.");
-            }
-            default: {
+	if(Auth_Token.Successful) {
+		if(Now >= Auth_Token.EndTime + Auth_Token.Length) {
+			declare Token = GetNewToken();
+			log("[Auth.Script.txt] New automatic token: "^Token.Value);
+		}
+	}
+	else {
+		switch(Auth_Token.Response) {
+			case C_Response_Offline: {
+				log("[Auth.Script.txt] Offline mode. Token not generated. Some features have been disabled.");
+			}
+			default: {
 
-                if(Time::Stamp_CreateOnce("Auth_Request_Refresh",5000)) {
-                    log("""[Auth.Script.txt] {{{Auth_Token.Response}}}. Token not generated. Some features have been disabled.""");
-                }
-                if(Time::Stamp_Reached("Auth_Request_Refresh")) {
-                    declare Token = GetNewToken();
-                    if(Auth_Token.Successful) log("[Auth.Script.txt] New automatic token: "^Token.Value);
-                }
-            }
-        }
-    }
+				if(Time::Stamp_CreateOnce("Auth_Request_Refresh",5000)) {
+					log("""[Auth.Script.txt] {{{Auth_Token.Response}}}. Token not generated. Some features have been disabled.""");
+				}
+				if(Time::Stamp_Reached("Auth_Request_Refresh")) {
+					declare Token = GetNewToken();
+					if(Auth_Token.Successful) log("[Auth.Script.txt] New automatic token: "^Token.Value);
+				}
+			}
+		}
+	}
 }
