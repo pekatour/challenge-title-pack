@@ -111,11 +111,15 @@ SAuthToken GetNewToken() {
 		Token.Time = TimeEnd - TimeStart;
 		Token.EndTime = TimeEnd;
 	}
+	else if(Authentication_ErrorCode == 10006) {
+		Token.Response = C_Response_Offline;
+	}
 	else {
 		Token.Response = C_Response_Error;
-		Token.Time = TimeEnd - TimeStart;
-		Token.EndTime = TimeEnd;
 	}
+	
+	Token.Time = TimeEnd - TimeStart;
+	Token.EndTime = TimeEnd;
 	
 	Auth_Token = Token;
 	return Token;
@@ -258,20 +262,12 @@ Void Loop() {
 		}
 	}
 	else {
-		switch(Auth_Token.Response) {
-			case C_Response_Offline: {
-				log("[Auth.Script.txt] Offline mode. Token not generated. Some features have been disabled.");
-			}
-			default: {
-
-				if(Time::Stamp_CreateOnce("Auth_Request_Refresh",5000)) {
-					log("""[Auth.Script.txt] {{{Auth_Token.Response}}}. Token not generated. Some features have been disabled.""");
-				}
-				if(Time::Stamp_Reached("Auth_Request_Refresh")) {
-					declare Token = GetNewToken();
-					if(Auth_Token.Successful) log("[Auth.Script.txt] New automatic token: "^Token.Value);
-				}
-			}
+		if(Time::Stamp_CreateOnce("Auth_Request_Refresh",5000)) {
+			log("""[Auth.Script.txt] {{{Auth_Token.Response}}}. Token not generated. Some features have been disabled.""");
+		}
+		if(Time::Stamp_Reached("Auth_Request_Refresh")) {
+			declare Token = GetNewToken();
+			if(Auth_Token.Successful) log("[Auth.Script.txt] New automatic token: "^Token.Value);
 		}
 	}
 }
