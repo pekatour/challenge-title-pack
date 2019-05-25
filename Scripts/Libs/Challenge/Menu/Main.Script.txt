@@ -1,0 +1,32 @@
+#Include "Libs/BigBang1112/Layers.Script.txt" as Layers
+#Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
+
+Void Start() {
+	Layers::Create("Menu", Manialink::FromFile("Media/Manialinks/Menu"), True);
+}
+
+Void Event(CManiaAppEvent _Event) {
+	declare Event <=> _Event;
+
+	if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
+		switch(Event.CustomEventType) {
+			case "Button_Exit": {
+				Menu_Quit();
+			}
+			case "Button_CreateChallenge": {
+				Layers::Show("Editor");
+				Layers::Hide("Menu");
+				Layers::Hide("Quickplay");
+				Layers::Hide("Top");
+			}
+		}
+	}
+}
+
+Void Async() {
+	
+}
+
+Void Loop() {
+
+}

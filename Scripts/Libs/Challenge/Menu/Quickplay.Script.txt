@@ -4,6 +4,7 @@
 #Include "Libs/BigBang1112/Task.Script.txt" as Task
 #Include "Libs/BigBang1112/Data.Script.txt" as Data
 #Include "Libs/BigBang1112/Layers.Script.txt" as Layers
+#Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
 
 #Struct SMapInfo {
 	Text Name;
@@ -44,6 +45,8 @@ Void StartMap(Text _MapLocation, SMapInfo _MapInfo, Text _ScriptLocation, Text _
 }
 
 Void Start() {
+	Layers::Create("Quickplay", Manialink::FromFile("Media/Manialinks/Quickplay"), True);
+
 	declare OfficialScripts = [
 		"Checkpointless.Script.txt",
 		"Reverse.Script.txt",
@@ -162,4 +165,8 @@ Void Async() {
 			Task::Destroy_DataFileMgr("MAPLIST_LOCAL_FOLDER");
 		}
 	}
+}
+
+Void Loop() {
+	
 }

@@ -1,0 +1,39 @@
+#Include "Libs/BigBang1112/Layers.Script.txt" as Layers
+#Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
+#Include "Libs/BigBang1112/File.Script.txt" as File
+
+Void Start() {
+	Layers::Create("Editor", Manialink::FromFile("Media/Manialinks/Editor"));
+
+	Layers::SendEvent("Editor", "Code_SetText", [File::Read("Media/Challenges/Default.Script.txt")]);
+}
+
+Void Event(CManiaAppEvent _Event) {
+	declare Event <=> _Event;
+
+	if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
+		switch(Event.CustomEventType) {
+			case "Test": {
+				if(TitleFlow.IsReady)
+				TitleFlow.EditMap("A01.Map.Gbx", "Modifier.Script.txt","""<settings>
+	<setting name="S_Build" type="boolean" value="True"/>
+	<setting name="S_ScriptType" type="text" value="Test"/>
+	</settings>""");
+			}
+			case "Button_CreateChallenge_Back": {
+				Layers::Show("Menu");
+				Layers::Show("Quickplay");
+				Layers::Show("Top");
+				Layers::Hide("Editor");
+			}
+		}
+	}
+}
+
+Void Async() {
+
+}
+
+Void Loop() {
+	
+}
