@@ -67,16 +67,14 @@ CTaskResult_StringIntList SyncStringIntList(CTaskResult_StringIntList _Task) {
 	wait(!_Task.IsProcessing); return _Task;
 }
 
-Boolean Async_DataFileMgr(Text _Name, CTaskResult _Task) {
+Void Async_DataFileMgr(Text _Name, CTaskResult _Task) {
 	if(G_AsyncRequests.existskey(_Name)) DataFileMgr.TaskResult_Release(G_AsyncRequests[_Name].Id);
 	G_AsyncRequests[_Name] = _Task;
-	return True;
 }
 
-Boolean Async_ScoreMgr(Text _Name, CTaskResult _Task) {
+Void Async_ScoreMgr(Text _Name, CTaskResult _Task) {
 	if(G_AsyncRequests.existskey(_Name)) ScoreMgr.TaskResult_Release(G_AsyncRequests[_Name].Id);
 	G_AsyncRequests[_Name] = _Task;
-	return True;
 }
 
 CTaskResult Get(Text _Name) {

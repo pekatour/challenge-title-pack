@@ -22,7 +22,7 @@ Void Watch_Create(Text _WatchName) {
 }
 
 Void Watch_Remove(Text _WatchName) {
-	Watches.removekey(_WatchName);
+	declare Removed = Watches.removekey(_WatchName);
 }
 
 Boolean Watch_Start(Text _WatchName) {

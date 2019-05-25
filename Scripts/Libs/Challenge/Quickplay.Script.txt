@@ -77,7 +77,7 @@ Void Event(CManiaAppEvent _Event) {
 				}
 				if(MapLocation == "Local") {
 					declare SMapInfo MapInfo;
-					MapInfo.fromjson(Event.CustomEventData[1]);
+					declare JsonSuccess = MapInfo.fromjson(Event.CustomEventData[1]);
 					declare ScriptLocation = Event.CustomEventData[2];
 					declare Script = Event.CustomEventData[3];
 					StartMap(MapLocation, MapInfo, ScriptLocation, Script);
