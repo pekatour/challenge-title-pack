@@ -444,7 +444,19 @@ Boolean IsSuccessful(Text _Name) {
 	Returns status code number of a completed request, or 0 if the request is not completed or does not exist.
 */
 Integer GetStatusCode(Text _Name) {
-	if(!G_Requests.existskey(_Name)) return 0;
-	if(!Get(_Name).IsCompleted) return 0;
+	if(!IsCompleted(_Name)) return 0;
 	return Get(_Name).StatusCode;
+}
+
+/*
+	Text GetResult(Text _Name)
+	Gets result of the asynchronous request.
+
+	Text _Name - Identification name
+
+	Returns result of a completed request, or nothing if the request is not completed or does not exist.
+*/
+Text GetResult(Text _Name) {
+	if(!IsCompleted(_Name)) return "";
+	return Get(_Name).Result;
 }
