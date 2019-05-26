@@ -1,0 +1,162 @@
+#Include "MathLib" as MathLib
+#Include "TextLib" as TextLib
+#Include "AnimLib" as AnimLib
+
+Text TimeToTextWithMilli(Integer _Time) {
+	return TextLib::TimeToText(_Time, True)^TextLib::SubText(""^_Time, TextLib::Length(""^_Time)-1, 1);
+}
+
+main() {
+	declare Integer PlayerTime;
+
+	declare CTmMlPlayer::ERaceState PreviousRaceState;
+	declare Boolean PreviousBrakeState;
+
+	declare Frame_Speed <=> (Page.GetFirstChild("FRAME_SPEED") as CMlFrame);
+
+	declare Label_Time <=> (Page.GetFirstChild("LABEL_TIME") as CMlLabel);
+	declare Label_Speed <=> (Page.GetFirstChild("LABEL_SPEED") as CMlLabel);
+	declare Gauge_RPM <=> (Page.GetFirstChild("GAUGE_RPM") as CMlGauge);
+	declare Quad_Steer_Left <=> (Page.GetFirstChild("QUAD_STEER_LEFT") as CMlQuad);
+	declare Quad_Steer_Right <=> (Page.GetFirstChild("QUAD_STEER_RIGHT") as CMlQuad);
+	declare Quad_Brake <=> (Page.GetFirstChild("QUAD_BRAKE") as CMlQuad);
+
+	declare Label_CP_Start = (Page.GetFirstChild("LABEL_CP_START") as CMlLabel);
+	declare Label_CP_Blue = (Page.GetFirstChild("LABEL_CP_BLUE") as CMlLabel);
+	declare Label_CP_Red = (Page.GetFirstChild("LABEL_CP_RED") as CMlLabel);
+	declare Label_CP_Purple = (Page.GetFirstChild("LABEL_CP_PURPLE") as CMlLabel);
+	declare Quad_CP_Blue = (Page.GetFirstChild("QUAD_CP_BLUE") as CMlQuad);
+	declare Quad_CP_Red = (Page.GetFirstChild("QUAD_CP_RED") as CMlQuad);
+	declare Quad_CP_Purple = (Page.GetFirstChild("QUAD_CP_PURPLE") as CMlQuad);
+
+	declare Integer TimeResetRaceTime;
+	declare Integer TimeResetStamp;
+	declare Integer TimeResetLength = 500;
+
+	while(True) {
+		if(GUIPlayer != Null) {
+			declare RpmRatio = MathLib::Clamp(GUIPlayer.EngineRpm/10000,0.,1.);
+		
+			switch(GUIPlayer.RaceState) {
+				case CTmMlPlayer::ERaceState::BeforeStart: {
+					if(PreviousRaceState == CTmMlPlayer::ERaceState::Running) {
+						TimeResetRaceTime = PlayerTime;
+						TimeResetStamp = Now;
+
+						PreviousRaceState = CTmMlPlayer::ERaceState::BeforeStart;
+					}
+					
+					PlayerTime = MathLib::NearestInteger(AnimLib::EaseOutQuad(Now - TimeResetStamp, TimeResetRaceTime+.0, -TimeResetRaceTime+.0, TimeResetLength));
+				}
+				case CTmMlPlayer::ERaceState::Running: {
+					if(PreviousRaceState == CTmMlPlayer::ERaceState::BeforeStart) {
+						Label_Time.RelativeScale = 1.25;
+						AnimMgr.Add(Label_Time, "<label scale=\"1\"/>", 200, CAnimManager::EAnimManagerEasing::QuadOut);
+
+						PreviousRaceState = CTmMlPlayer::ERaceState::Running;
+					}
+
+					PlayerTime = MathLib::Max(0, GameTime - GUIPlayer.RaceStartTime);
+				}
+				case CTmMlPlayer::ERaceState::Finished: {
+					
+				}
+			}
+
+			Label_Time.SetText(TimeToTextWithMilli(PlayerTime));
+			Label_Speed.SetText(""^GUIPlayer.DisplaySpeed);
+			Label_Speed.RelativeScale = RpmRatio*.2+0.9;
+			Gauge_RPM.Ratio = RpmRatio;
+			Gauge_RPM.RelativeScale = GUIPlayer.EngineTurboRatio*.25+1;
+
+			Quad_Steer_Left.Size.X = MathLib::Clamp(-GUIPlayer.InputSteer,0.,1.)*28;
+			Quad_Steer_Right.Size.X = MathLib::Clamp(GUIPlayer.InputSteer,0.,1.)*28;
+
+			// If player started or stopped braking
+			if(GUIPlayer.InputIsBraking != PreviousBrakeState) {
+				if(GUIPlayer.InputIsBraking) {
+					AnimMgr.Add(Quad_Brake, "<quad opacity=\"1\"/>", 100, CAnimManager::EAnimManagerEasing::QuadOut);
+				}
+				else {
+					AnimMgr.Add(Quad_Brake, "<quad opacity=\"0\"/>", 100, CAnimManager::EAnimManagerEasing::QuadOut);
+				}
+				PreviousBrakeState = GUIPlayer.InputIsBraking;
+			}
+		}
+
+		foreach(Event,RaceEvents) {
+			switch(Event.Type) {
+				case CTmRaceClientEvent::EType::WayPoint: {
+					if(Event.IsEndRace) {
+						PlayerTime = Event.RaceTime;
+					}
+					else if(Event.IsEndLap) {
+
+					}
+					else {
+						if(Event.Player.Score.BestRace.Checkpoints.count == 0) {
+							Label_CP_Start.SetText(TimeToTextWithMilli(Event.RaceTime));
+							Label_CP_Start.Show();
+
+							Label_CP_Red.Hide();
+							Quad_CP_Red.Hide();
+							Label_CP_Blue.Hide();
+							Quad_CP_Blue.Hide();
+							Label_CP_Purple.Hide();
+							Quad_CP_Purple.Hide();
+						}
+						else {
+							declare Difference = Event.RaceTime - Event.Player.Score.BestRace.Checkpoints[Event.CheckpointInRace];
+
+							if(Difference > 0) {
+								Label_CP_Red.Show();
+								Label_CP_Red.SetText(TimeToTextWithMilli(Difference));
+								Quad_CP_Red.Show();
+
+								Label_CP_Blue.Hide();
+								Quad_CP_Blue.Hide();
+								Label_CP_Purple.Hide();
+								Quad_CP_Purple.Hide();
+							}
+							else if(Difference < 0) {
+								Label_CP_Blue.Show();
+								Label_CP_Blue.SetText(TimeToTextWithMilli(Difference));
+								Quad_CP_Blue.Show();
+
+								Label_CP_Red.Hide();
+								Quad_CP_Red.Hide();
+								Label_CP_Purple.Hide();
+								Quad_CP_Purple.Hide();
+							}
+							else {
+								Label_CP_Purple.Show();
+								Label_CP_Purple.SetText(TimeToTextWithMilli(Difference));
+								Quad_CP_Purple.Show();
+
+								Label_CP_Red.Hide();
+								Quad_CP_Red.Hide();
+								Label_CP_Blue.Hide();
+								Quad_CP_Blue.Hide();
+							}
+
+							Label_CP_Start.Hide();
+						}
+					}
+				}
+				case CTmRaceClientEvent::EType::Respawn: {
+					Label_CP_Start.SetText(TimeToTextWithMilli(0));
+					Label_CP_Start.Show();
+
+					Label_CP_Blue.Hide();
+					Label_CP_Red.Hide();
+					Label_CP_Purple.Hide();
+					Quad_CP_Blue.Hide();
+					Quad_CP_Red.Hide();
+					Quad_CP_Purple.Hide();
+				}
+			}
+		}
+		
+		yield;
+	}
+}

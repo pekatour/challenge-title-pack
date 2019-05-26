@@ -1,0 +1,10 @@
+#RequireContext CManiaAppPlayground
+
+#Include "Libs/BigBang1112/Layers.Script.txt" as Layers
+#Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
+
+Layers::Create("Ingame", Manialink::FromFile("Media/Manialinks/SoloIngame"), True);
+
+while(True) {
+	yield;
+}

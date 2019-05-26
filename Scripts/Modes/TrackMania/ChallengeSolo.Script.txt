@@ -1,0 +1,38 @@
+#RequireContext CTmMode
+
+RequestLoadMap();
+
+UIManager.UIAll.OverlayHideCheckPointList = True;
+UIManager.UIAll.OverlayHideSpeedAndDist = True;
+UIManager.UIAll.OverlayHidePersonnalBestAndRank = True;
+UIManager.UIAll.OverlayHideChrono = True;
+
+ClientManiaAppUrl = "file://Media/ManiaApps/ChallengeSoloClient.Script.txt";
+
+while(True) {
+	foreach(Player,PlayersWaiting) {
+		Player.RaceStartTime = Now+3000;
+		Player.IsSpawned = True;
+	}
+	
+	foreach(Player,Players) {
+		
+	}
+	
+	foreach(Event,PendingEvents) {
+		switch(Event.Type) {
+			case CTmModeEvent ::EType::WayPoint: {
+				if(Event.IsEndRace) {
+					Event.Player.Score.BestRace = Event.Player.CurRace;
+				}
+				else if(Event.IsEndLap) {
+				
+				}
+				else {
+					
+				}
+			}
+		}
+	}
+	yield;
+}

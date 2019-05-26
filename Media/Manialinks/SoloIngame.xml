@@ -1,0 +1,46 @@
+<frame>
+	<frame pos="0 -75" id="FRAME_TIME" clip="True" clipsizen="60 20">
+		<quad z-index="0" size="60 15" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgCardList"/>
+		<quad z-index="1" size="60 15" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgGradV"/>
+		<label pos="0 -0.5" z-index="2" size="50 10" text="0:00.000" halign="center" valign="center2" textfont="RajdhaniMono" textsize="8" textcolor="F00" scale="1.05" hidden="1" id="LABEL_TIME_RED"/>
+		<label pos="0 -0.5" z-index="2" size="50 10" text="0:00.000" halign="center" valign="center2" textfont="RajdhaniMono" textsize="8" textcolor="00F" scale="1.05" hidden="1" id="LABEL_TIME_BLUE"/>
+		<label pos="0 -0.5" z-index="3" size="50 10" text="0:00.000" halign="center" valign="center2" textfont="RajdhaniMono" textsize="8" id="LABEL_TIME"/>
+		<quad pos="0 7.5" z-index="0" size="29 0.5" bgcolor="FFFA" halign="right" valign="bottom" id="QUAD_STEER_LEFT"/>
+		<quad pos="0 7.5" z-index="0" size="29 0.5" bgcolor="FFFA" halign="left" valign="bottom" id="QUAD_STEER_RIGHT"/>
+		<quad pos="0 -7.5" z-index="1" size="58 1" halign="center" valign="bottom" id="QUAD_BRAKE" opacity="0" style="Bgs1InRace" substyle="BgMetalBar" colorize="F00"/>
+	</frame>
+	<frame pos="-45 -77.5" id="FRAME_CHECKPOINT" clip="True" clipsizen="30 15">
+		<quad z-index="0" size="30 10" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgCardList"/>
+		<quad z-index="1" size="30 10" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgGradV"/>
+		
+		<label pos="0 -0.4" z-index="3" size="20 5" text="0:00.000" halign="center" valign="center2" textfont="RajdhaniMono" textsize="3" opacity=".75" id="LABEL_CP_START"/>
+		
+		<label pos="0 -0.4" z-index="3" size="20 5" text="0:00.000" halign="center" valign="center2" textfont="RajdhaniMono" textsize="3" textcolor="6BF" opacity=".75" hidden="1" id="LABEL_CP_BLUE"/>
+		<quad z-index="2" size="30 20" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="ProgressBarSmall" opacity=".5" hidden="1" id="QUAD_CP_BLUE"/>
+		
+		<label pos="0 -0.4" z-index="3" size="20 5" text="0:00.000" halign="center" valign="center2" textfont="RajdhaniMono" textsize="3" textcolor="D00" opacity=".75" hidden="1" id="LABEL_CP_RED"/>
+		<quad z-index="2" size="30 20" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="ProgressBarSmall" opacity="1" hidden="1" colorize="F00" id="QUAD_CP_RED"/>
+		
+		<label pos="0 -0.4" z-index="3" size="20 5" text="0:00.000" halign="center" valign="center2" textfont="RajdhaniMono" textsize="3" textcolor="D0F" opacity=".75" hidden="1" id="LABEL_CP_PURPLE"/>
+		<quad z-index="2" size="30 20" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="ProgressBarSmall" opacity="1" hidden="1" colorize="F0F" id="QUAD_CP_PURPLE"/>
+	</frame>
+	<frame pos="45 -77.5" id="FRAME_SPEED" clipsizen="30 15">
+		<quad z-index="0" size="30 10" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgCardList"/>
+		<quad z-index="1" size="30 10" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgGradV"/>
+		<label pos="0 0.5" z-index="3" size="25 5" text="123" halign="center" valign="center2" textfont="RajdhaniMono" textsize="3" id="LABEL_SPEED"/>
+		<gauge pos="0 -3" z-index="1" size="28 6.5" style="EnergyBar" halign="center" drawbg="0" valign="center" id="GAUGE_RPM" centered="1"/>
+	</frame>
+	<frame pos="145 75">
+		<quad z-index="0" size="15 15" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgCardList"/>
+		<quad z-index="1" size="15 15" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgGradV"/>
+		<quad z-index="2" size="15 15" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgCardInventoryItem" scriptevents="1" colorize="063" opacity=".75"/>
+		<quad z-index="3" size="10 10" bgcolor="FFFA" valign="center" halign="center" image="file://Media/Images/SpotifyWhite.png"/>
+	</frame>
+
+	<frame pos="145 -75">
+		<quad z-index="0" size="15 15" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgCardList"/>
+		<quad z-index="1" size="15 15" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgGradV"/>
+		<quad z-index="2" size="10 10" bgcolor="FFFA" valign="center" halign="center" style="Icons64x64_1" substyle="TrackInfo"/>
+		<quad z-index="2" size="15 15" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgCardInventoryItem" scriptevents="1" colorize="036" opacity=".75"/>
+	</frame>
+</frame>
