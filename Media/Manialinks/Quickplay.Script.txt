@@ -304,7 +304,7 @@ Void UpdateScriptList(Integer _Offset) {
 		if(Folders.count > 0) (Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).SetText("OFFICIAL / " ^ Folders[Folders.count-1]);
 	}
 	else if(SelectedScripts.count > 1) {
-		(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).SetText("OFFICIAL / $imultiple scripts...");
+		(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).SetText("""OFFICIAL / $i$o{{{SelectedScripts.count}}} scripts""");
 	}
 }
 
