@@ -20,6 +20,7 @@ main() {
 	declare Quad_Steer_Left <=> (Page.GetFirstChild("QUAD_STEER_LEFT") as CMlQuad);
 	declare Quad_Steer_Right <=> (Page.GetFirstChild("QUAD_STEER_RIGHT") as CMlQuad);
 	declare Quad_Brake <=> (Page.GetFirstChild("QUAD_BRAKE") as CMlQuad);
+	declare Label_Gear <=> (Page.GetFirstChild("LABEL_GEAR") as CMlLabel);
 
 	declare Label_CP_Start = (Page.GetFirstChild("LABEL_CP_START") as CMlLabel);
 	declare Label_CP_Blue = (Page.GetFirstChild("LABEL_CP_BLUE") as CMlLabel);
@@ -68,6 +69,7 @@ main() {
 			Label_Speed.RelativeScale = RpmRatio*.2+0.9;
 			Gauge_RPM.Ratio = RpmRatio;
 			Gauge_RPM.RelativeScale = GUIPlayer.EngineTurboRatio*.25+1;
+			Label_Gear.SetText(""^GUIPlayer.EngineCurGear);
 
 			Quad_Steer_Left.Size.X = MathLib::Clamp(-GUIPlayer.InputSteer,0.,1.)*28;
 			Quad_Steer_Right.Size.X = MathLib::Clamp(GUIPlayer.InputSteer,0.,1.)*28;
