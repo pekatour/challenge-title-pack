@@ -35,7 +35,7 @@
 	</editor>
 	<solo>
 		<!-- either campaign or playlist-->
-		<mode name="Modes\TrackMania\Challenge.Script.txt"/>
+		<mode name="Modes\TrackMania\ChallengeSolo.Script.txt"/>
 		<datapack name=""/>
 		<default_maprecord_type>-1</default_maprecord_type>
 		<score_context>
