@@ -269,19 +269,19 @@ Void UpdateScriptList(Integer _Offset) {
 				(Frame.GetFirstChild("QUAD_SELECTOR_SCRIPT") as CMlQuad).Substyle = "BgCard";
 
 				if(IsMultipleScript()) {
-					Label.RelativePosition_V3.X = 10.0;
+					AnimMgr.Add(Label, "<label pos=\"10 0\"/>", 100, CAnimManager::EAnimManagerEasing::QuadOut);
 					FrameCounter.Show();
 					LabelCounter.SetText((SelectedScripts.keyof(Script)+1)^"");
 				}
 				else {
-					Label.RelativePosition_V3.X = 5.0;
+					AnimMgr.Add(Label, "<label pos=\"5 0\"/>", 100, CAnimManager::EAnimManagerEasing::QuadOut);
 					FrameCounter.Hide();
 				}
 			}
 			else {
 				(Frame.GetFirstChild("QUAD_SELECTOR_SCRIPT") as CMlQuad).Substyle = "BgCardInventoryItem";
 
-				Label.RelativePosition_V3.X = 5.0;
+				AnimMgr.Add(Label, "<label pos=\"5 0\"/>", 100, CAnimManager::EAnimManagerEasing::QuadOut);
 				FrameCounter.Hide();
 			}
 			//VisibleMapInfos.add(MapInfo);
@@ -304,7 +304,7 @@ Void UpdateScriptList(Integer _Offset) {
 		if(Folders.count > 0) (Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).SetText("OFFICIAL / " ^ Folders[Folders.count-1]);
 	}
 	else if(SelectedScripts.count > 1) {
-		(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).SetText("""OFFICIAL / $i$o{{{SelectedScripts.count}}} scripts""");
+		(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).SetText("""$o{{{SelectedScripts.count}}} scripts""");
 	}
 }
 
