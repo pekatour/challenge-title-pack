@@ -1,14 +1,11 @@
 #RequireContext CMapEditorPluginLayer
 
 #Include "MathLib" as MathLib
+#Include "TextLib" as TextLib
 
 #Struct SResponse {
     Text Name;
     Text[] Values;
-}
-
-#Struct SChBlockModel {
-    
 }
 
 #Struct SChBlock {
@@ -32,137 +29,22 @@
     Text Name;
 }
 
+// konec základu základů
+
+// vlastní kód i se strukturami
+
+***Metadata***
+***
+Script_Name = "Checkpointless";
+Script_AuthorLogin = "bigbang1112";
+Script_Description = "Remove all checkpoints and keep the holes.";
+***
+
+// konec vlastního kódu
+
 declare Text Script_Name;
 declare Text Script_AuthorLogin;
 declare Text Script_Description;
-
-//
-/* Conversion functions */
-//
-
-Text MapDirectionToText(CMapEditorPlugin::CardinalDirections _Direction) {
-    switch(_Direction) {
-        case CMapEditorPlugin::CardinalDirections::North: {
-            return "North";
-        }
-        case CMapEditorPlugin::CardinalDirections::South: {
-            return "South";
-        }
-        case CMapEditorPlugin::CardinalDirections::West: {
-            return "West";
-        }
-        case CMapEditorPlugin::CardinalDirections::East: {
-            return "East";
-        }
-    }
-    
-    return "";
-}
-
-Text BlockDirectionToText(CBlock::CardinalDirections _Direction) {
-    switch(_Direction) {
-        case CBlock::CardinalDirections::North: {
-            return "North";
-        }
-        case CBlock::CardinalDirections::South: {
-            return "South";
-        }
-        case CBlock::CardinalDirections::West: {
-            return "West";
-        }
-        case CBlock::CardinalDirections::East: {
-            return "East";
-        }
-    }
-    
-    return "";
-}
-
-CMapEditorPlugin::CardinalDirections TextToMapDirection(Text _Text) {
-    switch(_Text) {
-        case "North": {
-            return CMapEditorPlugin::CardinalDirections::North;
-        }
-        case "South": {
-            return CMapEditorPlugin::CardinalDirections::South;
-        }
-        case "West": {
-            return CMapEditorPlugin::CardinalDirections::West;
-        }
-        case "East": {
-            return CMapEditorPlugin::CardinalDirections::East;
-        }
-    }
-    
-    return CMapEditorPlugin::CardinalDirections::North;
-}
-
-CBlock::CardinalDirections TextToBlockDirection(Text _Text) {
-    switch(_Text) {
-        case "North": {
-            return CBlock::CardinalDirections::North;
-        }
-        case "South": {
-            return CBlock::CardinalDirections::South;
-        }
-        case "West": {
-            return CBlock::CardinalDirections::West;
-        }
-        case "East": {
-            return CBlock::CardinalDirections::East;
-        }
-    }
-    
-    return CBlock::CardinalDirections::North;
-}
-
-CBlock::CardinalDirections MapDirectionToBlockDirection(CMapEditorPlugin::CardinalDirections _Direction) {
-    return TextToBlockDirection(_Direction);
-}
-
-CMapEditorPlugin::CardinalDirections BlockDirectionToMapDirection(CBlock::CardinalDirections _Direction) {
-    return TextToMapDirection(BlockDirectionToText(_Direction));
-}
-
-SBlockModelInfo ToSBlockModelInfo(CBlockModel _BlockModel) {
-    declare SBlockModelInfo Info;
-    Info.Name = _BlockModel.Name;  
-    Info.IsRoad = _BlockModel.IsRoad; 
-    Info.IsTerrain = _BlockModel.IsTerrain; 
-    
-    switch(_BlockModel.WaypointType) {
-        case CBlockModel::EWayPointType::Start: { Info.WaypointType = "Start"; }
-        case CBlockModel::EWayPointType::Finish: { Info.WaypointType = "Finish"; }
-        case CBlockModel::EWayPointType::Checkpoint: { Info.WaypointType = "Checkpoint"; }
-        case CBlockModel::EWayPointType::None: { Info.WaypointType = "None"; }
-        case CBlockModel::EWayPointType::StartFinish: { Info.WaypointType = "StartFinish"; }
-        case CBlockModel::EWayPointType::Dispenser: { Info.WaypointType = "Dispenser"; }
-    }
-    
-    Info.NoRespawn = _BlockModel.NoRespawn;
-    return Info;
-}
-
-SBlockInfo ToSBlockInfo(CBlock _Block) {
-    declare SBlockInfo Info;
-    Info.BlockScriptId = _Block.BlockScriptId;
-    Info.Coord = _Block.Coord;
-    Info.Direction = BlockDirectionToText(_Block.Direction);
-    Info.BlockModel = ToSBlockModelInfo(_Block.BlockModel);
-    return Info;
-}
-
-SMacroblockModelInfo ToSMacroblockModelInfo(CMacroblockModel _MacroblockModel) {
-    declare SMacroblockModelInfo Info;
-    Info.IsGround = _MacroblockModel.IsGround;
-    Info.HasStart = _MacroblockModel.HasStart;
-    Info.HasFinish = _MacroblockModel.HasFinish;
-    Info.HasCheckpoint = _MacroblockModel.HasCheckpoint;
-    Info.HasMultilap = _MacroblockModel.HasMultilap;
-    Info.GeneratedBlockModel = ToSBlockModelInfo(_MacroblockModel.GeneratedBlockModel);
-    Info.Name = _MacroblockModel.Name;
-    return Info;
-}
 
 SResponse Request(Text _Command, Text[] _Arguments) {
     declare SResponse Response;
@@ -355,14 +237,14 @@ Integer GetBlockGroundHeight(Text _BlockName, Integer _CoordX, Integer _CoordZ, 
     return TextLib::ToInteger(Response.Values[0]);
 }
  
-Integer GetGroundHeight(Integer CoordX, Integer CoordZ) {
+Integer GetGroundHeight(Integer _CoordX, Integer _CoordZ) {
     declare Params = [_CoordX^"", _CoordZ^""];
     declare Response = Request("Ch_GetGroundHeight", Params);
     return TextLib::ToInteger(Response.Values[0]);
 }
  
 SChBlock GetStartLineBlock() {
-    declare Response = Request("Ch_GetStartLineBlock", Params);
+    declare Response = Request("Ch_GetStartLineBlock", []);
     declare SChBlock Block;
     declare JsonSuccess = Block.fromjson(Response.Values[0]);
     return Block;
@@ -381,7 +263,7 @@ Boolean ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName, Boolean _Oppos
     //declare Direction = _Block.Direction;
     //declare Coord = _Block.Coord;
     
-    declare Params = [_Block.tojson(),_Replacement,_OppositeDirection^""];
+    declare Params = [_Block.tojson(),_ReplacementBlockName,_OppositeDirection^""];
     declare Response = Request("Ch_ReplaceBlock", Params);
     
     //Editor.RemoveBlock(Coord);
@@ -390,7 +272,7 @@ Boolean ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName, Boolean _Oppos
 }   
 
 Boolean ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName) {
-    return ReplaceBlock(_Block, _Replacement, False);
+    return ReplaceBlock(_Block, _ReplacementBlockName, False);
 }
 
 Boolean ReplaceAllBlocks(Text _BlockName, Text _ReplacementBlockName) {
@@ -488,6 +370,7 @@ Void SetStatusMessage(Text _Message) {
 //
 
 main() {
+    +++Metadata+++
     +++Main+++
     Complete();
 }
