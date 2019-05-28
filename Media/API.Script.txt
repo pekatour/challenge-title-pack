@@ -1,4 +1,5 @@
-#Include "TextLib" as TextLib
+#RequireContext CMapEditorPluginLayer
+
 #Include "MathLib" as MathLib
 
 #Struct SResponse {
@@ -6,22 +7,164 @@
     Text[] Values;
 }
 
+#Struct SChBlockModel {
+    
+}
+
 #Struct SChBlock {
+    Integer BlockScriptId;
     Text Name;
     Int3 Coord;
     Text Direction;
-    Text Waypoint;
-    Boolean IsRoad;
+    Boolean IsRoad; 
     Boolean IsTerrain;
     Boolean IsPodium;
+    Text WaypointType;  
+    Boolean NoRespawn;
 }
 
-Int3 TextToInt3(Text _Text) {
-    declare Txts = TextLib::Split(" ",_Text);
-    return <TextLib::ToInteger(Txts[0]),TextLib::ToInteger(Txts[1]),TextLib::ToInteger(Txts[2])>;
+#Struct SChMacroblock {
+    Boolean IsGround;
+    Boolean HasStart;
+    Boolean HasFinish;
+    Boolean HasCheckpoint;
+    Boolean HasMultilap;
+    Text Name;
 }
 
-SResponse Command(Text _Command, Text[] _Arguments) {
+declare Text Script_Name;
+declare Text Script_AuthorLogin;
+declare Text Script_Description;
+
+//
+/* Conversion functions */
+//
+
+Text MapDirectionToText(CMapEditorPlugin::CardinalDirections _Direction) {
+    switch(_Direction) {
+        case CMapEditorPlugin::CardinalDirections::North: {
+            return "North";
+        }
+        case CMapEditorPlugin::CardinalDirections::South: {
+            return "South";
+        }
+        case CMapEditorPlugin::CardinalDirections::West: {
+            return "West";
+        }
+        case CMapEditorPlugin::CardinalDirections::East: {
+            return "East";
+        }
+    }
+    
+    return "";
+}
+
+Text BlockDirectionToText(CBlock::CardinalDirections _Direction) {
+    switch(_Direction) {
+        case CBlock::CardinalDirections::North: {
+            return "North";
+        }
+        case CBlock::CardinalDirections::South: {
+            return "South";
+        }
+        case CBlock::CardinalDirections::West: {
+            return "West";
+        }
+        case CBlock::CardinalDirections::East: {
+            return "East";
+        }
+    }
+    
+    return "";
+}
+
+CMapEditorPlugin::CardinalDirections TextToMapDirection(Text _Text) {
+    switch(_Text) {
+        case "North": {
+            return CMapEditorPlugin::CardinalDirections::North;
+        }
+        case "South": {
+            return CMapEditorPlugin::CardinalDirections::South;
+        }
+        case "West": {
+            return CMapEditorPlugin::CardinalDirections::West;
+        }
+        case "East": {
+            return CMapEditorPlugin::CardinalDirections::East;
+        }
+    }
+    
+    return CMapEditorPlugin::CardinalDirections::North;
+}
+
+CBlock::CardinalDirections TextToBlockDirection(Text _Text) {
+    switch(_Text) {
+        case "North": {
+            return CBlock::CardinalDirections::North;
+        }
+        case "South": {
+            return CBlock::CardinalDirections::South;
+        }
+        case "West": {
+            return CBlock::CardinalDirections::West;
+        }
+        case "East": {
+            return CBlock::CardinalDirections::East;
+        }
+    }
+    
+    return CBlock::CardinalDirections::North;
+}
+
+CBlock::CardinalDirections MapDirectionToBlockDirection(CMapEditorPlugin::CardinalDirections _Direction) {
+    return TextToBlockDirection(_Direction);
+}
+
+CMapEditorPlugin::CardinalDirections BlockDirectionToMapDirection(CBlock::CardinalDirections _Direction) {
+    return TextToMapDirection(BlockDirectionToText(_Direction));
+}
+
+SBlockModelInfo ToSBlockModelInfo(CBlockModel _BlockModel) {
+    declare SBlockModelInfo Info;
+    Info.Name = _BlockModel.Name;  
+    Info.IsRoad = _BlockModel.IsRoad; 
+    Info.IsTerrain = _BlockModel.IsTerrain; 
+    
+    switch(_BlockModel.WaypointType) {
+        case CBlockModel::EWayPointType::Start: { Info.WaypointType = "Start"; }
+        case CBlockModel::EWayPointType::Finish: { Info.WaypointType = "Finish"; }
+        case CBlockModel::EWayPointType::Checkpoint: { Info.WaypointType = "Checkpoint"; }
+        case CBlockModel::EWayPointType::None: { Info.WaypointType = "None"; }
+        case CBlockModel::EWayPointType::StartFinish: { Info.WaypointType = "StartFinish"; }
+        case CBlockModel::EWayPointType::Dispenser: { Info.WaypointType = "Dispenser"; }
+    }
+    
+    Info.NoRespawn = _BlockModel.NoRespawn;
+    return Info;
+}
+
+SBlockInfo ToSBlockInfo(CBlock _Block) {
+    declare SBlockInfo Info;
+    Info.BlockScriptId = _Block.BlockScriptId;
+    Info.Coord = _Block.Coord;
+    Info.Direction = BlockDirectionToText(_Block.Direction);
+    Info.BlockModel = ToSBlockModelInfo(_Block.BlockModel);
+    return Info;
+}
+
+SMacroblockModelInfo ToSMacroblockModelInfo(CMacroblockModel _MacroblockModel) {
+    declare SMacroblockModelInfo Info;
+    Info.IsGround = _MacroblockModel.IsGround;
+    Info.HasStart = _MacroblockModel.HasStart;
+    Info.HasFinish = _MacroblockModel.HasFinish;
+    Info.HasCheckpoint = _MacroblockModel.HasCheckpoint;
+    Info.HasMultilap = _MacroblockModel.HasMultilap;
+    Info.GeneratedBlockModel = ToSBlockModelInfo(_MacroblockModel.GeneratedBlockModel);
+    Info.Name = _MacroblockModel.Name;
+    return Info;
+}
+
+SResponse Request(Text _Command, Text[] _Arguments) {
     declare SResponse Response;
 
     SendCustomEvent(_Command, _Arguments);
@@ -44,244 +187,244 @@ SResponse Command(Text _Command, Text[] _Arguments) {
     return Response;
 }
 
-Boolean CommandBool(Text _Command, Text[] _Arguments) {
-    declare Response = Command(_Command, _Arguments);
-    if(Response.Values.count > 0 && Response.Values[0] == "True") return True;
-    return False;
+//
+/* Regular editor functions */
+//
+
+Void ComputeShadows() {
+    declare Response = Request("Ch_ComputeShadows",[]);
 }
 
-Void ScriptName(Text _Name) {
-
+Void RemoveAllBlocks() {
+    declare Response = Request("Ch_RemoveAllBlocks", []);
+}
+ 
+Void RemoveAllTerrain() {
+    declare Response = Request("Ch_RemoveAllTerrain", []);
+}
+ 
+Void RemoveAllOffZone() {
+    declare Response = Request("Ch_RemoveAllOffZone", []);
+}
+ 
+Void RemoveAllObjects() {
+    declare Response = Request("Ch_RemoveAllObjects", []);
+}
+ 
+Void RemoveAll() {
+    declare Response = Request("Ch_RemoveAll", []);
+}
+ 
+Void RemoveAllBlocksAndTerrain() {
+    declare Response = Request("Ch_RemoveAllBlocksAndTerrain", []);
+}
+ 
+Void PreloadAllBlocks() {
+    declare Response = Request("Ch_PreloadAllBlocks", []);
+}
+ 
+Void PreloadAllItems() {
+    declare Response = Request("Ch_PreloadAllItems", []);
+}
+ 
+Boolean CanPlaceBlock(Text _BlockName, Int3 _Coord, Text _Direction, Boolean _OnGround, Integer _VariantIndex) {    
+    declare Params = [_BlockName, _Coord^"", _Direction, _OnGround^"", _VariantIndex^""];
+    declare Response = Request("Ch_CanPlaceBlock", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean PlaceBlock(Text _BlockName, Int3 _Coord, Text _Direction) {
+    declare Params = [_BlockName, _Coord^"", _Direction];
+    declare Response = Request("Ch_PlaceBlock", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean CanPlaceBlock_NoDestruction(Text _BlockName, Int3 _Coord, Text _Direction, Boolean _OnGround, Integer _VariantIndex) {
+    declare Params = [_BlockName, _Coord^"", _Direction, _OnGround^"", _VariantIndex^""];
+    declare Response = Request("Ch_CanPlaceBlock_NoDestruction", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean PlaceBlock_NoDestruction(Text _BlockName, Int3 _Coord, Text _Direction) {
+    declare Params = [_BlockName, _Coord^"", _Direction];
+    declare Response = Request("Ch_PlaceBlock_NoDestruction", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean CanPlaceRoadBlocks(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
+    declare Params = [_BlockName, _StartCoord^""];
+    declare Response = Request("Ch_CanPlaceRoadBlocks", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean PlaceRoadBlocks(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
+    declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
+    declare Response = Request("Ch_PlaceRoadBlocks", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean CanPlaceTerrainBlocks(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
+    declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
+    declare Response = Request("Ch_CanPlaceTerrainBlocks", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean PlaceTerrainBlocks(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
+    declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
+    declare Response = Request("Ch_PlaceTerrainBlocks", Params);
+    return Response.Values[0] == "True";
+}          
+ 
+Boolean PlaceTerrainBlocks_NoDestruction(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
+    declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
+    declare Response = Request("Ch_PlaceTerrainBlocks_NoDestruction", Params);
+    return Response.Values[0] == "True";
 }
 
-Void ScriptAuthor(Text _Author) {
+Boolean CanPlaceMacroblock(Text _MacroblockName, Int3 _Coord, Text _Direction) {
+    declare Params = [_MacroblockName, _Coord^"", _Direction];
+    declare Response = Request("Ch_CanPlaceMacroblock", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean PlaceMacroblock(Text _MacroblockName, Int3 _Coord, Text _Direction) {
+    declare Params = [_MacroblockName, _Coord^"", _Direction];
+    declare Response = Request("Ch_PlaceMacroblock", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean CanPlaceMacroblock_NoDestruction(Text _MacroblockName, Int3 _Coord, Text _Direction) {
+    declare Params = [_MacroblockName, _Coord^"", _Direction];
+    declare Response = Request("Ch_CanPlaceMacroblock_NoDestruction", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean PlaceMacroblock_NoDestruction(Text _MacroblockName, Int3 _Coord, Text _Direction) {
+    declare Params = [_MacroblockName, _Coord^"", _Direction];
+    declare Response = Request("Ch_PlaceMacroblock_NoDestruction", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean CanPlaceMacroblock_NoTerrain(Text _MacroblockName, Int3 _Coord, Text _Direction) {
+    declare Params = [_MacroblockName, _Coord^"", _Direction];
+    declare Response = Request("Ch_CanPlaceMacroblock_NoTerrain", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean PlaceMacroblock_NoTerrain(Text _MacroblockName, Int3 _Coord, Text _Direction) {
+    declare Params = [_MacroblockName, _Coord^"", _Direction];
+    declare Response = Request("Ch_PlaceMacroblock_NoTerrain", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean RemoveMacroblock(Text _MacroblockName, Int3 _Coord, Text _Direction) {
+    declare Params = [_MacroblockName, _Coord^"", _Direction];
+    declare Response = Request("Ch_RemoveMacroblock", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean RemoveMacroblock_NoTerrain(Text _MacroblockName, Int3 _Coord, Text _Direction) {
+    declare Params = [_MacroblockName, _Coord^"", _Direction];
+    declare Response = Request("Ch_RemoveMacroblock_NoTerrain", Params);
+    return Response.Values[0] == "True";
+}  
+ 
+SChBlock GetBlock(Int3 _Coord) {
+    declare Params = [_Coord^""];
+    declare Response = Request("Ch_GetBlock", Params);
+    declare SChBlock Block;
+    declare JsonSuccess = Block.fromjson(Response.Values[0]);
+    return Block;
+}
+ 
+Boolean RemoveBlock(Int3 _Coord) {
+    declare Params = [_Coord^""];
+    declare Response = Request("Ch_RemoveBlock", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean RemoveTerrainBlocks(Int3 _StartCoord, Int3 _EndCoord) {
+    declare Params = [_StartCoord^"", _EndCoord^""];
+    declare Response = Request("Ch_RemoveTerrainBlocks", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Integer GetBlockGroundHeight(Text _BlockName, Integer _CoordX, Integer _CoordZ, Text _Direction) {
+    declare Params = [_BlockName, _CoordX^"", _CoordZ^"", _Direction];
+    declare Response = Request("Ch_GetBlockGroundHeight", Params);
+    return TextLib::ToInteger(Response.Values[0]);
+}
+ 
+Integer GetGroundHeight(Integer CoordX, Integer CoordZ) {
+    declare Params = [_CoordX^"", _CoordZ^""];
+    declare Response = Request("Ch_GetGroundHeight", Params);
+    return TextLib::ToInteger(Response.Values[0]);
+}
+ 
+SChBlock GetStartLineBlock() {
+    declare Response = Request("Ch_GetStartLineBlock", Params);
+    declare SChBlock Block;
+    declare JsonSuccess = Block.fromjson(Response.Values[0]);
+    return Block;
+}
+
+Void SetUndergroundMode(Boolean _On) {
+    declare Params = [_On^""];
+    declare Response = Request("Ch_SetUndergroundMode", Params);
+}
+
+//
+/* Extensive functions */
+//
+
+Boolean ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName, Boolean _OppositeDirection) {
+    //declare Direction = _Block.Direction;
+    //declare Coord = _Block.Coord;
     
-}
-
-Void ScriptDescription(Text _Description) {
+    declare Params = [_Block.tojson(),_Replacement,_OppositeDirection^""];
+    declare Response = Request("Ch_ReplaceBlock", Params);
     
+    //Editor.RemoveBlock(Coord);
+    //declare Response = Editor.PlaceBlock(_Replacement, Coord, BlockDirectionToMapDirection(Direction));
+    return Response.Values[0] == "True";
+}   
+
+Boolean ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName) {
+    return ReplaceBlock(_Block, _Replacement, False);
 }
 
-SChBlock[] GetStartLineBlocks() {
-    declare SChBlock[] ChBlocks;
+Boolean ReplaceAllBlocks(Text _BlockName, Text _ReplacementBlockName) {
+    declare Params = [_BlockName, _ReplacementBlockName];
+    declare Response = Request("Ch_ReplaceAllBlocks", Params);
+    return Response.Values[0] == "True";
+}
 
-    declare Response = Command("Ch_GetStartLineBlocks",[]);
-    if(Response.Values.count > 0 && Response.Values[0] == "True") {
-        ChBlocks.fromjson(Response.Values[1]);
-    }
-
-    return ChBlocks;
+Boolean SwapBlocks(SChBlock _Block1, SChBlock _Block2) {
+    declare Params = [_Block1.tojson(), _Block1.tojson()];
+    declare Response = Request("Ch_SwapBlocks", Params);
+    return Response.Values[0] == "True";
 }
 
 SChBlock[] GetFinishLineBlocks() {
-    declare SChBlock[] ChBlocks;
-
-    declare Response = Command("Ch_GetFinishLineBlocks",[]);
-    if(Response.Values.count > 0 && Response.Values[0] == "True") {
-        ChBlocks.fromjson(Response.Values[1]);
-    }
-
-    return ChBlocks;
+    declare Response = Request("Ch_GetFinishLineBlocks", []);
+    declare SChBlock[] Blocks;
+    declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
+    return Blocks;
 }
 
-SChBlock GetBlock(Int3 _Coord) {
-    declare SChBlock ChBlock;
-
-    declare Response = Command("Ch_GetBlock",[_Coord^""]);
-    if(Response.Values.count > 0 && Response.Values[0] == "True") {
-        ChBlock.fromjson(Response.Values[1]);
-    }
-
-    return ChBlock;
+SChBlock[] GetCheckpointBlocks() {
+    declare Response = Request("Ch_GetCheckpointBlocks", []);
+    declare SChBlock[] Blocks;
+    declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
+    return Blocks;   
 }
 
-SChBlock[] GetBlocks() {
-    declare SChBlock[] ChBlocks;
-
-    declare Response = Command("Ch_GetBlocks",[]);
-    if(Response.Values.count > 0 && Response.Values[0] == "True") {
-        ChBlocks.fromjson(Response.Values[1]); 
-    }
-
-    return ChBlocks;
-}
-
-SChBlock[] GetBlocksByName(Text _BlockName) {
-    declare SChBlock[] ChBlocks;
-
-    declare Response = Command("Ch_GetBlocksByName",[_BlockName]);
-    if(Response.Values.count > 0 && Response.Values[0] == "True") {
-        ChBlocks.fromjson(Response.Values[1]); 
-    }
-
-    return ChBlocks;
-}
-
-Boolean PlaceBlock(Text _BlockName, Int3 _Coord, Text _Direction) {
-    return CommandBool("Ch_PlaceBlock", [_BlockName, _Coord^"", _Direction]);
-}
-
-Boolean PlaceMacroblock(Text _MacroblockName, Int3 _Coord, Text _Direction) {
-    return CommandBool("Ch_PlaceMacroblock",[_MacroblockName, _Coord^"", _Direction]);
-}
-
-Boolean PlaceRoadBlocks(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
-    return CommandBool("Ch_PlaceRoadBlocks",[_BlockName, _StartCoord^"", _EndCoord^""]);
-}
-
-Boolean PlaceTerrainBlocks(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
-    return CommandBool("Ch_PlaceTerrainBlocks",[_BlockName, _StartCoord^"", _EndCoord^""]);
-}
-
-Boolean PlaceBlock_NoDestruction(Text _BlockName, Int3 _Coord, Text _Direction) {
-    return CommandBool("Ch_PlaceBlock_NoDestruction", [_BlockName, _Coord^"", _Direction]);
-}
-
-Boolean PlaceMacroblock_NoDestruction(Text _MacroblockName, Int3 _Coord, Text _Direction) {
-    return CommandBool("Ch_PlaceMacroblock_NoDestruction",[_MacroblockName, _Coord^"", _Direction]);
-}
-
-Boolean PlaceTerrainBlocks_NoDestruction(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
-    return CommandBool("Ch_PlaceTerrainBlocks_NoDestruction",[_BlockName, _StartCoord^"", _EndCoord^""]);
-}
-
-Boolean PlaceMacroblock_NoTerrain(Text _MacroblockName, Int3 _Coord, Text _Direction) {
-    return CommandBool("Ch_PlaceMacroblock_NoTerrain",[_MacroblockName, _Coord^"", _Direction]);
-}
-
-Boolean RemoveBlock(Int3 _Coord) {
-    return CommandBool("Ch_RemoveBlock",[_Coord^""]);
-}
-
-Boolean RemoveMacroblock(Text _MacroblockName, Int3 _Coord, Text _Direction) {
-    return CommandBool("Ch_RemoveMacroblock",[_MacroblockName,_Coord^"",_Direction]);
-}
-
-Boolean RemoveMacroblock_NoTerrain(Text _MacroblockName, Int3 _Coord, Text _Direction) {
-    return CommandBool("Ch_RemoveMacroblock_NoTerrain",[_MacroblockName,_Coord^"",_Direction]);
-}
-
-Boolean RemoveTerrainBlocks(Int3 _StartCoord, Int3 _EndCoord) {
-    return CommandBool("Ch_RemoveTerrainBlocks",[_StartCoord^"",_EndCoord^""]);
-}
-
-Boolean RemoveAll() {
-    return CommandBool("Ch_RemoveAll", []);
-}
-
-Boolean RemoveAllBlocks() {
-    return CommandBool("Ch_RemoveAllBlocks", []);
-}
-
-Boolean RemoveAllTerrain() {
-    return CommandBool("Ch_RemoveAllTerrain", []);
-}
-
-Boolean RemoveAllOffZone() {
-    return CommandBool("Ch_RemoveAllOffZone", []);
-}
-
-Boolean RemoveAllObjects() {
-    return CommandBool("Ch_RemoveAllObjects", []);
-}
-
-Boolean RemoveAllBlocksAndTerrain() {
-    return CommandBool("Ch_RemoveAllBlocksAndTerrain", []);
-}
-
-Boolean CanPlaceBlock(Text _BlockName, Int3 _Coord, Text _Direction, Boolean _OnGround, Integer _VariantIndex) {
-	return False;
-}
-
-Text[] GetBlockList() {
-    declare Text[] ChBlockList;
-
-    declare Response = Command("Ch_GetBlockList",[]);
-    if(Response.Values.count > 0 && Response.Values[0] == "True") {
-        ChBlockList.fromjson(Response.Values[1]); 
-    }
-
-    return ChBlockList;
-}
-
-Text[] GetTerrainBlockList() {
-    declare Text[] ChTerrainBlockList;
-
-    declare Response = Command("Ch_GetTerrainBlockList",[]);
-    if(Response.Values.count > 0 && Response.Values[0] == "True") {
-        ChTerrainBlockList.fromjson(Response.Values[1]); 
-    }
-
-    return ChTerrainBlockList;
-}
-
-Text[] GetMacroblockList() {
-    declare Text[] ChMacroblockList;
-
-    declare Response = Command("Ch_GetMacroblockList",[]);
-    if(Response.Values.count > 0 && Response.Values[0] == "True") {
-        ChMacroblockList.fromjson(Response.Values[1]); 
-    }
-
-    return ChMacroblockList;
-}
-
-Integer GetGroundHeight(Integer _CoordX, Integer _CoordY) {
-    declare Response = Command("Ch_GetMacroblockList",[]);
-    if(Response.Values.count > 0 && Response.Values[0] == "True") {
-        return TextLib::ToInteger(Response.Values[1]); 
-    }
-
-    return -1;
-}
-
-Integer GetBlockGroundHeight(Text _BlockName, Integer _CoordX, Integer _CoordZ, Text _Direction) {
-    declare Response = Command("Ch_GetBlockGroundHeight",[]);
-    if(Response.Values.count > 0 && Response.Values[0] == "True") {
-        return TextLib::ToInteger(Response.Values[1]); 
-    }
-
-    return -1;
-}
-
-Boolean SetUndergroundMode(Boolean _On) {
-    return CommandBool("Ch_SetUndergroundMode",[_On^""]);
-}
-
-Boolean Replace(Text _OldBlockName, Text _NewBlockName) {
-    return CommandBool("Ch_Replace",[_OldBlockName,_NewBlockName]);
-}
-
-Boolean Swap(SChBlock _Block1, SChBlock _Block2) {
-    return CommandBool("Ch_Swap",[_Block1.tojson(),_Block2.tojson()]);
-}
-
-Boolean SwapFlip(SChBlock _Block1, SChBlock _Block2) {
-    return CommandBool("Ch_SwapFlip",[_Block1.tojson(),_Block2.tojson()]);
-}
-
-Boolean Message(Text _Message) {
-    return CommandBool("Ch_Message",[_Message]);
-}
-
-Boolean Success() {
-    return CommandBool("Ch_Success",[]);
-}
-
-Boolean Confusion() {
-    return CommandBool("Ch_Confusion",[]);
-}
-
-Boolean Incompatibility() {
-    return CommandBool("Ch_Incompatiblity",[]);
-}
-
-Boolean Complete() {
-    return CommandBool("Ch_Complete",[]);
-}
-
-Boolean Solution() { // Saves all commands done since previous called solution and starts a new list of commands
-    return CommandBool("Ch_Solution",[]);
+SChBlock[] GetBlocksByBlockModel(Text _BlockName) {
+    declare Params = [_BlockName];
+    declare Response = Request("Ch_GetCheckpointBlocks", Params);
+    declare SChBlock[] Blocks;
+    declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
+    return Blocks;  
 }
 
 Integer Random(Integer _Min, Integer _Max) { // Consistent randomizer
@@ -304,10 +447,47 @@ Boolean Random() {
     return (Random(1) == 1);
 }
 
-Boolean SetStatusProgress(Real _Progress) {
-    return CommandBool("Ch_SetStatusProgress",[_Progress^""]);
+Real Percentage() {
+    return Random(1.0);
 }
 
-Boolean SetStatusMessage(Text _Message) {
-    return CommandBool("Ch_SetStatusMessage",[_Message]);
+Boolean Chance(Real _Percentage) {
+    return (Percentage() <= _Percentage);
+}
+
+//
+/* Modifier technical control */
+//
+
+Void Solution() {
+
+}
+
+Void Complete() { // Shouldn't be normally called
+
+}
+
+Void Confusion() {
+
+}
+
+//
+/* Modifier appearance control */
+//
+
+Void SetStatusProgress(Real _Progress) {
+    SendCustomEvent("Ch_SetStatusProgress", [_Progress^""]);
+}
+
+Void SetStatusMessage(Text _Message) {
+    SendCustomEvent("Ch_SetStatusMessage", [_Message]);
+}
+
+//
+/* Call structure */
+//
+
+main() {
+    +++Main+++
+    Complete();
 }
