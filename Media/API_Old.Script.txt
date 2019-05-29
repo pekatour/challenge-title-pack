@@ -1,0 +1,292 @@
+#Include "TextLib" as TextLib
+#Include "MathLib" as MathLib
+
+#Struct SResponse {
+    Text Name;
+    Text[] Values;
+}
+
+#Struct SChBlock {
+    Text Name;
+    Int3 Coord;
+    Text Direction;
+    Text Waypoint;
+    Boolean IsRoad;
+    Boolean IsTerrain;
+    Boolean IsPodium;
+}
+
+Int3 TextToInt3(Text _Text) {
+    declare Txts = TextLib::Split(" ",_Text);
+    return <TextLib::ToInteger(Txts[0]),TextLib::ToInteger(Txts[1]),TextLib::ToInteger(Txts[2])>;
+}
+
+
+
+Boolean CommandBool(Text _Command, Text[] _Arguments) {
+    declare Response = Command(_Command, _Arguments);
+    if(Response.Values.count > 0 && Response.Values[0] == "True") return True;
+    return False;
+}
+
+Void ScriptName(Text _Name) {
+
+}
+
+Void ScriptAuthor(Text _Author) {
+    
+}
+
+Void ScriptDescription(Text _Description) {
+    
+}
+
+SChBlock[] GetStartLineBlocks() {
+    declare SChBlock[] ChBlocks;
+
+    declare Response = Command("Ch_GetStartLineBlocks",[]);
+    if(Response.Values.count > 0 && Response.Values[0] == "True") {
+        ChBlocks.fromjson(Response.Values[1]);
+    }
+
+    return ChBlocks;
+}
+
+SChBlock[] GetFinishLineBlocks() {
+    declare SChBlock[] ChBlocks;
+
+    declare Response = Command("Ch_GetFinishLineBlocks",[]);
+    if(Response.Values.count > 0 && Response.Values[0] == "True") {
+        ChBlocks.fromjson(Response.Values[1]);
+    }
+
+    return ChBlocks;
+}
+
+SChBlock GetBlock(Int3 _Coord) {
+    declare SChBlock ChBlock;
+
+    declare Response = Command("Ch_GetBlock",[_Coord^""]);
+    if(Response.Values.count > 0 && Response.Values[0] == "True") {
+        ChBlock.fromjson(Response.Values[1]);
+    }
+
+    return ChBlock;
+}
+
+SChBlock[] GetBlocks() {
+    declare SChBlock[] ChBlocks;
+
+    declare Response = Command("Ch_GetBlocks",[]);
+    if(Response.Values.count > 0 && Response.Values[0] == "True") {
+        ChBlocks.fromjson(Response.Values[1]); 
+    }
+
+    return ChBlocks;
+}
+
+SChBlock[] GetBlocksByName(Text _BlockName) {
+    declare SChBlock[] ChBlocks;
+
+    declare Response = Command("Ch_GetBlocksByName",[_BlockName]);
+    if(Response.Values.count > 0 && Response.Values[0] == "True") {
+        ChBlocks.fromjson(Response.Values[1]); 
+    }
+
+    return ChBlocks;
+}
+
+Boolean PlaceBlock(Text _BlockName, Int3 _Coord, Text _Direction) {
+    return CommandBool("Ch_PlaceBlock", [_BlockName, _Coord^"", _Direction]);
+}
+
+Boolean PlaceMacroblock(Text _MacroblockName, Int3 _Coord, Text _Direction) {
+    return CommandBool("Ch_PlaceMacroblock",[_MacroblockName, _Coord^"", _Direction]);
+}
+
+Boolean PlaceRoadBlocks(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
+    return CommandBool("Ch_PlaceRoadBlocks",[_BlockName, _StartCoord^"", _EndCoord^""]);
+}
+
+Boolean PlaceTerrainBlocks(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
+    return CommandBool("Ch_PlaceTerrainBlocks",[_BlockName, _StartCoord^"", _EndCoord^""]);
+}
+
+Boolean PlaceBlock_NoDestruction(Text _BlockName, Int3 _Coord, Text _Direction) {
+    return CommandBool("Ch_PlaceBlock_NoDestruction", [_BlockName, _Coord^"", _Direction]);
+}
+
+Boolean PlaceMacroblock_NoDestruction(Text _MacroblockName, Int3 _Coord, Text _Direction) {
+    return CommandBool("Ch_PlaceMacroblock_NoDestruction",[_MacroblockName, _Coord^"", _Direction]);
+}
+
+Boolean PlaceTerrainBlocks_NoDestruction(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
+    return CommandBool("Ch_PlaceTerrainBlocks_NoDestruction",[_BlockName, _StartCoord^"", _EndCoord^""]);
+}
+
+Boolean PlaceMacroblock_NoTerrain(Text _MacroblockName, Int3 _Coord, Text _Direction) {
+    return CommandBool("Ch_PlaceMacroblock_NoTerrain",[_MacroblockName, _Coord^"", _Direction]);
+}
+
+Boolean RemoveBlock(Int3 _Coord) {
+    return CommandBool("Ch_RemoveBlock",[_Coord^""]);
+}
+
+Boolean RemoveMacroblock(Text _MacroblockName, Int3 _Coord, Text _Direction) {
+    return CommandBool("Ch_RemoveMacroblock",[_MacroblockName,_Coord^"",_Direction]);
+}
+
+Boolean RemoveMacroblock_NoTerrain(Text _MacroblockName, Int3 _Coord, Text _Direction) {
+    return CommandBool("Ch_RemoveMacroblock_NoTerrain",[_MacroblockName,_Coord^"",_Direction]);
+}
+
+Boolean RemoveTerrainBlocks(Int3 _StartCoord, Int3 _EndCoord) {
+    return CommandBool("Ch_RemoveTerrainBlocks",[_StartCoord^"",_EndCoord^""]);
+}
+
+Boolean RemoveAll() {
+    return CommandBool("Ch_RemoveAll", []);
+}
+
+Boolean RemoveAllBlocks() {
+    return CommandBool("Ch_RemoveAllBlocks", []);
+}
+
+Boolean RemoveAllTerrain() {
+    return CommandBool("Ch_RemoveAllTerrain", []);
+}
+
+Boolean RemoveAllOffZone() {
+    return CommandBool("Ch_RemoveAllOffZone", []);
+}
+
+Boolean RemoveAllObjects() {
+    return CommandBool("Ch_RemoveAllObjects", []);
+}
+
+Boolean RemoveAllBlocksAndTerrain() {
+    return CommandBool("Ch_RemoveAllBlocksAndTerrain", []);
+}
+
+Boolean CanPlaceBlock(Text _BlockName, Int3 _Coord, Text _Direction, Boolean _OnGround, Integer _VariantIndex) {
+	return False;
+}
+
+Text[] GetBlockList() {
+    declare Text[] ChBlockList;
+
+    declare Response = Command("Ch_GetBlockList",[]);
+    if(Response.Values.count > 0 && Response.Values[0] == "True") {
+        ChBlockList.fromjson(Response.Values[1]); 
+    }
+
+    return ChBlockList;
+}
+
+Text[] GetTerrainBlockList() {
+    declare Text[] ChTerrainBlockList;
+
+    declare Response = Command("Ch_GetTerrainBlockList",[]);
+    if(Response.Values.count > 0 && Response.Values[0] == "True") {
+        ChTerrainBlockList.fromjson(Response.Values[1]); 
+    }
+
+    return ChTerrainBlockList;
+}
+
+Text[] GetMacroblockList() {
+    declare Text[] ChMacroblockList;
+
+    declare Response = Command("Ch_GetMacroblockList",[]);
+    if(Response.Values.count > 0 && Response.Values[0] == "True") {
+        ChMacroblockList.fromjson(Response.Values[1]); 
+    }
+
+    return ChMacroblockList;
+}
+
+Integer GetGroundHeight(Integer _CoordX, Integer _CoordY) {
+    declare Response = Command("Ch_GetMacroblockList",[]);
+    if(Response.Values.count > 0 && Response.Values[0] == "True") {
+        return TextLib::ToInteger(Response.Values[1]); 
+    }
+
+    return -1;
+}
+
+Integer GetBlockGroundHeight(Text _BlockName, Integer _CoordX, Integer _CoordZ, Text _Direction) {
+    declare Response = Command("Ch_GetBlockGroundHeight",[]);
+    if(Response.Values.count > 0 && Response.Values[0] == "True") {
+        return TextLib::ToInteger(Response.Values[1]); 
+    }
+
+    return -1;
+}
+
+Boolean SetUndergroundMode(Boolean _On) {
+    return CommandBool("Ch_SetUndergroundMode",[_On^""]);
+}
+
+Boolean Replace(Text _OldBlockName, Text _NewBlockName) {
+    return CommandBool("Ch_Replace",[_OldBlockName,_NewBlockName]);
+}
+
+Boolean Swap(SChBlock _Block1, SChBlock _Block2) {
+    return CommandBool("Ch_Swap",[_Block1.tojson(),_Block2.tojson()]);
+}
+
+Boolean SwapFlip(SChBlock _Block1, SChBlock _Block2) {
+    return CommandBool("Ch_SwapFlip",[_Block1.tojson(),_Block2.tojson()]);
+}
+
+Boolean Message(Text _Message) {
+    return CommandBool("Ch_Message",[_Message]);
+}
+
+Boolean Success() {
+    return CommandBool("Ch_Success",[]);
+}
+
+Boolean Confusion() {
+    return CommandBool("Ch_Confusion",[]);
+}
+
+Boolean Incompatibility() {
+    return CommandBool("Ch_Incompatiblity",[]);
+}
+
+Boolean Complete() {
+    return CommandBool("Ch_Complete",[]);
+}
+
+Boolean Solution() { // Saves all commands done since previous called solution and starts a new list of commands
+    return CommandBool("Ch_Solution",[]);
+}
+
+Integer Random(Integer _Min, Integer _Max) { // Consistent randomizer
+    return MathLib::Rand(_Min, _Max, Editor.Map.CopperPrice);
+}
+
+Integer Random(Integer _Max) {
+    return Random(0, _Max);
+}
+
+Real Random(Real _Min, Real _Max) { // Consistent randomizer
+    return MathLib::Rand(_Min, _Max, Editor.Map.CopperPrice);
+}
+
+Real Random(Real _Max) {
+    return Random(0.0, _Max);
+}
+
+Boolean Random() {
+    return (Random(1) == 1);
+}
+
+Boolean SetStatusProgress(Real _Progress) {
+    return CommandBool("Ch_SetStatusProgress",[_Progress^""]);
+}
+
+Boolean SetStatusMessage(Text _Message) {
+    return CommandBool("Ch_SetStatusMessage",[_Message]);
+}

@@ -270,7 +270,8 @@ Void UpdateScriptList(Integer _Offset) {
 
 				if(IsMultipleScript()) {
 					AnimMgr.Add(Label, "<label pos=\"10 0\"/>", 100, CAnimManager::EAnimManagerEasing::QuadOut);
-					FrameCounter.Show();
+					AnimMgr.Add(FrameCounter, "<frame hidden=\"0\"/>", 100, CAnimManager::EAnimManagerEasing::QuadOut);
+					//FrameCounter.Show();
 					LabelCounter.SetText((SelectedScripts.keyof(Script)+1)^"");
 				}
 				else {
@@ -280,7 +281,7 @@ Void UpdateScriptList(Integer _Offset) {
 			}
 			else {
 				(Frame.GetFirstChild("QUAD_SELECTOR_SCRIPT") as CMlQuad).Substyle = "BgCardInventoryItem";
-
+				
 				AnimMgr.Add(Label, "<label pos=\"5 0\"/>", 100, CAnimManager::EAnimManagerEasing::QuadOut);
 				FrameCounter.Hide();
 			}

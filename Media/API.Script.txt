@@ -281,7 +281,7 @@ Boolean ReplaceAllBlocks(Text _BlockName, Text _ReplacementBlockName) {
     return Response.Values[0] == "True";
 }
 
-Boolean SwapBlocks(SChBlock _Block1, SChBlock _Block2) {
+Boolean SwapBlock(SChBlock _Block1, SChBlock _Block2) {
     declare Params = [_Block1.tojson(), _Block1.tojson()];
     declare Response = Request("Ch_SwapBlocks", Params);
     return Response.Values[0] == "True";
@@ -301,9 +301,9 @@ SChBlock[] GetCheckpointBlocks() {
     return Blocks;   
 }
 
-SChBlock[] GetBlocksByBlockModel(Text _BlockName) {
+SChBlock[] GetBlocksByBlockName(Text _BlockName) {
     declare Params = [_BlockName];
-    declare Response = Request("Ch_GetCheckpointBlocks", Params);
+    declare Response = Request("Ch_GetBlocksByBlockName", Params);
     declare SChBlock[] Blocks;
     declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
     return Blocks;  
