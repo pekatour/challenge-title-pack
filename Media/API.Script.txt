@@ -115,15 +115,15 @@ Boolean CanPlaceBlock(Text _BlockName, Int3 _Coord, Text _Direction, Boolean _On
     return Response.Values[0] == "True";
 }
  
-Boolean PlaceBlock(Text _BlockName, Int3 _Coord, Text _Direction) {
-    declare Params = [_BlockName, _Coord^"", _Direction];
-    declare Response = Request("Ch_PlaceBlock", Params);
-    return Response.Values[0] == "True";
-}
- 
 Boolean CanPlaceBlock_NoDestruction(Text _BlockName, Int3 _Coord, Text _Direction, Boolean _OnGround, Integer _VariantIndex) {
     declare Params = [_BlockName, _Coord^"", _Direction, _OnGround^"", _VariantIndex^""];
     declare Response = Request("Ch_CanPlaceBlock_NoDestruction", Params);
+    return Response.Values[0] == "True";
+}
+ 
+Boolean PlaceBlock(Text _BlockName, Int3 _Coord, Text _Direction) {
+    declare Params = [_BlockName, _Coord^"", _Direction];
+    declare Response = Request("Ch_PlaceBlock", Params);
     return Response.Values[0] == "True";
 }
  
@@ -134,7 +134,7 @@ Boolean PlaceBlock_NoDestruction(Text _BlockName, Int3 _Coord, Text _Direction) 
 }
  
 Boolean CanPlaceRoadBlocks(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
-    declare Params = [_BlockName, _StartCoord^""];
+    declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
     declare Response = Request("Ch_CanPlaceRoadBlocks", Params);
     return Response.Values[0] == "True";
 }

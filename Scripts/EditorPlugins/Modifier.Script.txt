@@ -7,19 +7,25 @@
 #Include "Libs/BigBang1112/File.Script.txt" as File
 #Include "Libs/BigBang1112/Layers.Script.txt" as Layers
 
-#Setting S_Build False
+#Setting S_Build True
 
 #Setting S_ScriptType ""
 #Setting S_ScriptFileName ""
 
+#Setting S_TestMode False
+
+#Const S_HideUI False
+
 #Struct SChBlock {
+    Integer BlockScriptId;
     Text Name;
     Int3 Coord;
     Text Direction;
-    Text Waypoint;
-    Boolean IsRoad;
+    Boolean IsRoad; 
     Boolean IsTerrain;
     Boolean IsPodium;
+    Text WaypointType;  
+    Boolean NoRespawn;
 }
 
 declare CUILayer LayerAPI;
@@ -86,7 +92,7 @@ SChBlock CBlockToSChBlock(CBlock _Block) {
 }
 
 Void Prepare() {
-	HideEditorInterface = True;
+	HideEditorInterface = S_HideUI;
 	EditMode = CMapEditorPlugin::EditMode::FreeLook;
 	SetMapType("TrackMania/Challenge");
 	Map.MapName ^= "$z - Reverse";
@@ -164,275 +170,275 @@ Void Solution() {
 
 }
 
-Void ProcessCommand(CMapEditorPluginEvent _Event) {
+Void Respond(CMapEditorPluginEvent _Event, Text[] _Data) {
+	LayerCustomEvent(LayerAPI, _Event.CustomEventType^"_Response", _Data);
+}
+
+Void ProcessRequest(CMapEditorPluginEvent _Event) {
 	declare Event <=> _Event;
 	
 	switch(Event.CustomEventType) {
-		case "Ch_GetStartLineBlocks": {
-			declare SChBlock[] ChBlocks;
-			if(GetStartLineBlock() == Null)
-				LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["False",ChBlocks.tojson()]);
-			else {
-				ChBlocks.add(CBlockToSChBlock(GetStartLineBlock()));
-				LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlocks.tojson()]);
-			}
-		}
-		case "Ch_GetFinishLineBlocks": {
-			declare SChBlock[] ChBlocks;
-			foreach(Block,Blocks)
-				if(Block.BlockModel.WaypointType == CBlockModel::EWayPointType::Finish)					
-					ChBlocks.add(CBlockToSChBlock(Block));
-			
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlocks.tojson()]);
-		}
-		case "Ch_GetBlock": {
-			declare Coord = ToInt3(Event.CustomEventData[0]);
-			declare ChBlock = CBlockToSChBlock(GetBlock(Coord));
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlock.tojson()]);
-		}
-		case "Ch_GetBlocks": {
-			declare SChBlock[] ChBlocks;
-			foreach(Block,Blocks)						
-				ChBlocks.add(CBlockToSChBlock(Block));
-			
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlocks.tojson()]);
-		}
-		case "Ch_GetBlocksByName": {
-			declare SChBlock[] ChBlocks;
-			foreach(Block,Blocks)
-				if(Block.BlockModel.Name == Event.CustomEventData[0])						
-					ChBlocks.add(CBlockToSChBlock(Block));
-			
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlocks.tojson()]);
-		}
-		case "Ch_PlaceBlock": {
-			declare BlockName = Event.CustomEventData[0];
-			declare Coord = ToInt3(Event.CustomEventData[1]);
-			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
-			PlaceBlock(GetBlockModelFromName(BlockName), Coord, Direction);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_PlaceMacroblock": {
-			declare MacroblockName = Event.CustomEventData[0];
-			declare Coord = ToInt3(Event.CustomEventData[1]);
-			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
-			PlaceMacroblock(GetMacroblockModelFromFilePath(MacroblockName), Coord, Direction);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_PlaceRoadBlocks": {
-			declare BlockName = Event.CustomEventData[0];
-			declare StartCoord = ToInt3(Event.CustomEventData[1]);
-			declare EndCoord = ToInt3(Event.CustomEventData[2]);
-			PlaceRoadBlocks(GetBlockModelFromName(BlockName), StartCoord, EndCoord);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_PlaceTerrainBlocks": {
-			declare BlockName = Event.CustomEventData[1];
-			declare StartCoord = ToInt3(Event.CustomEventData[2]);
-			declare EndCoord = ToInt3(Event.CustomEventData[3]);
-			PlaceTerrainBlocks(GetTerrainBlockModelFromName(BlockName), StartCoord, EndCoord);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_PlaceBlock_NoDestruction": {
-			declare BlockName = Event.CustomEventData[0];
-			declare Coord = ToInt3(Event.CustomEventData[1]);
-			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
-			PlaceBlock_NoDestruction(GetBlockModelFromName(BlockName), Coord, Direction);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_PlaceMacroblock_NoDestruction": {
-			declare MacroblockName = Event.CustomEventData[0];
-			declare Coord = ToInt3(Event.CustomEventData[1]);
-			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
-			PlaceMacroblock_NoDestruction(GetMacroblockModelFromFilePath(MacroblockName), Coord, Direction);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_PlaceTerrainBlocks_NoDestruction": {
-			declare BlockName = Event.CustomEventData[0];
-			declare StartCoord = ToInt3(Event.CustomEventData[1]);
-			declare EndCoord = ToInt3(Event.CustomEventData[2]);
-			PlaceTerrainBlocks_NoDestruction(GetTerrainBlockModelFromName(BlockName), StartCoord, EndCoord);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_PlaceMacroblock_NoTerrain": {
-			declare MacroblockName = Event.CustomEventData[0];
-			declare Coord = ToInt3(Event.CustomEventData[1]);
-			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
-			PlaceMacroblock_NoTerrain(GetMacroblockModelFromFilePath(MacroblockName), Coord, Direction);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_RemoveBlock": {
-			declare Coord = ToInt3(Event.CustomEventData[0]);
-			declare Result = RemoveBlock(Coord);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", [Result^""]);
-		}
-		case "Ch_RemoveMacroblock": {
-			declare MacroblockName = Event.CustomEventData[0];
-			declare Coord = ToInt3(Event.CustomEventData[1]);
-			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
-			declare Result = RemoveMacroblock(GetMacroblockModelFromFilePath(MacroblockName), Coord, Direction);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", [Result^""]);
-		}
-		case "Ch_RemoveMacroblock_NoTerrain": {
-			declare MacroblockName = Event.CustomEventData[0];
-			declare Coord = ToInt3(Event.CustomEventData[1]);
-			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[2]);
-			declare Result = RemoveMacroblock_NoTerrain(GetMacroblockModelFromFilePath(MacroblockName), Coord, Direction);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", [Result^""]);
-		}
-		case "Ch_RemoveTerrainBlocks": {
-			declare StartCoord = ToInt3(Event.CustomEventData[0]);
-			declare EndCoord = ToInt3(Event.CustomEventData[1]);
-			declare Result = RemoveTerrainBlocks(StartCoord,EndCoord);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", [Result^""]);
-		}
-		case "Ch_RemoveAll": {
-			RemoveAll();
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+		case "Ch_ComputeShadows": {
+			ComputeShadows();
+			wait(CurrentShadowsQuality == CMapEditorPlugin::ShadowsQuality::VeryFast);
+			Respond(Event, []);
 		}
 		case "Ch_RemoveAllBlocks": {
 			RemoveAllBlocks();
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+			Respond(Event, []);
 		}
 		case "Ch_RemoveAllTerrain": {
 			RemoveAllTerrain();
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+			Respond(Event, []);
 		}
 		case "Ch_RemoveAllOffZone": {
 			RemoveAllOffZone();
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+			Respond(Event, []);
 		}
 		case "Ch_RemoveAllObjects": {
 			RemoveAllObjects();
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+			Respond(Event, []);
+		}
+		case "Ch_RemoveAll": {
+			RemoveAll();
+			Respond(Event, []);
 		}
 		case "Ch_RemoveAllBlocksAndTerrain": {
 			RemoveAllBlocksAndTerrain();
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
+			Respond(Event, []);
+		}
+		case "Ch_PreloadAllBlocks": {
+			PreloadAllBlocks();
+			Respond(Event, []);
+		}
+		case "Ch_PreloadAllItems": {
+			PreloadAllItems();
+			Respond(Event, []);
 		}
 		case "Ch_CanPlaceBlock": {
+			declare BlockName = Event.CustomEventData[0];
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare Direction = Conversion::ToCardinal(Event.CustomEventData[2]);
+			declare OnGround = Conversion::ToBoolean(Event.CustomEventData[3]);
+			declare VariantIndex = TextLib::ToInteger(Event.CustomEventData[4]);
 
+			declare BlockModel = GetBlockModelFromName(BlockName);
+			declare Response = CanPlaceBlock(BlockModel, Coord, Direction, OnGround, VariantIndex);
+			Respond(Event, [""^Response]);
 		}
-		case "Ch_GetBlockList": {
-			declare Text[] ChBlockList;
-			foreach(Model,BlockModels)						
-				ChBlockList.add(Model.Name);
-			
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlockList.tojson()]);
+		case "Ch_CanPlaceBlock_NoDestruction": {
+			declare BlockName = Event.CustomEventData[0];
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare Direction = Conversion::ToCardinal(Event.CustomEventData[2]);
+			declare OnGround = Conversion::ToBoolean(Event.CustomEventData[3]);
+			declare VariantIndex = TextLib::ToInteger(Event.CustomEventData[4]);
+
+			declare BlockModel = GetBlockModelFromName(BlockName);
+			declare Response = CanPlaceBlock_NoDestruction(BlockModel, Coord, Direction, OnGround, VariantIndex);
+			Respond(Event, [""^Response]);
 		}
-		case "Ch_GetTerrainBlockList": {
-			declare Text[] ChBlockList;
-			foreach(Model,TerrainBlockModels)						
-				ChBlockList.add(Model.Name);
-			
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlockList.tojson()]);
+		case "Ch_PlaceBlock": {
+			declare BlockName = Event.CustomEventData[0];
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare Direction = Conversion::ToCardinal(Event.CustomEventData[2]);
+
+			declare BlockModel = GetBlockModelFromName(BlockName);
+			declare Response = PlaceBlock(BlockModel, Coord, Direction);
+			Respond(Event, [""^Response]);
 		}
-		case "Ch_GetMacroblockList": {
-			declare Text[] ChBlockList;
-			foreach(Model,MacroblockModels)						
-				ChBlockList.add(Model.Name);
-			
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True",ChBlockList.tojson()]);
+		case "Ch_PlaceBlock_NoDestruction": {
+			declare BlockName = Event.CustomEventData[0];
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare Direction = Conversion::ToCardinal(Event.CustomEventData[2]);
+
+			declare BlockModel = GetBlockModelFromName(BlockName);
+			declare Response = PlaceBlock_NoDestruction(BlockModel, Coord, Direction);
+			Respond(Event, [""^Response]);
 		}
-		case "Ch_GetGroundHeight": {
-			declare CoordX = TextLib::ToInteger(Event.CustomEventData[0]);
-			declare CoordZ = TextLib::ToInteger(Event.CustomEventData[1]);
-			declare Result = GetGroundHeight(CoordX,CoordZ);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", [Result^""]);
+		case "Ch_CanPlaceRoadBlocks": {
+			declare BlockName = Event.CustomEventData[0];
+			declare StartCoord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare EndCoord = Conversion::ToInt3(Event.CustomEventData[2]);
+
+			declare BlockModel = GetBlockModelFromName(BlockName);
+			declare Response = CanPlaceRoadBlocks(BlockModel, StartCoord, EndCoord);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_PlaceRoadBlocks": {
+			declare BlockName = Event.CustomEventData[0];
+			declare StartCoord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare EndCoord = Conversion::ToInt3(Event.CustomEventData[2]);
+
+			declare BlockModel = GetBlockModelFromName(BlockName);
+			declare Response = PlaceRoadBlocks(BlockModel, StartCoord, EndCoord);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_CanPlaceTerrainBlocks": {
+			declare BlockName = Event.CustomEventData[0];
+			declare StartCoord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare EndCoord = Conversion::ToInt3(Event.CustomEventData[2]);
+
+			declare BlockModel = GetBlockModelFromName(BlockName);
+			declare Response = CanPlaceTerrainBlocks(BlockModel, StartCoord, EndCoord);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_PlaceTerrainBlocks": {
+			declare BlockName = Event.CustomEventData[0];
+			declare StartCoord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare EndCoord = Conversion::ToInt3(Event.CustomEventData[2]);
+
+			declare BlockModel = GetBlockModelFromName(BlockName);
+			declare Response = PlaceTerrainBlocks(BlockModel, StartCoord, EndCoord);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_PlaceTerrainBlocks_NoDestruction": {
+			declare BlockName = Event.CustomEventData[0];
+			declare StartCoord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare EndCoord = Conversion::ToInt3(Event.CustomEventData[2]);
+
+			declare BlockModel = GetBlockModelFromName(BlockName);
+			declare Response = PlaceTerrainBlocks_NoDestruction(BlockModel, StartCoord, EndCoord);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_CanPlaceMacroblock": {
+			declare MacroblockName = Event.CustomEventData[0];
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare Direction = Conversion::ToCardinal(Event.CustomEventData[2]);
+
+			declare MacroblockModel = GetMacroblockModelFromFilePath(MacroblockName);
+			declare Response = CanPlaceMacroblock(MacroblockModel, Coord, Direction);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_PlaceMacroblock": {
+			declare MacroblockName = Event.CustomEventData[0];
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare Direction = Conversion::ToCardinal(Event.CustomEventData[2]);
+
+			declare MacroblockModel = GetMacroblockModelFromFilePath(MacroblockName);
+			declare Response = PlaceMacroblock(MacroblockModel, Coord, Direction);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_CanPlaceMacroblock_NoDestruction": {
+			declare MacroblockName = Event.CustomEventData[0];
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare Direction = Conversion::ToCardinal(Event.CustomEventData[2]);
+
+			declare MacroblockModel = GetMacroblockModelFromFilePath(MacroblockName);
+			declare Response = CanPlaceMacroblock_NoDestruction(MacroblockModel, Coord, Direction);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_PlaceMacroblock_NoDestruction": {
+			declare MacroblockName = Event.CustomEventData[0];
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare Direction = Conversion::ToCardinal(Event.CustomEventData[2]);
+
+			declare MacroblockModel = GetMacroblockModelFromFilePath(MacroblockName);
+			declare Response = PlaceMacroblock_NoDestruction(MacroblockModel, Coord, Direction);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_CanPlaceMacroblock_NoTerrain": {
+			declare MacroblockName = Event.CustomEventData[0];
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare Direction = Conversion::ToCardinal(Event.CustomEventData[2]);
+
+			declare MacroblockModel = GetMacroblockModelFromFilePath(MacroblockName);
+			declare Response = CanPlaceMacroblock_NoTerrain(MacroblockModel, Coord, Direction);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_PlaceMacroblock_NoTerrain": {
+			declare MacroblockName = Event.CustomEventData[0];
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare Direction = Conversion::ToCardinal(Event.CustomEventData[2]);
+
+			declare MacroblockModel = GetMacroblockModelFromFilePath(MacroblockName);
+			declare Response = PlaceMacroblock_NoTerrain(MacroblockModel, Coord, Direction);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_RemoveMacroblock": {
+			declare MacroblockName = Event.CustomEventData[0];
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare Direction = Conversion::ToCardinal(Event.CustomEventData[2]);
+
+			declare MacroblockModel = GetMacroblockModelFromFilePath(MacroblockName);
+			declare Response = RemoveMacroblock(MacroblockModel, Coord, Direction);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_RemoveMacroblock_NoTerrain": {
+			declare MacroblockName = Event.CustomEventData[0];
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare Direction = Conversion::ToCardinal(Event.CustomEventData[2]);
+
+			declare MacroblockModel = GetMacroblockModelFromFilePath(MacroblockName);
+			declare Response = RemoveMacroblock_NoTerrain(MacroblockModel, Coord, Direction);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_GetBlock": {
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[0]);
+
+			declare Response = GetBlock(Coord);
+			declare Block = Conversion::ToSChBlock(Response);
+
+			Respond(Event, [Block.tojson()]);
+		}
+		case "Ch_RemoveBlock": {
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[0]);
+
+			declare Response = RemoveBlock(Coord);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_RemoveTerrainBlocks": {
+			declare StartCoord = Conversion::ToInt3(Event.CustomEventData[0]);
+			declare EndCoord = Conversion::ToInt3(Event.CustomEventData[1]);
+
+			declare Response = RemoveTerrainBlocks(StartCoord,EndCoord);
+			Respond(Event, [""^Response]);
 		}
 		case "Ch_GetBlockGroundHeight": {
 			declare BlockName = Event.CustomEventData[0];
-			declare CoordX = TextLib::ToInteger(Event.CustomEventData[1]);
-			declare CoordZ = TextLib::ToInteger(Event.CustomEventData[2]);
-			declare Direction = TextToCMapEditorPluginCardinalDirections(Event.CustomEventData[3]);
-			declare Result = GetBlockGroundHeight(GetBlockModelFromName(BlockName),CoordX,CoordZ,Direction);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", [Result^""]);
+			declare CoordX = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare CoordY = Conversion::ToInt3(Event.CustomEventData[2]);
+			declare Direction = Conversion::ToCardinal(Event.CustomEventData[3]);
+
+			declare BlockModel = GetBlockModelFromName(BlockName);
+			declare Response = GetBlockGroundHeight(BlockModel,CoordX,CoordY,Direction);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_GetGroundHeight": {
+			declare CoordX = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare CoordY = Conversion::ToInt3(Event.CustomEventData[2]);
+
+			declare BlockModel = GetBlockModelFromName(BlockName);
+			declare Response = GetGroundHeight(CoordX,CoordY);
+			Respond(Event, [""^Response]);
+		}
+		case "Ch_GetStartLineBlock": {
+			declare Response = GetStartLineBlock();
+			declare Block = Conversion::ToSChBlock(Response);
+			Respond(Event, [""^Response]);
 		}
 		case "Ch_SetUndergroundMode": {
-			declare On = ToBoolean(Event.CustomEventData[0]);
-			UndergroundMode = On;
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_Replace": {
-			declare OldBlockName = Event.CustomEventData[0];
-			declare NewBlockName = Event.CustomEventData[1];
-
-			declare SChBlock[] ChBlocks;
-
-			foreach(Block,Blocks) {
-				if(Block.BlockModel.Name == OldBlockName) {
-					declare ChBlock = CBlockToSChBlock(Block);
-					ChBlock.Name = NewBlockName;
-					ChBlocks.add(ChBlock);
-				}
-			}
-
-			foreach(Block,ChBlocks) {
-				PlaceBlock(GetBlockModelFromName(Block.Name), Block.Coord, TextToCMapEditorPluginCardinalDirections(Block.Direction));
-			}
-
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_Swap": {
-			declare SChBlock Block1;
-			Block1.fromjson(Event.CustomEventData[0]);
-			declare SChBlock Block2;
-			Block2.fromjson(Event.CustomEventData[1]);
 			
-			RemoveBlock(Block1.Coord);
-			RemoveBlock(Block2.Coord);
+		}
+		case "Ch_ReplaceBlock": {
 			
-			PlaceBlock(GetBlockModelFromName(Block1.Name), Block2.Coord, TextToCMapEditorPluginCardinalDirections(Block2.Direction));
-			PlaceBlock(GetBlockModelFromName(Block2.Name), Block1.Coord, TextToCMapEditorPluginCardinalDirections(Block1.Direction));
+		}
+		case "Ch_ReplaceAllBlocks": {
+			
+		}
+		case "Ch_SwapBlock": {
+			
+		}
+		case "Ch_GetFinishLineBlocks": {
+			
+		}
+		case "Ch_GetCheckpointBlocks": {
 
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
 		}
-		case "Ch_SwapFlip": {
-			declare SChBlock Block1;
-			Block1.fromjson(Event.CustomEventData[0]);
-			declare SChBlock Block2;
-			Block2.fromjson(Event.CustomEventData[1]);
+		case "Ch_GetBlocksByBlockName": {
 			
-			RemoveBlock(Block1.Coord);
-			RemoveBlock(Block2.Coord);
-			
-			PlaceBlock(GetBlockModelFromName(Block1.Name), Block2.Coord, MapUnits::GetOpposedDir(TextToCMapEditorPluginCardinalDirections(Block2.Direction)));
-			PlaceBlock(GetBlockModelFromName(Block2.Name), Block1.Coord, MapUnits::GetOpposedDir(TextToCMapEditorPluginCardinalDirections(Block1.Direction)));
-
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_Message": {
-			Dialog_Message(Event.CustomEventData[0]);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_Success": {
-			Success();
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_Confusion": {
-			Confusion();
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_Complete": {
-			LayerCustomEvent(Layers::Get("ModifierStatus"), "Message", ["Modification completed."]);
-			LayerCustomEvent(Layers::Get("ModifierStatus"), "Progress", ["1"]);
-			Complete();
-			LayerCustomEvent(LayerAPI, "Ch_Complete_Response", ["True"]);
-		}
-		case "Ch_Solution": {
-			Solution();
-			LayerCustomEvent(LayerAPI, "Ch_Solution_Response", ["True"]);
-		}
-		case "Ch_SetStatusProgress": {
-			LayerCustomEvent(Layers::Get("ModifierStatus"), "Progress", [Event.CustomEventData[0]]);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
-		}
-		case "Ch_SetStatusMessage": {
-			LayerCustomEvent(Layers::Get("ModifierStatus"), "Message", [Event.CustomEventData[0]]);
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["True"]);
 		}
 		default: {
-			LayerCustomEvent(LayerAPI, Event.CustomEventType^"_Response", ["False"]);
+			Respond(Event, ["False"]);
 		}
 	}
 }
@@ -464,12 +470,7 @@ main() {
 		LayerAPI = UILayerCreate();
 		LayerAPI.ManialinkPage = Manialink::Construct("",File::Read("Media/API.Script.txt")^"""
 		
-	{{{BuildScript}}}
-		
-	main() {
-		Main();
-		Complete();
-	}""");
+	{{{BuildScript}}}""");
 	}
 	
 	while(True) {
@@ -477,7 +478,7 @@ main() {
 			if(Event.Type == CMapEditorPluginEvent::Type::LayerCustomEvent) {
 				if(TextLib::StartsWith("Ch_", Event.CustomEventType)) {
 					log("[BUILDER] Command: "^Event.CustomEventType);
-					ProcessCommand(Event);
+					ProcessRequest(Event);
 				}
 				else if(Event.CustomEventType == "Button_Exit") {
 					Quit();
