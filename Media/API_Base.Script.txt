@@ -1,0 +1,31 @@
+#RequireContext CMapEditorPluginLayer
+
+#Include "MathLib" as MathLib
+#Include "TextLib" as TextLib
+
+#Struct SResponse {
+    Text Name;
+    Text[] Values;
+    Integer Time;
+}
+
+#Struct SChBlock {
+    Integer BlockScriptId;
+    Text Name;
+    Int3 Coord;
+    Text Direction;
+    Boolean IsRoad; 
+    Boolean IsTerrain;
+    Boolean IsPodium;
+    Text Waypoint;  
+    Boolean NoRespawn;
+}
+
+#Struct SChMacroblock {
+    Boolean IsGround;
+    Boolean HasStart;
+    Boolean HasFinish;
+    Boolean HasCheckpoint;
+    Boolean HasMultilap;
+    Text Name;
+}

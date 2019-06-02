@@ -1,47 +1,3 @@
-#RequireContext CMapEditorPluginLayer
-
-#Include "MathLib" as MathLib
-#Include "TextLib" as TextLib
-
-#Struct SResponse {
-    Text Name;
-    Text[] Values;
-}
-
-#Struct SChBlock {
-    Integer BlockScriptId;
-    Text Name;
-    Int3 Coord;
-    Text Direction;
-    Boolean IsRoad; 
-    Boolean IsTerrain;
-    Boolean IsPodium;
-    Text WaypointType;  
-    Boolean NoRespawn;
-}
-
-#Struct SChMacroblock {
-    Boolean IsGround;
-    Boolean HasStart;
-    Boolean HasFinish;
-    Boolean HasCheckpoint;
-    Boolean HasMultilap;
-    Text Name;
-}
-
-// konec základu základů
-
-// vlastní kód i se strukturami
-
-***Metadata***
-***
-Script_Name = "Checkpointless";
-Script_AuthorLogin = "bigbang1112";
-Script_Description = "Remove all checkpoints and keep the holes.";
-***
-
-// konec vlastního kódu
-
 declare Text Script_Name;
 declare Text Script_AuthorLogin;
 declare Text Script_Description;
@@ -260,14 +216,8 @@ Void SetUndergroundMode(Boolean _On) {
 //
 
 Boolean ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName, Boolean _OppositeDirection) {
-    //declare Direction = _Block.Direction;
-    //declare Coord = _Block.Coord;
-    
     declare Params = [_Block.tojson(),_ReplacementBlockName,_OppositeDirection^""];
     declare Response = Request("Ch_ReplaceBlock", Params);
-    
-    //Editor.RemoveBlock(Coord);
-    //declare Response = Editor.PlaceBlock(_Replacement, Coord, BlockDirectionToMapDirection(Direction));
     return Response.Values[0] == "True";
 }   
 
@@ -309,6 +259,13 @@ SChBlock[] GetBlocksByBlockName(Text _BlockName) {
     return Blocks;  
 }
 
+SChBlock[] GetBlocks() {
+    declare Response = Request("Ch_GetBlocks", []);
+    declare SChBlock[] Blocks;
+    declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
+    return Blocks;
+}
+
 Integer Random(Integer _Min, Integer _Max) { // Consistent randomizer
     return MathLib::Rand(_Min, _Max, Editor.Map.CopperPrice);
 }
@@ -337,20 +294,28 @@ Boolean Chance(Real _Percentage) {
     return (Percentage() <= _Percentage);
 }
 
+Void Message(Text _Message) {
+    declare Response = Request("Ch_Message",[_Message]);
+}
+
 //
 /* Modifier technical control */
 //
 
 Void Solution() {
-
+    declare Response = Request("Ch_Solution", []);
 }
 
 Void Complete() { // Shouldn't be normally called
-
+    declare Response = Request("Ch_Complete", []);
 }
 
 Void Confusion() {
+    declare Response = Request("Ch_Confusion", []);
+}
 
+Void Incompatible(Text _Reason) {
+    declare Response = Request("Ch_Incompatible", [_Reason]);
 }
 
 //
@@ -358,19 +323,9 @@ Void Confusion() {
 //
 
 Void SetStatusProgress(Real _Progress) {
-    SendCustomEvent("Ch_SetStatusProgress", [_Progress^""]);
+    declare Response = Request("Ch_SetStatusProgress", [_Progress^""]);
 }
 
 Void SetStatusMessage(Text _Message) {
-    SendCustomEvent("Ch_SetStatusMessage", [_Message]);
-}
-
-//
-/* Call structure */
-//
-
-main() {
-    +++Metadata+++
-    +++Main+++
-    Complete();
+    declare Response = Request("Ch_SetStatusMessage", [_Message]);
 }

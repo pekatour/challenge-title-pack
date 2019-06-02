@@ -1,0 +1,98 @@
+#Include "TextLib" as TextLib
+
+#Include "Libs/Challenge/ModifierBase.Script.txt" as ModifierBase
+
+Int3 ToInt3(Text _Text) {
+	declare Txt = TextLib::Replace(_Text,",","");
+	Txt = TextLib::Replace(Txt,"<","");
+	Txt = TextLib::Replace(Txt,">","");
+	declare Txts = TextLib::Split(" ",Txt);
+	
+	return <TextLib::ToInteger(Txts[0]),TextLib::ToInteger(Txts[1]),TextLib::ToInteger(Txts[2])>;
+}
+
+CMapEditorPlugin::CardinalDirections ToDirectionMap(Text _Direction) {
+	switch(_Direction) {
+		case "North": { return CMapEditorPlugin::CardinalDirections::North; }
+		case "South": { return CMapEditorPlugin::CardinalDirections::South; }
+		case "West": { return CMapEditorPlugin::CardinalDirections::West; }
+		case "East": { return CMapEditorPlugin::CardinalDirections::East; }
+	}
+	return CMapEditorPlugin::CardinalDirections::North;
+}
+
+CMapEditorPlugin::CardinalDirections ToDirectionMap(CBlock::CardinalDirections _Direction) {
+	switch(_Direction) {
+		case CBlock::CardinalDirections::North: { return CMapEditorPlugin::CardinalDirections::North; }
+		case CBlock::CardinalDirections::South: { return CMapEditorPlugin::CardinalDirections::South; }
+		case CBlock::CardinalDirections::West: { return CMapEditorPlugin::CardinalDirections::West; }
+		case CBlock::CardinalDirections::East: { return CMapEditorPlugin::CardinalDirections::East; }
+	}
+	return CMapEditorPlugin::CardinalDirections::North;
+}
+
+CBlock::CardinalDirections ToDirectionBlock(Text _Direction) {
+	switch(_Direction) {
+		case "North": { return CBlock::CardinalDirections::North; }
+		case "South": { return CBlock::CardinalDirections::South; }
+		case "West": { return CBlock::CardinalDirections::West; }
+		case "East": { return CBlock::CardinalDirections::East; }
+	}
+	return CBlock::CardinalDirections::North;
+}
+
+CBlock::CardinalDirections ToDirectionBlock(CMapEditorPlugin::CardinalDirections _Direction) {
+	switch(_Direction) {
+		case CMapEditorPlugin::CardinalDirections::North: { return CBlock::CardinalDirections::North; }
+		case CMapEditorPlugin::CardinalDirections::South: { return CBlock::CardinalDirections::South; }
+		case CMapEditorPlugin::CardinalDirections::West: { return CBlock::CardinalDirections::West; }
+		case CMapEditorPlugin::CardinalDirections::East: { return CBlock::CardinalDirections::East; }
+	}
+	return CBlock::CardinalDirections::North;
+}
+
+Text ToText(CMapEditorPlugin::CardinalDirections _Direction) {
+	switch(_Direction) {
+		case CMapEditorPlugin::CardinalDirections::North: { return "North"; }
+		case CMapEditorPlugin::CardinalDirections::South: { return "South"; }
+		case CMapEditorPlugin::CardinalDirections::West: { return "West"; }
+		case CMapEditorPlugin::CardinalDirections::East: { return "East"; }
+	}
+	return "";
+}
+
+Text ToText(CBlock::CardinalDirections _Direction) {
+	switch(_Direction) {
+		case CBlock::CardinalDirections::North: { return "North"; }
+		case CBlock::CardinalDirections::South: { return "South"; }
+		case CBlock::CardinalDirections::West: { return "West"; }
+		case CBlock::CardinalDirections::East: { return "East"; }
+	}
+	return "";
+}
+
+ModifierBase::SChBlock ToSChBlock(CBlock _Block) {
+	declare ModifierBase::SChBlock ChBlock;
+	ChBlock.Name = _Block.BlockModel.Name;
+	ChBlock.Coord = _Block.Coord;
+	ChBlock.Direction = ToText(_Block.Direction);
+	
+	switch(_Block.BlockModel.WaypointType) {
+		case CBlockModel::EWayPointType::Start: { ChBlock.Waypoint = "Start"; }
+		case CBlockModel::EWayPointType::Finish: { ChBlock.Waypoint = "Finish"; }
+		case CBlockModel::EWayPointType::Checkpoint: { ChBlock.Waypoint = "Checkpoint"; }
+		case CBlockModel::EWayPointType::None: { ChBlock.Waypoint = "None"; }
+		case CBlockModel::EWayPointType::StartFinish: { ChBlock.Waypoint = "Multilap"; }
+		case CBlockModel::EWayPointType::Dispenser: { ChBlock.Waypoint = "Dispenser"; }
+	}
+	
+	ChBlock.IsRoad = _Block.BlockModel.IsRoad;
+	ChBlock.IsTerrain = _Block.BlockModel.IsTerrain;
+	ChBlock.IsPodium = _Block.BlockModel.IsPodium;
+	
+	return ChBlock;
+}
+
+Boolean ToBoolean(Text _Boolean) {
+	return _Boolean == "True";
+}

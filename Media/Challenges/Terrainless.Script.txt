@@ -1,15 +1,18 @@
-Void Metadata() {
-	ScriptName("Checkpointless");
-	ScriptAuthor("BigBang1112");
-	ScriptDescription("Removes all checkpoints yet keeps the holes.");
-}
+***Metadata***
+***
+Script_Name = "Terrainless";
+Script_AuthorLogin = "bigbang1112";
+Script_Description = "Remove all the terrain.";
+***
 
-Void Main() {
-	RemoveAllTerrain();
-	Solution();
-}
+***Main***
+***
+RemoveAllTerrain();
+Solution();
+***
 
-Void Main_Fast() {
-	RemoveAllTerrain();
-	Solution();
-}
+***Main_Fast***
+***
+RemoveAllTerrain();
+Solution();
+***

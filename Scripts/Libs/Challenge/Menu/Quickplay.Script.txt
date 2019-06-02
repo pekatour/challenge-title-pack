@@ -26,7 +26,7 @@ Void UpdateOfficialScripts(Text[] _Scripts) {
 	Layers::SendEvent("Quickplay", "ScriptList_Official_Update", [_Scripts.tojson()]);
 }
 
-Void StartMap(Text _MapLocation, SMapInfo _MapInfo, Text _ScriptLocation, Text _Script) {
+Void StartMap(Text _MapLocation, SMapInfo _MapInfo, Text[] _Scripts) {
 	if(_MapInfo.MapUid == "") {
 		Dialog_Message("Please select a map.");
 		return;
@@ -39,8 +39,7 @@ Void StartMap(Text _MapLocation, SMapInfo _MapInfo, Text _ScriptLocation, Text _
 	if(TitleFlow.IsReady)
 	TitleFlow.EditMap(_MapInfo.FileName, "Modifier.Script.txt", """<settings>
 	<setting name="S_Build" type="boolean" value="True"/>
-	<setting name="S_ScriptType" type="text" value="{{{_ScriptLocation}}}"/>
-	<setting name="S_ScriptFileName" type="text" value="{{{_Script}}}"/>
+	<setting name="S_ScriptNames" type="text" value="{{{TextLib::Replace(_Scripts.tojson(), "\"", "'")}}}"/>
 </settings>""");
 }
 
@@ -80,10 +79,10 @@ Void Event(CManiaAppEvent _Event) {
 				}
 				if(MapLocation == "Local") {
 					declare SMapInfo MapInfo;
-					declare JsonSuccess = MapInfo.fromjson(Event.CustomEventData[1]);
-					declare ScriptLocation = Event.CustomEventData[2];
-					declare Script = Event.CustomEventData[3];
-					StartMap(MapLocation, MapInfo, ScriptLocation, Script);
+					declare JsonSuccessMapInfo = MapInfo.fromjson(Event.CustomEventData[1]);
+					declare Text[] Scripts;
+					declare JsonSuccessScripts = Scripts.fromjson(Event.CustomEventData[2]);
+					StartMap(MapLocation, MapInfo, Scripts);
 				}
 			}
 			case "MapList_Local_Folder": {

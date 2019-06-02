@@ -256,8 +256,8 @@ Void UpdateScriptList(Integer _Offset) {
 			declare FrameCounter = (Frame.GetFirstChild("FRAME_COUNTER") as CMlFrame);
 			declare LabelCounter = (FrameCounter.GetFirstChild("LABEL_POSITION") as CMlLabel);
 
-			declare Folders = TextLib::Split("\\",Script);
-			Label.SetText(Folders[Folders.count-1]);
+			declare Folders = TextLib::Split("\\ ",Script);
+			Label.SetText(Folders[Folders.count-2]);
 			LabelAuthor.SetText("by ");
 			Frame.GetFirstChild("QUAD_SELECTOR_SCRIPT").Show();
 			(Frame.GetFirstChild("QUAD_SELECTOR_SCRIPT") as CMlQuad).ModulateColor = <1.0,1.0,1.0>;
@@ -301,8 +301,8 @@ Void UpdateScriptList(Integer _Offset) {
 		(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).SetText("OFFICIAL / ");
 	}
 	else if(SelectedScripts.count == 1) {
-		declare Folders = TextLib::Split("\\",SelectedScripts[0]);
-		if(Folders.count > 0) (Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).SetText("OFFICIAL / " ^ Folders[Folders.count-1]);
+		declare Folders = TextLib::Split("\\ ",SelectedScripts[0]);
+		if(Folders.count > 0) (Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).SetText("OFFICIAL / " ^ Folders[Folders.count-2]);
 	}
 	else if(SelectedScripts.count > 1) {
 		(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).SetText("""$o{{{SelectedScripts.count}}} scripts""");
@@ -353,10 +353,10 @@ main() {
 						}
 						case "QUAD_BUTTON_START": {
 							if(MapLocation == "Local") {
-								SendCustomEvent("Button_Start", [MapLocation, SelectedMapInfo.tojson(), ScriptLocation, SelectedScripts.tojson()]);
+								SendCustomEvent("Button_Start", [MapLocation, SelectedMapInfo.tojson(), SelectedScripts.tojson()]);
 							}
 							if(MapLocation == "ManiaExchange") {
-								SendCustomEvent("Button_Start", [MapLocation, SelectedMXTrackInfo.tojson(), ScriptLocation, SelectedScripts.tojson()]);
+								SendCustomEvent("Button_Start", [MapLocation, SelectedMXTrackInfo.tojson(), SelectedScripts.tojson()]);
 							}
 							if(MapLocation == "MapManager") {
 								
@@ -425,8 +425,9 @@ main() {
 								declare Script = Event.Control.Parent.DataAttributeGet("script");
 								declare Folder = Event.Control.Parent.DataAttributeGet("folder");
 
-								if(SelectedScripts.exists(Script))
+								if(SelectedScripts.exists(Script)) {
 									SelectedScripts.remove(Script);
+								}
 								else if(SelectedScripts.count == 0 || (IsMultipleScript() && SelectedScripts.count < 5))
 									SelectedScripts.add(Script);
 								else if(SelectedScripts.count == 1)
@@ -564,6 +565,7 @@ main() {
 						case "ScriptList_Official_Update": {
 							declare Text[] Scripts;
 							Scripts.fromjson(Event.CustomEventData[0]);
+							for(i,0,Scripts.count-1) Scripts[i] ^= " Official";
 							ScriptBrowserScripts = Scripts;
 							UpdateScriptList(0);
 						}

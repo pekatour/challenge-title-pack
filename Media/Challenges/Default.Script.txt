@@ -1,13 +1,11 @@
-Void Metadata() {
-	ScriptName("Default");
-	ScriptAuthor("BigBang1112");
-	ScriptDescription("");
-}
+***Metadata***
+***
+Script_Name = "Default";
+Script_AuthorLogin = "bigbang1112";
+Script_Description = "";
+***
 
-Void Main() {
-	Message("Hello world!");
-}
-
-Void Main_Fast() {
-	
-}
+***Main***
+***
+Message("Hello world!");
+***
