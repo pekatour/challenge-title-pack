@@ -427,8 +427,8 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			declare RemovedBlock1 = RemoveBlock(Block1.Coord);
 			declare RemovedBlock2 = RemoveBlock(Block2.Coord);
 
-			declare PlacedBlock1 = PlaceBlock(GetBlockModelFromName(Block2.Name), Block1.Coord, Block1.Direction);
-			declare PlacedBlock2 = PlaceBlock(GetBlockModelFromName(Block1.Name), Block2.Coord, Block2.Direction);
+			declare PlacedBlock1 = PlaceBlock(GetBlockModelFromName(Block2.Name), Block1.Coord, Conversion::ToDirectionMap(Block1.Direction));
+			declare PlacedBlock2 = PlaceBlock(GetBlockModelFromName(Block1.Name), Block2.Coord, Conversion::ToDirectionMap(Block2.Direction));
 
 			Respond(Event, [""^(RemovedBlock1 && RemovedBlock2 && PlacedBlock1 && PlacedBlock2)]);
 		}
@@ -478,80 +478,86 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 	}
 }
 
-main() {
-	log(<5,7,5>);
-	if(!S_Build) return;
+Void ProcessScript(Text _ScriptName, Text _ScriptContent) {
+	LayerAPI = UILayerCreate();
+			LayerAPI.ManialinkPage = Manialink::Construct("",File::Read("Media/API_Base.Script.txt")^"""
+			
+{{{_ScriptContent}}}
+			
+"""^File::Read("Media/API.Script.txt")^"""
+			
+"""^File::Read("Media/API_Main.Script.txt"));
+			
+	declare Completed = False;
+	while(!Completed) {
+		foreach(Event,PendingEvents) {
+			if(Event.Type == CMapEditorPluginEvent::Type::LayerCustomEvent) {
+				if(Event.CustomEventType == "Ch_Complete") {
+					Completed = True;
+					log("[BUILDER] "^_ScriptName^" completed");
+				}
+				else if(Event.CustomEventType == "Ch_Incompatible") {
+					Dialog_Message(Event.CustomEventData[0]);
+					Completed = True;
+					log("[BUILDER] "^_ScriptName^" failed");
+				}
+				else if(TextLib::StartsWith("Ch_", Event.CustomEventType)) {
+					log("[BUILDER] Request: "^Event.CustomEventType);
+					ProcessRequest(Event);
+				}
+			}
+		}
 	
-	declare ScriptNames = TextLib::Replace(S_ScriptNames,"'","\"");
-	declare Text[] Scripts;
-	if(!Scripts.fromjson(ScriptNames)) return;
+		yield;
+	}
+
+	UILayerDestroy(LayerAPI);
+
+	Layers::SendEvent("ModifierStatus", "Status", ["DONE"]);
+	Layers::SendEvent("ModifierStatus", "Message", ["Script finished successfully."]);
+	Layers::SendEvent("ModifierStatus", "Progress", ["1"]);
+}
+
+main() {
+	if(!S_Build) return;
 	
 	Prepare();
 	
-	foreach(ScriptPair,Scripts) {
-		declare Pair = TextLib::Split(" ",ScriptPair);
-		declare Script = Pair[0];
-		declare Type = Pair[1];
-		
-		Begin(Script);
-		ValidateScript();
-	
-		declare Text BuildScript;
+	if(S_TestMode) {
+		declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
+		Begin("TEST SCRIPT");
+		ProcessScript("TEST SCRIPT", PERSISTENT_CHALLENGE_CODE);
+	}
+	else {
+		declare ScriptNames = TextLib::Replace(S_ScriptNames,"'","\"");
+		declare Text[] Scripts;
+		if(!Scripts.fromjson(ScriptNames)) return;
+
+		foreach(ScriptPair,Scripts) {
+			declare Pair = TextLib::Split(" ",ScriptPair);
+			declare Script = Pair[0];
+			declare Type = Pair[1];
 			
-		switch(Type) {
-			case "Official": {
-				BuildScript = File::Read("Media/Challenges/"^Script);
-			}
-			case "Local": {
-				
-			}
-			case "Online": {
-				
-			}
-			case "Test": {
-				declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
-				BuildScript = PERSISTENT_CHALLENGE_CODE;
-			}
-		}
+			Begin(Script);
+			ValidateScript();
+
+			declare Text BuildScript;
 			
-		LayerAPI = UILayerCreate();
-		LayerAPI.ManialinkPage = Manialink::Construct("",File::Read("Media/API_Base.Script.txt")^"""
-		
-{{{BuildScript}}}
-		
-"""^File::Read("Media/API.Script.txt")^"""
-		
-"""^File::Read("Media/API_Main.Script.txt"));
-		
-		declare Completed = False;
-		while(!Completed) {
-			foreach(Event,PendingEvents) {
-				if(Event.Type == CMapEditorPluginEvent::Type::LayerCustomEvent) {
-					if(Event.CustomEventType == "Ch_Complete") {
-						Completed = True;
-						log("[BUILDER] "^Script^" completed");
-					}
-					else if(Event.CustomEventType == "Ch_Incompatible") {
-						Dialog_Message(Event.CustomEventData[0]);
-						Completed = True;
-						log("[BUILDER] "^Script^" failed");
-					}
-					else if(TextLib::StartsWith("Ch_", Event.CustomEventType)) {
-						log("[BUILDER] Request: "^Event.CustomEventType);
-						ProcessRequest(Event);
-					}
+			switch(Type) {
+				case "Official": {
+					BuildScript = File::Read("Media/Challenges/"^Script);
+				}
+				case "Local": {
+					
+				}
+				case "Online": {
+					
 				}
 			}
-		
-			yield;
+				
+			ProcessScript(Script, BuildScript);
+			sleep(500);
 		}
-
-		UILayerDestroy(LayerAPI);
-
-		Layers::SendEvent("ModifierStatus", "Status", ["DONE"]);
-		Layers::SendEvent("ModifierStatus", "Message", ["Script finished successfully."]);
-		Layers::SendEvent("ModifierStatus", "Progress", ["1"]);
-		sleep(500);
 	}
 	
 	Finish();

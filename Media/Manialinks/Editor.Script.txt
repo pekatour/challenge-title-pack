@@ -1,5 +1,4 @@
 declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
-declare persistent Text PERSISTENT_CHALLENGE_DIRECTIVES for LocalUser;
 
 while(True) {
 	foreach(Event,PendingEvents) {
@@ -12,18 +11,10 @@ while(True) {
 				SendCustomEvent("Designer", []);
 			}
 			if(Event.ControlId == "QUAD_MAINCODE") {
-				if(Page.GetFirstChild("Script").DataAttributeGet("codetype") == "DIRECTIVES") {
-					Page.GetFirstChild("Script").DataAttributeSet("codetype","MAINCODE");
-					PERSISTENT_CHALLENGE_DIRECTIVES = (Page.GetFirstChild("Script") as CMlTextEdit).Value;
-					(Page.GetFirstChild("Script") as CMlTextEdit).Value = PERSISTENT_CHALLENGE_CODE;
-				}
+				
 			}
-			if(Event.ControlId == "QUAD_DIRECTIVES") {
-				if(Page.GetFirstChild("Script").DataAttributeGet("codetype") == "MAINCODE") {
-					Page.GetFirstChild("Script").DataAttributeSet("codetype","DIRECTIVES");
-					PERSISTENT_CHALLENGE_CODE = (Page.GetFirstChild("Script") as CMlTextEdit).Value;
-					(Page.GetFirstChild("Script") as CMlTextEdit).Value = PERSISTENT_CHALLENGE_DIRECTIVES;
-				}
+			if(Event.ControlId == "QUAD_PUBLISH") {
+				
 			}
 			if(Event.ControlId == "Button_CreateChallenge_Back") {
 				SendCustomEvent("Button_CreateChallenge_Back", []);
