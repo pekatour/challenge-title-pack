@@ -262,6 +262,7 @@ SChBlock[] GetBlocksByBlockName(Text _BlockName) {
     return Blocks;  
 }
 
+// Due tend to crash the game on some (possibly heavy) maps
 SChBlock[] GetBlocks() {
     declare Response = Request("Ch_GetBlocks", []);
     declare SChBlock[] Blocks;

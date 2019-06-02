@@ -537,7 +537,7 @@ main() {
 			declare Pair = TextLib::Split(" ",ScriptPair);
 			declare Script = Pair[0];
 			declare Type = Pair[1];
-			
+
 			Begin(Script);
 			ValidateScript();
 
@@ -554,7 +554,7 @@ main() {
 					
 				}
 			}
-				
+			
 			ProcessScript(Script, BuildScript);
 			sleep(500);
 		}
