@@ -15,8 +15,6 @@ for(i,0,Blocks.count-1) {
 		RemoveBlock(Block.Coord);
 		SetStatusProgress((i+1.0)/Blocks.count);
 		SetStatusMessage("Checkpoint found. " ^ Block.Name);
-
-		yield;
 	}
 }
 

@@ -29,3 +29,8 @@
     Boolean HasMultilap;
     Text Name;
 }
+
+#Struct SReplacementResult {
+    Boolean Removed;
+    Boolean Placed;
+}

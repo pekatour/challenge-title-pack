@@ -215,25 +215,28 @@ Void SetUndergroundMode(Boolean _On) {
 /* Extensive functions */
 //
 
-Boolean ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName, Boolean _OppositeDirection) {
+SReplacementResult ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName, Boolean _OppositeDirection) {
     declare Params = [_Block.tojson(),_ReplacementBlockName,_OppositeDirection^""];
     declare Response = Request("Ch_ReplaceBlock", Params);
-    return Response.Values[0] == "True";
+
+    declare SReplacementResult Result;
+    Result.Removed = (Response.Values[0] == "True");
+    Result.Placed = (Response.Values[1] == "True");
+    return Result;
 }   
 
-Boolean ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName) {
+SReplacementResult ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName) {
     return ReplaceBlock(_Block, _ReplacementBlockName, False);
 }
 
-Boolean ReplaceAllBlocks(Text _BlockName, Text _ReplacementBlockName) {
+Void ReplaceAllBlocks(Text _BlockName, Text _ReplacementBlockName) {
     declare Params = [_BlockName, _ReplacementBlockName];
     declare Response = Request("Ch_ReplaceAllBlocks", Params);
-    return Response.Values[0] == "True";
 }
 
 Boolean SwapBlock(SChBlock _Block1, SChBlock _Block2) {
     declare Params = [_Block1.tojson(), _Block1.tojson()];
-    declare Response = Request("Ch_SwapBlocks", Params);
+    declare Response = Request("Ch_SwapBlock", Params);
     return Response.Values[0] == "True";
 }
 
@@ -302,6 +305,14 @@ Void Message(Text _Message) {
 /* Modifier technical control */
 //
 
+Void StartMultiSolution() {
+
+}
+
+Void EndMultiSolution() {
+    
+}
+
 Void Solution() {
     declare Response = Request("Ch_Solution", []);
 }
@@ -318,14 +329,20 @@ Void Incompatible(Text _Reason) {
     declare Response = Request("Ch_Incompatible", [_Reason]);
 }
 
+Void Chill() {
+    yield;
+}
+
 //
 /* Modifier appearance control */
 //
 
 Void SetStatusProgress(Real _Progress) {
     declare Response = Request("Ch_SetStatusProgress", [_Progress^""]);
+    yield;
 }
 
 Void SetStatusMessage(Text _Message) {
     declare Response = Request("Ch_SetStatusMessage", [_Message]);
+    yield;
 }

@@ -86,15 +86,8 @@ Void Prepare() {
 	LayerCustomEvent(Layers::Get("ModifierIntro"), "Show", []);
 	sleep(2000);
 	LayerCustomEvent(Layers::Get("ModifierIntro"), "Hide", []);
-}
 
-Void ValidateScript() {
-
-}
-
-Void Begin(Text _ScriptName) {
 	Layers::Show("ModifierScript");
-	Layers::SendEvent("ModifierScript", "ScriptName", [_ScriptName]);
 	sleep(100);
 	Layers::Show("ModifierStatus");
 	sleep(100);
@@ -102,7 +95,15 @@ Void Begin(Text _ScriptName) {
 	sleep(100);
 	Layers::Show("ModifierMetadata");
 	sleep(200);
-	//Layers::Hide("ModifierIntro");
+}
+
+Void ValidateScript() {
+
+}
+
+Void Begin(Text _ScriptName) {
+	Layers::SendEvent("ModifierScript", "ScriptName", [_ScriptName]);
+	Layers::SendEvent("ModifierStatus", "Status", ["MODIFYING..."]);
 }
 
 Void Finish() {
@@ -112,10 +113,6 @@ Void Finish() {
 	sleep(200);
 	//ComputeShadows();
 	//wait(CurrentShadowsQuality != CMapEditorPlugin::ShadowsQuality::NotComputed);*/
-	Layers::SendEvent("ModifierStatus", "Status", ["DONE"]);
-	Layers::SendEvent("ModifierStatus", "Message", ["Script finished successfully."]);
-	Layers::SendEvent("ModifierStatus", "Progress", ["1"]);
-	sleep(500);
 	Layers::Hide("ModifierScript");
 	Layers::Hide("ModifierStatus");
 	Layers::Hide("ModifierActions");
@@ -382,9 +379,9 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			Respond(Event, [""^Response]);
 		}
 		case "Ch_GetStartLineBlock": {
-			declare Response = GetStartLineBlock();
-			declare Block = Conversion::ToSChBlock(Response);
-			Respond(Event, [""^Response]);
+			declare Block = GetStartLineBlock();
+			declare Response = Conversion::ToSChBlock(Block);
+			Respond(Event, [Response.tojson()]);
 		}
 		case "Ch_SetUndergroundMode": {
 			declare Underground = Conversion::ToBoolean(Event.CustomEventData[0]);
@@ -406,25 +403,60 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			Respond(Event, [""^Removed, ""^Placed]);
 		}
 		case "Ch_ReplaceAllBlocks": {
+			declare BlockName = Event.CustomEventData[0];
+			declare Replacement = GetBlockModelFromName(Event.CustomEventData[1]);
+
+			foreach(Block, Blocks) {
+				if(Block.BlockModel.Name == BlockName) {
+					declare Direction = Conversion::ToDirectionMap(Block.Direction);
+					declare Coord = Block.Coord;
 			
+					declare Removed = RemoveBlock(Coord);
+					declare Placed = PlaceBlock(Replacement, Coord, Direction);
+				}
+			}
+
+			Respond(Event, []);
 		}
 		case "Ch_SwapBlock": {
-			
+			declare ModifierBase::SChBlock Block1;
+			declare JsonSuccessBlock1 = Block1.fromjson(Event.CustomEventData[0]);
+			declare ModifierBase::SChBlock Block2;
+			declare JsonSuccessBlock2 = Block2.fromjson(Event.CustomEventData[1]);
+
+			declare RemovedBlock1 = RemoveBlock(Block1.Coord);
+			declare RemovedBlock2 = RemoveBlock(Block2.Coord);
+
+			declare PlacedBlock1 = PlaceBlock(GetBlockModelFromName(Block2.Name), Block1.Coord, Block1.Direction);
+			declare PlacedBlock2 = PlaceBlock(GetBlockModelFromName(Block1.Name), Block2.Coord, Block2.Direction);
+
+			Respond(Event, [""^(RemovedBlock1 && RemovedBlock2 && PlacedBlock1 && PlacedBlock2)]);
 		}
 		case "Ch_GetFinishLineBlocks": {
-			
+			declare ModifierBase::SChBlock[] ChBlocks;
+			foreach(Block, Blocks)
+				if(Block.BlockModel.WaypointType == CBlockModel::EWayPointType::Finish)
+					ChBlocks.add(Conversion::ToSChBlock(Block));
+			Respond(Event, [ChBlocks.tojson()]);
 		}
 		case "Ch_GetCheckpointBlocks": {
-
+			declare ModifierBase::SChBlock[] ChBlocks;
+			foreach(Block, Blocks)
+				if(Block.BlockModel.WaypointType == CBlockModel::EWayPointType::Checkpoint)
+					ChBlocks.add(Conversion::ToSChBlock(Block));
+			Respond(Event, [ChBlocks.tojson()]);
 		}
 		case "Ch_GetBlocksByBlockName": {
-			
+			declare BlockName = Event.CustomEventData[0];
+			declare ModifierBase::SChBlock[] ChBlocks;
+			foreach(Block, Blocks)
+				if(Block.BlockModel.Name == BlockName)
+					ChBlocks.add(Conversion::ToSChBlock(Block));
+			Respond(Event, [ChBlocks.tojson()]);
 		}
 		case "Ch_GetBlocks": {
 			declare ModifierBase::SChBlock[] ChBlocks;
-			foreach(Block,Blocks) {
-				ChBlocks.add(Conversion::ToSChBlock(Block));
-			}
+			foreach(Block, Blocks) ChBlocks.add(Conversion::ToSChBlock(Block));
 			Respond(Event, [ChBlocks.tojson()]);
 		}
 		case "Ch_Message": {
@@ -485,11 +517,11 @@ main() {
 		LayerAPI = UILayerCreate();
 		LayerAPI.ManialinkPage = Manialink::Construct("",File::Read("Media/API_Base.Script.txt")^"""
 		
-		{{{BuildScript}}}
+{{{BuildScript}}}
 		
-		"""^File::Read("Media/API.Script.txt")^"""
+"""^File::Read("Media/API.Script.txt")^"""
 		
-		"""^File::Read("Media/API_Main.Script.txt"));
+"""^File::Read("Media/API_Main.Script.txt"));
 		
 		declare Completed = False;
 		while(!Completed) {
@@ -513,8 +545,13 @@ main() {
 		
 			yield;
 		}
-		
-		//UILayerDestroy(LayerAPI);
+
+		UILayerDestroy(LayerAPI);
+
+		Layers::SendEvent("ModifierStatus", "Status", ["DONE"]);
+		Layers::SendEvent("ModifierStatus", "Message", ["Script finished successfully."]);
+		Layers::SendEvent("ModifierStatus", "Progress", ["1"]);
+		sleep(500);
 	}
 	
 	Finish();

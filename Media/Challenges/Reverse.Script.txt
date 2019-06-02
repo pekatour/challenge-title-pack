@@ -1,43 +1,75 @@
-﻿Boolean Main() {
-	declare Pairs = [
-		"Canyon" => [
-			["RoadRaceStart","RoadRaceFinish"],
-			["RoadRaceStartMirror","RoadRaceFinishMirror"],
-			["ArenaStart","ArenaFinish"],
-			["RoadMainStart","RoadMainFinish"],
-			["","RoadCaveFinish"],
-			["","RoadCaveDoubleFinish"]
-		],
-		"Stadium" => [
-			["StadiumRoadMainStartLine","StadiumRoadMainFinishLine"]
-		],
-		"Valley" => [
-			["Road2WayStart","Road2WayFinish"],
-			["Road2WayForestStart","Road2WayForestFinish"],
-			["Road4WayStart","Road4WayFinish"],
-			["RoadForestLargeStart","RoadForestLargeFinish"]
-		],
-		"Lagoon" => [
-			["RoadMainStart","RoadMainFinish"],
-			["FreeWayStart","FreeWayFinish"],
-			["RoadThemeParkStart","RoadThemeParkFinish"],
-			["","RoadThemeParkFlipFinish"],
-			["ArenaStart","ArenaFinish"],
-			["ArenaStart","ArenaFinishX2"],
-			["","RoadTunnelFinish"]
-		]
-	];
+﻿***Metadata***
+***
+Script_Name = "Reverse";
+Script_AuthorLogin = "bigbang1112";
+Script_Description = "Swap start with finish.";
+***
 
-	declare StartLines = GetStartLineBlocks();
-	declare FinishLines = GetFinishLineBlocks();
+***Main***
+***
+declare Pairs = [
+	"Canyon" => [
+		["RoadRaceStart","RoadRaceFinish"],
+		["RoadRaceStartMirror","RoadRaceFinishMirror"],
+		["ArenaStart","ArenaFinish"],
+		["RoadMainStart","RoadMainFinish"],
+		["","RoadCaveFinish"],
+		["","RoadCaveDoubleFinish"]
+	],
+	"Stadium" => [
+		["StadiumRoadMainStartLine","StadiumRoadMainFinishLine"]
+	],
+	"Valley" => [
+		["Road2WayStart","Road2WayFinish"],
+		["Road2WayForestStart","Road2WayForestFinish"],
+		["Road4WayStart","Road4WayFinish"],
+		["RoadForestLargeStart","RoadForestLargeFinish"]
+	],
+	"Lagoon" => [
+		["RoadMainStart","RoadMainFinish"],
+		["FreeWayStart","FreeWayFinish"],
+		["RoadThemeParkStart","RoadThemeParkFinish"],
+		["","RoadThemeParkFlipFinish"],
+		["ArenaStart","ArenaFinish"],
+		["ArenaStart","ArenaFinishX2"],
+		["","RoadTunnelFinish"]
+	]
+];
 
-	if(StartLines.count == 0 || FinishLines.count == 0 || StartLines[0].Waypoint == "StartFinish") {
-		return Incompatibility();
+declare StartLine = GetStartLineBlock();
+if(StartLine.Waypoint == "StartFinish") Incompatible("Multilap tracks can't be reversed.");
+declare FinishLines = GetFinishLineBlocks();
+
+foreach(Env => PairList, Pairs) {
+	foreach(Pair, PairList) {
+		declare StartBlockName = Pair[0];
+		declare FinishBlockName = Pair[1];
+		if(StartLine.Name == StartBlockName) {
+			declare Replacemenet = ReplaceBlock(StartLine, FinishBlockName, True);
+			SetStatusProgress(0.5);
+			SetStatusMessage("""{{{StartBlockName}}} replaced with {{{FinishBlockName}}}.""");
+		}
 	}
-	else if(FinishLines.count == 1) {
-		Swap(StartLines[0], FinishLines[0]); //swap nelze pou��t kvuli obr�cen� finishe
-		return Success();
-	}
-	
-	return Confusion();
 }
+
+StartMultiSolution();
+
+for(i,0,FinishLines.count-1) {
+	declare FinishLine = FinishLines[i];
+	foreach(Env => PairList, Pairs) {
+		foreach(Pair, PairList) {
+			declare StartBlockName = Pair[0];
+			declare FinishBlockName = Pair[1];
+			if(FinishLine.Name == FinishBlockName) {
+				declare Replacemenet = ReplaceBlock(FinishLine, StartBlockName, True);
+				SetStatusProgress(0.5+(i+1.0)/FinishLines.count*.5);
+				SetStatusMessage("""{{{FinishBlockName}}} replaced with {{{StartBlockName}}}.""");
+			}
+		}
+	}
+	Solution();
+}
+
+EndMultiSolution();
+
+***
