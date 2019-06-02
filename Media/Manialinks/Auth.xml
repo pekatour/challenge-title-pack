@@ -1,0 +1,8 @@
+<frame>
+	<quad pos="0 0" z-index="-1" size="100 20" bgcolor="FFFA" halign="center" valign="center" style="Bgs1InRace" substyle="BgCardList" class="opacity"/>
+	<quad pos="0 0" z-index="0" size="100 20" bgcolor="FFFA" halign="center" valign="center" style="Bgs1InRace" substyle="BgGradV" class="opacity"/>
+	<frame z-index="1">
+		<quad z-index="0" size="90 10" halign="center" valign="center" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036" id="QUAD_BUTTON_AUTHORIZE"/>
+		<label pos="0 -0.25" z-index="1" size="90 10" text="AUTHORIZE WITH CHALLENGE" valign="center2" halign="center" textfont="RajdhaniMono"/>
+	</frame>
+</frame>

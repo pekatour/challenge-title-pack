@@ -219,8 +219,9 @@ Text GetState() {
 ///////////////////////////////////////////////////
 Void Authorize(Text _ClientId, Text _Scopes, Text _RedirectUri, CManiaApp::ELinkType _LinkType) {
 	declare Uri = TextLib::URLEncode(_RedirectUri);
+	declare Scopes = TextLib::URLEncode(_Scopes);
 	Private_GenerateStateIfNone();
-	OpenLink("https://v4.live.maniaplanet.com/login/oauth2/authorize?response_type=code&scope="^_Scopes^"&state="^Auth_State^"&client_id="^_ClientId^"&redirect_uri="^Uri, _LinkType);
+	OpenLink("https://www.maniaplanet.com/login/oauth2/authorize?response_type=code&scope="^Scopes^"&state="^Auth_State^"&client_id="^_ClientId^"&redirect_uri="^Uri, _LinkType);
 }
 
 ///////////////////////////////////////////////////

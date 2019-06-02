@@ -2,11 +2,6 @@
 
 RequestLoadMap();
 
-UIManager.UIAll.OverlayHideCheckPointList = True;
-UIManager.UIAll.OverlayHideSpeedAndDist = True;
-UIManager.UIAll.OverlayHidePersonnalBestAndRank = True;
-UIManager.UIAll.OverlayHideChrono = True;
-
 ClientManiaAppUrl = "file://Media/ManiaApps/ChallengeSoloClient.Script.txt";
 
 while(True) {

@@ -17,6 +17,8 @@
 #Include "Libs/Challenge/Menu/Main.Script.txt" as Menu_Main
 #Include "Libs/Challenge/Menu/Top.Script.txt" as Menu_Top
 #Include "Libs/Challenge/Menu/Editor.Script.txt" as Menu_Editor
+#Include "Libs/Challenge/Menu/Auth.Script.txt" as Menu_Auth
+
 #Include "Libs/Challenge/Devmode.Script.txt" as Devmode
 
 #Setting S_Devmode True
@@ -24,12 +26,28 @@
 main() {	
 	Layers::Create("Loading", "file://Media/Manialinks/Loading.xml", True, CUILayer::EUILayerType::LoadingScreen);
 	
+	//Auth::AuthorizeInManialink("b1a3d10ba7", "basic maps", "http://localhost/challenge/auth");
+	
+	Auth::Start();
+	
+	Menu_Auth::Start();
+	while(!Menu_Auth::CanPass()) {
+		foreach(Event,PendingEvents) {
+			Menu_Auth::Event(Event);
+		}
+	
+		Menu_Auth::Async();
+		
+		Auth::Loop();
+		Menu_Auth::Loop();
+		yield;
+	}
+	Menu_Auth::End();
+	
 	Menu_Quickplay::Start();
 	Menu_Main::Start();
 	Menu_Top::Start();
 	Menu_Editor::Start();
-	
-	Auth::Start();
 	
 	if(S_Devmode) {
 		Devmode::Start();
