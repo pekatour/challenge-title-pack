@@ -3,10 +3,10 @@
 #Include "Libs/BigBang1112/Layers.Script.txt" as Layers
 #Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
 
-Playground.UI.OverlayHideCheckPointList = True;
-Playground.UI.OverlayHideSpeedAndDist = True;
-Playground.UI.OverlayHidePersonnalBestAndRank = True;
-Playground.UI.OverlayHideChrono = True;
+ClientUI.OverlayHideCheckPointList = True;
+ClientUI.OverlayHideSpeedAndDist = True;
+ClientUI.OverlayHidePersonnalBestAndRank = True;
+ClientUI.OverlayHideChrono = True;
 
 Layers::Create("Ingame", Manialink::FromFile("Media/Manialinks/SoloIngame"), True);
 
