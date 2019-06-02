@@ -6,15 +6,33 @@
 #Include "Libs/BigBang1112/Http.Script.txt" as Http
 #Include "Libs/BigBang1112/Auth.Script.txt" as Auth
 
+#Struct SAccess {
+	Boolean Pass;
+}
+
 declare Text AuthorizeUrl;
-declare Boolean Pass;
+declare SAccess Access;
 
 Boolean CanPass() {
-	return Pass;
+	return Access.Pass;
+}
+
+Void ExtractRedirect(Text _Page) {
+	declare FindExistingAuthUrl = TextLib::RegexMatch("OpenLink\\(\"(.*?)\", ::LinkType::ManialinkBrowser\\)", _Page, "i");
+	if(FindExistingAuthUrl[1] != "") {
+		declare AuthRequestPage = Http::SyncGET(FindExistingAuthUrl[1]);
+		if(AuthRequestPage.StatusCode != 200) {
+			Dialog_Message("No internet connection. I can't let you in. :/");
+		}
+		else {
+			declare JsonSuccess = Access.fromjson(AuthRequestPage.Result);
+		}
+		Http.Destroy(AuthRequestPage);
+	}
 }
 
 Void Start() {	
-	declare AuthRequestPage = Http::SyncGET("https://www.maniaplanet.com/login/oauth2/authorize?response_type=token&scope=basic&state=dsgasgsdag&client_id=b1a3d10ba7&login=bigbang1112&token="^Auth::GetToken().Value^"&redirect_uri="^TextLib::URLEncode("http://localhost/challenge/auth"));
+	declare AuthRequestPage = Http::SyncGET("https://www.maniaplanet.com/login/oauth2/authorize?response_type=code&scope=basic&state=dsgasgsdag&client_id=b1a3d10ba7&login="^LocalUser.Login^"&token="^Auth::GetToken().Value^"&redirect_uri="^TextLib::URLEncode("https://challenge.bigbang1112.eu/ingame/auth"));
 	if(AuthRequestPage.StatusCode != 200) {
 		Dialog_Message("No internet connection. I can't let you in. :/");
 	}
@@ -22,17 +40,7 @@ Void Start() {
 		declare FindAuthorizeUrl = TextLib::RegexMatch("manialink=\"(.*?)\"", AuthRequestPage.Result, "i");
 		
 		if(FindAuthorizeUrl[1] == "") {
-			declare FindExistingAuthUrl = TextLib::RegexMatch("OpenLink\\(\"(.*?)\", ::LinkType::ManialinkBrowser\\)", AuthRequestPage.Result, "i");
-			if(FindExistingAuthUrl[1] != "") {
-				declare AuthRequestPage = Http::SyncGET(FindExistingAuthUrl[1]);
-				if(AuthRequestPage.StatusCode != 200) {
-					Dialog_Message("No internet connection. I can't let you in. :/");
-				}
-				else {
-					Pass = True;
-				}
-				Http.Destroy(AuthRequestPage);
-			}
+			ExtractRedirect(AuthRequestPage.Result);
 		}
 		else {
 			Layers::Create("Auth", Manialink::FromFile("Media/Manialinks/Auth"), True);
@@ -63,7 +71,8 @@ Void Event(CManiaAppEvent _Event) {
 Void Async() {
 	if(Http::IsCompleted("AuthAccept")) {
 		if(Http::IsSuccessful("AuthAccept")) {
-			Pass = True;
+			ExtractRedirect(Http::GetResult("AuthAccept"));
+			Layers::Destroy("Auth");
 		}
 		else {
 			log("Http error: " ^ Http::GetStatusCode("AuthAccept"));
