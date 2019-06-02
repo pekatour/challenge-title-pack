@@ -5,6 +5,7 @@
 	<quad pos="0.5 21.5" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/Challenge.png" halign="center" modulatecolor="036"/>
 	<label pos="35 30" z-index="0" size="30 5" text="MADE BY $i$o$nBIGBANG1112" halign="center" textsize="1.5" textemboss="1" textfont="RajdhaniMono" scriptevents="1" style="TextButtonMedium"/>
 	<quad pos="-65 -15" z-index="0" size="10 10" bgcolor="FFFA" image="file://Media/Images/Sign.png"/>
+	<label pos="57 -20" z-index="0" size="50 5" text="" textsize="1" valign="center2" textemboss="1" textcolor="AAA" id="LABEL_VERSION"/>
 	<frame pos="0 -8">
 		<frame>
 			<quad z-index="0" size="90 10" halign="center" valign="bottom" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036" id="QUAD_BUTTON_CREATECHALLENGE"/>

@@ -2,6 +2,8 @@
 #Include "MathLib" as MathLib
 
 main() {
+	(Page.GetFirstChild("LABEL_VERSION") as CMlLabel).SetText(TextLib::Split(" ", LoadedTitle.TitleVersion)[0]);
+
 	while(True) {
 		foreach(Event,PendingEvents) {
 			switch(Event.Type) {
