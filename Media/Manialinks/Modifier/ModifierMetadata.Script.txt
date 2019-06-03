@@ -1,0 +1,27 @@
+#Struct SMetadata {
+	Text Name;
+	Text AuthorLogin;
+	Text AuthorNickname;
+	Text Description;
+}
+
+main() {
+	while(True) {
+		foreach(Event,PendingEvents) {
+			switch(Event.Type) {
+				case CMlScriptEvent::Type::PluginCustomEvent: {
+					switch(Event.CustomEventType) {
+						case "Metadata": {
+							declare SMetadata Metadata;
+							declare JsonSuccess = Metadata.fromjson(Event.CustomEventData[0]);
+							(Page.GetFirstChild("LABEL_NAME") as CMlLabel).SetText(Metadata.Name);
+							(Page.GetFirstChild("LABEL_AUTHOR") as CMlLabel).SetText(Metadata.AuthorLogin);
+							(Page.GetFirstChild("LABEL_DESCRIPTION") as CMlLabel).SetText(Metadata.Description);
+						}
+					}
+				}
+			}
+		}
+		yield;
+	}
+}

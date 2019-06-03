@@ -19,6 +19,11 @@
 
 #Const S_HideUI True
 
+#Struct SScriptInfo {
+	Text Name;
+	Text Type;
+}
+
 declare CUILayer LayerAPI;
 
 Text GetScriptFileName(Text _ScriptFullName) {
@@ -64,7 +69,7 @@ Void Prepare() {
 	HideEditorInterface = S_HideUI;
 	EditMode = CMapEditorPlugin::EditMode::FreeLook;
 	declare Success = SetMapType("TrackMania/Challenge");
-	Map.MapName ^= "$z - Reverse";
+	Map.MapName ^= "$z -";
 	
 	Layers::Create("ModifierIntro",Manialink::FromFile("Media/Manialinks/Modifier/ModifierIntro"));
 	Layers::Create("ModifierScript",Manialink::FromFile("Media/Manialinks/Modifier/ModifierScript"));
@@ -505,6 +510,9 @@ Void ProcessScript(Text _ScriptName, Text _ScriptContent) {
 					log("[BUILDER] Request: "^Event.CustomEventType);
 					ProcessRequest(Event);
 				}
+				if(Event.CustomEventType == "ScriptMetadata") {
+					Layers::SendEvent("ModifierMetadata", "Metadata", [Event.CustomEventData[0]]);
+				}
 			}
 		}
 	
@@ -521,6 +529,10 @@ Void ProcessScript(Text _ScriptName, Text _ScriptContent) {
 main() {
 	if(!S_Build) return;
 	
+	declare ScriptNames = TextLib::Replace(S_ScriptNames,"'","\"");
+	declare SScriptInfo[] Scripts;
+	if(!Scripts.fromjson(ScriptNames) && !S_TestMode) return;
+	
 	Prepare();
 	
 	if(S_TestMode) {
@@ -529,23 +541,17 @@ main() {
 		ProcessScript("TEST SCRIPT", PERSISTENT_CHALLENGE_CODE);
 	}
 	else {
-		declare ScriptNames = TextLib::Replace(S_ScriptNames,"'","\"");
-		declare Text[] Scripts;
-		if(!Scripts.fromjson(ScriptNames)) return;
-
-		foreach(ScriptPair,Scripts) {
-			declare Pair = TextLib::Split(" ",ScriptPair);
-			declare Script = Pair[0];
-			declare Type = Pair[1];
-
-			Begin(Script);
+		foreach(Script,Scripts) {
+			Begin(Script.Name);
 			ValidateScript();
+			
+			Map.MapName ^= " "^TextLib::SubText(Script.Name, 0, TextLib::Length(Script.Name)-11);
 
 			declare Text BuildScript;
 			
-			switch(Type) {
+			switch(Script.Type) {
 				case "Official": {
-					BuildScript = File::Read("Media/Challenges/"^Script);
+					BuildScript = File::Read("Media/Challenges/"^Script.Name);
 				}
 				case "Local": {
 					
@@ -555,7 +561,7 @@ main() {
 				}
 			}
 			
-			ProcessScript(Script, BuildScript);
+			ProcessScript(Script.Name, BuildScript);
 			sleep(500);
 		}
 	}

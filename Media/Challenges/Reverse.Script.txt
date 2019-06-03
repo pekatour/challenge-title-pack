@@ -1,8 +1,8 @@
 ﻿***Metadata***
 ***
-Script_Name = "Reverse";
-Script_AuthorLogin = "bigbang1112";
-Script_Description = "Swap start with finish.";
+Script.Name = "Reverse";
+Script.AuthorLogin = "bigbang1112";
+Script.Description = "Swap start with finish.";
 ***
 
 ***Main***

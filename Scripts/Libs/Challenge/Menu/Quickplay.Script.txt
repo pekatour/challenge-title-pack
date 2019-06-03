@@ -5,6 +5,7 @@
 #Include "Libs/BigBang1112/Data.Script.txt" as Data
 #Include "Libs/BigBang1112/Layers.Script.txt" as Layers
 #Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
+#Include "Libs/BigBang1112/File.Script.txt" as File
 
 #Struct SMapInfo {
 	Text Name;
@@ -15,18 +16,40 @@
 	Boolean IsPlayable;
 }
 
+#Struct SMetadata {
+	Text Name;
+	Text AuthorLogin;
+	Text AuthorNickname;
+	Text Description;
+}
+
+#Struct SScriptInfo {
+	Text Name;
+	Text Type;
+	SMetadata Metadata;
+}
+
+declare CUILayer[Text] LayerAPIs;
+
 Void UpdateLocalMaps(Text _Folder, Text _SearchMapName, Text _SearchAuthorName) {
 	declare FlatSearch = (_SearchMapName != "" || _SearchAuthorName != "");
-	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(4,_Folder,FlatSearch));
+	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(2,_Folder,FlatSearch));
 	Data::Set("MAPLIST_LOCAL_SEARCHMAPNAME",_SearchMapName);
 	Data::Set("MAPLIST_LOCAL_SEARCHAUTHORNAME",_SearchAuthorName);
 }
 
 Void UpdateOfficialScripts(Text[] _Scripts) {
-	Layers::SendEvent("Quickplay", "ScriptList_Official_Update", [_Scripts.tojson()]);
+	declare SScriptInfo[] Scripts;
+	foreach(Script,_Scripts) {
+		declare SScriptInfo Info;
+		Info.Name = Script;
+		Info.Type = "Official";
+		Scripts.add(Info);
+	}
+	Layers::SendEvent("Quickplay", "ScriptList_Official_Update", [Scripts.tojson()]);
 }
 
-Void StartMap(Text _MapLocation, SMapInfo _MapInfo, Text[] _Scripts) {
+Void StartMap(Text _MapLocation, SMapInfo _MapInfo, SScriptInfo[] _Scripts) {
 	if(_MapInfo.MapUid == "") {
 		Dialog_Message("Please select a map.");
 		return;
@@ -80,7 +103,7 @@ Void Event(CManiaAppEvent _Event) {
 				if(MapLocation == "Local") {
 					declare SMapInfo MapInfo;
 					declare JsonSuccessMapInfo = MapInfo.fromjson(Event.CustomEventData[1]);
-					declare Text[] Scripts;
+					declare SScriptInfo[] Scripts;
 					declare JsonSuccessScripts = Scripts.fromjson(Event.CustomEventData[2]);
 					StartMap(MapLocation, MapInfo, Scripts);
 				}
@@ -109,6 +132,33 @@ Void Event(CManiaAppEvent _Event) {
 				Search.Limit = "20";
 				if(!MX::AsyncSearch("MX_SEARCH_UPDATE", "tm", Search, True)) {
 				
+				}
+			}
+			case "ScriptList_Metadata": {
+				declare SScriptInfo Info;
+				declare JsonSuccess = Info.fromjson(Event.CustomEventData[0]);
+				
+				declare Text ScriptContent;
+				
+				if(Info.Type == "Official") ScriptContent = File::Read("Media/Challenges/"^Info.Name);
+				
+				declare LayerAPI = UILayerCreate();
+				LayerAPI.ManialinkPage = Manialink::Construct("",File::Read("Media/API_Base_Metadata.Script.txt")^"""
+declare SMetadata Script;
+
+{{{ScriptContent}}}
+
+"""^File::Read("Media/API_Main_Metadata.Script.txt"));
+
+				LayerAPIs[Info.Name] = LayerAPI;
+			}
+			case "ScriptMetadata": {
+				foreach(Name => API,LayerAPIs) {
+					if(API == Event.CustomEventLayer) {
+						Layers::SendEvent("Quickplay", "ScriptList_Metadata_Response", [Name, Event.CustomEventData[0]]);
+						UILayerDestroy(API);
+						LayerAPIs.removekey(Name);
+					}
 				}
 			}
 		}

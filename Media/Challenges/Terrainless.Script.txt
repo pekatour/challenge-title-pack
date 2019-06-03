@@ -1,8 +1,8 @@
 ***Metadata***
 ***
-Script_Name = "Terrainless";
-Script_AuthorLogin = "bigbang1112";
-Script_Description = "Remove all the terrain.";
+Script.Name = "Terrainless";
+Script.AuthorLogin = "bigbang1112";
+Script.Description = "Remove all the terrain.";
 ***
 
 ***Main***

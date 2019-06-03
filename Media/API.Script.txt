@@ -1,9 +1,9 @@
-declare Text Script_Name;
-declare Text Script_AuthorLogin;
-declare Text Script_Description;
+declare SMetadata Script;
 
 SResponse Request(Text _Command, Text[] _Arguments) {
     declare SResponse Response;
+
+    Response.Time = Now;
 
     SendCustomEvent(_Command, _Arguments);
 
@@ -21,6 +21,8 @@ SResponse Request(Text _Command, Text[] _Arguments) {
         }
         yield;
     }
+
+    Response.Time = Now - Response.Time;
 
     return Response;
 }
@@ -268,6 +270,12 @@ SChBlock[] GetBlocks() {
     declare SChBlock[] Blocks;
     declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
     return Blocks;
+}
+
+Integer MultipleBlocks(Int3 _Coord) {
+    declare Params = [""^_Coord];
+    declare Response = Request("Ch_MultipleBlocks", Params);
+    return TextLib::ToInteger(Response.Values[0]);
 }
 
 Integer Random(Integer _Min, Integer _Max) { // Consistent randomizer

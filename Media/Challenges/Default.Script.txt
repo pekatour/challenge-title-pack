@@ -1,8 +1,8 @@
 ***Metadata***
 ***
-Script_Name = "Default";
-Script_AuthorLogin = "bigbang1112";
-Script_Description = "";
+Script.Name = "Default";
+Script.AuthorLogin = "bigbang1112";
+Script.Description = "";
 ***
 
 ***Main***

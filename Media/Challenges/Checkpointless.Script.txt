@@ -1,8 +1,8 @@
 ***Metadata***
 ***
-Script_Name = "Checkpointless";
-Script_AuthorLogin = "bigbang1112";
-Script_Description = "Remove all checkpoints and keep the holes.";
+Script.Name = "Checkpointless";
+Script.AuthorLogin = "bigbang1112";
+Script.Description = "Remove all checkpoints and keep the holes.";
 ***
 
 ***Main***

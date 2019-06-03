@@ -1,13 +1,5 @@
-#RequireContext CMapEditorPluginLayer
-
 #Include "MathLib" as MathLib
 #Include "TextLib" as TextLib
-
-#Struct SResponse {
-    Text Name;
-    Text[] Values;
-    Integer Time;
-}
 
 #Struct SMetadata {
     Text Name;
