@@ -9,8 +9,11 @@
 		<quad pos="50 70" z-index="0" size="15 15" bgcolor="FFFA" style="UIConstruction_Buttons" substyle="Item" scriptevents="1" halign="center" valign="center" id="QUAD_LIGHT"/>
 		<quad z-index="0" pos="90 70" size="50 15" halign="center" valign="center" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="345" id="QUAD_PUBLISH"/>
 		<label pos="90 69.5" z-index="2" size="50 15" text="PUBLISH" textfont="RajdhaniMono" halign="center" valign="center2" textsize="6"/>
-		<quad z-index="0" pos="132.5 70" size="30 15" halign="center" valign="center" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="060" id="Test"/>
-		<label pos="132.5 69.5" z-index="2" size="30 15" text="TEST" textfont="RajdhaniMono" halign="center" valign="center2" textsize="6"/>
+		<frame pos="132.5 70" z-index="1">
+			<quad z-index="0" size="30 15" halign="center" valign="center" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="060" id="Test"/>
+			<label pos="0 -0.5" z-index="1" size="30 15" text="TEST" textfont="RajdhaniMono" halign="center" valign="center2" textsize="6" id="LABEL_TEST"/>
+			<quad z-index="1" size="10 10" bgcolor="FFFA" halign="center" valign="center" style="BgRaceScore2" substyle="SandTimer" class="LOADING" id="QUAD_LOADING_TEST" hidden="1"/>
+		</frame>
 		<textedit pos="-70 60" z-index="0" size="217.5 130" default="" showlinenumbers="1" textformat="Script" id="Script" data-codetype="MAINCODE"/>
 		<label pos="-80 -75" z-index="0" size="227.5 5" text="All written and published code is available open source, which means everyone can see your coding skills. You have been warned." valign="center2" textsize="1.5" textfont="BiryaniDemiBold"/>
 	</frame>

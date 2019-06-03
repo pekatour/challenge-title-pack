@@ -339,6 +339,8 @@ main() {
 	ScriptLocation = "Official";
 	MXPage = 1;
 
+	Page.GetClassChildren("LOADING", Page.MainFrame, True);
+
 	while(True) {
 		foreach(Event,PendingEvents) {
 			switch(Event.Type) {
@@ -645,7 +647,9 @@ main() {
 		}
 		//
 		
-		Page.GetFirstChild("QUAD_MAPLIST_LOADING").RelativeRotation += Period / 5.0;
+		foreach(Control,Page.GetClassChildren_Result) {
+			Control.RelativeRotation += Period / 5.0;
+		}
 
 		yield;
 	}

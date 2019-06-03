@@ -1,3 +1,5 @@
+Page.GetClassChildren("LOADING", Page.MainFrame, True);
+
 declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
 
 while(True) {
@@ -5,6 +7,8 @@ while(True) {
 		if(Event.Type == CMlScriptEvent::Type::MouseClick) {
 			if(Event.ControlId == "Test") {
 				PERSISTENT_CHALLENGE_CODE = (Page.GetFirstChild("Script") as CMlTextEdit).Value;
+				Page.GetFirstChild("LABEL_TEST").Hide();
+				Page.GetFirstChild("QUAD_LOADING_TEST").Show();
 				SendCustomEvent("Test", []);
 			}
 			if(Event.ControlId == "Designer") {
@@ -36,7 +40,15 @@ while(True) {
 			if(Event.CustomEventType == "Code_SetText") {
 				(Page.GetFirstChild("Script") as CMlTextEdit).Value = Event.CustomEventData[0];
 			}
+			if(Event.CustomEventType == "Loading_End_Test") {
+				Page.GetFirstChild("LABEL_TEST").Show();
+				Page.GetFirstChild("QUAD_LOADING_TEST").Hide();
+			}
 		}
+	}
+
+	foreach(Control,Page.GetClassChildren_Result) {
+		Control.RelativeRotation += Period / 5.0;
 	}
 	yield;
 }

@@ -29,7 +29,7 @@
 				
 				<frame pos="50 -60" z-index="2" id="FRAME_MAPLIST_LOADING" hidden="1">
 					<quad z-index="0" size="100 80" bgcolor="FFFA" style="Bgs1" substyle="BgListLine" halign="center" valign="center" scriptevents="1"/>
-					<quad size="15 15" bgcolor="FFFA" style="BgRaceScore2" substyle="SandTimer" halign="center" valign="center" id="QUAD_MAPLIST_LOADING" z-index="1"/>
+					<quad size="15 15" bgcolor="FFFA" style="BgRaceScore2" substyle="SandTimer" halign="center" valign="center" class="LOADING" z-index="1"/>
 				</frame>
 				
 				<frame pos="0 -10" z-index="1">

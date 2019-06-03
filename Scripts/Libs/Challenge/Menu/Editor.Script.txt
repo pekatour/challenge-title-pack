@@ -8,17 +8,21 @@ Void Start() {
 	Layers::SendEvent("Editor", "Code_SetText", [File::Read("Media/Challenges/Default.Script.txt")]);
 }
 
+declare Boolean StartTest;
+
 Void Event(CManiaAppEvent _Event) {
 	declare Event <=> _Event;
 
 	if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
 		switch(Event.CustomEventType) {
 			case "Test": {
-				if(TitleFlow.IsReady)
-				TitleFlow.EditMap("A01.Map.Gbx", "Modifier.Script.txt","""<settings>
+				if(TitleFlow.IsReady) {
+					TitleFlow.EditMap("A01.Map.Gbx", "Modifier.Script.txt","""<settings>
 	<setting name="S_Build" type="boolean" value="True"/>
 	<setting name="S_TestMode" type="boolean" value="True"/>
-	</settings>""");
+</settings>""");
+					StartTest = True;
+				}
 			}
 			case "Button_CreateChallenge_Back": {
 				Layers::Show("Menu");
@@ -35,5 +39,8 @@ Void Async() {
 }
 
 Void Loop() {
-	
+	if(StartTest && TitleFlow.IsReady) {
+		Layers::SendEvent("Editor", "Loading_End_Test", []);
+		StartTest = False;
+	}
 }
