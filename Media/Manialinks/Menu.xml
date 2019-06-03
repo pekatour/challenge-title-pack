@@ -4,7 +4,7 @@
 	<quad pos="0 22" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/Challenge.png" halign="center"/>
 	<quad pos="0.5 21.5" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/Challenge.png" halign="center" modulatecolor="036"/>
 	<label pos="35 30" z-index="0" size="30 5" text="MADE BY $i$o$nBIGBANG1112" halign="center" textsize="1.5" textemboss="1" textfont="RajdhaniMono" scriptevents="1" style="TextButtonMedium"/>
-	<quad pos="-65 -15" z-index="0" size="10 10" bgcolor="FFFA" image="file://Media/Images/Sign.png"/>
+	<quad pos="-65 -15" z-index="0" size="10 10" bgcolor="FFFA" image="file://Media/Images/Sign.png" url="https://bigbang1112.eu/youtube"/>
 	<label pos="57 -20" z-index="0" size="50 5" text="" textsize="1" valign="center2" textemboss="1" textcolor="AAA" id="LABEL_VERSION"/>
 	<frame pos="0 -8">
 		<frame>
