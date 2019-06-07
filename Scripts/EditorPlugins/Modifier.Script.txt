@@ -10,6 +10,8 @@
 #Include "Libs/Challenge/Conversion.Script.txt" as Conversion
 #Include "Libs/Challenge/ModifierBase.Script.txt" as ModifierBase
 
+#Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
+
 #Setting S_Build True
 
 #Setting S_ScriptNames ""
@@ -108,7 +110,7 @@ Void ValidateScript() {
 
 Void Begin(Text _ScriptName) {
 	Layers::SendEvent("ModifierScript", "ScriptName", [_ScriptName]);
-	Layers::SendEvent("ModifierStatus", "Status", ["MODIFYING..."]);
+	Layers::SendEvent("ModifierStatus", "Status", [Dictionary::Get("MODIFYING",LocalUser.Language)^"..."]);
 }
 
 Void Finish() {
@@ -487,7 +489,7 @@ Void ProcessScript(Text _ScriptName, Text _ScriptContent) {
 	LayerAPI = UILayerCreate();
 			LayerAPI.ManialinkPage = Manialink::Construct("",File::Read("Media/API_Base.Script.txt")^"""
 			
-{{{_ScriptContent}}}
+{{{Dictionary::TranslateAllPhrases(_ScriptContent)}}}
 			
 """^File::Read("Media/API.Script.txt")^"""
 			
@@ -521,8 +523,8 @@ Void ProcessScript(Text _ScriptName, Text _ScriptContent) {
 
 	UILayerDestroy(LayerAPI);
 
-	Layers::SendEvent("ModifierStatus", "Status", ["DONE"]);
-	Layers::SendEvent("ModifierStatus", "Message", ["Script finished successfully."]);
+	Layers::SendEvent("ModifierStatus", "Status", [Dictionary::Get("DONE",LocalUser.Language)]);
+	Layers::SendEvent("ModifierStatus", "Message", [Dictionary::Get("SCRIPT_FINISHED",LocalUser.Language)]);
 	Layers::SendEvent("ModifierStatus", "Progress", ["1"]);
 }
 
@@ -537,7 +539,7 @@ main() {
 	
 	if(S_TestMode) {
 		declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
-		Begin("TEST SCRIPT");
+		Begin(Dictionary::Get("TEST_SCRIPT",LocalUser.Language));
 		ProcessScript("TEST SCRIPT", PERSISTENT_CHALLENGE_CODE);
 	}
 	else {

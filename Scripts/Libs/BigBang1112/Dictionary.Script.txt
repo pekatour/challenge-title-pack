@@ -3,7 +3,6 @@
 
 declare Text[Text][Text] G_Dictionaries;
 declare Text[] G_Definitions;
-declare Text ForcedLanguage;
 
 Void Define(Text _Definition) {
 	G_Definitions.add(_Definition);
@@ -34,10 +33,21 @@ Text Get(Text _Definition, Text _Language) {
 	}
 	
 	if(G_Dictionaries["en"].existskey(_Definition)) {
-		if(ForcedLanguage == "")
+		if(_Language == LocalUser.Language)
 			return TextLib::GetTranslatedText(G_Dictionaries["en"][_Definition]);
 		return G_Dictionaries["en"][_Definition];
 	}
 	
 	return _Definition;
+}
+
+Text TranslateAllPhrases(Text _Source) {
+	declare Txt = _Source;
+	declare Phrases = TextLib::RegexFind("\\{\\{\\{\\{(.*?)\\}\\}\\}\\}", Txt, "gi");
+	foreach(P,Phrases) {
+		declare Phrase = TextLib::SubText(P,4,TextLib::Length(P)-8);
+		Phrase = Get(Phrase, LocalUser.Language);
+		Txt = TextLib::Replace(Txt, P, Phrase);
+	}
+	return Txt;
 }

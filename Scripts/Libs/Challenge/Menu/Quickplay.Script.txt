@@ -6,6 +6,7 @@
 #Include "Libs/BigBang1112/Layers.Script.txt" as Layers
 #Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
 #Include "Libs/BigBang1112/File.Script.txt" as File
+#Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
 
 #Struct SMapInfo {
 	Text Name;
@@ -146,7 +147,7 @@ Void Event(CManiaAppEvent _Event) {
 				LayerAPI.ManialinkPage = Manialink::Construct("",File::Read("Media/API_Base_Metadata.Script.txt")^"""
 declare SMetadata Script;
 
-{{{ScriptContent}}}
+{{{Dictionary::TranslateAllPhrases(ScriptContent)}}}
 
 """^File::Read("Media/API_Main_Metadata.Script.txt"));
 

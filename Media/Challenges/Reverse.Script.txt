@@ -2,7 +2,7 @@
 ***
 Script.Name = "Reverse";
 Script.AuthorLogin = "bigbang1112";
-Script.Description = "Swap start with finish.";
+Script.Description = "{{{{REVERSE_DESCRIPTION}}}}";
 ***
 
 ***Main***

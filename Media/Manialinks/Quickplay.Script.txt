@@ -158,7 +158,7 @@ Void UpdateLocalMapsFolder(Integer _Offset) {
 				(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).Substyle = "BgCard";
 				(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("file://Thumbnails/MapUid/"^MapInfo.MapUid);
 				(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(MapInfo.Name);
-				(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{by}}} "^MapInfo.AuthorNickName);
+				(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^MapInfo.AuthorNickName);
 			}
 			else
 				(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).Substyle = "BgCardInventoryItem";
@@ -175,7 +175,8 @@ Void UpdateLocalMapsFolder(Integer _Offset) {
 		Frame.GetFirstChild("QUAD_SELECTOR").Hide();
 	}
 
-	(Page.GetFirstChild("LABEL_MAP_NAME") as CMlLabel).SetText("{{{{LOCAL_MAPS}}}} / " ^ SelectedMapInfo.Name);
+	if(SelectedMapInfo.Name == "") (Page.GetFirstChild("LABEL_MAP_NAME") as CMlLabel).SetText("{{{{LOCAL_MAPS}}}} / $888{{{{no_map_selected}}}}");
+	else (Page.GetFirstChild("LABEL_MAP_NAME") as CMlLabel).SetText("{{{{LOCAL_MAPS}}}} / " ^ SelectedMapInfo.Name);
 }
 
 Void UpdateManiaExchange(Integer _Offset) {
@@ -202,7 +203,7 @@ Void UpdateManiaExchange(Integer _Offset) {
 			declare Label = (Frame.GetFirstChild("LABEL_MAPNAME") as CMlLabel);
 			declare LabelAuthor = (Frame.GetFirstChild("LABEL_AUTHOR") as CMlLabel);
 			Label.SetText(TrackInfo.GbxMapName);
-			LabelAuthor.SetText("{{{by}}} " ^ TrackInfo.Username);
+			LabelAuthor.SetText("{{{{by}}}} " ^ TrackInfo.Username);
 			Frame.GetFirstChild("QUAD_SELECTOR").Show();
 			(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).ModulateColor = <1.0,1.0,1.0>;
 
@@ -319,7 +320,7 @@ Void UpdateScriptList(Integer _Offset) {
 	}
 
 	if(SelectedScripts.count == 0) {
-		(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).SetText("{{{{OFFICIAL}}}} / ");
+		(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).SetText("{{{{OFFICIAL}}}} / $888{{{{no_script_selected}}}}");
 	}
 	else if(SelectedScripts.count == 1) {
 		declare Folders = TextLib::Split("\\ ",SelectedScripts[0].Name);
@@ -570,7 +571,6 @@ main() {
 							MapBrowserSubFolders = SubFolders;
 							MapBrowserMapInfos = MapInfos;
 							UpdateLocalMapsFolder(0);
-							(Page.GetFirstChild("LABEL_MAP_NAME") as CMlLabel).SetText("{{{{LOCAL_MAPS}}}} / " ^ SelectedMapInfo.Name);
 
 							(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
 							(Page.GetFirstChild("QUAD_LOCATION_MAP_MX") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;

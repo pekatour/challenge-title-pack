@@ -1,6 +1,6 @@
 <frame>
 	<quad pos="0 0" z-index="-2" size="320 180" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgEmpty" id="QUAD_BACKGROUND"/>
-	<label z-index="0" size="130 10" text="WELCOME TO MODIFIER" textsize="2" halign="center" valign="center2" textfont="RajdhaniMono" pos="0 8" class="opacity"/>
+	<label z-index="0" size="130 10" text="{{{{WELCOME_TO_MODIFIER}}}}" textsize="2" halign="center" valign="center2" textfont="RajdhaniMono" pos="0 8" class="opacity"/>
 	<label z-index="0" size="130 20" text="MAP NAME" textsize="8" halign="center" valign="center2" textfont="RajdhaniMono" pos="0 -5" class="opacity" id="LABEL_MAPNAME"/>
 	<quad pos="0 0" z-index="-1" size="130 30" bgcolor="FFFA" halign="center" valign="center" style="Bgs1InRace" substyle="BgCardList" class="opacity"/>
 	<quad pos="0 0" z-index="0" size="130 30" bgcolor="FFFA" halign="center" valign="center" style="Bgs1InRace" substyle="BgGradV" class="opacity"/>

@@ -3,17 +3,6 @@
 #Include "Libs/BigBang1112/File.Script.txt" as File
 #Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
 
-Text Private_Translate(Text _Text) {
-	declare Txt = _Text;
-	declare Phrases = TextLib::RegexFind("\\{\\{\\{\\{(.*?)\\}\\}\\}\\}", Txt, "gi");
-	foreach(P,Phrases) {
-		declare Phrase = TextLib::SubText(P,4,TextLib::Length(P)-8);
-		Phrase = Dictionary::Get(Phrase, LocalUser.Language);
-		Txt = TextLib::Replace(Txt, P, Phrase);
-	}
-	return Txt;
-}
-
 Text Construct(Text _Markup, Text _Script) {		
 	return """<manialink version="3">
 			{{{_Markup}}}
@@ -28,8 +17,8 @@ Text FromFile(Text _ManialinkName) {
 	declare Markup = File::Read(_ManialinkName^".xml");
 	declare Script = File::Read(_ManialinkName^".Script.txt");
 	
-	Markup = Private_Translate(Markup);
-	Script = Private_Translate(Script);
+	Markup = Dictionary::TranslateAllPhrases(Markup);
+	Script = Dictionary::TranslateAllPhrases(Script);
 
 	return Construct(Markup, Script);
 }

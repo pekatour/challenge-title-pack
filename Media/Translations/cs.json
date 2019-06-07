@@ -15,10 +15,27 @@
 
 	"by": "od",
 	"scripts": "skripty",
+	"no_map_selected": "nebyla vybrána žádná mapa",
+	"no_script_selected": "nebyl vybrán žádný skript",
 
 	"TEST": "ZKUS",
 	"PUBLISH": "PUBLIKOVAT",
 	"DOCUMENTATION": "DOKUMENTACE",
 	"SCRIPT_CODE": "KÓD SKRIPTU",
-	"BACK": "ZPĚT"
+	"BACK": "ZPĚT",
+
+	"WELCOME_TO_MODIFIER": "VÍTEJTE V MODIFIERU",
+	"SAVE": "ULOŽIT",
+	"SAVE_AND_PLAY": "ULOŽIT A HRÁT",
+	"DONE": "HOTOVO",
+	"SCRIPT_FINISHED": "Skript byl úspěšně dokončen.",
+	"TEST_SCRIPT": "TESTOVACÍ SKRIPT",
+	"MODIFYING": "MODIFIKUJI",
+	"ACTIONS": "AKCE",
+
+	"REVERSE_DESCRIPTION": "Vymění start za cíl.",
+	"CHECKPOINTLESS_DESCRIPTION": "Odstraní všechny checkpointy a zanechá díry po nich.",
+	"TERRAINLESS_DESCRIPTION": "Odstraní všechen terén.",
+
+	"CHECKPOINT_FOUND": "Checkpoint nalezen."
 }

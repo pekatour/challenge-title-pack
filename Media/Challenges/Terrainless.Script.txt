@@ -2,7 +2,7 @@
 ***
 Script.Name = "Terrainless";
 Script.AuthorLogin = "bigbang1112";
-Script.Description = "Remove all the terrain.";
+Script.Description = "{{{TERRAINLESS_DESCRIPTION}}}";
 ***
 
 ***Main***
