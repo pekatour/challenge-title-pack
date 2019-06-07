@@ -32,7 +32,7 @@ Void ExtractRedirect(Text _Page) {
 }
 
 Void Start() {	
-	declare AuthRequestPage = Http::SyncGET("https://www.maniaplanet.com/login/oauth2/authorize?response_type=code&scope=basic&state=dsgasgsdag&client_id=b1a3d10ba7&login="^LocalUser.Login^"&token="^Auth::GetToken().Value^"&redirect_uri="^TextLib::URLEncode("https://challenge.bigbang1112.eu/ingame/auth"));
+	declare AuthRequestPage = Http::SyncGET("https://www.maniaplanet.com/login/oauth2/authorize?response_type=code&scope=basic&state=dsgasgsdag&client_id=b1a3d10ba7&login="^LocalUser.Login^"&token="^Auth::GetToken().Value^"&redirect_uri="^TextLib::URLEncode("https://challenge.bigbang1112.eu/auth"));
 	if(AuthRequestPage.StatusCode != 200) {
 		Dialog_Message("No internet connection. I can't let you in. :/");
 	}

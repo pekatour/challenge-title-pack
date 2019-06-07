@@ -2,8 +2,8 @@
 	<quad z-index="-1" size="300 10" bgcolor="000A" halign="center" valign="center" style="Bgs1" substyle="BgTitleGlow" hidden="0"/>
 	<quad pos="125 0" z-index="0" size="40 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" halign="center" valign="center" opacity=".5"/>
 	<quad pos="125 0" z-index="0" size="40 10" bgcolor="FFFA" halign="center" valign="center2" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="8CF" opacity=".5"/>
-	<label pos="125 -0.25" z-index="1" size="40 10" text="SETTINGS" halign="center" valign="center2" textfont="RajdhaniMono"/>
+	<label pos="125 -0.25" z-index="1" size="40 10" text="{{{{SETTINGS}}}}" halign="center" valign="center2" textfont="RajdhaniMono"/>
 	<quad pos="75 0" z-index="0" size="60 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" halign="center" valign="center" opacity=".5"/>
 	<quad pos="75 0" z-index="0" size="60 10" bgcolor="FFFA" halign="center" valign="center2" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="8CF" opacity=".5"/>
-	<label pos="75 -0.25" z-index="1" size="60 10" text="STATISTICS" halign="center" valign="center2" textfont="RajdhaniMono"/>
+	<label pos="75 -0.25" z-index="1" size="60 10" text="{{{{STATISTICS}}}}" halign="center" valign="center2" textfont="RajdhaniMono"/>
 </frame>

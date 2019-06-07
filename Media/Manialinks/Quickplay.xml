@@ -12,7 +12,7 @@
 				<quad z-index="-1" size="150 101" bgcolor="FFFA" style="Bgs1" substyle="BgGradV"/>
 				<frame pos="25 -5">
 					<quad z-index="0" size="50 10" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036" valign="center" halign="center" id="QUAD_LOCATION_MAP_LOCAL"/>
-					<label pos="0 -0.25" z-index="1" size="50 10" text="LOCAL MAPS" valign="center2" halign="center" textfont="RajdhaniMono"/>
+					<label pos="0 -0.25" z-index="1" size="50 10" text="{{{{LOCAL_MAPS}}}}" valign="center2" halign="center" textfont="RajdhaniMono"/>
 				</frame>
 				<frame pos="75 -5">
 					<quad z-index="0" size="50 10" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" halign="center" id="QUAD_LOCATION_MAP_MX"/>
@@ -20,7 +20,7 @@
 				</frame>
 				<frame pos="125 -5">
 					<quad z-index="0" size="50 10" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" halign="center" id="QUAD_LOCATION_MAP_MAPMANAGER"/>
-					<label pos="0 -0.25" z-index="1" size="50 10" text="MAP MANAGER" valign="center2" halign="center" textfont="RajdhaniMono"/>
+					<label pos="0 -0.25" z-index="1" size="50 10" text="{{{{MAP_MANAGER}}}}" valign="center2" halign="center" textfont="RajdhaniMono"/>
 				</frame>
 				<frame pos="145 -5" hidden="1">
 					<quad z-index="0" size="10 10" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" halign="center"/>
@@ -93,7 +93,7 @@
 						<quad size="42.5 42.5" halign="center" valign="center" opacity=".9" id="QUAD_MAPLIST_THUMBNAIL"/>
 					</frame>
 					<label pos="25 -50" z-index="1" size="40 10" halign="center" valign="center2" text="???" textfont="BiryaniDemiBold" id="LABEL_MAPLIST_MAPNAME" textsize="2"/>
-					<label pos="25 -55" z-index="1" size="40 10" halign="center" valign="center2" text="by ???" textfont="BiryaniDemiBold" id="LABEL_MAPLIST_AUTHORNAME" textsize="1"/>
+					<label pos="25 -55" z-index="1" size="40 10" halign="center" valign="center2" text="{{{{by}}}} ???" textfont="BiryaniDemiBold" id="LABEL_MAPLIST_AUTHORNAME" textsize="1"/>
 				</frame>
 			</frame>
 		</frame>
@@ -111,11 +111,11 @@
 				<quad z-index="-1" size="100 80" pos="0 -20" style="Bgs1" substyle="BgGradV"/>
 				<frame pos="0 -5">
 					<quad z-index="0" size="33.33 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036" valign="center" id="QUAD_LOCATION_SCRIPT_OFFICIAL"/>
-					<label pos="16 -0.25" z-index="1" size="33.33 10" text="OFFICIAL" halign="center" valign="center2" textfont="RajdhaniMono"/>
+					<label pos="16 -0.25" z-index="1" size="33.33 10" text="{{{{OFFICIAL}}}}" halign="center" valign="center2" textfont="RajdhaniMono"/>
 				</frame>
 				<frame pos="33.33 -5">
 					<quad z-index="0" size="33.33 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" id="QUAD_LOCATION_SCRIPT_LOCAL"/>
-					<label pos="16 -0.25" z-index="1" size="33.33 10" text="LOCAL" halign="center" valign="center2" textfont="RajdhaniMono"/>
+					<label pos="16 -0.25" z-index="1" size="33.33 10" text="{{{{LOCAL}}}}" halign="center" valign="center2" textfont="RajdhaniMono"/>
 				</frame>
 				<frame pos="66.66 -5">
 					<quad z-index="0" size="33.33 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" id="QUAD_LOCATION_SCRIPT_ONLINE"/>
@@ -201,7 +201,7 @@
 					<entry pos="3 -5" z-index="0" size="61.5 6" default="" valign="center2" id="ENTRY_SCRIPT_SEARCH"/>
 					<frame pos="67 -5">
 						<quad z-index="0" size="32 8" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" id="QUAD_SCRIPT_MULTIPLE"/>
-						<label pos="16 -0.25" z-index="1" size="33.33 10" text="MULTIPLE" halign="center" valign="center2" textfont="RajdhaniMono" textsize="2"/>
+						<label pos="16 -0.25" z-index="1" size="33.33 10" text="{{{{MULTIPLE}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textsize="2"/>
 					</frame>
 				</frame>
 			</frame>
@@ -210,6 +210,6 @@
 	
 	<frame pos="100 0">
 		<quad z-index="0" size="50 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="060" valign="center" id="QUAD_BUTTON_START"/>
-		<label pos="24.75 -0.25" z-index="1" size="49.5 10" text="START" halign="center" valign="center2" textfont="RajdhaniMono"/>
+		<label pos="24.75 -0.25" z-index="1" size="49.5 10" text="{{{{START}}}}" halign="center" valign="center2" textfont="RajdhaniMono"/>
 	</frame>
 </frame>

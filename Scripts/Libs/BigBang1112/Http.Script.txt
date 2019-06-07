@@ -421,16 +421,16 @@ Boolean IsCompleted(Text _Name) {
 }
 
 /*
-//	Boolean IsSuccessful(Text _Name)
-//	Checks if the asynchonous request was completed successfully.
+//	Text GetResult(Text _Name)
+//	Gets result of the asynchronous request.
 
 //	Text _Name - Identification name
 
-//	Returns True if the request is completed with a positive response (between 200 inclusively and 300 exclusively HTTP code).
+//	Returns result of a completed request, or nothing if the request is not completed or does not exist.
 */
-Boolean IsSuccessful(Text _Name) {
-	if(!G_Requests.existskey(_Name)) return False;
-	return Get(_Name).IsCompleted && IsSuccessfulStatusCode(Get(_Name).StatusCode);
+Text GetResult(Text _Name) {
+	if(!IsCompleted(_Name)) return "";
+	return Get(_Name).Result;
 }
 
 /*
@@ -459,14 +459,14 @@ Integer GetStatusCode(Text _Name) {
 }
 
 /*
-//	Text GetResult(Text _Name)
-//	Gets result of the asynchronous request.
+//	Boolean IsSuccessful(Text _Name)
+//	Checks if the asynchonous request was completed successfully.
 
 //	Text _Name - Identification name
 
-//	Returns result of a completed request, or nothing if the request is not completed or does not exist.
+//	Returns True if the request is completed with a positive response (between 200 inclusively and 300 exclusively HTTP code).
 */
-Text GetResult(Text _Name) {
-	if(!IsCompleted(_Name)) return "";
-	return Get(_Name).Result;
+Boolean IsSuccessful(Text _Name) {
+	if(!G_Requests.existskey(_Name)) return False;
+	return Get(_Name).IsCompleted && IsSuccessfulStatusCode(GetStatusCode(_Name));
 }

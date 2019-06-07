@@ -33,7 +33,7 @@ declare CUILayer[Text] LayerAPIs;
 
 Void UpdateLocalMaps(Text _Folder, Text _SearchMapName, Text _SearchAuthorName) {
 	declare FlatSearch = (_SearchMapName != "" || _SearchAuthorName != "");
-	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(2,_Folder,FlatSearch));
+	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(4,_Folder,FlatSearch));
 	Data::Set("MAPLIST_LOCAL_SEARCHMAPNAME",_SearchMapName);
 	Data::Set("MAPLIST_LOCAL_SEARCHAUTHORNAME",_SearchAuthorName);
 }
@@ -157,7 +157,7 @@ declare SMetadata Script;
 					if(API == Event.CustomEventLayer) {
 						Layers::SendEvent("Quickplay", "ScriptList_Metadata_Response", [Name, Event.CustomEventData[0]]);
 						UILayerDestroy(API);
-						LayerAPIs.removekey(Name);
+						declare Removed = LayerAPIs.removekey(Name);
 					}
 				}
 			}
