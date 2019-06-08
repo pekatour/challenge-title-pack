@@ -1,6 +1,7 @@
 #Include "Libs/BigBang1112/Layers.Script.txt" as Layers
 #Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
 #Include "Libs/BigBang1112/File.Script.txt" as File
+#Include "Libs/BigBang1112/Map.Script.txt" as Map
 
 Void Start() {
 	Layers::Create("Editor", Manialink::FromFile("Media/Manialinks/Editor"));
@@ -17,9 +18,12 @@ Void Event(CManiaAppEvent _Event) {
 		switch(Event.CustomEventType) {
 			case "Test": {
 				if(TitleFlow.IsReady) {
-					TitleFlow.EditMap("A01.Map.Gbx", "Modifier.Script.txt","""<settings>
+					declare Map = Map::MapInfo("2FRV EXCLUSIVE 001.Map.Gbx", 2);
+				
+					TitleFlow.EditNewMapFromBaseMap(Map.FileName, "", "", "Challenge.Script.txt", "Modifier.Script.txt","""<settings>
 	<setting name="S_Build" type="boolean" value="True"/>
 	<setting name="S_TestMode" type="boolean" value="True"/>
+	<setting name="S_OriginalMapName" type="text" value="{{{Map.Name}}}"/>
 </settings>""");
 					StartTest = True;
 				}

@@ -7,15 +7,7 @@
 #Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
 #Include "Libs/BigBang1112/File.Script.txt" as File
 #Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
-
-#Struct SMapInfo {
-	Text Name;
-	Text AuthorLogin;
-	Text AuthorNickName;
-	Text FileName;
-	Text MapUid;
-	Boolean IsPlayable;
-}
+#Include "Libs/BigBang1112/Map.Script.txt" as Map
 
 #Struct SMetadata {
 	Text Name;
@@ -50,7 +42,7 @@ Void UpdateOfficialScripts(Text[] _Scripts) {
 	Layers::SendEvent("Quickplay", "ScriptList_Official_Update", [Scripts.tojson()]);
 }
 
-Void StartMap(Text _MapLocation, SMapInfo _MapInfo, SScriptInfo[] _Scripts) {
+Void StartMap(Text _MapLocation, Map::SMapInfo _MapInfo, SScriptInfo[] _Scripts) {
 	if(_MapInfo.MapUid == "") {
 		Dialog_Message("Please select a map.");
 		return;
@@ -60,11 +52,13 @@ Void StartMap(Text _MapLocation, SMapInfo _MapInfo, SScriptInfo[] _Scripts) {
 		return;
 	}
 
-	if(TitleFlow.IsReady)
-	TitleFlow.EditMap(_MapInfo.FileName, "Modifier.Script.txt", """<settings>
-	<setting name="S_Build" type="boolean" value="True"/>
-	<setting name="S_ScriptNames" type="text" value="{{{TextLib::Replace(_Scripts.tojson(), "\"", "'")}}}"/>
-</settings>""");
+	if(TitleFlow.IsReady) {
+		TitleFlow.EditNewMapFromBaseMap(_MapInfo.FileName, "", "", "Challenge.Script.txt", "Modifier.Script.txt", """<settings>
+		<setting name="S_Build" type="boolean" value="True"/>
+		<setting name="S_ScriptNames" type="text" value="{{{TextLib::Replace(_Scripts.tojson(), "\"", "'")}}}"/>
+		<setting name="S_OriginalMapName" type="text" value="{{{_MapInfo.Name}}}"/>
+	</settings>""");
+	}
 }
 
 Void Start() {
@@ -102,7 +96,7 @@ Void Event(CManiaAppEvent _Event) {
 	</maniacode>""");*/
 				}
 				if(MapLocation == "Local") {
-					declare SMapInfo MapInfo;
+					declare Map::SMapInfo MapInfo;
 					declare JsonSuccessMapInfo = MapInfo.fromjson(Event.CustomEventData[1]);
 					declare SScriptInfo[] Scripts;
 					declare JsonSuccessScripts = Scripts.fromjson(Event.CustomEventData[2]);
@@ -197,14 +191,14 @@ Void Async() {
 				foreach(Folder,MapList.SubFolders) SubFolders.add(Folder);
 			}
 			
-			declare SMapInfo[] MapInfos;
+			declare Map::SMapInfo[] MapInfos;
 			foreach(MapInfo,MapList.MapInfos) {
 				if(SearchMapName != "")
 					if(!TextLib::Find(SearchMapName, MapInfo.Name, False, False)) continue;
 				if(SearchAuthorName != "")
 					if(!TextLib::Find(SearchAuthorName, MapInfo.AuthorLogin ^ MapInfo.AuthorNickName, False, False)) continue;
 			
-				declare SMapInfo Info;
+				declare Map::SMapInfo Info;
 				Info.Name = MapInfo.Name;
 				Info.AuthorLogin = MapInfo.AuthorLogin;
 				Info.AuthorNickName = MapInfo.AuthorNickName;

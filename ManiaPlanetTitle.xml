@@ -63,10 +63,13 @@
 		<mode name=""/>
 		<playlist name=""/>
 	</splitscreen>
-	<files/>
+	<files>
+		<file name="Maps\2FRV EXCLUSIVE 001.Map.Gbx" public="false" internal="false"/>
+	</files>
 	<folders>
 		<folder name="Scripts/" public="false" internal="true"/>
 		<folder name="Media/" public="false" internal="false"/>
+		<folder name="Blocks/" public="false" internal="false"/>
 		<!--- <folder name="...." public="..." internal="..." /> -->
 	</folders>
 	<allowed_client_title_version></allowed_client_title_version>

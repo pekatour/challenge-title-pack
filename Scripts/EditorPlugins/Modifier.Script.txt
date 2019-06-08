@@ -14,6 +14,7 @@
 
 #Setting S_Build True
 
+#Setting S_OriginalMapName ""
 #Setting S_ScriptNames ""
 #Setting S_ScriptTypes ""
 
@@ -68,10 +69,15 @@ CMapEditorPlugin::CardinalDirections TextToCMapEditorPluginCardinalDirections(Te
 }
 
 Void Prepare() {
+	declare Text MapName;
+	if(S_OriginalMapName == "")
+		MapName = Map.MapInfo.Name;
+	else
+		MapName = S_OriginalMapName;
+
 	HideEditorInterface = S_HideUI;
 	EditMode = CMapEditorPlugin::EditMode::FreeLook;
-	declare Success = SetMapType("TrackMania/Challenge");
-	Map.MapName ^= "$z -";
+	Map.MapName = MapName^"$z -";
 	
 	Layers::Create("ModifierIntro",Manialink::FromFile("Media/Manialinks/Modifier/ModifierIntro"));
 	Layers::Create("ModifierScript",Manialink::FromFile("Media/Manialinks/Modifier/ModifierScript"));
@@ -89,7 +95,7 @@ Void Prepare() {
 	
 	Layers::Show("ModifierIntro");
 	sleep(500);
-	LayerCustomEvent(Layers::Get("ModifierIntro"), "Map", [Map.MapInfo.Name]);
+	LayerCustomEvent(Layers::Get("ModifierIntro"), "Map", [MapName]);
 	LayerCustomEvent(Layers::Get("ModifierIntro"), "Show", []);
 	sleep(2000);
 	LayerCustomEvent(Layers::Get("ModifierIntro"), "Hide", []);
@@ -539,6 +545,7 @@ main() {
 	
 	if(S_TestMode) {
 		declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
+		Map.MapName ^= " Test Script";
 		Begin(Dictionary::Get("TEST_SCRIPT",LocalUser.Language));
 		ProcessScript("TEST SCRIPT", PERSISTENT_CHALLENGE_CODE);
 	}
