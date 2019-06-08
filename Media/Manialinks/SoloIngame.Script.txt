@@ -96,6 +96,7 @@ main() {
 
 					}
 					else {
+						if(Event.Player.Score != Null)
 						if(Event.Player.Score.BestRace.Checkpoints.count == 0) {
 							Label_CP_Start.SetText(TimeToTextWithMilli(Event.RaceTime));
 							Label_CP_Start.Show();
@@ -112,7 +113,7 @@ main() {
 
 							if(Difference > 0) {
 								Label_CP_Red.Show();
-								Label_CP_Red.SetText(TimeToTextWithMilli(Difference));
+								Label_CP_Red.SetText("+"^TimeToTextWithMilli(Difference));
 								Quad_CP_Red.Show();
 
 								Label_CP_Blue.Hide();

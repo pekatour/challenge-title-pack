@@ -4,6 +4,8 @@ RequestLoadMap();
 
 ClientManiaAppUrl = "file://Media/ManiaApps/ChallengeSoloClient.Script.txt";
 
+
+
 while(True) {
 	foreach(Player,PlayersWaiting) {
 		Player.RaceStartTime = Now+3000;

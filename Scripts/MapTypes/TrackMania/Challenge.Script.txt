@@ -2,6 +2,13 @@
 
 EnableEditorInputsCustomProcessing = True;
 
+Mode.UIManager.UIAll.OverlayHideCheckPointList = True;
+Mode.UIManager.UIAll.OverlayHideSpeedAndDist = True;
+Mode.UIManager.UIAll.OverlayHidePersonnalBestAndRank = True;
+Mode.UIManager.UIAll.OverlayHideChrono = True;
+
+Mode.ClientManiaAppUrl = "file://Media/ManiaApps/ChallengeSoloClient.Script.txt";
+
 while(True) {
 	foreach(Event,PendingEvents) {
 		if(Event.Type == CMapEditorPluginEvent::Type::MapModified) {
