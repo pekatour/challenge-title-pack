@@ -1,0 +1,41 @@
+{
+	"CREATE_CHALLENGE": "ERSTELLE DEINE EIGENE CHALLENGE",
+
+	"START": "START",
+	"EXIT": "BEENDEN",
+	"REPLAYS": "REPLAYS",
+	"STATISTICS": "STATISTIKEN",
+	"SETTINGS": "EINSTELLUNGEN",
+	"MADE_BY": "VON",
+	"LOCAL_MAPS": "LOKALE MAPS",
+	"MULTIPLE": "MEHRERE",
+	"OFFICIAL": "OFFIZIELL",
+	"LOCAL": "LOkAL",
+	"MAP_MANAGER": "MAP MANAGER",
+
+	"by": "von",
+	"scripts": "skripte",
+	"no_map_selected": "keine map ausgewählt",
+	"no_script_selected": "kein skript ausgewählt",
+
+	"TEST": "TEST",
+	"PUBLISH": "VERÖFFENTLICHEN",
+	"DOCUMENTATION": "DOKUMENTATION",
+	"SCRIPT_CODE": "SKRIPT CODE",
+	"BACK": "ZURÜCK",
+	
+	"WELCOME_TO_MODIFIER": "WILLKOMMEN ZUM MODIFIER",
+	"SAVE": "SPEICHERN",
+	"SAVE_AND_PLAY": "SPEICHERN UND SPIELEN",
+	"DONE": "FERTIG",
+	"SCRIPT_FINISHED": "Skript wurde erfolgreich ausgeführt.",
+	"TEST_SCRIPT": "TEST SKRIPT",
+	"MODIFYING": "MODIFYING",
+	"ACTIONS": "AKTIONEN",
+
+	"REVERSE_DESCRIPTION": "Tausche Start mit Finish.",
+	"CHECKPOINTLESS_DESCRIPTION": "Entferne alle Checkpoints und behalte die Löcher.",
+	"TERRAINLESS_DESCRIPTION": "Entferne das gesamte Terrain.",
+
+	"CHECKPOINT_FOUND": "Checkpoint gefunden."
+}
