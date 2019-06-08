@@ -78,7 +78,7 @@ CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
 //	Returns finished/completed request, should be destroyed manually after being used
 */
 CHttpRequest SyncGET(Text _Url, Boolean _UseCache) {
-    return SyncGET(_Url, _UseCache, "");
+	return SyncGET(_Url, _UseCache, "");
 }
 
 /*
@@ -90,7 +90,7 @@ CHttpRequest SyncGET(Text _Url, Boolean _UseCache) {
 //	Returns uncached finished/completed request, should be destroyed manually after being used
 */
 CHttpRequest SyncGET(Text _Url) {
-    return SyncGET(_Url, False, "");
+	return SyncGET(_Url, False, "");
 }
 
 /*
@@ -123,7 +123,7 @@ Text SyncGET_Result(Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
 //	Returns request result, or empty string if unsuccessful
 */
 Text SyncGET_Result(Text _Url, Boolean _UseCache) {
-    return SyncGET_Result(_Url, _UseCache, "");
+	return SyncGET_Result(_Url, _UseCache, "");
 }
 
 /*
@@ -135,7 +135,7 @@ Text SyncGET_Result(Text _Url, Boolean _UseCache) {
 //	Returns request result, or empty string if unsuccessful
 */
 Text SyncGET_Result(Text _Url) {
-    return SyncGET_Result(_Url, False, "");
+	return SyncGET_Result(_Url, False, "");
 }
 
 /*
@@ -166,7 +166,7 @@ CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders) {
 //	Returns finished/completed request, should be destroyed manually after being used
 */
 CHttpRequest SyncPOST(Text _Url, Text _Resource) {
-    return SyncPOST(_Url, _Resource, "");
+	return SyncPOST(_Url, _Resource, "");
 }
 
 /*
@@ -199,7 +199,7 @@ Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders) {
 //	Returns request result, or empty string if unsuccessful
 */
 Text SyncPOST_Result(Text _Url, Text _Resource) {
-    return SyncPOST_Result(_Url, _Resource, "");
+	return SyncPOST_Result(_Url, _Resource, "");
 }
 
 /*
@@ -230,7 +230,7 @@ CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders) {
 //	Returns finished/completed request, should be destroyed manually after being used
 */
 CHttpRequest SyncPOSTFile(Text _Url, Text _FileName) {
-    return SyncPOSTFile(_Url, _FileName, "");
+	return SyncPOSTFile(_Url, _FileName, "");
 }
 
 /*
@@ -263,7 +263,7 @@ Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders) {
 //	Returns request result, or empty string if unsuccessful
 */
 Text SyncPOSTFile_Result(Text _Url, Text _FileName) {
-    return SyncPOSTFile_Result(_Url, _FileName, "");
+	return SyncPOSTFile_Result(_Url, _FileName, "");
 }
 
 /*
@@ -282,7 +282,7 @@ Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeade
 	
 	if(G_Requests.existskey(_Name)) Http.Destroy(G_Requests[_Name]);
 	G_Requests[_Name] = Http.CreateGet(_Url, _UseCache, _AdditionalHeaders);
-    return True;
+	return True;
 }
 
 /*
@@ -296,7 +296,7 @@ Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeade
 //	Returns False if the request isn't possible to create, otherwise True
 */
 Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache) {
-    return AsyncGET(_Name, _Url, _UseCache, "");
+	return AsyncGET(_Name, _Url, _UseCache, "");
 }
 
 /*
@@ -309,7 +309,7 @@ Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache) {
 //	Returns False if the request isn't possible to create, otherwise True
 */
 Boolean AsyncGET(Text _Name, Text _Url) {
-    return AsyncGET(_Name, _Url, False, "");
+	return AsyncGET(_Name, _Url, False, "");
 }
 
 /*
@@ -330,7 +330,7 @@ Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders
 	
 	G_Requests[_Name] = Http.CreatePost(_Url, _Resource, _AdditionalHeaders);
 
-    return True;
+	return True;
 }
 
 /*
@@ -344,7 +344,7 @@ Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders
 //	Returns False if the request isn't possible to create, otherwise True
 */
 Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource) {
-    return AsyncPOST(_Name, _Url, _Resource, "");
+	return AsyncPOST(_Name, _Url, _Resource, "");
 }
 
 /*
@@ -365,7 +365,7 @@ Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHea
 	
 	G_Requests[_Name] = Http.CreatePostFile(_Url, _FileName, _AdditionalHeaders);
 
-    return True;
+	return True;
 }
 
 /*
@@ -379,7 +379,7 @@ Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHea
 //	Returns False if the request isn't possible to create, otherwise True
 */
 Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName) {
-    return AsyncPOST(_Name, _Url, _FileName, "");
+	return AsyncPOST(_Name, _Url, _FileName, "");
 }
 
 /*
@@ -392,7 +392,7 @@ Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName) {
 */
 CHttpRequest Get(Text _Name) {
 	if(!G_Requests.existskey(_Name)) return Null;
-    return G_Requests[_Name];
+	return G_Requests[_Name];
 }
 
 /*
@@ -403,8 +403,8 @@ CHttpRequest Get(Text _Name) {
 */
 Void Destroy(Text _Name) {
 	if(!G_Requests.existskey(_Name)) return;
-    Http.Destroy(G_Requests[_Name]);
-    declare Removed = G_Requests.removekey(_Name);
+	Http.Destroy(G_Requests[_Name]);
+	declare Removed = G_Requests.removekey(_Name);
 }
 
 /*

@@ -1,6 +1,6 @@
 main() {
-    +++Metadata+++
-    SendCustomEvent("ScriptMetadata", [Script.tojson()]);
-    +++Main+++
-    Complete();
+	+++Metadata+++
+	SendCustomEvent("ScriptMetadata", [Script.tojson()]);
+	+++Main+++
+	Complete();
 }

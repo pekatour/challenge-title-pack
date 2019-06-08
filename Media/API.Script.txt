@@ -1,30 +1,30 @@
 declare SMetadata Script;
 
 SResponse Request(Text _Command, Text[] _Arguments) {
-    declare SResponse Response;
+	declare SResponse Response;
 
-    Response.Time = Now;
+	Response.Time = Now;
 
-    SendCustomEvent(_Command, _Arguments);
+	SendCustomEvent(_Command, _Arguments);
 
-    declare Resp = False;
-    while(!Resp) {
-        foreach(Event,PendingEvents) {
-            if(Event.Type == CMlScriptEvent::Type::PluginCustomEvent) {
-                if(Event.CustomEventType == _Command^"_Response") {
-                    Response.Name = Event.CustomEventType;
-                    foreach(Data, Event.CustomEventData)
-                        Response.Values.add(Data);
-                    Resp = True;
-                }
-            }
-        }
-        yield;
-    }
+	declare Resp = False;
+	while(!Resp) {
+		foreach(Event,PendingEvents) {
+			if(Event.Type == CMlScriptEvent::Type::PluginCustomEvent) {
+				if(Event.CustomEventType == _Command^"_Response") {
+					Response.Name = Event.CustomEventType;
+					foreach(Data, Event.CustomEventData)
+						Response.Values.add(Data);
+					Resp = True;
+				}
+			}
+		}
+		yield;
+	}
 
-    Response.Time = Now - Response.Time;
+	Response.Time = Now - Response.Time;
 
-    return Response;
+	return Response;
 }
 
 //
@@ -32,185 +32,185 @@ SResponse Request(Text _Command, Text[] _Arguments) {
 //
 
 Void ComputeShadows() {
-    declare Response = Request("Ch_ComputeShadows",[]);
+	declare Response = Request("Ch_ComputeShadows",[]);
 }
 
 Void RemoveAllBlocks() {
-    declare Response = Request("Ch_RemoveAllBlocks", []);
+	declare Response = Request("Ch_RemoveAllBlocks", []);
 }
  
 Void RemoveAllTerrain() {
-    declare Response = Request("Ch_RemoveAllTerrain", []);
+	declare Response = Request("Ch_RemoveAllTerrain", []);
 }
  
 Void RemoveAllOffZone() {
-    declare Response = Request("Ch_RemoveAllOffZone", []);
+	declare Response = Request("Ch_RemoveAllOffZone", []);
 }
  
 Void RemoveAllObjects() {
-    declare Response = Request("Ch_RemoveAllObjects", []);
+	declare Response = Request("Ch_RemoveAllObjects", []);
 }
  
 Void RemoveAll() {
-    declare Response = Request("Ch_RemoveAll", []);
+	declare Response = Request("Ch_RemoveAll", []);
 }
  
 Void RemoveAllBlocksAndTerrain() {
-    declare Response = Request("Ch_RemoveAllBlocksAndTerrain", []);
+	declare Response = Request("Ch_RemoveAllBlocksAndTerrain", []);
 }
  
 Void PreloadAllBlocks() {
-    declare Response = Request("Ch_PreloadAllBlocks", []);
+	declare Response = Request("Ch_PreloadAllBlocks", []);
 }
  
 Void PreloadAllItems() {
-    declare Response = Request("Ch_PreloadAllItems", []);
+	declare Response = Request("Ch_PreloadAllItems", []);
 }
  
 Boolean CanPlaceBlock(Text _BlockName, Int3 _Coord, Text _Direction, Boolean _OnGround, Integer _VariantIndex) {    
-    declare Params = [_BlockName, _Coord^"", _Direction, _OnGround^"", _VariantIndex^""];
-    declare Response = Request("Ch_CanPlaceBlock", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_BlockName, _Coord^"", _Direction, _OnGround^"", _VariantIndex^""];
+	declare Response = Request("Ch_CanPlaceBlock", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean CanPlaceBlock_NoDestruction(Text _BlockName, Int3 _Coord, Text _Direction, Boolean _OnGround, Integer _VariantIndex) {
-    declare Params = [_BlockName, _Coord^"", _Direction, _OnGround^"", _VariantIndex^""];
-    declare Response = Request("Ch_CanPlaceBlock_NoDestruction", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_BlockName, _Coord^"", _Direction, _OnGround^"", _VariantIndex^""];
+	declare Response = Request("Ch_CanPlaceBlock_NoDestruction", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean PlaceBlock(Text _BlockName, Int3 _Coord, Text _Direction) {
-    declare Params = [_BlockName, _Coord^"", _Direction];
-    declare Response = Request("Ch_PlaceBlock", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_BlockName, _Coord^"", _Direction];
+	declare Response = Request("Ch_PlaceBlock", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean PlaceBlock_NoDestruction(Text _BlockName, Int3 _Coord, Text _Direction) {
-    declare Params = [_BlockName, _Coord^"", _Direction];
-    declare Response = Request("Ch_PlaceBlock_NoDestruction", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_BlockName, _Coord^"", _Direction];
+	declare Response = Request("Ch_PlaceBlock_NoDestruction", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean CanPlaceRoadBlocks(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
-    declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
-    declare Response = Request("Ch_CanPlaceRoadBlocks", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
+	declare Response = Request("Ch_CanPlaceRoadBlocks", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean PlaceRoadBlocks(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
-    declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
-    declare Response = Request("Ch_PlaceRoadBlocks", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
+	declare Response = Request("Ch_PlaceRoadBlocks", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean CanPlaceTerrainBlocks(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
-    declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
-    declare Response = Request("Ch_CanPlaceTerrainBlocks", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
+	declare Response = Request("Ch_CanPlaceTerrainBlocks", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean PlaceTerrainBlocks(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
-    declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
-    declare Response = Request("Ch_PlaceTerrainBlocks", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
+	declare Response = Request("Ch_PlaceTerrainBlocks", Params);
+	return Response.Values[0] == "True";
 }          
  
 Boolean PlaceTerrainBlocks_NoDestruction(Text _BlockName, Int3 _StartCoord, Int3 _EndCoord) {
-    declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
-    declare Response = Request("Ch_PlaceTerrainBlocks_NoDestruction", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_BlockName, _StartCoord^"", _EndCoord^""];
+	declare Response = Request("Ch_PlaceTerrainBlocks_NoDestruction", Params);
+	return Response.Values[0] == "True";
 }
 
 Boolean CanPlaceMacroblock(Text _MacroblockName, Int3 _Coord, Text _Direction) {
-    declare Params = [_MacroblockName, _Coord^"", _Direction];
-    declare Response = Request("Ch_CanPlaceMacroblock", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_MacroblockName, _Coord^"", _Direction];
+	declare Response = Request("Ch_CanPlaceMacroblock", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean PlaceMacroblock(Text _MacroblockName, Int3 _Coord, Text _Direction) {
-    declare Params = [_MacroblockName, _Coord^"", _Direction];
-    declare Response = Request("Ch_PlaceMacroblock", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_MacroblockName, _Coord^"", _Direction];
+	declare Response = Request("Ch_PlaceMacroblock", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean CanPlaceMacroblock_NoDestruction(Text _MacroblockName, Int3 _Coord, Text _Direction) {
-    declare Params = [_MacroblockName, _Coord^"", _Direction];
-    declare Response = Request("Ch_CanPlaceMacroblock_NoDestruction", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_MacroblockName, _Coord^"", _Direction];
+	declare Response = Request("Ch_CanPlaceMacroblock_NoDestruction", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean PlaceMacroblock_NoDestruction(Text _MacroblockName, Int3 _Coord, Text _Direction) {
-    declare Params = [_MacroblockName, _Coord^"", _Direction];
-    declare Response = Request("Ch_PlaceMacroblock_NoDestruction", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_MacroblockName, _Coord^"", _Direction];
+	declare Response = Request("Ch_PlaceMacroblock_NoDestruction", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean CanPlaceMacroblock_NoTerrain(Text _MacroblockName, Int3 _Coord, Text _Direction) {
-    declare Params = [_MacroblockName, _Coord^"", _Direction];
-    declare Response = Request("Ch_CanPlaceMacroblock_NoTerrain", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_MacroblockName, _Coord^"", _Direction];
+	declare Response = Request("Ch_CanPlaceMacroblock_NoTerrain", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean PlaceMacroblock_NoTerrain(Text _MacroblockName, Int3 _Coord, Text _Direction) {
-    declare Params = [_MacroblockName, _Coord^"", _Direction];
-    declare Response = Request("Ch_PlaceMacroblock_NoTerrain", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_MacroblockName, _Coord^"", _Direction];
+	declare Response = Request("Ch_PlaceMacroblock_NoTerrain", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean RemoveMacroblock(Text _MacroblockName, Int3 _Coord, Text _Direction) {
-    declare Params = [_MacroblockName, _Coord^"", _Direction];
-    declare Response = Request("Ch_RemoveMacroblock", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_MacroblockName, _Coord^"", _Direction];
+	declare Response = Request("Ch_RemoveMacroblock", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean RemoveMacroblock_NoTerrain(Text _MacroblockName, Int3 _Coord, Text _Direction) {
-    declare Params = [_MacroblockName, _Coord^"", _Direction];
-    declare Response = Request("Ch_RemoveMacroblock_NoTerrain", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_MacroblockName, _Coord^"", _Direction];
+	declare Response = Request("Ch_RemoveMacroblock_NoTerrain", Params);
+	return Response.Values[0] == "True";
 }  
  
 SChBlock GetBlock(Int3 _Coord) {
-    declare Params = [_Coord^""];
-    declare Response = Request("Ch_GetBlock", Params);
-    declare SChBlock Block;
-    declare JsonSuccess = Block.fromjson(Response.Values[0]);
-    return Block;
+	declare Params = [_Coord^""];
+	declare Response = Request("Ch_GetBlock", Params);
+	declare SChBlock Block;
+	declare JsonSuccess = Block.fromjson(Response.Values[0]);
+	return Block;
 }
  
 Boolean RemoveBlock(Int3 _Coord) {
-    declare Params = [_Coord^""];
-    declare Response = Request("Ch_RemoveBlock", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_Coord^""];
+	declare Response = Request("Ch_RemoveBlock", Params);
+	return Response.Values[0] == "True";
 }
  
 Boolean RemoveTerrainBlocks(Int3 _StartCoord, Int3 _EndCoord) {
-    declare Params = [_StartCoord^"", _EndCoord^""];
-    declare Response = Request("Ch_RemoveTerrainBlocks", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_StartCoord^"", _EndCoord^""];
+	declare Response = Request("Ch_RemoveTerrainBlocks", Params);
+	return Response.Values[0] == "True";
 }
  
 Integer GetBlockGroundHeight(Text _BlockName, Integer _CoordX, Integer _CoordZ, Text _Direction) {
-    declare Params = [_BlockName, _CoordX^"", _CoordZ^"", _Direction];
-    declare Response = Request("Ch_GetBlockGroundHeight", Params);
-    return TextLib::ToInteger(Response.Values[0]);
+	declare Params = [_BlockName, _CoordX^"", _CoordZ^"", _Direction];
+	declare Response = Request("Ch_GetBlockGroundHeight", Params);
+	return TextLib::ToInteger(Response.Values[0]);
 }
  
 Integer GetGroundHeight(Integer _CoordX, Integer _CoordZ) {
-    declare Params = [_CoordX^"", _CoordZ^""];
-    declare Response = Request("Ch_GetGroundHeight", Params);
-    return TextLib::ToInteger(Response.Values[0]);
+	declare Params = [_CoordX^"", _CoordZ^""];
+	declare Response = Request("Ch_GetGroundHeight", Params);
+	return TextLib::ToInteger(Response.Values[0]);
 }
  
 SChBlock GetStartLineBlock() {
-    declare Response = Request("Ch_GetStartLineBlock", []);
-    declare SChBlock Block;
-    declare JsonSuccess = Block.fromjson(Response.Values[0]);
-    return Block;
+	declare Response = Request("Ch_GetStartLineBlock", []);
+	declare SChBlock Block;
+	declare JsonSuccess = Block.fromjson(Response.Values[0]);
+	return Block;
 }
 
 Void SetUndergroundMode(Boolean _On) {
-    declare Params = [_On^""];
-    declare Response = Request("Ch_SetUndergroundMode", Params);
+	declare Params = [_On^""];
+	declare Response = Request("Ch_SetUndergroundMode", Params);
 }
 
 //
@@ -218,96 +218,96 @@ Void SetUndergroundMode(Boolean _On) {
 //
 
 SReplacementResult ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName, Boolean _OppositeDirection) {
-    declare Params = [_Block.tojson(),_ReplacementBlockName,_OppositeDirection^""];
-    declare Response = Request("Ch_ReplaceBlock", Params);
+	declare Params = [_Block.tojson(),_ReplacementBlockName,_OppositeDirection^""];
+	declare Response = Request("Ch_ReplaceBlock", Params);
 
-    declare SReplacementResult Result;
-    Result.Removed = (Response.Values[0] == "True");
-    Result.Placed = (Response.Values[1] == "True");
-    return Result;
+	declare SReplacementResult Result;
+	Result.Removed = (Response.Values[0] == "True");
+	Result.Placed = (Response.Values[1] == "True");
+	return Result;
 }   
 
 SReplacementResult ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName) {
-    return ReplaceBlock(_Block, _ReplacementBlockName, False);
+	return ReplaceBlock(_Block, _ReplacementBlockName, False);
 }
 
 Void ReplaceAllBlocks(Text _BlockName, Text _ReplacementBlockName) {
-    declare Params = [_BlockName, _ReplacementBlockName];
-    declare Response = Request("Ch_ReplaceAllBlocks", Params);
+	declare Params = [_BlockName, _ReplacementBlockName];
+	declare Response = Request("Ch_ReplaceAllBlocks", Params);
 }
 
 Boolean SwapBlock(SChBlock _Block1, SChBlock _Block2) {
-    declare Params = [_Block1.tojson(), _Block1.tojson()];
-    declare Response = Request("Ch_SwapBlock", Params);
-    return Response.Values[0] == "True";
+	declare Params = [_Block1.tojson(), _Block1.tojson()];
+	declare Response = Request("Ch_SwapBlock", Params);
+	return Response.Values[0] == "True";
 }
 
 SChBlock[] GetFinishLineBlocks() {
-    declare Response = Request("Ch_GetFinishLineBlocks", []);
-    declare SChBlock[] Blocks;
-    declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
-    return Blocks;
+	declare Response = Request("Ch_GetFinishLineBlocks", []);
+	declare SChBlock[] Blocks;
+	declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
+	return Blocks;
 }
 
 SChBlock[] GetCheckpointBlocks() {
-    declare Response = Request("Ch_GetCheckpointBlocks", []);
-    declare SChBlock[] Blocks;
-    declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
-    return Blocks;   
+	declare Response = Request("Ch_GetCheckpointBlocks", []);
+	declare SChBlock[] Blocks;
+	declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
+	return Blocks;   
 }
 
 SChBlock[] GetBlocksByBlockName(Text _BlockName) {
-    declare Params = [_BlockName];
-    declare Response = Request("Ch_GetBlocksByBlockName", Params);
-    declare SChBlock[] Blocks;
-    declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
-    return Blocks;  
+	declare Params = [_BlockName];
+	declare Response = Request("Ch_GetBlocksByBlockName", Params);
+	declare SChBlock[] Blocks;
+	declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
+	return Blocks;  
 }
 
 // Due tend to crash the game on some (possibly heavy) maps
 SChBlock[] GetBlocks() {
-    declare Response = Request("Ch_GetBlocks", []);
-    declare SChBlock[] Blocks;
-    declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
-    return Blocks;
+	declare Response = Request("Ch_GetBlocks", []);
+	declare SChBlock[] Blocks;
+	declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
+	return Blocks;
 }
 
 Integer MultipleBlocks(Int3 _Coord) {
-    declare Params = [""^_Coord];
-    declare Response = Request("Ch_MultipleBlocks", Params);
-    return TextLib::ToInteger(Response.Values[0]);
+	declare Params = [""^_Coord];
+	declare Response = Request("Ch_MultipleBlocks", Params);
+	return TextLib::ToInteger(Response.Values[0]);
 }
 
 Integer Random(Integer _Min, Integer _Max) { // Consistent randomizer
-    return MathLib::Rand(_Min, _Max, Editor.Map.CopperPrice);
+	return MathLib::Rand(_Min, _Max, Editor.Map.CopperPrice);
 }
 
 Integer Random(Integer _Max) {
-    return Random(0, _Max);
+	return Random(0, _Max);
 }
 
 Real Random(Real _Min, Real _Max) { // Consistent randomizer
-    return MathLib::Rand(_Min, _Max, Editor.Map.CopperPrice);
+	return MathLib::Rand(_Min, _Max, Editor.Map.CopperPrice);
 }
 
 Real Random(Real _Max) {
-    return Random(0.0, _Max);
+	return Random(0.0, _Max);
 }
 
 Boolean Random() {
-    return (Random(1) == 1);
+	return (Random(1) == 1);
 }
 
 Real Percentage() {
-    return Random(1.0);
+	return Random(1.0);
 }
 
 Boolean Chance(Real _Percentage) {
-    return (Percentage() <= _Percentage);
+	return (Percentage() <= _Percentage);
 }
 
 Void Message(Text _Message) {
-    declare Response = Request("Ch_Message",[_Message]);
+	declare Response = Request("Ch_Message",[_Message]);
 }
 
 //
@@ -319,27 +319,27 @@ Void StartMultiSolution() {
 }
 
 Void EndMultiSolution() {
-    
+	
 }
 
 Void Solution() {
-    declare Response = Request("Ch_Solution", []);
+	declare Response = Request("Ch_Solution", []);
 }
 
 Void Complete() { // Shouldn't be normally called
-    declare Response = Request("Ch_Complete", []);
+	declare Response = Request("Ch_Complete", []);
 }
 
 Void Confusion() {
-    declare Response = Request("Ch_Confusion", []);
+	declare Response = Request("Ch_Confusion", []);
 }
 
 Void Incompatible(Text _Reason) {
-    declare Response = Request("Ch_Incompatible", [_Reason]);
+	declare Response = Request("Ch_Incompatible", [_Reason]);
 }
 
 Void Chill() {
-    yield;
+	yield;
 }
 
 //
@@ -347,11 +347,11 @@ Void Chill() {
 //
 
 Void SetStatusProgress(Real _Progress) {
-    declare Response = Request("Ch_SetStatusProgress", [_Progress^""]);
-    yield;
+	declare Response = Request("Ch_SetStatusProgress", [_Progress^""]);
+	yield;
 }
 
 Void SetStatusMessage(Text _Message) {
-    declare Response = Request("Ch_SetStatusMessage", [_Message]);
-    yield;
+	declare Response = Request("Ch_SetStatusMessage", [_Message]);
+	yield;
 }
