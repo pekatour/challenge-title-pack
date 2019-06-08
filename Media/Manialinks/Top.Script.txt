@@ -1,0 +1,8 @@
+Void Animate_Show() {
+	Page.GetFirstChild("FRAME_TOP").RelativePosition_V3.Y = 120.0;
+	AnimMgr.Add(Page.GetFirstChild("FRAME_TOP"), "<frame pos=\"0 75\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+}
+
+main() {
+	Animate_Show();
+}

@@ -237,7 +237,8 @@ Void UpdateManiaExchange(Integer _Offset) {
 		SendCustomEvent("MapList_ManiaExchange_Add", [MXPage^"", (Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
 	}
 
-	(Page.GetFirstChild("LABEL_MAP_NAME") as CMlLabel).SetText("mania$0ffexchange$z / " ^ SelectedMXTrackInfo.GbxMapName);
+	if(SelectedMXTrackInfo.GbxMapName == "") (Page.GetFirstChild("LABEL_MAP_NAME") as CMlLabel).SetText("mania$0ffexchange$z / $888{{{{no_map_selected}}}}");
+	else (Page.GetFirstChild("LABEL_MAP_NAME") as CMlLabel).SetText("mania$0ffexchange$z / " ^ SelectedMXTrackInfo.GbxMapName);
 }
 
 Void UpdateScriptList(Integer _Offset) {
@@ -331,7 +332,14 @@ Void UpdateScriptList(Integer _Offset) {
 	}
 }
 
+Void Animate_Show() {
+	Page.GetFirstChild("FRAME_QUICKPLAY").RelativePosition_V3.Y = -120.0;
+	AnimMgr.Add(Page.GetFirstChild("FRAME_QUICKPLAY"), "<frame pos=\"0 -75\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+}
+
 main() {
+	Animate_Show();
+
 	declare CurrentFolder = "";
 	declare CurrentFolderScript = "";
 	declare OldMapScrollPos = (Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y;

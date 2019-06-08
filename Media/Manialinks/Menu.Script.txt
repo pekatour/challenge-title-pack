@@ -1,7 +1,16 @@
 #Include "TextLib" as TextLib
 #Include "MathLib" as MathLib
+#Include "AnimLib" as AnimLib
+
+Void Animate_Show() {
+	Page.GetFirstChild("FRAME_MENU").RelativeScale = 0.0;
+	AnimMgr.Add(Page.GetFirstChild("FRAME_MENU"), "<frame scale=\"1\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+}
 
 main() {
+	declare Start = Now;
+	Animate_Show();
+
 	(Page.GetFirstChild("LABEL_VERSION") as CMlLabel).SetText(TextLib::Split(" ", LoadedTitle.TitleVersion)[0]);
 
 	while(True) {
@@ -29,6 +38,14 @@ main() {
 				}
 			}
 		}
+
+		(Page.GetFirstChild("QUAD_BUTTON_CREATECHALLENGE_FLASH") as CMlQuad).Opacity
+		= (AnimLib::EaseOutQuad(Now - Start, .0, 1.0, 200) - AnimLib::EaseOutQuad(Now - Start - 200, .0, 1.0, 200))*.75;
+		(Page.GetFirstChild("QUAD_BUTTON_REPLAYS_FLASH") as CMlQuad).Opacity
+		= (AnimLib::EaseOutQuad(Now - Start - 200, .0, 1.0, 200) - AnimLib::EaseOutQuad(Now - Start - 400, .0, 1.0, 200))*.75;
+		(Page.GetFirstChild("QUAD_BUTTON_EXIT_FLASH") as CMlQuad).Opacity
+		= (AnimLib::EaseOutQuad(Now - Start - 400, .0, 1.0, 200) - AnimLib::EaseOutQuad(Now - Start - 600, .0, 1.0, 200))*.75;
+
 		yield;
 	}
 }

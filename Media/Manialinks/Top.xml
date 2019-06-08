@@ -1,4 +1,4 @@
-<frame pos="0 75">
+<frame pos="0 75" id="FRAME_TOP">
 	<quad z-index="-1" size="300 10" bgcolor="000A" halign="center" valign="center" style="Bgs1" substyle="BgTitleGlow" hidden="0"/>
 	<frame pos="125 0">
 		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" style="Bgs1" substyle="BgWindow4" halign="center" valign="center" opacity=".5"/>

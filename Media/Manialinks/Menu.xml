@@ -1,4 +1,4 @@
-<frame>
+<frame id="FRAME_MENU">
 	<quad z-index="-2" size="110 50" halign="center" valign="top" style="Bgs1" substyle="BgTitleGlow" pos="0 25"/>
 	<quad pos="0 0" z-index="-1" size="110 50" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgColorContour" opacity=".25" hidden="1"/>
 	<quad pos="0 22" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/Challenge.png" halign="center"/>
@@ -10,14 +10,17 @@
 		<frame>
 			<quad z-index="0" size="90 10" halign="center" valign="bottom" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036" id="QUAD_BUTTON_CREATECHALLENGE"/>
 			<label pos="0 4.5" z-index="1" size="90 10" text="{{{{CREATE_CHALLENGE}}}}" valign="center2" halign="center" textfont="RajdhaniMono"/>
+			<quad z-index="2" size="90 10" halign="center" valign="bottom" style="Bgs1" substyle="BgWindow4" id="QUAD_BUTTON_CREATECHALLENGE_FLASH" opacity="0"/>
 		</frame>
 		<frame pos="-0.5 -1">
 			<quad z-index="0" size="44.5 10" halign="right" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036"/>
 			<label pos="-22.25 -5.25" z-index="1" size="44 10" text="{{{{REPLAYS}}}}" valign="center2" halign="center" textfont="RajdhaniMono"/>
+			<quad z-index="2" size="44.5 10" halign="right" style="Bgs1" substyle="BgWindow4" id="QUAD_BUTTON_REPLAYS_FLASH" opacity="0"/>
 		</frame>
 		<frame pos="0.5 -1">
 			<quad z-index="0" size="44.5 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="800" id="QUAD_BUTTON_EXIT"/>
 			<label pos="22.25 -5.25" z-index="1" size="44.5 10" text="{{{{EXIT}}}}" halign="center" valign="center2" textfont="RajdhaniMono"/>
+			<quad z-index="2" size="44.5 10" halign="left" style="Bgs1" substyle="BgWindow4" id="QUAD_BUTTON_EXIT_FLASH" opacity="0"/>
 		</frame>
 	</frame>
 </frame>
