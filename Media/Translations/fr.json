@@ -13,6 +13,7 @@
 	"LOCAL": "LOCAL",
 	"MAP_MANAGER": "MANAGER DE MAP",
 	"CREDITS": "CRÉDITS",
+	"ONLINE": "EN LIGNE",
 
 	"by": "par",
 	"scripts": "scripts",
@@ -40,5 +41,5 @@
 
 	"CHECKPOINT_FOUND": "Checkpoint trouvé.",
  
-	"SCRIPT_NOTE": "Tout le code écrit et publié est disponible en open-source, ce qui signifie que tout le monde peut voir tes compétences de codage. Tu as été averti."
+	"SCRIPT_NOTE": "Tout le code écrit et publié est disponible en open-source, ce qui signifie que tout le monde peut voir tes talents de codage. Tu as été averti."
 }
