@@ -10,7 +10,7 @@
 	"LOCAL_MAPS": "LOKALE MAPS",
 	"MULTIPLE": "MEHRERE",
 	"OFFICIAL": "OFFIZIELL",
-	"LOCAL": "LOkAL",
+	"LOCAL": "LOKAL",
 	"MAP_MANAGER": "MAP MANAGER",
 
 	"by": "von",
@@ -37,7 +37,7 @@
 	"CHECKPOINTLESS_DESCRIPTION": "Entferne alle Checkpoints und behalte die Löcher.",
 	"TERRAINLESS_DESCRIPTION": "Entferne das gesamte Terrain.",
 
-	"CHECKPOINT_FOUND": "Checkpoint gefunden."
+	"CHECKPOINT_FOUND": "Checkpoint gefunden.",
 	
 	"SCRIPT_NOTE": "All der geschreibene und veröffentlichte Code ist Open-Source, sodass jeder deine Programmier-Skills sehen kann. Du wurdest gewarnt."
 }
