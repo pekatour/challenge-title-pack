@@ -1,0 +1,43 @@
+{
+    "CREATE_CHALLENGE": "CRÉE TON PROPRE CHALLENGE",
+
+    "START": "COMMENCER",
+    "EXIT": "QUITTER",
+    "REPLAYS": "REPLAYS",
+    "STATISTICS": "STATISTIQUES",
+    "SETTINGS": "PARAMÈTRES",
+    "MADE_BY": "FAIT PAR",
+    "LOCAL_MAPS": "MAPS LOCALES",
+    "MULTIPLE": "MULTIPLE" ,
+    "OFFICIAL": "OFFICIEL",
+    "LOCAL": "LOCAL",
+    "MAP_MANAGER": "MANAGER DE MAP",
+
+    "by": "par",
+    "scripts": "scripts",
+    "no_map_selected": "aucune map sélectionnée",
+    "no_script_selected": "aucun script séléectionné",
+
+    "TEST": "TESTER",
+    "PUBLISH": "PUBLIER",
+    "DOCUMENTATION": "DOCUMENTATION",
+    "SCRIPT_CODE": "CODE DU SCRIPT",
+    "BACK": "RETOUR",
+
+    "WELCOME_TO_MODIFIER": "BIENVENUE DANS LE MODIFIER",
+    "SAVE": "ENREGISTRER",
+    "SAVE_AND_PLAY": "SAUVEGARDER ET JOUER",
+    "DONE": "FINI",
+    "SCRIPT_FINISHED": "Script fini avec succès",
+    "TEST_SCRIPT": "TESTER LE SCRIPT",
+    "MODIFYING": "EN TRAIN DE MODIFIER",
+    "ACTIONS": "ACTIONS",
+
+    "REVERSE_DESCRIPTION": "Échange départ et fin.",
+    "CHECKPOINTLESS_DESCRIPTION": "Enlève tous les checkpoints et garde les trous.",
+    "TERRAINLESS_DESCRIPTION": "Enlève tous le terrain.",
+
+    "CHECKPOINT_FOUND": "Checkpoint trouvé.",
+ 
+    "SCRIPT_NOTE": "Tout le code écrit et publié est disponible en open-source, ce qui signifie que tout le monde peut voir tes compétences de codage. Tu as été averti."
+}
