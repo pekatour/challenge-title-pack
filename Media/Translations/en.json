@@ -12,7 +12,8 @@
 	"OFFICIAL": "OFFICIAL",	
 	"LOCAL": "LOCAL",	
 	"MAP_MANAGER": "MAP MANAGER",
-	"CREDITS": "CREDITS",	
+	"CREDITS": "CREDITS",
+	"ONLINE": "ONLINE",
 
  	"by": "by",	
 	"scripts": "scripts",	

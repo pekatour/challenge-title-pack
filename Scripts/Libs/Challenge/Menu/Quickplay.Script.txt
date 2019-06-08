@@ -51,6 +51,10 @@ Void StartMap(Text _MapLocation, Map::SMapInfo _MapInfo, SScriptInfo[] _Scripts)
 		Dialog_Message("This map wasn't validated in original version.");
 		return;
 	}
+	if(_Scripts.count == 0) {
+		Dialog_Message("Please select at least one script.");
+		return;
+	}
 
 	if(TitleFlow.IsReady) {
 		TitleFlow.EditNewMapFromBaseMap(_MapInfo.FileName, "", "", "Challenge.Script.txt", "Modifier.Script.txt", """<settings>

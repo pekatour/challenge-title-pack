@@ -119,7 +119,7 @@
 				</frame>
 				<frame pos="66.66 -5">
 					<quad z-index="0" size="33.33 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" id="QUAD_LOCATION_SCRIPT_ONLINE"/>
-					<label pos="16 -0.25" z-index="1" size="33.33 10" text="ONLINE" halign="center" valign="center2" textfont="RajdhaniMono"/>
+					<label pos="16 -0.25" z-index="1" size="33.33 10" text="{{{ONLINE}}}" halign="center" valign="center2" textfont="RajdhaniMono"/>
 				</frame>
 
 				<frame pos="0 -20" clip="True" clipposn="50 -40" clipsizen="100 80" z-index="1" id="FRAME_SCRIPTLIST">
