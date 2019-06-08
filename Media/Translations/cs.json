@@ -24,7 +24,7 @@
 	"SCRIPT_CODE": "KÓD SKRIPTU",
 	"BACK": "ZPĚT",
 
-	"WELCOME_TO_MODIFIER": "VÍTEJTE V MODIFIERU",
+	"WELCOME_TO_MODIFIER": "VÍTEJ V MODIFIERU",
 	"SAVE": "ULOŽIT",
 	"SAVE_AND_PLAY": "ULOŽIT A HRÁT",
 	"DONE": "HOTOVO",
@@ -37,5 +37,7 @@
 	"CHECKPOINTLESS_DESCRIPTION": "Odstraní všechny checkpointy a zanechá díry po nich.",
 	"TERRAINLESS_DESCRIPTION": "Odstraní všechen terén.",
 
-	"CHECKPOINT_FOUND": "Checkpoint nalezen."
+	"CHECKPOINT_FOUND": "Checkpoint nalezen.",
+
+	"SCRIPT_NOTE": "Všechen napsaný a publikovaný kód je dostupný open source, což znamená že všichni mohou vidět tvoje kódovací schopnosti. Byl jsi varován."
 }

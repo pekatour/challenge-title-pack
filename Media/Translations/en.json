@@ -37,5 +37,7 @@
 	"CHECKPOINTLESS_DESCRIPTION": "Removes all checkpoints and keeps the holes.",	
 	"TERRAINLESS_DESCRIPTION": "Removes all the terrain.",	
 
- 	"CHECKPOINT_FOUND": "Checkpoint found."	
+	"CHECKPOINT_FOUND": "Checkpoint found.",
+	 
+	"SCRIPT_NOTE": "All written and published code is available open source, which means everyone can see your coding skills. You have been warned."
 } 
