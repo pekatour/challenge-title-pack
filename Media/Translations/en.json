@@ -1,0 +1,41 @@
+{	
+	"CREATE_CHALLENGE": "CREATE YOUR OWN CHALLENGE",	
+
+ 	"START": "START",	
+	"EXIT": "EXIT",	
+	"REPLAYS": "REPLAYS",	
+	"STATISTICS": "STATISTICS",	
+	"SETTINGS": "SETTINGS",	
+	"MADE_BY": "MADE BY",	
+	"LOCAL_MAPS": "LOCAL MAPS",	
+	"MULTIPLE": "MULTIPLE",	
+	"OFFICIAL": "OFFICIAL",	
+	"LOCAL": "LOCAL",	
+	"MAP_MANAGER": "MAP MANAGER",	
+
+ 	"by": "by",	
+	"scripts": "scripts",	
+	"no_map_selected": "no map selected",	
+	"no_script_selected": "no script selected",	
+
+ 	"TEST": "TEST",	
+	"PUBLISH": "PUBLISH",	
+	"DOCUMENTATION": "DOCUMENTATION",	
+	"SCRIPT_CODE": "SCRIPT CODE",	
+	"BACK": "BACK",	
+
+ 	"WELCOME_TO_MODIFIER": "WELCOME TO MODIFIER",	
+	"SAVE": "SAVE",	
+	"SAVE_AND_PLAY": "SAVE AND PLAY",	
+	"DONE": "DONE",	
+	"SCRIPT_FINISHED": "Script finished successfully.",	
+	"TEST_SCRIPT": "TEST SCRIPT",	
+	"MODIFYING": "MODIFYING",	
+	"ACTIONS": "ACTIONS",	
+
+ 	"REVERSE_DESCRIPTION": "Swap start with finish.",	
+	"CHECKPOINTLESS_DESCRIPTION": "Removes all checkpoints and keeps the holes.",	
+	"TERRAINLESS_DESCRIPTION": "Removes all the terrain.",	
+
+ 	"CHECKPOINT_FOUND": "Checkpoint found."	
+} 
