@@ -15,7 +15,7 @@
 
     "by": "par",
     "scripts": "scripts",
-    "no_map_selected": "aucune map sélectionnée",
+    "no_map_selected": "aucune carte sélectionnée",
     "no_script_selected": "aucun script séléectionné",
 
     "TEST": "TESTER",
