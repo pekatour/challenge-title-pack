@@ -11,7 +11,8 @@
 	"MULTIPLE": "MULTIPLE",	
 	"OFFICIAL": "OFFICIAL",	
 	"LOCAL": "LOCAL",	
-	"MAP_MANAGER": "MAP MANAGER",	
+	"MAP_MANAGER": "MAP MANAGER",
+	"CREDITS": "CREDITS",	
 
  	"by": "by",	
 	"scripts": "scripts",	
