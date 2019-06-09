@@ -35,7 +35,7 @@
 	"MODIFYING": "MODIFYING",	
 	"ACTIONS": "ACTIONS",	
 
- 	"REVERSE_DESCRIPTION": "Swap start with finish.",	
+ 	"REVERSE_DESCRIPTION": "Swaps start with finish.",	
 	"CHECKPOINTLESS_DESCRIPTION": "Removes all checkpoints and keeps the holes.",	
 	"TERRAINLESS_DESCRIPTION": "Removes all the terrain.",	
 
