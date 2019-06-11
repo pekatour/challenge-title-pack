@@ -130,7 +130,7 @@ SLanguage[] List() {
 	Languages.add(["Code" => "kr", "EnglishName" => "Kanuri", "LocalName" => "Kanuri"]);
 	Languages.add(["Code" => "ks", "EnglishName" => "Kashmiri", "LocalName" => "कश्मीरी / كشميري"]);
 	Languages.add(["Code" => "ksh", "EnglishName" => "Ripuarian", "LocalName" => "Ripoarisch"]);
-	Languages.add(["Code" => "ku", "EnglishName" => "Kurdish, "LocalName" => "Kurdî / كوردی"]);
+	Languages.add(["Code" => "ku", "EnglishName" => "Kurdish", "LocalName" => "Kurdî / كوردی"]);
 	Languages.add(["Code" => "kv", "EnglishName" => "Komi", "LocalName" => "Коми"]);
 	Languages.add(["Code" => "kw", "EnglishName" => "Cornish", "LocalName" => "Kernewek"]);
 	Languages.add(["Code" => "ky", "EnglishName" => "Kirghiz", "LocalName" => "Kırgızca / Кыргызча"]);
@@ -275,7 +275,7 @@ SLanguage[] List() {
 	
 	declare JsonSuccess = List.fromjson(Languages.tojson());
 	
-	foreach(Lang,Languages) Lang.Exists = True;
+	for(i,0,List.count-1) List[i].Exists = True;
 	
 	return List;    
 }
