@@ -79,6 +79,13 @@ CTaskResult_MapList Get(Text _FileName) {
 	return G_AsyncMaps[_FileName];
 }
 
+Void AsyncMapInfo(Text _FileName, Integer _Scope) {
+	declare Folders = TextLib::Split("/",_FileName);
+	declare Removed = Folders.removekey(Folders.count-1);
+	declare Path = TextLib::Join("/",Folders);
+	G_AsyncMaps[_FileName] = DataFileMgr.Map_GetFilteredGameList(_Scope, Path, False);
+}
+
 SMapInfo AsyncGet(Text _FileName) {
 	declare SMapInfo Info;
 	
@@ -123,11 +130,4 @@ Boolean IsCanceled(Text _FileName) {
 	if(!G_AsyncMaps.existskey(_FileName)) return False;
 	return !Get(_FileName).IsProcessing
 	&& Get(_FileName).IsCanceled;
-}
-
-Void AsyncMapInfo(Text _FileName, Integer _Scope) {
-	declare Folders = TextLib::Split("/",_FileName);
-	declare Removed = Folders.removekey(Folders.count-1);
-	declare Path = TextLib::Join("/",Folders);
-	G_AsyncMaps[_FileName] = DataFileMgr.Map_GetFilteredGameList(_Scope, Path, False);
 }

@@ -1,33 +1,67 @@
+/*
 // MX.Script.txt
-// Library by BigBang1112
-//
-// Provides functions usable for receiving information from the site Mania-Exchange.
-// https://www.mania-exchange.com/
-//
-// API INFO: https://api.mania-exchange.com/documents/reference
+// by BigBang1112
+// part of Universe Library Set
 
-// Avaliable functions:
-//
-// SMXTrack[] Search(SMXSearchFilter _Filter)
-// SMXTrack Track(Text _Site, Integer _TrackId)
-// SMXTrack[] TrackMultiple(Text _Site, Integer[] _TrackId)
-// SMXReplay TrackWorldRecord(Text _Site, Integer _TrackId)
-// SMXReplay[] TrackReplays(Text _Site, Integer _TrackId, Integer _Amount)
-// SMXReplay[] TrackReplays(Text _Site, Integer _TrackId)
-// SMXEmbeddedObject[] TrackEmbeddedObjects(Text _Site, Integer _TrackId)
-// Text TrackScreenshot(Text _Site, Integer _TrackId, Text _Type)
-// Text TrackThumbnail(Text _Site, Integer _TrackId)
+// Provides functions usable for receiving information from the site Mania-Exchange.
+// https://mania.exchange/
+
+// API INFO: https://api.mania-exchange.com/documents/reference
+*/
+
+/*
+// SMXTrack[] Search(SMXSearchFilter _Filter, Boolean _UseCache)
+// SMXMappack[] SearchMappack(Text _Site, SMXSearchMappackFilter _Filter, Boolean _UseCache)
+// SMXTrack[] TrackMultiple(Text _Site, Integer[] _TrackId, Boolean _UseCache)
+// SMXTrack Track(Text _Site, Integer _TrackId, Boolean _UseCache)
+// SMXMappack[] MappackMultiple(Text _Site, Integer[] _MappackIds, Text _Secret, Boolean _UseCache)
+// SMXMappack Mappack(Text _Site, Integer _MappackId, Text _Secret, Boolean _UseCache)
+// SMXTrack[] MappackTracks(Text _Site, Integer _MappackId, Text _Secret, Boolean _UseCache)
+// SMXReplay TrackWorldRecord(Text _Site, Integer _TrackId, Boolean _UseCache)
+// SMXReplay[] TrackReplays(Text _Site, Integer _TrackId, Integer _Amount, Boolean _UseCache)
+// SMXReplay[] TrackReplays(Text _Site, Integer _TrackId, Boolean _UseCache)
+// SMXEmbeddedObject[] TrackEmbeddedObjects(Text _Site, Integer _TrackId, Boolean _UseCache)
+// Text TrackScreenshotUrl(Text _Site, Integer _TrackId, Text _Type)
+// Text TrackThumbnailUrl(Text _Site, Integer _TrackId)
+// Text MappackThumbnailUrl(Text _Site, Integer _TrackId)
+// Text TrackDownloadUrl(Text _Site, Integer _TrackId)
+// Text MappackDownloadUrl(Text _Site, Integer _TrackId, Text _Secret)
 // Async::SAsyncHttpRequest GetAsyncMXRequest(Text _Name)
 // Void DestroyAsyncMXRequest(Text _Name)
 // Void IsAsyncRequestCompleted(Text _Name)
-// Boolean SearchAsync(SMXSearchFilter _Filter)
-// Boolean TrackAsync(Text _Name, Text _Site, Integer _TrackId)
-// Boolean TrackMultipleAsync(Text _Name, Text _Site, Integer _TrackId)
-// Boolean TrackWorldRecordAsync(Text _Name, Text _Site, Integer _TrackId)
-// Boolean TrackReplaysAsync(Text _Name, Text _Site, Integer _TrackId, Integer _Amount)
-// Boolean TrackEmbeddedObjectsAsync(Text _Name, Text _Site, Integer _TrackId)
-// Boolean TrackScreenshotAsync(Text _Name, Text _Site, Integer _TrackId, Text _Type)
-// Boolean TrackThumbnailAsync(Text _Name, Text _Site, Integer _TrackId)
+// Boolean SearchAsync(SMXSearchFilter _Filter, Boolean _UseCache)
+// Boolean TrackAsync(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
+// Boolean TrackMultipleAsync(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
+// Boolean TrackWorldRecordAsync(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
+// Boolean TrackReplaysAsync(Text _Name, Text _Site, Integer _TrackId, Integer _Amount, Boolean _UseCache)
+// Boolean TrackEmbeddedObjectsAsync(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
+// Boolean TrackScreenshotAsync(Text _Name, Text _Site, Integer _TrackId, Text _Type, Boolean _UseCache)
+// Boolean TrackThumbnailAsync(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
+// SMXTrack[] GetAsyncSearchResult(Text _Name)
+// Boolean AsyncSearchMappack(Text _Name, Text _Site, SMXSearchMappackFilter _Filter, Boolean _UseCache)
+// SMXMappack[] GetAsyncSearchMappackResult(Text _Name)
+// Boolean AsyncTrackMultiple(Text _Name, Text _Site, Integer[] _TrackIds, Boolean _UseCache)
+// SMXTrack[] GetAsyncTrackMultipleResult(Text _Name)
+// Boolean AsyncTrack(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
+// SMXTrack GetAsyncTrackResult(Text _Name)
+// Boolean AsyncMappackMultiple(Text _Name, Text _Site, Integer[] _MappackIds, Text _Secret, Boolean _UseCache)
+// SMXMappack[] GetAsyncMappackMultipleResult(Text _Name)
+// Boolean AsyncMappack(Text _Name, Text _Site, Integer _MappackId, Text _Secret, Boolean _UseCache)
+// SMXMappack GetAsyncMappackResult(Text _Name)
+// Boolean AsyncMappackTracks(Text _Name, Text _Site, Integer _MappackId, Text _Secret, Boolean _UseCache)
+// SMXTrack[] GetAsyncMappackTracksResult(Text _Name)
+// Boolean AsyncTrackWorldRecord(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
+// SMXReplay GetAsyncTrackWorldRecordResult(Text _Name)
+// Boolean AsyncTrackReplays(Text _Name, Text _Site, Integer _TrackId, Integer _Amount, Boolean _UseCache)
+// SMXReplay[] GetAsyncTrackReplaysResult(Text _Name)
+// Boolean AsyncTrackEmbeddedObjects(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache)
+// SMXEmbeddedObject[] GetAsyncTrackEmbeddedObjectsResult(Text _Name)
+// CHttpRequest GetAsyncRequest(Text _Name)
+// Void DestroyAsyncRequest(Text _Name)
+// Boolean IsAsyncRequestCompleted(Text _Name)
+// Boolean IsAsyncRequestSuccessful(Text _Name)
+// Integer GetAsyncRequestStatusCode(Text _Name)
+*/
 
 #Include "TextLib" as TextLib
 
