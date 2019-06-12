@@ -7,8 +7,8 @@ Text Construct(Text _Markup, Text _Script) {
 	return """<manialink version="3">
 			{{{_Markup}}}
 			<script>
-			<!--{{{_Script}}}
-			-->
+			<![CDATA[{{{_Script}}}
+			]]>
 			</script>
 		</manialink>""";
 }
