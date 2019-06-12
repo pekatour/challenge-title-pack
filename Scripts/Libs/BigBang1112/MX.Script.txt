@@ -7,6 +7,17 @@
 // https://mania.exchange/
 
 // API INFO: https://api.mania-exchange.com/documents/reference
+
+// This library does depend on more libraries from the Universe Library Set:
+// - Http.Script.txt
+// You only need to use the libraries above, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin
 */
 
 /*

@@ -1,3 +1,28 @@
+/*
+// Language.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Handles information about 263 languages.
+
+// This library does not depend on any other library from the Universe Library Set.
+// You can use this library independently, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin
+*/
+
+/*
+// SLanguage[] List()
+// SLanguage FromCode(Text _Code)
+// SLanguage FromEnglishName(Text _EnglishName)
+// SLanguage FromLocalName(Text _LocalName)
+*/
+
 #Struct SLanguage {
 	Text EnglishName;
 	Text LocalName;
@@ -5,6 +30,12 @@
 	Boolean Exists;
 }
 
+/*
+// SLanguage[] List()
+// Lists all of the known languages.
+
+// Returns an array of all known languages in SLanguage struct array
+*/
 SLanguage[] List() {
 	declare SLanguage[] List;
 	declare Text[Text][] Languages;
@@ -280,6 +311,14 @@ SLanguage[] List() {
 	return List;    
 }
 
+/*
+// SLanguage FromCode(Text _Code)
+// Gets all language information from code.
+
+// Text _Code - Language code
+
+// Returns language information as SLanguage
+*/
 SLanguage FromCode(Text _Code) {
 	foreach(Lang,List())
 		if(Lang.Code == _Code)
@@ -289,6 +328,14 @@ SLanguage FromCode(Text _Code) {
 	return Language;
 }
 
+/*
+// SLanguage FromEnglishName(Text _EnglishName)
+// Gets all language information from english name.
+
+// Text _EnglishName - Language english name
+
+// Returns language information as SLanguage
+*/
 SLanguage FromEnglishName(Text _EnglishName) {
 	foreach(Lang,List())
 		if(Lang.EnglishName == _EnglishName)
@@ -298,6 +345,14 @@ SLanguage FromEnglishName(Text _EnglishName) {
 	return Language;
 }                
 
+/*
+// SLanguage FromLocalName(Text _LocalName)
+// Gets all language information from local name.
+
+// Text _LocalName - Language local name
+
+// Returns language information as SLanguage
+*/
 SLanguage FromLocalName(Text _LocalName) {
 	foreach(Lang,List())
 		if(Lang.LocalName == _LocalName)

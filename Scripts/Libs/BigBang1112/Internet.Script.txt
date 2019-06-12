@@ -1,57 +1,53 @@
+/*
 // Internet.Script.txt
-// Library by BigBang1112
-//
-// Easy library that checks if you're in Online or Offline mode
+// by BigBang1112
+// part of Universe Library Set
 
-// Avaliable functions:
-//
+// Easy library to check if you're in Online or Offline mode.
+
+// This library does not depend on any other library from the Universe Library Set.
+// You can use this library independently, although it's recommended to use the whole set.
+*/
+
+/*
+// Compatible contexts:
+// - CManiaApp
+*/
+
+/*
 // Text[] GetZones()
 // Boolean IsOnline()
 // Boolean IsOffline()
+*/
 
 #Include "TextLib" as TextLib
 
-///////////////////////////////////////////////////
+/*
 // Text[] GetZones()
-// ------------------------------------------------
-// Returns your zone (location) as an array of multiple regions
-///////////////////////////////////////////////////
+// Splits your zone (location) into an array of multiple regions.
+
+// Returns an array containing each region, empty array if you're in offline mode
+*/
 Text[] GetZones() {
 	return TextLib::Split("|", LocalUser.ZonePath);
 }
 
-///////////////////////////////////////////////////
+/*
 // Boolean IsOnline()
-// ------------------------------------------------
+// Checks if you launched Maniaplanet in online mode.
+
 // Returns True if you're in Online mode, otherwise False
-///////////////////////////////////////////////////
+*/
 Boolean IsOnline() {
 	return GetZones().count > 0;
 }
 
-///////////////////////////////////////////////////
-// Boolean IsOnline()
-// ------------------------------------------------
+/*
+// Boolean IsOffline()
+// Checks if you launched Maniaplanet in offline mode.
+
 // Returns True if you're in Offline mode, otherwise False
-///////////////////////////////////////////////////
+*/
 Boolean IsOffline() {
 	return !IsOnline();
-}
-
-Text Insert() {
-	return """
-
-		Text[] GetZones() {
-			return TextLib::Split("|", LocalUser.ZonePath);
-		}
-	
-		Boolean IsOnline() {
-			return GetZones().count > 0;
-		}
-	
-		Boolean IsOffline() {
-			return !IsOnline();
-		}
-
-	""";
 }

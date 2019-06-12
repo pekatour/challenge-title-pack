@@ -12,6 +12,13 @@
 */
 
 /*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin
+*/
+
+/*
 // CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
 // CHttpRequest SyncGET(Text _Url, Boolean _UseCache)
 // CHttpRequest SyncGET(Text _Url)
