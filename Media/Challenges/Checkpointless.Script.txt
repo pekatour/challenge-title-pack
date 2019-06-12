@@ -14,7 +14,7 @@ for(i,0,Checkpoints.count-1) {
 	if(Block.Waypoint == "Checkpoint") {
 		RemoveBlock(Block.Coord);
 		SetStatusProgress((i+1.0)/Checkpoints.count);
-		SetStatusMessage("{{{CHECKPOINT_FOUND}}} " ^ Block.Name);
+		SetStatusMessage("{{{{CHECKPOINT_FOUND}}}} " ^ Block.Name);
 	}
 }
 
