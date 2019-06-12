@@ -58,14 +58,14 @@ Text CBlockCardinalDirectionsToText(CBlock::CardinalDirections _Direction) {
 	return "";
 }
 
-CMapEditorPlugin::CardinalDirections TextToCMapEditorPluginCardinalDirections(Text _Direction) {
+::CardinalDirections TextToCMapEditorPluginCardinalDirections(Text _Direction) {
 	switch(_Direction) {
-		case "North": { return CMapEditorPlugin::CardinalDirections::North; }
-		case "South": { return CMapEditorPlugin::CardinalDirections::South; }
-		case "West": { return CMapEditorPlugin::CardinalDirections::West; }
-		case "East": { return CMapEditorPlugin::CardinalDirections::East; }
+		case "North": { return ::CardinalDirections::North; }
+		case "South": { return ::CardinalDirections::South; }
+		case "West": { return ::CardinalDirections::West; }
+		case "East": { return ::CardinalDirections::East; }
 	}
-	return CMapEditorPlugin::CardinalDirections::North;
+	return ::CardinalDirections::North;
 }
 
 Void Prepare() {
@@ -161,7 +161,7 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 	switch(Event.CustomEventType) {
 		case "Ch_ComputeShadows": {
 			ComputeShadows();
-			wait(CurrentShadowsQuality == CMapEditorPlugin::ShadowsQuality::VeryFast);
+			wait(CurrentShadowsQuality == ::ShadowsQuality::VeryFast);
 			Respond(Event, []);
 		}
 		case "Ch_RemoveAllBlocks": {
