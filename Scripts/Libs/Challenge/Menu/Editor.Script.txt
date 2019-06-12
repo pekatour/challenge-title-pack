@@ -4,7 +4,7 @@
 #Include "Libs/BigBang1112/Map.Script.txt" as Map
 
 Void Start() {
-	Layers::Create("Editor", Manialink::FromFile("Media/Manialinks/Editor"));
+	Layers::Create("Editor", Manialink::FromFile("Media/Manialinks/Editor", True));
 
 	Layers::SendEvent("Editor", "Code_SetText", [File::Read("Media/Challenges/Default.Script.txt")]);
 }

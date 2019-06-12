@@ -2,7 +2,7 @@
 #Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
 
 Void Start() {
-	Layers::Create("Top", Manialink::FromFile("Media/Manialinks/Top"), True);
+	Layers::Create("Top", Manialink::FromFile("Media/Manialinks/Top", True), True);
 }
 
 Void Event(CManiaAppEvent _Event) {

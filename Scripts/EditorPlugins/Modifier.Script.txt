@@ -79,12 +79,12 @@ Void Prepare() {
 	EditMode = CMapEditorPlugin::EditMode::FreeLook;
 	Map.MapName = MapName^"$z -";
 	
-	Layers::Create("ModifierIntro",Manialink::FromFile("Media/Manialinks/Modifier/ModifierIntro"));
-	Layers::Create("ModifierScript",Manialink::FromFile("Media/Manialinks/Modifier/ModifierScript"));
-	Layers::Create("ModifierStatus",Manialink::FromFile("Media/Manialinks/Modifier/ModifierStatus"));
-	Layers::Create("ModifierMetadata",Manialink::FromFile("Media/Manialinks/Modifier/ModifierMetadata"));
-	Layers::Create("ModifierActions",Manialink::FromFile("Media/Manialinks/Modifier/ModifierActions"));
-	Layers::Create("ModifierResult",Manialink::FromFile("Media/Manialinks/Modifier/ModifierResult"));
+	Layers::Create("ModifierIntro",Manialink::FromFile("Media/Manialinks/Modifier/ModifierIntro", True));
+	Layers::Create("ModifierScript",Manialink::FromFile("Media/Manialinks/Modifier/ModifierScript", True));
+	Layers::Create("ModifierStatus",Manialink::FromFile("Media/Manialinks/Modifier/ModifierStatus", True));
+	Layers::Create("ModifierMetadata",Manialink::FromFile("Media/Manialinks/Modifier/ModifierMetadata", True));
+	Layers::Create("ModifierActions",Manialink::FromFile("Media/Manialinks/Modifier/ModifierActions", True));
+	Layers::Create("ModifierResult",Manialink::FromFile("Media/Manialinks/Modifier/ModifierResult", True));
 	
 	Layers::SetAnimationInOut("ModifierScript",CUILayer::EUILayerAnimation::DownSlow);
 	Layers::SetAnimationInOut("ModifierStatus",CUILayer::EUILayerAnimation::DownSlow);

@@ -8,7 +8,7 @@ ClientUI.OverlayHideSpeedAndDist = True;
 ClientUI.OverlayHidePersonnalBestAndRank = True;
 ClientUI.OverlayHideChrono = True;
 
-Layers::Create("Ingame", Manialink::FromFile("Media/Manialinks/SoloIngame"), True);
+Layers::Create("Ingame", Manialink::FromFile("Media/Manialinks/SoloIngame", True), True);
 
 while(True) {
 	yield;

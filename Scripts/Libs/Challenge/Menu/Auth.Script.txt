@@ -43,7 +43,7 @@ Void Start() {
 			ExtractRedirect(AuthRequestPage.Result);
 		}
 		else {
-			Layers::Create("Auth", Manialink::FromFile("Media/Manialinks/Auth"), True);
+			Layers::Create("Auth", Manialink::FromFile("Media/Manialinks/Auth", True), True);
 			AuthorizeUrl = FindAuthorizeUrl[1];
 		}
 	}
