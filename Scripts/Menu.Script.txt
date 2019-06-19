@@ -13,6 +13,7 @@
 #Include "Libs/BigBang1112/Http.Script.txt" as Http
 #Include "Libs/BigBang1112/Auth.Script.txt" as Auth
 #Include "Libs/BigBang1112/Language.Script.txt" as Language
+#Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
 
 #Include "Libs/Challenge/Menu/Quickplay.Script.txt" as Menu_Quickplay
 #Include "Libs/Challenge/Menu/Main.Script.txt" as Menu_Main
@@ -29,7 +30,8 @@ main() {
 	
 	//Auth::AuthorizeInManialink("b1a3d10ba7", "basic maps", "http://localhost/challenge/auth");
 	
-	log(Language::List());
+	Dictionary::SetTranslationFolder("Media/Translations");
+	Dictionary::SetTranslationLanguage(LocalUser.Language);
 	
 	Auth::Start();
 	

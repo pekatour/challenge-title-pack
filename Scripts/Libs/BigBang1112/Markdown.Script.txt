@@ -4,4 +4,150 @@
 // part of Universe Library Set
 
 // Reads .MD files nicely.
+
+// This library does depend on more libraries from the Universe Library Set:
+// - Http.Script.txt
+// - File.Script.txt
+// - RegexFix.Script.txt
+// You only need to use the libraries above, although it's recommended to use the whole set.
 */
+
+/*
+// Compatible contexts:
+// - CManiaApp
+// - CMode
+// - CServerPlugin?
+*/
+
+/*
+// SMarkdown Parse(Text _Content)
+// SMarkdown FromFile(Text _FileName)
+// SMarkdown FromInternet(Text _Url)
+// Text ToManialink(SMarkdown _Markdown, SManialinkSettings _Settings)
+*/
+
+#Include "TextLib" as TextLib
+
+#Include "Libs/BigBang1112/Http.Script.txt" as Http
+#Include "Libs/BigBang1112/File.Script.txt" as File
+#Include "Libs/BigBang1112/RegexFix.Script.txt" as RegexFix
+
+#Const C_ElementType_Paragraph "Paragraph"
+
+#Struct SElement {
+	Text Type;
+	Text Content;
+	Boolean Blockquote;
+	Boolean List;
+}
+
+#Struct SMarkdown {
+	Text FileName;
+	SElement[] Elements;
+}
+
+#Struct SManialinkSettings {
+	Vec2 Size;
+}
+
+SMarkdown Parse(Text _Content) {
+	declare SMarkdown Markdown;
+	
+	declare ModifiedContent = TextLib::Replace(_Content, "\n\n", "\n \n");
+	declare Lines = TextLib::Split("\n",ModifiedContent);
+	foreach(Line,Lines) {
+		declare SElement Element;
+
+		if(TextLib::StartsWith("######", Line)) {
+			declare SubLength = TextLib::Length("######")+1;
+			Element.Type = "Heading6";
+			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
+		}
+		else if(TextLib::StartsWith("#####", Line)) {
+			declare SubLength = TextLib::Length("#####")+1;
+			Element.Type = "Heading5";
+			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
+		}
+		else if(TextLib::StartsWith("####", Line)) {
+			declare SubLength = TextLib::Length("####")+1;
+			Element.Type = "Heading4";
+			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
+		}
+		else if(TextLib::StartsWith("###", Line)) {
+			declare SubLength = TextLib::Length("###")+1;
+			Element.Type = "Heading3";
+			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
+		}
+		else if(TextLib::StartsWith("##", Line)) {
+			declare SubLength = TextLib::Length("##")+1;
+			Element.Type = "Heading2";
+			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
+		}
+		else if(TextLib::StartsWith("#", Line)) {
+			declare SubLength = TextLib::Length("#")+1;
+			Element.Type = "Heading1";
+			Element.Content = TextLib::SubText(Line, SubLength, TextLib::Length(Line)-SubLength);
+		}
+		else if(TextLib::StartsWith(" ", Line)) {
+			Element.Type = "Empty";
+		}
+		else {
+			Element.Type = "Paragraph";
+			Element.Content = Line;
+		}
+		
+		Element.Content = RegexFix::RegexReplace("""\*\*\*(.*?)\*\*\*""", Element.Content, "g", """$o\$i\1$z"""); // Bold and Italic
+		Element.Content = RegexFix::RegexReplace("""\*\*(.*?)\*\*""", Element.Content, "g", """$o\1$z"""); // Bold
+		Element.Content = RegexFix::RegexReplace("""\*(.*?)\*""", Element.Content, "g", """$i\1$z"""); // Italic
+		
+		Markdown.Elements.add(Element);
+	}
+
+	return Markdown;
+}
+
+SMarkdown FromFile(Text _FileName) {
+	declare Content = File::Read(_FileName);
+	declare Markdown = Parse(Content);
+	Markdown.FileName = _FileName;
+	return Markdown;
+}
+
+SMarkdown FromInternet(Text _Url) {
+	declare Content = Http::SyncGET_Result(_Url);
+	declare Markdown = Parse(Content);
+	Markdown.FileName = _Url;
+	return Markdown;
+}
+
+Text ToManialink(SMarkdown _Markdown, SManialinkSettings _Settings) {
+	declare Text Manialink;
+	Manialink ^= """<frame class="MainFrame" size="{{{_Settings.Size.X}}} {{{_Settings.Size.Y}}}">""";
+	Manialink ^= """<quad class="Scroll" size="{{{_Settings.Size.X}}} {{{_Settings.Size.Y}}}" scriptevents="1"/>""";
+
+	declare Offset = 0.;
+	for(i,0,_Markdown.Elements.count-1) {
+		declare Element = _Markdown.Elements[i];
+		switch(Element.Type) {
+			case "Paragraph": {
+				Manialink ^= "\n" ^ """<label pos="0 {{{-Offset}}}" size="{{{_Settings.Size.X}}} 5" class="Paragraph" text="{{{Element.Content}}}" autonewline="1"/>""";
+				Offset += 5;
+			}
+			case "Heading1": {
+				Manialink ^= "\n" ^ """<label pos="0 {{{-Offset}}}" size="{{{_Settings.Size.X}}} 15" class="Heading1" textsize="6" text="{{{Element.Content}}}" autonewline="1"/>""";
+				Offset += 15;
+			}
+			case "Heading2": {
+				Manialink ^= "\n" ^ """<label pos="0 {{{-Offset}}}" size="{{{_Settings.Size.X}}} 10" class="Heading2" textsize="4" text="{{{Element.Content}}}" autonewline="1"/>""";
+				Offset += 10;
+			}
+			case "Empty": {
+				Manialink ^= "\n" ^ """<label pos="0 {{{-Offset}}}" size="{{{_Settings.Size.X}}} 2" class="Empty"/>""";
+				Offset += 2;
+			}
+		}
+	}
+
+	Manialink ^= "</frame>";
+	return Manialink;
+}
