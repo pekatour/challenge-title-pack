@@ -125,6 +125,7 @@ Void Stamp_Remove(Text _StampName) {
 }
 
 Boolean Stamp_Reached(Text _StampName) {
+	if(Stamps.existskey(_StampName))
 	if(Now >= Stamps[_StampName].Time) {
 		Stamp_Remove(_StampName);
 		return True;

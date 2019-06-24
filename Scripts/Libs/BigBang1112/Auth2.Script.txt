@@ -25,8 +25,6 @@
 	Boolean AlreadyAccepted;
 }
 
-declare Text Auth_State;
-
 SAuthResult Private_Authorize(Text _Content) {
 	declare SAuthResult Result;
 
@@ -51,7 +49,7 @@ SAuthResult Authorize(Text _ClientId, Text _Scopes, Text _RedirectUri) {
 	declare Scopes = TextLib::URLEncode(_Scopes);
 	declare Uri = TextLib::URLEncode(_RedirectUri);
 
-	declare Request = Http::SyncGET("""https://www.maniaplanet.com/login/oauth2/authorize?response_type=code&client_id={{{_ClientId}}}&scope={{{Scopes}}}&state={{{Auth_State}}}&redirect_uri={{{Uri}}}&login={{{LocalUser.Login}}}&token={{{Auth::GetToken().Value}}}""");
+	declare Request = Http::SyncGET("""https://www.maniaplanet.com/login/oauth2/authorize?response_type=code&client_id={{{_ClientId}}}&scope={{{Scopes}}}&state={{{Auth::GetState()}}}&redirect_uri={{{Uri}}}&login={{{LocalUser.Login}}}&token={{{Auth::GetToken().Value}}}""");
 	if(Http::IsSuccessfulStatusCode(Request.StatusCode)) Result = Private_Authorize(Request.Result);
 	Http.Destroy(Request);
 	return Result;
@@ -60,7 +58,7 @@ SAuthResult Authorize(Text _ClientId, Text _Scopes, Text _RedirectUri) {
 Boolean AsyncAuthorize(Text _Name, Text _ClientId, Text _Scopes, Text _RedirectUri) {
 	declare Scopes = TextLib::URLEncode(_Scopes);
 	declare Uri = TextLib::URLEncode(_RedirectUri);
-	return Http::AsyncGET(_Name, """https://www.maniaplanet.com/login/oauth2/authorize?response_type=code&client_id={{{_ClientId}}}&scope={{{Scopes}}}&state={{{Auth_State}}}&redirect_uri={{{Uri}}}&login={{{LocalUser.Login}}}&token={{{Auth::GetToken().Value}}}""");
+	return Http::AsyncGET(_Name, """https://www.maniaplanet.com/login/oauth2/authorize?response_type=code&client_id={{{_ClientId}}}&scope={{{Scopes}}}&state={{{Auth::GetState()}}}&redirect_uri={{{Uri}}}&login={{{LocalUser.Login}}}&token={{{Auth::GetToken().Value}}}""");
 }
 
 Boolean AsyncAuthorize(Text _Name, Text _AcceptUrl) {
