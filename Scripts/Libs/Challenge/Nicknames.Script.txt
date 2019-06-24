@@ -1,0 +1,53 @@
+#Include "TextLib" as TextLib
+
+#Include "Libs/BigBang1112/Http.Script.txt" as Http
+#Include "Libs/BigBang1112/Time.Script.txt" as Time
+#Include "Libs/BigBang1112/Layers.Script.txt" as Layers
+
+#Include "Libs/Challenge/Backend.Script.txt" as Backend
+
+#Struct SPlayer {
+	Text Login;
+	Text Nickname;
+}
+
+declare Text[Text] Nicknames;
+
+declare Integer LastNicknameCount;
+
+Void Submit(Text _Login) {
+	if(!Nicknames.existskey(_Login) && _Login != "") Nicknames[_Login] = "";
+}
+
+Void Async() {
+	if(Nicknames.count != LastNicknameCount) {
+		LastNicknameCount = Nicknames.count;
+		
+		declare Stamp = Time::Stamp_CreateOnce("Nickname_Update", 100);
+	}
+	
+	if(Time::Stamp_Reached("Nickname_Update")) {
+		declare Text[] NewLogins;
+		foreach(Login => Nickname,Nicknames) {
+			if(Nickname == "") {
+				NewLogins.add(Login);
+			}
+		}
+		declare Success = Http::AsyncGET("RefreshNicknames", Backend::GetHost() ^ "/players?login=" ^ TextLib::URLEncode(TextLib::Join(" ",NewLogins)) ^ "&nickname_only=1");
+	}
+	
+	if(Http::IsCompleted("RefreshNicknames")) {
+		if(Http::IsSuccessful("RefreshNicknames")) {
+			declare SPlayer[] Players;
+			declare JsonSuccess = Players.fromjson(Http::GetResult("RefreshNicknames"));
+			foreach(Player,Players) {
+				Nicknames[Player.Login] = Player.Nickname;
+			}
+			Layers::SendEvent("Quickplay", "NicknameUpdate", Nicknames.tojson());
+		}
+		else {
+			log("Can't get player nicknames: HTTP error " ^ Http::GetStatusCode("RefreshNicknames"));
+		}
+		Http::Destroy("RefreshNicknames");
+	}
+}

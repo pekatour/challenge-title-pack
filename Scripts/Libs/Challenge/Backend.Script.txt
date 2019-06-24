@@ -1,0 +1,5 @@
+#Const C_Host "http://localhost/challenge"
+
+Text GetHost() {
+	return C_Host;
+}

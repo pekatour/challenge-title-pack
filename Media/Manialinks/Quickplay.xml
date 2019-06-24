@@ -1,4 +1,4 @@
-<frame pos="0 -75" id="FRAME_QUICKPLAY">
+<frame pos="0 -75" id="FRAME_QUICKPLAY" z-index="1">
 	<quad z-index="-1" size="300 10" bgcolor="000A" halign="center" valign="center" style="Bgs1" substyle="BgCardList"/>
 	
 	<frame pos="-150 0">

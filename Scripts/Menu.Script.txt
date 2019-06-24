@@ -52,9 +52,12 @@ main() {
 	}
 	Menu_AuthBeta::End();
 	
-	Menu_Quickplay::Start();
 	Menu_Main::Start();
+	yield;
+	Menu_Quickplay::Start();
+	yield;
 	Menu_Top::Start();
+	yield;
 	Menu_Editor::Start();
 	
 	if(S_Devmode) {

@@ -87,6 +87,8 @@ declare Text ScriptLocation;
 
 declare Text[Text] OfficialScripts;
 
+declare Text[Text] Nicknames;
+
 Boolean IsMultipleScript() {
 	return ((Page.GetFirstChild("QUAD_SCRIPT_MULTIPLE") as CMlQuad).ModulateColor == <0.0,0.2,0.4>);
 }
@@ -273,7 +275,13 @@ Void UpdateScriptList(Integer _Offset) {
 
 			declare Folders = TextLib::Split("\\ ",Script.Name);
 			Label.SetText(Folders[Folders.count-1]);
-			LabelAuthor.SetText("{{{{by}}}} "^Script.Metadata.AuthorLogin);
+
+			if(Nicknames.existskey(Script.Metadata.AuthorLogin))
+				LabelAuthor.SetText("{{{{by}}}} "^Nicknames[Script.Metadata.AuthorLogin]);
+			else
+				LabelAuthor.SetText("{{{{by}}}} "^Script.Metadata.AuthorLogin);
+			SendCustomEvent("Nickname", [Script.Metadata.AuthorLogin]);
+
 			Frame.GetFirstChild("QUAD_SELECTOR_SCRIPT").Show();
 			(Frame.GetFirstChild("QUAD_SELECTOR_SCRIPT") as CMlQuad).ModulateColor = <1.0,1.0,1.0>;
 
@@ -617,6 +625,10 @@ main() {
 								if(ScriptBrowserScripts[i].Name == Event.CustomEventData[0])
 									ScriptBrowserScripts[i].Metadata = Metadata;
 							}
+							UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
+						}
+						case "NicknameUpdate": {
+							declare JsonSuccess = Nicknames.fromjson(Event.CustomEventData[0]);
 							UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
 						}
 					}
