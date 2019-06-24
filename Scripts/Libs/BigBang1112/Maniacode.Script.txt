@@ -29,114 +29,160 @@ SManiaCode Create(Boolean _NoConfirmation) {
 	return ManiaCode;
 }
 
-Void Add_ShowMessage(SManiaCode _ManiaCode, Text _Message) {
-	_ManiaCode.Functions.add("""<show_message>
+SManiaCode Add_ShowMessage(SManiaCode _ManiaCode, Text _Message) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<show_message>
 	<message>{{{_Message}}}</message>
 </show_message>""");
+	return ManiaCode;
 }
 
 // Possibly doesn't work unless maniacode runs under manialink code
-Void Add_InstallMap(SManiaCode _ManiaCode, Text _Name, Text _Url) {
-	_ManiaCode.Functions.add("""<install_map>
+SManiaCode Add_InstallMap(SManiaCode _ManiaCode, Text _Name, Text _Url) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<install_map>
 	<name>{{{_Name}}}</name>
 	<url>{{{_Url}}}</url>
 </install_map>""");
+	return ManiaCode;
 }
 
-Void Add_PlayMap(SManiaCode _ManiaCode, Text _Name, Text _Url) {
-	_ManiaCode.Functions.add("""<play_map>
+SManiaCode Add_PlayMap(SManiaCode _ManiaCode, Text _Name, Text _Url) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<play_map>
 	<name>{{{_Name}}}</name>
 	<url>{{{_Url}}}</url>
 </play_map>""");
+	return ManiaCode;
 }
 
-Void Add_InstallReplay(SManiaCode _ManiaCode, Text _Name, Text _Url) {
-	_ManiaCode.Functions.add("""<install_replay>
+SManiaCode Add_InstallReplay(SManiaCode _ManiaCode, Text _Name, Text _Url) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<install_replay>
 	<name>{{{_Name}}}</name>
 	<url>{{{_Url}}}</url>
 </install_replay>""");
+	return ManiaCode;
 }
 
-Void Add_ViewReplay(SManiaCode _ManiaCode, Text _Name, Text _Url) {
-	_ManiaCode.Functions.add("""<view_replay>
+SManiaCode Add_ViewReplay(SManiaCode _ManiaCode, Text _Name, Text _Url) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<view_replay>
 	<name>{{{_Name}}}</name>
 	<url>{{{_Url}}}</url>
 </view_replay>""");
+	return ManiaCode;
 }
 
-Void Add_PlayReplay(SManiaCode _ManiaCode, Text _Name, Text _Url) {
-	_ManiaCode.Functions.add("""<play_replay>
+SManiaCode Add_PlayReplay(SManiaCode _ManiaCode, Text _Name, Text _Url) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<play_replay>
 	<name>{{{_Name}}}</name>
 	<url>{{{_Url}}}</url>
 </play_replay>""");
+	return ManiaCode;
 }
 
-Void Add_InstallSkin(SManiaCode _ManiaCode, Text _Name, Text _File, Text _Url) {
-	_ManiaCode.Functions.add("""<install_skin>
+SManiaCode Add_InstallSkin(SManiaCode _ManiaCode, Text _Name, Text _File, Text _Url) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<install_skin>
 	<name>{{{_Name}}}</name>
 	<file>{{{_File}}}</file>
 	<url>{{{_Url}}}</url>
 </install_skin>""");
+	return ManiaCode;
 }
 
-Void Add_GetSkin(SManiaCode _ManiaCode, Text _Name, Text _File, Text _Url) {
-	_ManiaCode.Functions.add("""<get_skin>
+SManiaCode Add_GetSkin(SManiaCode _ManiaCode, Text _Name, Text _File, Text _Url) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<get_skin>
 	<name>{{{_Name}}}</name>
 	<file>{{{_File}}}</file>
 	<url>{{{_Url}}}</url>
 </get_skin>""");
+	return ManiaCode;
 }
 
-Void Add_AddBuddy(SManiaCode _ManiaCode, Text _Login) {
-	_ManiaCode.Functions.add("""<add_buddy>
+SManiaCode Add_AddBuddy(SManiaCode _ManiaCode, Text _Login) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<add_buddy>
 	<login>{{{_Login}}}</login>
 </add_buddy>""");
+	return ManiaCode;
 }
 
-Void Add_Goto(SManiaCode _ManiaCode, Text _Manialink) {
-	_ManiaCode.Functions.add("""<goto>
+SManiaCode Add_Goto(SManiaCode _ManiaCode, Text _Manialink) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<goto>
 	<link>{{{_Manialink}}}</link>
 </goto>""");
+	return ManiaCode;
 }
 
-Void Add_JoinServer(SManiaCode _ManiaCode, Text _Manialink) {
-	_ManiaCode.Functions.add("""<join_server>
+SManiaCode Add_JoinServer(SManiaCode _ManiaCode, Text _Login) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<join_server>
 	<login>{{{_Login}}}</login>
 </join_server>""");
+	return ManiaCode;
 }
 
-Void Add_AddFavorite(SManiaCode _ManiaCode, Text _Login) {
-	_ManiaCode.Functions.add("""<add_favorite>
+SManiaCode Add_AddFavorite(SManiaCode _ManiaCode, Text _Login) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<add_favorite>
 	<login>{{{_Login}}}</login>
 </add_favorite>""");
+	return ManiaCode;
 }
 
-Void Add_AddFavorite(SManiaCode _ManiaCode, Text _Ip, Text _Port) {
-	_ManiaCode.Functions.add("""<add_favorite>
-	<ip>{{{_Login}}}:{{{_Port}}}</ip>
+SManiaCode Add_AddFavorite(SManiaCode _ManiaCode, Text _Ip, Text _Port) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<add_favorite>
+	<ip>{{{_Ip}}}:{{{_Port}}}</ip>
 </add_favorite>""");
+	return ManiaCode;
 }
 
-Void Add_InstallScript(SManiaCode _ManiaCode, Text _Name, Text _File, Text _Url) {
-	_ManiaCode.Functions.add("""<install_script>
+SManiaCode Add_InstallScript(SManiaCode _ManiaCode, Text _Name, Text _File, Text _Url) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<install_script>
 	<name>{{{_Name}}}</name>
 	<file>{{{_File}}}</file>
 	<url>{{{_Url}}}</url>
 </install_script>""");
+	return ManiaCode;
 }
 
-Void Add_InstallPack(SManiaCode _ManiaCode, Text _Name, Text _File, Text _Url) {
-	_ManiaCode.Functions.add("""<install_pack>
+SManiaCode Add_InstallPack(SManiaCode _ManiaCode, Text _Name, Text _File, Text _Url) {
+	declare SManiaCode ManiaCode;
+	ManiaCode = _ManiaCode;
+	ManiaCode.Functions.add("""<install_pack>
 	<name>{{{_Name}}}</name>
 	<file>{{{_File}}}</file>
 	<url>{{{_Url}}}</url>
 </install_pack>""");
+	return ManiaCode;
 }
 
 Text ToCode(SManiaCode _ManiaCode) {
 	declare Text NoConfirmation;
-	if(_ManiaCode.NoConfirmation) NoConfirmation = """noconfirmation="1"""";
-	declare Final = """"<maniacode {{{NoConfirmation}}}>""";
+	if(_ManiaCode.NoConfirmation) NoConfirmation = " noconfirmation=\"1\"";
+	declare Final = """<maniacode{{{NoConfirmation}}}>""";
 	Final ^= TextLib::Join("", _ManiaCode.Functions);
 	Final ^= "</maniacode>";
+	return Final;
 }

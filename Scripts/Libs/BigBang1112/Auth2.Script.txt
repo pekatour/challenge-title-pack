@@ -1,0 +1,138 @@
+/*
+// Auth2.Script.txt
+// by BigBang1112
+// part of Universe Library Set
+
+// Advanced authorization involving ingame OAuth2 flow hacking
+
+// This library does depend on more libraries from the Universe Library Set:
+// - Http.Script.txt
+// - Random.Script.txt
+// - Auth.Script.txt
+// You only need to use the libraries above, although it's recommended to use the whole set.
+*/
+
+#Include "TextLib" as TextLib
+
+#Include "Libs/BigBang1112/Http.Script.txt" as Http
+#Include "Libs/BigBang1112/Random.Script.txt" as Random
+#Include "Libs/BigBang1112/Auth.Script.txt" as Auth
+
+#Struct SAuthResult {
+	Boolean Received;
+	Text AcceptUrl;
+	Text RedirectUrl; // Redirect that contains user info
+	Boolean AlreadyAccepted;
+}
+
+declare Text Auth_State;
+
+SAuthResult Private_Authorize(Text _Content) {
+	declare SAuthResult Result;
+
+	Result.Received = True;
+
+	declare AuthorizeUrl = TextLib::RegexMatch("manialink=\"(.*?)\"", _Content, "i")[1];
+
+	if(AuthorizeUrl == "") {
+		Result.AlreadyAccepted = True;
+		Result.RedirectUrl = TextLib::RegexMatch("OpenLink\\(\"(.*?)\", ::LinkType::ManialinkBrowser\\)", _Content, "i")[1];
+	}
+	else {
+		Result.AcceptUrl = AuthorizeUrl;
+	}
+
+	return Result;
+}
+
+SAuthResult Authorize(Text _ClientId, Text _Scopes, Text _RedirectUri) {
+	declare SAuthResult Result;
+
+	declare Scopes = TextLib::URLEncode(_Scopes);
+	declare Uri = TextLib::URLEncode(_RedirectUri);
+
+	declare Request = Http::SyncGET("""https://www.maniaplanet.com/login/oauth2/authorize?response_type=code&client_id={{{_ClientId}}}&scope={{{Scopes}}}&state={{{Auth_State}}}&redirect_uri={{{Uri}}}&login={{{LocalUser.Login}}}&token={{{Auth::GetToken().Value}}}""");
+	if(Http::IsSuccessfulStatusCode(Request.StatusCode)) Result = Private_Authorize(Request.Result);
+	Http.Destroy(Request);
+	return Result;
+}
+
+Boolean AsyncAuthorize(Text _Name, Text _ClientId, Text _Scopes, Text _RedirectUri) {
+	declare Scopes = TextLib::URLEncode(_Scopes);
+	declare Uri = TextLib::URLEncode(_RedirectUri);
+	return Http::AsyncGET(_Name, """https://www.maniaplanet.com/login/oauth2/authorize?response_type=code&client_id={{{_ClientId}}}&scope={{{Scopes}}}&state={{{Auth_State}}}&redirect_uri={{{Uri}}}&login={{{LocalUser.Login}}}&token={{{Auth::GetToken().Value}}}""");
+}
+
+Boolean AsyncAuthorize(Text _Name, Text _AcceptUrl) {
+	return Http::AsyncGET(_Name, _AcceptUrl);
+}
+
+SAuthResult GetAsyncAuthorizeResult(Text _Name) {
+	declare SAuthResult Result;
+	
+	if(Http::IsCompleted(_Name)) {
+		if(Http::IsSuccessful(_Name)) {
+			Result = Private_Authorize(Http::GetResult(_Name));
+		}
+		Http::Destroy(_Name);
+	}
+	return Result;
+}
+
+/*
+// CHttpRequest Get(Text _Name)
+// Gets asynchonous request, completed or pending.
+
+// Text _Name - Identification name
+
+// Returns request that can or cannot be in the progress
+*/
+CHttpRequest Get(Text _Name) {
+	return Http::Get(_Name);
+}
+
+/*
+// Void Destroy(Text _Name)
+// Destroys an aynchonous request.
+
+// Text _Name - Identification name
+*/
+Void Destroy(Text _Name) {
+	Http::Destroy(_Name);
+}
+
+/*
+// Boolean IsCompleted(Text _Name)
+// Checks if the asynchronous request was completed.
+
+// Text _Name - Identification name
+
+// Returns True if the request is completed but not destroyed.
+*/
+Boolean IsCompleted(Text _Name) {
+	return Http::IsCompleted(_Name);
+}
+
+/*
+// Boolean IsSuccessful(Text _Name)
+// Checks if the asynchonous request was completed successfully.
+
+// Text _Name - Identification name
+
+// Returns True if the request is completed with a positive response (between 200 inclusively and 300 exclusively HTTP code).
+*/
+Boolean IsSuccessful(Text _Name) {
+	return Http::IsSuccessful(_Name);
+}
+
+/*
+// Integer GetStatusCode(Text _Name)
+// Gets status code of the asynchronous request.
+
+// Text _Name - Identification name
+
+// Returns status code number of a completed request, or 0 if the request is not completed or does not exist.
+*/
+Integer GetStatusCode(Text _Name) {
+	return Http::GetStatusCode(_Name);
+}
