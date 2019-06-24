@@ -1,4 +1,6 @@
 Page.GetClassChildren("LOADING", Page.MainFrame, True);
+declare CMlControl[] Loadings;
+foreach(Control,Page.GetClassChildren_Result) Loadings.add(Control);
 
 declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
 
@@ -47,7 +49,7 @@ while(True) {
 		}
 	}
 
-	foreach(Control,Page.GetClassChildren_Result) {
+	foreach(Control,Loadings) {
 		Control.RelativeRotation += Period / 5.0;
 	}
 	yield;

@@ -1,0 +1,79 @@
+#Include "TextLib" as TextLib
+
+#Include "Libs/BigBang1112/Layers.Script.txt" as Layers
+#Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
+#Include "Libs/BigBang1112/File.Script.txt" as File
+#Include "Libs/BigBang1112/Http.Script.txt" as Http
+#Include "Libs/BigBang1112/Auth2.Script.txt" as Auth2
+#Include "Libs/BigBang1112/Internet.Script.txt" as Internet
+
+#Struct SAccess {
+	Boolean Pass;
+}
+
+declare Text AcceptUrl;
+declare SAccess Access;
+
+Boolean CanPass() {
+	return Access.Pass;
+}
+
+Void Start() {
+	Layers::Create("AuthBeta", Manialink::FromFile("Media/Manialinks/AuthBeta", True), True);
+	declare Success = Auth2::AsyncAuthorize("Authorize", "b1a3d10ba7", "basic", "https://challenge.bigbang1112.eu/auth");
+}
+
+Void Event(CManiaAppEvent _Event) {
+	declare Event <=> _Event;
+
+	if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
+		switch(Event.CustomEventType) {
+			case "Authorize": {
+				if(AcceptUrl != "") {
+					declare Success = Auth2::AsyncAuthorize("Authorize", AcceptUrl);
+				}
+			}
+			default: {
+				
+			}
+		}
+	}
+}
+
+Void Async() {
+	if(Auth2::IsCompleted("Authorize")) {
+		if(Auth2::IsSuccessful("Authorize")) {
+			Layers::SendEvent("AuthBeta", "HideRequesting");
+			
+			declare Result = Auth2::GetAsyncAuthorizeResult("Authorize");
+			if(Result.AlreadyAccepted) {
+				declare Success = Http::AsyncGET("Redirect", Result.RedirectUrl);
+			}
+			else {
+				AcceptUrl = Result.AcceptUrl;
+				Layers::SendEvent("AuthBeta", "ShowAuthWindow");
+			}
+		}
+		else {
+			
+		}
+		Auth2::Destroy("Authorize");
+	}
+	if(Http::IsCompleted("Redirect")) {
+		if(Http::IsSuccessful("Redirect")) {
+			declare JsonSuccess = Access.fromjson(Http::GetResult("Redirect"));
+		}
+		else {
+			
+		}
+		Http::Destroy("Redirect");
+	}
+}
+
+Void Loop() {
+	
+}
+
+Void End() {
+	Layers::Destroy("AuthBeta");
+}

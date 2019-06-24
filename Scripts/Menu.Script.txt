@@ -12,6 +12,7 @@
 #Include "Libs/BigBang1112/Data.Script.txt" as Data
 #Include "Libs/BigBang1112/Http.Script.txt" as Http
 #Include "Libs/BigBang1112/Auth.Script.txt" as Auth
+#Include "Libs/BigBang1112/Auth2.Script.txt" as Auth2
 #Include "Libs/BigBang1112/Language.Script.txt" as Language
 #Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
 
@@ -19,7 +20,9 @@
 #Include "Libs/Challenge/Menu/Main.Script.txt" as Menu_Main
 #Include "Libs/Challenge/Menu/Top.Script.txt" as Menu_Top
 #Include "Libs/Challenge/Menu/Editor.Script.txt" as Menu_Editor
-#Include "Libs/Challenge/Menu/Auth.Script.txt" as Menu_Auth
+#Include "Libs/Challenge/Menu/AuthBeta.Script.txt" as Menu_AuthBeta
+
+#Include "Libs/BigBang1112/Maniacode2.Script.txt" as Maniacode2
 
 #Include "Libs/Challenge/Devmode.Script.txt" as Devmode
 
@@ -35,19 +38,19 @@ main() {
 	
 	Auth::Start();
 	
-	Menu_Auth::Start();
-	while(!Menu_Auth::CanPass()) {
+	Menu_AuthBeta::Start();
+	while(!Menu_AuthBeta::CanPass()) {
 		foreach(Event,PendingEvents) {
-			Menu_Auth::Event(Event);
+			Menu_AuthBeta::Event(Event);
 		}
 	
-		Menu_Auth::Async();
+		Menu_AuthBeta::Async();
 		
 		Auth::Loop();
-		Menu_Auth::Loop();
+		Menu_AuthBeta::Loop();
 		yield;
 	}
-	Menu_Auth::End();
+	Menu_AuthBeta::End();
 	
 	Menu_Quickplay::Start();
 	Menu_Main::Start();

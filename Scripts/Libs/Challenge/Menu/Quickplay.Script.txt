@@ -165,20 +165,20 @@ declare SMetadata Script;
 }
 
 Void Async() {
-	if(MX::IsAsyncRequestCompleted("MX_SEARCH_ADD")) {
-		if(MX::IsAsyncRequestSuccessful("MX_SEARCH_ADD")) {
+	if(MX::IsCompleted("MX_SEARCH_ADD")) {
+		if(MX::IsSuccessful("MX_SEARCH_ADD")) {
 			Layers::SendEvent("Quickplay", "MapList_MX_Add", [MX::GetAsyncSearchResult("MX_SEARCH_ADD").tojson()]);
 		}
-		MX::DestroyAsyncRequest("MX_SEARCH_ADD");
+		MX::Destroy("MX_SEARCH_ADD");
 	}
-	if(MX::IsAsyncRequestCompleted("MX_SEARCH_UPDATE")) {
-		if(MX::IsAsyncRequestSuccessful("MX_SEARCH_UPDATE")) {
+	if(MX::IsCompleted("MX_SEARCH_UPDATE")) {
+		if(MX::IsSuccessful("MX_SEARCH_UPDATE")) {
 			Layers::SendEvent("Quickplay", "MapList_MX_Update", [MX::GetAsyncSearchResult("MX_SEARCH_UPDATE").tojson()]);
 		}
 		else {
-			log("Can't load MX: " ^ MX::GetAsyncRequestStatusCode("MX_SEARCH_UPDATE"));
+			log("Can't load MX: " ^ MX::GetStatusCode("MX_SEARCH_UPDATE"));
 		}
-		MX::DestroyAsyncRequest("MX_SEARCH_UPDATE");
+		MX::Destroy("MX_SEARCH_UPDATE");
 	}
 	
 	if(Task::IsCompleted("MAPLIST_LOCAL_FOLDER")) {

@@ -1,0 +1,40 @@
+<frame>
+	<frame id="FRAME_REQUESTING" hidden="1">
+		<quad pos="-45 0" z-index="0" size="20 20" bgcolor="FFFA" halign="center" valign="center" style="BgRaceScore2" substyle="SandTimer" class="LOADING"/>
+		<label pos="-35 -0.5" z-index="0" size="100 10" text="REQUESTING AUTH TOKEN..." halign="left" valign="center2" textsize="6" textfont="RajdhaniMono"/>
+	</frame>
+	<frame id="FRAME_AUTH" hidden="1" z-index="1">
+		<quad pos="0 0" z-index="-1" size="100 100" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgCardList" class="opacity"/>
+		<quad pos="0 0" z-index="0" size="100 100" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" class="opacity"/>
+		<label pos="0 40" z-index="1" size="90 10" text="WELCOME TO CHALLENGE BETA" halign="center" valign="center2" textfont="RajdhaniMono" textsize="4"/>
+		<label pos="0 34" z-index="1" size="90 10" text="PLEASE GIVE US NEEDED INFO BELOW TO BETA TEST" halign="center" valign="center2" textfont="RajdhaniMono" textsize="2"/>
+		<quad z-index="1" size="100 10" bgcolor="FFF" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="AAA" pos="0 22.5" valign="center" halign="center"/>
+		<label pos="-40 20" z-index="2" size="40 5" text="YOUR LOGIN:" valign="bottom" textfont="BiryaniDemiBold"/>
+		<frame z-index="2" pos="0 20" clip="True" clipsizen="40 10" clipposn="20 0" class="SC_SLIDELABEL" id="SC_SLIDELABEL_LOGIN">
+			<label size="40 5" valign="bottom" textfont="RajdhaniMono" class="SC_SLIDELABEL_TEXT1"/>
+			<label size="40 5" valign="bottom" textfont="RajdhaniMono" class="SC_SLIDELABEL_TEXT2"/>
+			<quad size="40 5" valign="bottom" scriptevents="1" id="SC_SLIDELABEL_HOVER"/>
+		</frame>
+		<quad z-index="1" size="100 10" bgcolor="FFF" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="AAA" pos="0 12.5" valign="center" halign="center"/>
+		<label pos="-40 10" z-index="2" size="40 5" text="YOUR NICKNAME:" valign="bottom" textfont="BiryaniDemiBold"/>
+		<frame z-index="2" pos="0 10" clip="True" clipsizen="40 10" clipposn="20 0" class="SC_SLIDELABEL" id="SC_SLIDELABEL_NICKNAME">
+			<label size="40 5" valign="bottom" textfont="RajdhaniMono" class="SC_SLIDELABEL_TEXT1"/>
+			<label size="40 5" valign="bottom" textfont="RajdhaniMono" class="SC_SLIDELABEL_TEXT2"/>
+			<quad size="40 5" valign="bottom" scriptevents="1" id="SC_SLIDELABEL_HOVER"/>
+		</frame>
+		<quad z-index="1" size="100 10" bgcolor="FFF" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="AAA" pos="0 2.5" valign="center" halign="center"/>
+		<label pos="-40 0" z-index="2" size="40 5" text="YOUR ZONE:" valign="bottom" textfont="BiryaniDemiBold"/>
+		<frame z-index="2" pos="0 0" clip="True" clipsizen="40 10" clipposn="20 0" class="SC_SLIDELABEL" id="SC_SLIDELABEL_ZONE">
+			<label size="40 5" valign="bottom" textfont="RajdhaniMono" class="SC_SLIDELABEL_TEXT1"/>
+			<label size="40 5" valign="bottom" textfont="RajdhaniMono" class="SC_SLIDELABEL_TEXT2"/>
+			<quad size="40 5" valign="bottom" scriptevents="1" id="SC_SLIDELABEL_HOVER"/>
+		</frame>
+		<label pos="0 -12" z-index="1" size="85 10" text="ALL OF THIS INFORMATION WILL BE PUBLICLY VISIBLE, ASSOCIATED WITH YOU, AND WILL BE REFRESHED EVERYTIME YOU LOAD THE TITLE PACK." halign="center" valign="center2" textfont="RajdhaniMono" textsize="1.5" autonewline="1"/>
+		<label pos="0 -25" z-index="1" size="90 10" text="THANK YOU" halign="center" valign="center2" textfont="RajdhaniMono" textsize="4"/>
+		<label pos="0 -30" z-index="1" size="90 10" text="I WON'T EVER USE THIS INFORMATION IN AN ABUSIVE WAY" halign="center" valign="center2" textfont="RajdhaniMono" textsize="1.2"/>
+		<frame z-index="1" pos="0 -40">
+			<quad z-index="0" size="90 10" halign="center" valign="center" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036" id="QUAD_BUTTON_AUTHORIZE"/>
+			<label pos="0 -0.25" z-index="1" size="90 10" text="AUTHORIZE WITH CHALLENGE" valign="center2" halign="center" textfont="RajdhaniMono"/>
+		</frame>
+	</frame>
+</frame>
