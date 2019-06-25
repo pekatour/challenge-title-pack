@@ -182,10 +182,19 @@ Void UpdateLocalMapsFolder(Integer _Offset) {
 				if(MapInfo.TMObjective_BronzeTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText("None");
 				else (Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText(TimeToTextWithMilli(MapInfo.TMObjective_BronzeTime));
 				
-				if(MapInfo.MapType == "TrackMania\\Challenge")
-					(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).TextColor = <.5,.5,.5>;
-				else
-					(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).TextColor = <1.,1.,1.>;
+				if(MapInfo.MapType == "TrackMania\\Challenge") {
+					//AnimMgr.Add(Page.GetFirstChild("LABEL_SCRIPT_NAME"), "<label opacity=\"0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+					Page.GetFirstChild("LABEL_SCRIPT_NAME").Hide();
+					Page.GetFirstChild("QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE").Show();
+
+					AnimMgr.Add(Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT"), "<frame pos=\"0 0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+					Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT").DataAttributeSet("open","0");
+				}
+				else {
+					//AnimMgr.Add(Page.GetFirstChild("LABEL_SCRIPT_NAME"), "<label opacity=\"1\" hidden=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+					Page.GetFirstChild("LABEL_SCRIPT_NAME").Show();
+					Page.GetFirstChild("QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE").Hide();
+				}
 			}
 			else
 				(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).Substyle = "BgCardInventoryItem";
@@ -243,10 +252,19 @@ Void UpdateManiaExchange(Integer _Offset) {
 				(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(TrackInfo.GbxMapName);
 				(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^TrackInfo.Username);
 
-				if(TrackInfo.MapType == "Challenge")
-					(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).TextColor = <.5,.5,.5>;
-				else
-					(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).TextColor = <1.,1.,1.>;
+				if(TrackInfo.MapType == "Challenge") {
+					Page.GetFirstChild("LABEL_SCRIPT_NAME").Hide();
+					//AnimMgr.Add(Page.GetFirstChild("LABEL_SCRIPT_NAME"), "<label opacity=\"0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+					Page.GetFirstChild("QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE").Show();
+
+					AnimMgr.Add(Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT"), "<frame pos=\"0 0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+					Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT").DataAttributeSet("open","0");
+				}
+				else {
+					Page.GetFirstChild("LABEL_SCRIPT_NAME").Show();
+					//AnimMgr.Add(Page.GetFirstChild("LABEL_SCRIPT_NAME"), "<label opacity=\"1\" hidden=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+					Page.GetFirstChild("QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE").Hide();
+				}
 			}
 			else
 				(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).Substyle = "BgCardInventoryItem";

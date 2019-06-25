@@ -3,12 +3,14 @@
 	
 	<frame pos="-150 0">
 		<quad z-index="0" size="150 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" valign="center"/>
+		<quad z-index="0" size="150 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" valign="center"/>
 		<quad z-index="0" size="150 10" bgcolor="FFFA" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="036" valign="center" opacity=".5" id="QUAD_BUTTON_MAP"/>
 		<label pos="5 -0.25" z-index="1" size="140 5" text="..." valign="center2" textfont="BiryaniDemiBold" id="LABEL_MAP_NAME"/>
 		
 		<frame clip="True" clipposn="75 50" clipsizen="150 100" pos="0 5">
 			<frame id="FRAME_MAP" pos="0 0" hidden="1">
 				<quad z-index="-2" size="150 101" bgcolor="000A" valign="top" style="Bgs1" substyle="BgCardList" scriptevents="1"/>
+				<quad z-index="-1" size="150 101" bgcolor="FFFA" style="Bgs1" substyle="BgGradV"/>
 				<quad z-index="-1" size="150 101" bgcolor="FFFA" style="Bgs1" substyle="BgGradV"/>
 				<frame pos="25 -5">
 					<quad z-index="0" size="50 10" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036" valign="center" halign="center" id="QUAD_LOCATION_MAP_LOCAL"/>
@@ -41,6 +43,7 @@
 					<label pos="140 -5.25" z-index="0" size="15 5" text="FILTERS" halign="center" valign="center2" textfont="RajdhaniMono" style="TextCardRaceRank" scriptevents="1" textsize="2"/>
 				</frame>
 				
+				<quad size="100 80" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" pos="0 -20"/>
 				<quad size="100 80" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" pos="0 -20"/>
 				<quad pos="98 -20" z-index="-1" size="2 20" bgcolor="FFFA" style="Bgs1" substyle="BgMetalBar" id="QUAD_MAPLIST_BAR"/>
 				<gauge pos="100 -8" z-index="1" size="94 9" valign="center" rot="90" ratio=".5" id="GAUGE_MAPLIST" style="BgCard" drawbg="0" hidden="1"/>
@@ -88,6 +91,7 @@
 				</frame>
 				<frame pos="100 -20">
 					<quad size="50 80" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" z-index="-1"/>
+					<quad size="50 80" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" z-index="-1"/>
 					<quad pos="25 -24" z-index="0" size="44 44" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgMetalBar" opacity=".9" modulatecolor="222"/>
 					<frame pos="25 -24" clipsizen="42.5 42.5" z-index="1">
 						<quad size="42.5 42.5" halign="center" valign="center" opacity=".9" id="QUAD_MAPLIST_THUMBNAIL"/>
@@ -109,13 +113,17 @@
 	
 	<frame>
 		<quad pos="0 0" z-index="0" size="100 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" halign="left" valign="center"/>
+		<quad pos="0 0" z-index="0" size="100 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" halign="left" valign="center"/>
 		<quad pos="0 5" z-index="0" size="100 10" bgcolor="FFFA" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="036" opacity=".5" id="QUAD_BUTTON_CHALLENGE_SCRIPT"/>
 		<label pos="5 -0.25" z-index="1" size="90 5" text="..." valign="center2" textfont="BiryaniDemiBold" id="LABEL_SCRIPT_NAME"/>
+		<quad pos="0 0" z-index="2" size="100 10" halign="left" valign="center" scriptevents="1" hidden="1" id="QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE"/>
 		
 		<frame clip="True" clipposn="50 50" clipsizen="100 100" pos="0 5">
 			<frame id="FRAME_CHALLENGE_SCRIPT" pos="0 0" hidden="1">
 				<quad z-index="-2" size="100 101" valign="top" style="Bgs1" substyle="BgCardList" pos="0 0" scriptevents="1"/>
 				<quad z-index="-1" size="100 101" style="Bgs1" substyle="BgGradV"/>
+				<quad z-index="-1" size="100 101" style="Bgs1" substyle="BgGradV"/>
+				<quad z-index="-1" size="100 80" pos="0 -20" style="Bgs1" substyle="BgGradV"/>
 				<quad z-index="-1" size="100 80" pos="0 -20" style="Bgs1" substyle="BgGradV"/>
 				<frame pos="0 -5">
 					<quad z-index="0" size="33.33 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036" valign="center" id="QUAD_LOCATION_SCRIPT_OFFICIAL"/>
