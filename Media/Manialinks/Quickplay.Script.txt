@@ -80,6 +80,7 @@ declare SMapInfo[] VisibleMapInfos;
 declare SMapInfo SelectedMapInfo;
 declare SMXTrackInfo SelectedMXTrackInfo;
 declare SScriptInfo[] SelectedScripts;
+declare SMapInfo SelectedManagerMapInfo;
 
 declare Text[] MapBrowserSubFolders;
 declare SMapInfo[] MapBrowserMapInfos;
@@ -88,6 +89,8 @@ declare SScriptInfo[] ScriptBrowserScripts;
 
 declare SMXTrackInfo[] MapBrowserMXTrackInfos;
 declare Integer MXPage;
+
+declare SMapInfo[] MapBrowserManagerTrackInfos;
 
 declare Text MapLocation;
 declare Text ScriptLocation;
@@ -131,6 +134,36 @@ Void UpdateLocalMapsFolder(Integer _Offset) {
 	}
 
 	VisibleMapInfos.clear();
+
+	if(SelectedMapInfo.MapUid != "") {
+		(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("file://Thumbnails/MapUid/"^SelectedMapInfo.MapUid);
+		(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedMapInfo.Name);
+		(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedMapInfo.AuthorNickName);
+		(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value = SelectedMapInfo.MapUid;
+
+		if(SelectedMapInfo.TMObjective_AuthorTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText("None");
+		else (Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_AuthorTime));
+		if(SelectedMapInfo.TMObjective_GoldTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText("None");
+		else (Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_GoldTime));
+		if(SelectedMapInfo.TMObjective_SilverTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText("None");
+		else (Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_SilverTime));
+		if(SelectedMapInfo.TMObjective_BronzeTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText("None");
+		else (Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_BronzeTime));
+		
+		if(SelectedMapInfo.MapType == "TrackMania\\Challenge") {
+			//AnimMgr.Add(Page.GetFirstChild("LABEL_SCRIPT_NAME"), "<label opacity=\"0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+			Page.GetFirstChild("LABEL_SCRIPT_NAME").Hide();
+			Page.GetFirstChild("QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE").Show();
+
+			AnimMgr.Add(Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT"), "<frame pos=\"0 0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+			Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT").DataAttributeSet("open","0");
+		}
+		else {
+			//AnimMgr.Add(Page.GetFirstChild("LABEL_SCRIPT_NAME"), "<label opacity=\"1\" hidden=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+			Page.GetFirstChild("LABEL_SCRIPT_NAME").Show();
+			Page.GetFirstChild("QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE").Hide();
+		}
+	}
 	
 	declare Pos = 0;
 	foreach(Folder,SubFolders) { // Handle all folders
@@ -169,32 +202,6 @@ Void UpdateLocalMapsFolder(Integer _Offset) {
 
 			if(SelectedMapInfo == MapInfo) {
 				(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).Substyle = "BgCard";
-				(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("file://Thumbnails/MapUid/"^MapInfo.MapUid);
-				(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(MapInfo.Name);
-				(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^MapInfo.AuthorNickName);
-
-				if(MapInfo.TMObjective_AuthorTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText("None");
-				else (Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText(TimeToTextWithMilli(MapInfo.TMObjective_AuthorTime));
-				if(MapInfo.TMObjective_GoldTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText("None");
-				else (Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText(TimeToTextWithMilli(MapInfo.TMObjective_GoldTime));
-				if(MapInfo.TMObjective_SilverTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText("None");
-				else (Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText(TimeToTextWithMilli(MapInfo.TMObjective_SilverTime));
-				if(MapInfo.TMObjective_BronzeTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText("None");
-				else (Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText(TimeToTextWithMilli(MapInfo.TMObjective_BronzeTime));
-				
-				if(MapInfo.MapType == "TrackMania\\Challenge") {
-					//AnimMgr.Add(Page.GetFirstChild("LABEL_SCRIPT_NAME"), "<label opacity=\"0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
-					Page.GetFirstChild("LABEL_SCRIPT_NAME").Hide();
-					Page.GetFirstChild("QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE").Show();
-
-					AnimMgr.Add(Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT"), "<frame pos=\"0 0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
-					Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT").DataAttributeSet("open","0");
-				}
-				else {
-					//AnimMgr.Add(Page.GetFirstChild("LABEL_SCRIPT_NAME"), "<label opacity=\"1\" hidden=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
-					Page.GetFirstChild("LABEL_SCRIPT_NAME").Show();
-					Page.GetFirstChild("QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE").Hide();
-				}
 			}
 			else
 				(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).Substyle = "BgCardInventoryItem";
@@ -232,6 +239,27 @@ Void UpdateManiaExchange(Integer _Offset) {
 		}
 	}
 
+	if(SelectedMXTrackInfo.TrackUID != "") {
+		(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("https://tm.mania-exchange.com/tracks/screenshot/normal/"^SelectedMXTrackInfo.TrackID^"?.jpg");
+		(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedMXTrackInfo.GbxMapName);
+		(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedMXTrackInfo.Username);
+		(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value = SelectedMXTrackInfo.TrackUID;
+
+		if(SelectedMXTrackInfo.MapType == "Challenge") {
+			Page.GetFirstChild("LABEL_SCRIPT_NAME").Hide();
+			//AnimMgr.Add(Page.GetFirstChild("LABEL_SCRIPT_NAME"), "<label opacity=\"0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+			Page.GetFirstChild("QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE").Show();
+
+			AnimMgr.Add(Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT"), "<frame pos=\"0 0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+			Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT").DataAttributeSet("open","0");
+		}
+		else {
+			Page.GetFirstChild("LABEL_SCRIPT_NAME").Show();
+			//AnimMgr.Add(Page.GetFirstChild("LABEL_SCRIPT_NAME"), "<label opacity=\"1\" hidden=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+			Page.GetFirstChild("QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE").Hide();
+		}
+	}
+
 	declare Pos = 0;
 	foreach(TrackInfo,MXTrackInfos) {
 		if(Pos < 8) {
@@ -248,23 +276,6 @@ Void UpdateManiaExchange(Integer _Offset) {
 
 			if(SelectedMXTrackInfo == TrackInfo) {
 				(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).Substyle = "BgCard";
-				(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("https://tm.mania-exchange.com/tracks/screenshot/normal/"^TrackInfo.TrackID^"?.jpg");
-				(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(TrackInfo.GbxMapName);
-				(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^TrackInfo.Username);
-
-				if(TrackInfo.MapType == "Challenge") {
-					Page.GetFirstChild("LABEL_SCRIPT_NAME").Hide();
-					//AnimMgr.Add(Page.GetFirstChild("LABEL_SCRIPT_NAME"), "<label opacity=\"0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
-					Page.GetFirstChild("QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE").Show();
-
-					AnimMgr.Add(Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT"), "<frame pos=\"0 0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
-					Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT").DataAttributeSet("open","0");
-				}
-				else {
-					Page.GetFirstChild("LABEL_SCRIPT_NAME").Show();
-					//AnimMgr.Add(Page.GetFirstChild("LABEL_SCRIPT_NAME"), "<label opacity=\"1\" hidden=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
-					Page.GetFirstChild("QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE").Hide();
-				}
 			}
 			else
 				(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).Substyle = "BgCardInventoryItem";
@@ -289,11 +300,15 @@ Void UpdateManiaExchange(Integer _Offset) {
 	if(MathLib::NearestInteger(Frame_MapList.ScrollMax.Y) == MathLib::NearestInteger(Frame_MapList.ScrollOffset.Y)) { //Not equal in Real but equal in Integer, nice lol
 		//Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 		MXPage += 1;
-		SendCustomEvent("MapList_ManiaExchange_Add", [MXPage^"", (Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
+		SendCustomEvent("MapList_ManiaExchange_Add", [MXPage^"", (Page.GetFirstChild("ENTRY_MAPLIST_MX_SEARCH") as CMlEntry).Value, ""]);
 	}
 
 	if(SelectedMXTrackInfo.GbxMapName == "") (Page.GetFirstChild("LABEL_MAP_NAME") as CMlLabel).SetText("mania$0ffexchange$z / $888{{{{no_map_selected}}}}");
 	else (Page.GetFirstChild("LABEL_MAP_NAME") as CMlLabel).SetText("mania$0ffexchange$z / " ^ SelectedMXTrackInfo.GbxMapName);
+}
+
+Void UpdateMapManager(Integer _Offset) {
+
 }
 
 Void UpdateScriptList(Integer _Offset) {
@@ -416,23 +431,15 @@ main() {
 			switch(Event.Type) {
 				case CMlScriptEvent::Type::EntrySubmit: {
 					switch(Event.ControlId) {
-						case "ENTRY_MAPLIST_SEARCH": {
+						case "ENTRY_MAPLIST_MX_SEARCH": {
 							if(MapLocation == "ManiaExchange") {
-								SendCustomEvent("MapList_ManiaExchange_Update", [MXPage^"", (Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
-								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
-							}
-							else if(MapLocation == "Local") {
-								SendCustomEvent("MapList_Local_Folder", ["",(Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
+								SendCustomEvent("MapList_ManiaExchange_Update", [MXPage^"", (Page.GetFirstChild("ENTRY_MAPLIST_MX_SEARCH") as CMlEntry).Value, ""]);
 								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 							}
 						}
-						case "ENTRY_MAPLIST_AUTHOR": {
-							if(MapLocation == "ManiaExchange") {
-								SendCustomEvent("MapList_ManiaExchange_Update", [MXPage^"", (Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
-								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
-							}
-							else if(MapLocation == "Local") {
-								SendCustomEvent("MapList_Local_Folder", ["",(Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
+						case "ENTRY_MAPLIST_LOCAL_SEARCH": {
+							if(MapLocation == "Local") {
+								SendCustomEvent("MapList_Local_Folder", ["",(Page.GetFirstChild("ENTRY_MAPLIST_LOCAL_SEARCH") as CMlEntry).Value, ""]);
 								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 							}
 						}
@@ -494,14 +501,14 @@ main() {
 									if(Folders.count > 0) {
 										Folders.removekey(Folders.count-1);
 										declare NewFolder = TextLib::Join("\\",Folders);
-										SendCustomEvent("MapList_Local_Folder", [NewFolder,(Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
+										SendCustomEvent("MapList_Local_Folder", [NewFolder,(Page.GetFirstChild("ENTRY_MAPLIST_LOCAL_SEARCH") as CMlEntry).Value, ""]);
 									}
 									else {
 										log("Yo, what dimension is this 8|");
 									}
 								}
 								else {
-									SendCustomEvent("MapList_Local_Folder", [Folder, (Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
+									SendCustomEvent("MapList_Local_Folder", [Folder, (Page.GetFirstChild("ENTRY_MAPLIST_LOCAL_SEARCH") as CMlEntry).Value, ""]);
 								}
 
 								UpdateLocalMapsFolder(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
@@ -562,12 +569,16 @@ main() {
 							}
 						}
 						case "QUAD_LOCATION_MAP_LOCAL": {
-							SendCustomEvent("MapList_Local_Folder", ["",(Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
+							SendCustomEvent("MapList_Local_Folder", ["",(Page.GetFirstChild("ENTRY_MAPLIST_LOCAL_SEARCH") as CMlEntry).Value, ""]);
 							MapLocation = "Local";
 						}
 						case "QUAD_LOCATION_MAP_MX": {
 							if(MapLocation != "ManiaExchange") {
 								MapLocation = "ManiaExchange";
+
+								Page.GetFirstChild("FRAME_MAP_BAR_LOCAL").Hide();
+								Page.GetFirstChild("FRAME_MAP_BAR_MX").Show();
+								Page.GetFirstChild("FRAME_MAP_BAR_MAPMANAGER").Hide();
 
 								(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
 								(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
@@ -575,7 +586,9 @@ main() {
 
 								(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("https://tm.mania-exchange.com/tracks/screenshot/normal/"^SelectedMXTrackInfo.TrackID^"?.jpg");
 								(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedMXTrackInfo.GbxMapName);
-								(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedMXTrackInfo.Username);
+								if(SelectedMXTrackInfo.Username == "") (Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("");
+								else (Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedMXTrackInfo.Username);
+								(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value = SelectedMXTrackInfo.TrackUID;
 
 								(Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText("???");
 								(Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText("???");
@@ -583,20 +596,40 @@ main() {
 								(Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText("???");
 
 								if(MapBrowserMXTrackInfos.count == 0) {
-									SendCustomEvent("MapList_ManiaExchange_Update", ["1", (Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
+									SendCustomEvent("MapList_ManiaExchange_Update", ["1", (Page.GetFirstChild("ENTRY_MAPLIST_MX_SEARCH") as CMlEntry).Value, ""]);
 									Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 								}
 								else {
 									UpdateManiaExchange(0);
+									Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
 								}
 							}
 						}
 						case "QUAD_LOCATION_MAP_MAPMANAGER": {
-							(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-							(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-							(Page.GetFirstChild("QUAD_LOCATION_MAP_MX") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+							if(MapLocation != "MapManager") {
+								MapLocation = "MapManager";
 
-							MapLocation = "MapManager";
+								Page.GetFirstChild("FRAME_MAP_BAR_LOCAL").Hide();
+								Page.GetFirstChild("FRAME_MAP_BAR_MX").Hide();
+								Page.GetFirstChild("FRAME_MAP_BAR_MAPMANAGER").Show();
+
+								(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
+								(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+								(Page.GetFirstChild("QUAD_LOCATION_MAP_MX") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+
+								(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedManagerMapInfo.Name);
+								if(SelectedMXTrackInfo.Username == "") (Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("");
+								else (Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedManagerMapInfo.AuthorNickName);
+								(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value = SelectedManagerMapInfo.MapUid;
+
+								if(MapBrowserManagerTrackInfos.count == 0) {
+									SendCustomEvent("MapList_MapManager_Update", [(Page.GetFirstChild("ENTRY_MAPLIST_MANAGER_SEARCH") as CMlEntry).Value]);
+									Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
+								}
+								else {
+									UpdateMapManager(0);
+								}
+							}
 						}
 
 						case "QUAD_LOCATION_SCRIPT_OFFICIAL": {
@@ -649,6 +682,10 @@ main() {
 							(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
 							(Page.GetFirstChild("QUAD_LOCATION_MAP_MX") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
 							(Page.GetFirstChild("QUAD_LOCATION_MAP_MAPMANAGER") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+
+							Page.GetFirstChild("FRAME_MAP_BAR_LOCAL").Show();
+							Page.GetFirstChild("FRAME_MAP_BAR_MX").Hide();
+							Page.GetFirstChild("FRAME_MAP_BAR_MAPMANAGER").Hide();
 
 							/*
 							(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("file://Thumbnails/MapUid/"^SelectedMapInfo.MapUid);

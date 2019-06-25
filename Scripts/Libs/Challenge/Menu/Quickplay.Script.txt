@@ -117,9 +117,12 @@ Void Event(CManiaAppEvent _Event) {
 		switch(Event.CustomEventType) {
 			case "Button_Start": {
 				declare MapLocation = Event.CustomEventData[0];
-				declare JsonSuccessMapInfo = MXTrack.fromjson(Event.CustomEventData[1]);
+				
 				
 				if(MapLocation == "ManiaExchange") {
+					declare JsonSuccessMapInfo = MXTrack.fromjson(Event.CustomEventData[1]);
+					declare JsonSuccessScripts = MapDownloadScripts.fromjson(Event.CustomEventData[2]);
+				
 					if(MXTrack.TrackUID == "") {
 						Dialog_Message("Please select a map.");
 					}
@@ -130,7 +133,6 @@ Void Event(CManiaAppEvent _Event) {
 						declare JsonSuccessMapInfo = MXTrack.fromjson(Event.CustomEventData[1]);
 						MapDownloadApproximateLocation = """Downloaded/TrackMania/{{{MXTrack.MapType}}}/{{{MXTrack.EnvironmentName}}}""";
 						MapDownloadUid = MXTrack.TrackUID;
-						declare JsonSuccessScripts = MapDownloadScripts.fromjson(Event.CustomEventData[2]);
 					}
 				}
 				if(MapLocation == "Local") {
@@ -145,6 +147,8 @@ Void Event(CManiaAppEvent _Event) {
 				}
 			}
 			case "MapList_Local_Folder": {
+				MX::Destroy("MX_SEARCH_UPDATE");
+			
 				declare Folder = Event.CustomEventData[0];
 				declare SearchMapName = Event.CustomEventData[1];
 				declare SearchAuthorName = Event.CustomEventData[2];
