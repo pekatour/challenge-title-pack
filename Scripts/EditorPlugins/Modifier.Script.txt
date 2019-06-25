@@ -536,6 +536,9 @@ Void ProcessScript(Text _ScriptName, Text _ScriptContent) {
 
 main() {
 	if(!S_Build) return;
+
+	Dictionary::SetTranslationFolder("Media/Translations");
+	Dictionary::SetTranslationLanguage(LocalUser.Language);
 	
 	declare ScriptNames = TextLib::Replace(S_ScriptNames,"'","\"");
 	declare SScriptInfo[] Scripts;

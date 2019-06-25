@@ -1,0 +1,4 @@
+#RequireContext CManiaAppBrowser
+
+BrowserHome();
+BrowserQuit();

@@ -26,9 +26,13 @@
 
 declare CUILayer[Text] LayerAPIs;
 
+declare Text MapDownloadApproximateLocation;
+declare Text MapDownloadUid;
+declare SScriptInfo[] MapDownloadScripts;
+
 Void UpdateLocalMaps(Text _Folder, Text _SearchMapName, Text _SearchAuthorName) {
 	declare FlatSearch = (_SearchMapName != "" || _SearchAuthorName != "");
-	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(4,_Folder,FlatSearch));
+	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(2,_Folder,FlatSearch));
 	Data::Set("MAPLIST_LOCAL_SEARCHMAPNAME",_SearchMapName);
 	Data::Set("MAPLIST_LOCAL_SEARCHAUTHORNAME",_SearchAuthorName);
 }
@@ -90,16 +94,12 @@ Void Event(CManiaAppEvent _Event) {
 				declare MapLocation = Event.CustomEventData[0];
 				
 				if(MapLocation == "ManiaExchange") {
-					/*TitleControl.ProcessManiaCodeXml("""<?xml version='1.0' encoding='utf-8' ?>
-	<maniacode noconfirmation="1">
-		<install_map>
-			<name>Good Name</name>
-			<url>https://tm.mania-exchange.com/tracks/download/162255</url>
-		</install_map>
-		<show_message>
-			<message>Hello</message>
-		</show_message>
-	</maniacode>""");*/
+					declare MX::SMXTrack Track;
+					declare JsonSuccessMapInfo = Track.fromjson(Event.CustomEventData[1]);
+					OpenLink("""challenge:downloadmap?id={{{Track.TrackID}}}&displayname={{{TextLib::URLEncode(Track.GbxMapName)}}}""", ::ELinkType::ManialinkBrowser);
+					MapDownloadApproximateLocation = """Downloaded/TrackMania/{{{Track.MapType}}}/{{{Track.EnvironmentName}}}""";
+					MapDownloadUid = Track.TrackUID;
+					declare JsonSuccessScripts = MapDownloadScripts.fromjson(Event.CustomEventData[2]);
 				}
 				if(MapLocation == "Local") {
 					declare Map::SMapInfo MapInfo;
@@ -226,5 +226,20 @@ Void Async() {
 }
 
 Void Loop() {
-	
+	if(MapDownloadApproximateLocation != "") {
+		declare List = Task::SyncMapList(DataFileMgr.Map_GetFilteredGameList(4, MapDownloadApproximateLocation, True));
+		foreach(MapInfo,List.MapInfos) {
+			if(MapInfo.MapUid == MapDownloadUid) {
+				wait(TitleFlow.IsReady);
+				TitleFlow.EditNewMapFromBaseMap(MapInfo.FileName, "", "", "Challenge.Script.txt", "Modifier.Script.txt", """<settings>
+				<setting name="S_Build" type="boolean" value="True"/>
+				<setting name="S_ScriptNames" type="text" value="{{{TextLib::Replace(MapDownloadScripts.tojson(), "\"", "'")}}}"/>
+				<setting name="S_OriginalMapName" type="text" value="{{{MapInfo.Name}}}"/>
+				</settings>""");
+				
+				MapDownloadApproximateLocation = "";
+			}
+		}
+		DataFileMgr.TaskResult_Release(List.Id);
+	}
 }

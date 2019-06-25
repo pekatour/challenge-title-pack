@@ -105,6 +105,10 @@ SMapInfo MapInfo(Text _Path, Integer _Scope) {
 	return Info;
 }
 
+Boolean Exists(Text _Path, Integer _Scope) {
+	return MapInfo(_Path, _Scope).FileName != "";
+}
+
 CTaskResult_MapList Get(Text _FileName) {
 	if(!G_AsyncMaps.existskey(_FileName)) return Null;
 	return G_AsyncMaps[_FileName];
