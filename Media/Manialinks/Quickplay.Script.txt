@@ -54,6 +54,12 @@
 	Text FileName;
 	Text MapUid;
 	Boolean IsPlayable;
+	Integer TMObjective_AuthorTime;
+	Integer TMObjective_GoldTime;
+	Integer TMObjective_SilverTime;
+	Integer TMObjective_BronzeTime;
+	Integer TMObjective_NbLaps;
+	Boolean TMObjective_IsLapRace;
 }
 
 #Struct SMetadata {
@@ -88,6 +94,10 @@ declare Text ScriptLocation;
 declare Text[Text] OfficialScripts;
 
 declare Text[Text] Nicknames;
+
+Text TimeToTextWithMilli(Integer _Time) {
+	return TextLib::TimeToText(_Time, True)^TextLib::SubText(""^_Time, TextLib::Length(""^_Time)-1, 1);
+}
 
 Boolean IsMultipleScript() {
 	return ((Page.GetFirstChild("QUAD_SCRIPT_MULTIPLE") as CMlQuad).ModulateColor == <0.0,0.2,0.4>);
@@ -161,6 +171,15 @@ Void UpdateLocalMapsFolder(Integer _Offset) {
 				(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("file://Thumbnails/MapUid/"^MapInfo.MapUid);
 				(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(MapInfo.Name);
 				(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^MapInfo.AuthorNickName);
+
+				if(MapInfo.TMObjective_AuthorTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText("None");
+				else (Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText(TimeToTextWithMilli(MapInfo.TMObjective_AuthorTime));
+				if(MapInfo.TMObjective_GoldTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText("None");
+				else (Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText(TimeToTextWithMilli(MapInfo.TMObjective_GoldTime));
+				if(MapInfo.TMObjective_SilverTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText("None");
+				else (Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText(TimeToTextWithMilli(MapInfo.TMObjective_SilverTime));
+				if(MapInfo.TMObjective_BronzeTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText("None");
+				else (Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText(TimeToTextWithMilli(MapInfo.TMObjective_BronzeTime));
 			}
 			else
 				(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).Substyle = "BgCardInventoryItem";
@@ -232,6 +251,11 @@ Void UpdateManiaExchange(Integer _Offset) {
 		(Frame.GetFirstChild("LABEL_AUTHOR") as CMlLabel).SetText("");
 		Frame.GetFirstChild("QUAD_SELECTOR").Hide();
 	}
+
+	(Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText("???");
+	(Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText("???");
+	(Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText("???");
+	(Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText("???");
 
 	if(MathLib::NearestInteger(Frame_MapList.ScrollMax.Y) == MathLib::NearestInteger(Frame_MapList.ScrollOffset.Y)) { //Not equal in Real but equal in Integer, nice lol
 		//Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
@@ -524,6 +548,11 @@ main() {
 								(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedMXTrackInfo.GbxMapName);
 								(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedMXTrackInfo.Username);
 
+								(Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText("???");
+								(Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText("???");
+								(Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText("???");
+								(Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText("???");
+
 								if(MapBrowserMXTrackInfos.count == 0) {
 									SendCustomEvent("MapList_ManiaExchange_Update", ["1", (Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
 									Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
@@ -592,9 +621,15 @@ main() {
 							(Page.GetFirstChild("QUAD_LOCATION_MAP_MX") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
 							(Page.GetFirstChild("QUAD_LOCATION_MAP_MAPMANAGER") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
 
+							/*
 							(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("file://Thumbnails/MapUid/"^SelectedMapInfo.MapUid);
 							(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedMapInfo.Name);
 							(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedMapInfo.AuthorNickName);
+
+							(Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_AuthorTime));
+							(Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_GoldTime));
+							(Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_SilverTime));
+							(Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_BronzeTime));*/
 
 							Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
 						}

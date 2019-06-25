@@ -93,7 +93,15 @@
 						<quad size="42.5 42.5" halign="center" valign="center" opacity=".9" id="QUAD_MAPLIST_THUMBNAIL"/>
 					</frame>
 					<label pos="25 -50" z-index="1" size="40 10" halign="center" valign="center2" text="???" textfont="BiryaniDemiBold" id="LABEL_MAPLIST_MAPNAME" textsize="2"/>
-					<label pos="25 -55" z-index="1" size="40 10" halign="center" valign="center2" text="{{{{by}}}} ???" textfont="BiryaniDemiBold" id="LABEL_MAPLIST_AUTHORNAME" textsize="1"/>
+					<label pos="25 -54" z-index="1" size="40 10" halign="center" valign="center2" text="{{{{by}}}} ???" textfont="BiryaniDemiBold" id="LABEL_MAPLIST_AUTHORNAME" textsize="1"/>
+					<quad pos="7.5 -60" z-index="0" size="4.5 4.5" bgcolor="FFFA" halign="center" valign="center" style="MedalsBig" substyle="MedalNadeo"/>
+					<label pos="11 -59.8" z-index="0" size="20 5" text="-:--.---" valign="center" textsize="1" textfont="RajdhaniMono" id="LABEL_MAPLIST_MEDALNADEO"/>
+					<quad pos="7.5 -65" z-index="0" size="4.5 4.5" bgcolor="FFFA" halign="center" valign="center" style="MedalsBig" substyle="MedalGold"/>
+					<label pos="11 -64.8" z-index="0" size="20 5" text="-:--.---" valign="center" textsize="1" textfont="RajdhaniMono" id="LABEL_MAPLIST_MEDALGOLD"/>
+					<quad pos="7.5 -70" z-index="0" size="4.5 4.5" bgcolor="FFFA" halign="center" valign="center" style="MedalsBig" substyle="MedalSilver"/>
+					<label pos="11 -69.8" z-index="0" size="20 5" text="-:--.---" valign="center" textsize="1" textfont="RajdhaniMono" id="LABEL_MAPLIST_MEDALSILVER"/>
+					<quad pos="7.5 -75" z-index="0" size="4.5 4.5" bgcolor="FFFA" halign="center" valign="center" style="MedalsBig" substyle="MedalBronze"/>
+					<label pos="11 -74.8" z-index="0" size="20 5" text="-:--.---" valign="center" textsize="1" textfont="RajdhaniMono" id="LABEL_MAPLIST_MEDALBRONZE"/>
 				</frame>
 			</frame>
 		</frame>

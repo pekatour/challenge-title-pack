@@ -210,12 +210,7 @@ Void Async() {
 					if(!TextLib::Find(SearchAuthorName, MapInfo.AuthorLogin ^ MapInfo.AuthorNickName, False, False)) continue;
 			
 				declare Map::SMapInfo Info;
-				Info.Name = MapInfo.Name;
-				Info.AuthorLogin = MapInfo.AuthorLogin;
-				Info.AuthorNickName = MapInfo.AuthorNickName;
-				Info.FileName = MapInfo.FileName;
-				Info.MapUid = MapInfo.MapUid;
-				Info.IsPlayable = MapInfo.IsPlayable;
+				Info = Map::ToSMapInfo(MapInfo);
 				MapInfos.add(Info);
 			}
 					
