@@ -34,7 +34,7 @@ declare Boolean MapDownload;
 
 Void UpdateLocalMaps(Text _Folder, Text _SearchMapName, Text _SearchAuthorName) {
 	declare FlatSearch = (_SearchMapName != "" || _SearchAuthorName != "");
-	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(4,_Folder,FlatSearch));
+	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(2,_Folder,FlatSearch));
 	Data::Set("MAPLIST_LOCAL_SEARCHMAPNAME",_SearchMapName);
 	Data::Set("MAPLIST_LOCAL_SEARCHAUTHORNAME",_SearchAuthorName);
 }
@@ -59,7 +59,7 @@ Void StartMap(Text _MapLocation, Map::SMapInfo _MapInfo, SScriptInfo[] _Scripts)
 		Dialog_Message("This map wasn't validated in original version.");
 		return;
 	}
-	if(_Scripts.count == 0) {
+	if(_Scripts.count == 0 && _MapInfo.MapType != "Challenge") {
 		Dialog_Message("Please select at least one script.");
 		return;
 	}
@@ -119,17 +119,28 @@ Void Event(CManiaAppEvent _Event) {
 				declare MapLocation = Event.CustomEventData[0];
 				
 				if(MapLocation == "ManiaExchange") {
-					declare JsonSuccessMapInfo = MXTrack.fromjson(Event.CustomEventData[1]);
-					MapDownloadApproximateLocation = """Downloaded/TrackMania/{{{MXTrack.MapType}}}/{{{MXTrack.EnvironmentName}}}""";
-					MapDownloadUid = MXTrack.TrackUID;
-					declare JsonSuccessScripts = MapDownloadScripts.fromjson(Event.CustomEventData[2]);
+					if(MXTrack.TrackUID == "") {
+						Dialog_Message("Please select a map.");
+					}
+					else if(MapDownloadScripts.count == 0 && MXTrack.MapType != "Challenge") {
+						Dialog_Message("Please select at least one script.");
+					}
+					else {
+						declare JsonSuccessMapInfo = MXTrack.fromjson(Event.CustomEventData[1]);
+						MapDownloadApproximateLocation = """Downloaded/TrackMania/{{{MXTrack.MapType}}}/{{{MXTrack.EnvironmentName}}}""";
+						MapDownloadUid = MXTrack.TrackUID;
+						declare JsonSuccessScripts = MapDownloadScripts.fromjson(Event.CustomEventData[2]);
+					}
 				}
 				if(MapLocation == "Local") {
 					declare Map::SMapInfo MapInfo;
 					declare JsonSuccessMapInfo = MapInfo.fromjson(Event.CustomEventData[1]);
 					declare SScriptInfo[] Scripts;
 					declare JsonSuccessScripts = Scripts.fromjson(Event.CustomEventData[2]);
-					StartMap(MapLocation, MapInfo, Scripts);
+					if(MapInfo.MapType == "TrackMania\\Challenge")
+						TitleFlow.PlayMap(MapInfo.FileName,"","");
+					else
+						StartMap(MapLocation, MapInfo, Scripts);
 				}
 			}
 			case "MapList_Local_Folder": {
@@ -250,7 +261,23 @@ Void Loop() {
 				OpenLink("""challenge:downloadmap?id={{{MXTrack.TrackID}}}&displayname={{{TextLib::URLEncode(MXTrack.GbxMapName)}}}""", ::ELinkType::ManialinkBrowser);
 				MapDownload = True;
 			}
-			declare MustBeTrue = StartMapIfExists();
+			if(MXTrack.MapType == "Challenge") {
+				declare List = Task::SyncMapList(DataFileMgr.Map_GetFilteredGameList(4, MapDownloadApproximateLocation, True));
+				foreach(MapInfo,List.MapInfos) {
+					if(MapInfo.MapUid == MapDownloadUid) {
+						wait(TitleFlow.IsReady);
+						TitleFlow.PlayMap(MapInfo.FileName,"","");
+						
+						MapDownloadApproximateLocation = "";
+						DataFileMgr.TaskResult_Release(List.Id);
+						
+						MapDownload = False;
+					}
+				}
+				DataFileMgr.TaskResult_Release(List.Id);
+			}
+			else
+				declare MustBeTrue = StartMapIfExists();
 		}
 	}
 }

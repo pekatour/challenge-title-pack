@@ -53,6 +53,7 @@
 	Text AuthorNickName;
 	Text FileName;
 	Text MapUid;
+	Text MapType;
 	Boolean IsPlayable;
 	Integer TMObjective_AuthorTime;
 	Integer TMObjective_GoldTime;
@@ -180,6 +181,11 @@ Void UpdateLocalMapsFolder(Integer _Offset) {
 				else (Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText(TimeToTextWithMilli(MapInfo.TMObjective_SilverTime));
 				if(MapInfo.TMObjective_BronzeTime == -1) (Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText("None");
 				else (Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText(TimeToTextWithMilli(MapInfo.TMObjective_BronzeTime));
+				
+				if(MapInfo.MapType == "TrackMania\\Challenge")
+					(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).TextColor = <.5,.5,.5>;
+				else
+					(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).TextColor = <1.,1.,1.>;
 			}
 			else
 				(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).Substyle = "BgCardInventoryItem";
@@ -236,6 +242,11 @@ Void UpdateManiaExchange(Integer _Offset) {
 				(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("https://tm.mania-exchange.com/tracks/screenshot/normal/"^TrackInfo.TrackID^"?.jpg");
 				(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(TrackInfo.GbxMapName);
 				(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^TrackInfo.Username);
+
+				if(TrackInfo.MapType == "Challenge")
+					(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).TextColor = <.5,.5,.5>;
+				else
+					(Page.GetFirstChild("LABEL_SCRIPT_NAME") as CMlLabel).TextColor = <1.,1.,1.>;
 			}
 			else
 				(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).Substyle = "BgCardInventoryItem";
