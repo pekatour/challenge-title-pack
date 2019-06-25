@@ -117,6 +117,7 @@ Void Event(CManiaAppEvent _Event) {
 		switch(Event.CustomEventType) {
 			case "Button_Start": {
 				declare MapLocation = Event.CustomEventData[0];
+				declare JsonSuccessMapInfo = MXTrack.fromjson(Event.CustomEventData[1]);
 				
 				if(MapLocation == "ManiaExchange") {
 					if(MXTrack.TrackUID == "") {
