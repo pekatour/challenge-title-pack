@@ -7,11 +7,15 @@ Text TimeToTextWithMilli(Integer _Time) {
 }
 
 main() {
+	declare Start = Now+500;
+
 	declare Integer PlayerTime;
 
 	declare CTmMlPlayer::ERaceState PreviousRaceState;
 	declare Boolean PreviousBrakeState;
 
+	declare Frame_Time <=> (Page.GetFirstChild("FRAME_TIME") as CMlFrame);
+	declare Frame_Checkpoint <=> (Page.GetFirstChild("FRAME_CHECKPOINT") as CMlFrame);
 	declare Frame_Speed <=> (Page.GetFirstChild("FRAME_SPEED") as CMlFrame);
 
 	declare Label_Time <=> (Page.GetFirstChild("LABEL_TIME") as CMlLabel);
@@ -34,7 +38,15 @@ main() {
 	declare Integer TimeResetStamp;
 	declare Integer TimeResetLength = 500;
 
+	Frame_Time.ClipWindowRelativePosition.Y = -20.;
+	Frame_Checkpoint.ClipWindowRelativePosition.X = 32.;
+	Frame_Speed.ClipWindowRelativePosition.X = -32.;
+
 	while(True) {
+		Frame_Time.ClipWindowRelativePosition.Y = AnimLib::EaseOutQuad(Now - Start, -20., 20., 500);
+		Frame_Checkpoint.ClipWindowRelativePosition.X = AnimLib::EaseOutQuad(Now - Start-100, 32., -32., 500);
+		Frame_Speed.ClipWindowRelativePosition.X = AnimLib::EaseOutQuad(Now - Start-100, -32., 32., 500);
+
 		if(GUIPlayer != Null) {
 			declare RpmRatio = MathLib::Clamp(GUIPlayer.EngineRpm/10000,0.,1.);
 		
