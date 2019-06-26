@@ -39,6 +39,8 @@
 // SFlashPost[] Flashes(Text _LiveUid) 
 */
 
+#Include "TextLib" as TextLib
+
 #Include "Libs/BigBang1112/Http.Script.txt" as Http
 
 #Struct SPlayer {
@@ -143,7 +145,7 @@
 }
 
 Text Private_ToCleanerJson(Text _Json) {
-	return TextLib::RegexReplace("/(^|\s)[a-z]/g",_Json,"gm","[A-Z]");
+	return TextLib::RegexReplace("/(^|\\s)[a-z]/g",_Json,"gm","[A-Z]");
 }
 
 SPlayer Me(Text _Token) {
@@ -195,7 +197,7 @@ SZone[] Zones() {
 }
 
 STitle[] Titles(Text[] _Filters, Text _OrderBy, Integer _Offset, Integer Length) {
-	
+	return [];
 }
 
 STitle[] Titles(Text[] _Filters, Text _OrderBy, Integer _Offset) {
@@ -229,7 +231,7 @@ STitleScript[] TitleScripts(Text _Uid) {
 }
 
 SOnlineServer[] Servers(SServerFilter _Filter) {
-
+	return [];
 }
 
 SOnlineServer[] Servers() {
@@ -246,9 +248,13 @@ SFlashPost[] Flashes(Text _LiveUid, Integer _Offset, Integer _Length) {
 }
 
 SFlashPost[] Flashes(Text _LiveUid, Integer _Offset) {
-	return Flashes(Text _LiveUid, Integer _Offset, 10);
+	return Flashes(_LiveUid, _Offset, 10);
 }
 
 SFlashPost[] Flashes(Text _LiveUid) {
-	return Flashes(Text _LiveUid, 0);
+	return Flashes(_LiveUid, 0);
+}
+
+Boolean AsyncMeMaps(Text _Name, Text _Token) {
+	return Http::AsyncGET(_Name, "https://maniaplanet.com/webservices/me/maps", False, "Authorization: Bearer "^_Token);
 }

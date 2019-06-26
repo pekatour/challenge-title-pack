@@ -24,6 +24,11 @@ main() {
 						Page.GetFirstChild("FRAME_AUTH").RelativeScale = 0.;
 						AnimMgr.Add(Page.GetFirstChild("FRAME_AUTH"), "<frame scale=\"1\" hidden=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
 					}
+					if(Event.CustomEventType == "ShowNoAccess") {
+						AnimMgr.Add(Page.GetFirstChild("FRAME_AUTH"), "<frame scale=\"0\" hidden=\"1\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+						Page.GetFirstChild("FRAME_NOACCESS").RelativeScale = 0.;
+						AnimMgr.Add(Page.GetFirstChild("FRAME_NOACCESS"), "<frame scale=\"1\" hidden=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadIn);
+					}
 				}
 			}
 		}

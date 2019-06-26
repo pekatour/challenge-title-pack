@@ -212,10 +212,6 @@ SAuthVerification GetAsyncVerification(Text _RequestName) {
 	return Verification;
 }
 
-Void Private_GenerateStateIfNone() {
-	if(Auth_State == "") Auth_State = Random::String(32);
-}
-
 /*
 // Text GetState()
 // Gets randomly generated state for OAuth2.
@@ -223,6 +219,7 @@ Void Private_GenerateStateIfNone() {
 // Returns state value curretly associated with the user
 */
 Text GetState() {
+	if(Auth_State == "") Auth_State = Random::String(32);
 	return Auth_State;
 }
 
@@ -238,8 +235,7 @@ Text GetState() {
 Void Authorize(Text _ClientId, Text _Scopes, Text _RedirectUri, CManiaApp::ELinkType _LinkType) {
 	declare Uri = TextLib::URLEncode(_RedirectUri);
 	declare Scopes = TextLib::URLEncode(_Scopes);
-	Private_GenerateStateIfNone();
-	OpenLink("https://www.maniaplanet.com/login/oauth2/authorize?response_type=code&scope="^Scopes^"&state="^Auth_State^"&client_id="^_ClientId^"&redirect_uri="^Uri, _LinkType);
+	OpenLink("https://www.maniaplanet.com/login/oauth2/authorize?response_type=code&scope="^Scopes^"&state="^GetState()^"&client_id="^_ClientId^"&redirect_uri="^Uri, _LinkType);
 }
 
 /*

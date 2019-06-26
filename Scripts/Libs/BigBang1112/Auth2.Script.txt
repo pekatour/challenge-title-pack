@@ -20,6 +20,7 @@
 
 #Struct SAuthResult {
 	Boolean Received;
+	Text AppName;
 	Text AcceptUrl;
 	Text RedirectUrl; // Redirect that contains user info
 	Boolean AlreadyAccepted;
@@ -37,6 +38,7 @@ SAuthResult Private_Authorize(Text _Content) {
 		Result.RedirectUrl = TextLib::RegexMatch("OpenLink\\(\"(.*?)\", ::LinkType::ManialinkBrowser\\)", _Content, "i")[1];
 	}
 	else {
+		Result.AppName = TextLib::RegexMatch("<label id=\"Label_ApplicationName\" style=\"TextTitle1\" text=\"(.*?)\"", _Content, "i")[1];
 		Result.AcceptUrl = AuthorizeUrl;
 	}
 

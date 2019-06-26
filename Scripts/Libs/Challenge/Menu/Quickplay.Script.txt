@@ -8,6 +8,9 @@
 #Include "Libs/BigBang1112/File.Script.txt" as File
 #Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
 #Include "Libs/BigBang1112/Map.Script.txt" as Map
+#Include "Libs/BigBang1112/Web.Script.txt" as Web
+
+#Include "Libs/Challenge/Menu/AuthBeta.Script.txt" as Menu_AuthBeta
 
 #Include "Libs/Challenge/Nicknames.Script.txt" as Nicknames
 
@@ -79,7 +82,6 @@ Boolean StartMapIfExists() {
 	declare List = Task::SyncMapList(DataFileMgr.Map_GetFilteredGameList(4, MapDownloadApproximateLocation, True));
 	foreach(MapInfo,List.MapInfos) {
 		if(MapInfo.MapUid == MapDownloadUid) {
-			Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(4, "Downloaded", True)); // Refreshes checkmark on online tracks
 			wait(TitleFlow.IsReady);
 			TitleFlow.EditNewMapFromBaseMap(MapInfo.FileName, "", "", "Challenge.Script.txt", "Modifier.Script.txt", """<settings>
 			<setting name="S_Build" type="boolean" value="True"/>
@@ -113,6 +115,9 @@ Void Start() {
 	UpdateOfficialScripts(OfficialScripts);
 	
 	Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(4, "Downloaded", True));
+	
+	declare Token = Menu_AuthBeta::GetAccess().Token;
+	log(Web::MeMaps(Token));
 }
 
 Void Event(CManiaAppEvent _Event) {
@@ -177,6 +182,10 @@ Void Event(CManiaAppEvent _Event) {
 				if(!MX::AsyncSearch("MX_SEARCH_UPDATE", "tm", Search, True)) {
 				
 				}
+			}
+			case "MapList_MapManager_Update": {
+				declare Token = Menu_AuthBeta::GetAccess().Token;
+				//log(Web::MeEmail(Token));
 			}
 			case "ScriptList_Metadata": {
 				declare SScriptInfo Info;
@@ -292,7 +301,7 @@ Void Loop() {
 						
 						MapDownloadApproximateLocation = "";
 						DataFileMgr.TaskResult_Release(List.Id);
-						
+						Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(4, "Downloaded", True));
 						MapDownload = False;
 					}
 				}

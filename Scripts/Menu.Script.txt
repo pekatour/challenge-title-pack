@@ -29,7 +29,7 @@ main() {
 	Auth::Start();
 	
 	Menu_AuthBeta::Start();
-	while(!Menu_AuthBeta::CanPass()) {
+	while(!Menu_AuthBeta::GetAccess().Pass) {
 		foreach(Event,PendingEvents) {
 			Menu_AuthBeta::Event(Event);
 		}

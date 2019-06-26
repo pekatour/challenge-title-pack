@@ -11,18 +11,19 @@
 
 #Struct SAccess {
 	Boolean Pass;
+	Text Token;
 }
 
 declare Text AcceptUrl;
 declare SAccess Access;
 
-Boolean CanPass() {
-	return Access.Pass;
+SAccess GetAccess() {
+	return Access;
 }
 
 Void Start() {
 	Layers::Create("AuthBeta", Manialink::FromFile("Media/Manialinks/AuthBeta", True), True);
-	declare Success = Auth2::AsyncAuthorize("Authorize", "b1a3d10ba7", "basic", Backend::GetHost()^"/auth");
+	declare Success = Auth2::AsyncAuthorize("Authorize", "b1a3d10ba7", "basic maps", Backend::GetHost()^"/auth");
 }
 
 Void Event(CManiaAppEvent _Event) {
@@ -64,6 +65,7 @@ Void Async() {
 	if(Http::IsCompleted("Redirect")) {
 		if(Http::IsSuccessful("Redirect")) {
 			declare JsonSuccess = Access.fromjson(Http::GetResult("Redirect"));
+			if(!Access.Pass) Layers::SendEvent("AuthBeta", "ShowNoAccess");
 		}
 		else {
 			log("Redirect: " ^ Http::GetStatusCode("Authorize"));
