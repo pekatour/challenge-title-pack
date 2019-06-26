@@ -32,6 +32,8 @@ declare SScriptInfo[] MapDownloadScripts;
 declare MX::SMXTrack MXTrack;
 declare Boolean MapDownload;
 
+declare Text[] DownloadedMapUids;
+
 Void UpdateLocalMaps(Text _Folder, Text _SearchMapName, Text _SearchAuthorName) {
 	declare FlatSearch = (_SearchMapName != "" || _SearchAuthorName != "");
 	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(2,_Folder,FlatSearch));
@@ -77,6 +79,7 @@ Boolean StartMapIfExists() {
 	declare List = Task::SyncMapList(DataFileMgr.Map_GetFilteredGameList(4, MapDownloadApproximateLocation, True));
 	foreach(MapInfo,List.MapInfos) {
 		if(MapInfo.MapUid == MapDownloadUid) {
+			Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(4, "Downloaded", True)); // Refreshes checkmark on online tracks
 			wait(TitleFlow.IsReady);
 			TitleFlow.EditNewMapFromBaseMap(MapInfo.FileName, "", "", "Challenge.Script.txt", "Modifier.Script.txt", """<settings>
 			<setting name="S_Build" type="boolean" value="True"/>
@@ -108,6 +111,8 @@ Void Start() {
 	
 	UpdateLocalMaps("","","");
 	UpdateOfficialScripts(OfficialScripts);
+	
+	Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(4, "Downloaded", True));
 }
 
 Void Event(CManiaAppEvent _Event) {
@@ -117,7 +122,6 @@ Void Event(CManiaAppEvent _Event) {
 		switch(Event.CustomEventType) {
 			case "Button_Start": {
 				declare MapLocation = Event.CustomEventData[0];
-				
 				
 				if(MapLocation == "ManiaExchange") {
 					declare JsonSuccessMapInfo = MXTrack.fromjson(Event.CustomEventData[1]);
@@ -204,6 +208,9 @@ declare SMetadata Script;
 			case "Nickname": {
 				Nicknames::Submit(Event.CustomEventData[0]);
 			}
+			case "UpdateDownloaded": {
+				Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(4, "Downloaded", True));
+			}
 		}
 	}
 }
@@ -255,6 +262,16 @@ Void Async() {
 					
 			Layers::SendEvent("Quickplay", "MapList_Local_Update", [MapList.Path,SubFolders.tojson(),MapInfos.tojson()]);
 			Task::Destroy_DataFileMgr("MAPLIST_LOCAL_FOLDER");
+		}
+	}
+	if(Task::IsCompleted("DOWNLOADED_MAPUIDS")) {
+		if(Task::IsSuccessful("DOWNLOADED_MAPUIDS")) {
+			declare MapList = (Task::Get("DOWNLOADED_MAPUIDS") as CTaskResult_MapList);
+			DownloadedMapUids.clear();
+			foreach(MapInfo,MapList.MapInfos)
+				DownloadedMapUids.add(MapInfo.MapUid);
+			Layers::SendEvent("Quickplay", "Downloaded_MapUids", [DownloadedMapUids.tojson()]);
+			Task::Destroy_DataFileMgr("DOWNLOADED_MAPUIDS");
 		}
 	}
 }

@@ -1,3 +1,6 @@
 #RequireContext CManiaAppBrowser
 
+sleep(100);
+BrowserHome();
+sleep(100);
 BrowserQuit();

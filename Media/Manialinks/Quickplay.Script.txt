@@ -98,6 +98,7 @@ declare Text ScriptLocation;
 declare Text[Text] OfficialScripts;
 
 declare Text[Text] Nicknames;
+declare Text[] DownloadedMapUids;
 
 Text TimeToTextWithMilli(Integer _Time) {
 	return TextLib::TimeToText(_Time, True)^TextLib::SubText(""^_Time, TextLib::Length(""^_Time)-1, 1);
@@ -171,6 +172,9 @@ Void UpdateLocalMapsFolder(Integer _Offset) {
 			declare Frame = ((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).Controls[Pos] as CMlFrame);
 			declare Label = (Frame.GetFirstChild("LABEL_MAPNAME") as CMlLabel);
 			declare LabelAuthor = (Frame.GetFirstChild("LABEL_AUTHOR") as CMlLabel);
+			declare LabelDownloaded = (Frame.GetFirstChild("LABEL_DOWNLOADED") as CMlLabel);
+			LabelDownloaded.Hide();
+
 			declare Folders = TextLib::Split("\\",Folder);
 			Label.SetText(" "^Folders[Folders.count-1]);
 			LabelAuthor.SetText("");
@@ -192,6 +196,9 @@ Void UpdateLocalMapsFolder(Integer _Offset) {
 			declare Frame = ((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).Controls[Pos] as CMlFrame);
 			declare Label = (Frame.GetFirstChild("LABEL_MAPNAME") as CMlLabel);
 			declare LabelAuthor = (Frame.GetFirstChild("LABEL_AUTHOR") as CMlLabel);
+			declare LabelDownloaded = (Frame.GetFirstChild("LABEL_DOWNLOADED") as CMlLabel);
+			LabelDownloaded.Hide();
+
 			Label.SetText(MapInfo.Name);
 			LabelAuthor.SetText("{{{{by}}}} " ^ MapInfo.AuthorNickName);
 			Frame.GetFirstChild("QUAD_SELECTOR").Show();
@@ -216,6 +223,7 @@ Void UpdateLocalMapsFolder(Integer _Offset) {
 		(Frame.GetFirstChild("LABEL_MAPNAME") as CMlLabel).SetText("");
 		(Frame.GetFirstChild("LABEL_AUTHOR") as CMlLabel).SetText("");
 		Frame.GetFirstChild("QUAD_SELECTOR").Hide();
+		Frame.GetFirstChild("LABEL_DOWNLOADED").Hide();
 	}
 
 	if(SelectedMapInfo.Name == "") (Page.GetFirstChild("LABEL_MAP_NAME") as CMlLabel).SetText("{{{{LOCAL_MAPS}}}} / $888{{{{no_map_selected}}}}");
@@ -266,10 +274,15 @@ Void UpdateManiaExchange(Integer _Offset) {
 			declare Frame = ((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).Controls[Pos] as CMlFrame);
 			declare Label = (Frame.GetFirstChild("LABEL_MAPNAME") as CMlLabel);
 			declare LabelAuthor = (Frame.GetFirstChild("LABEL_AUTHOR") as CMlLabel);
+			declare LabelDownloaded = (Frame.GetFirstChild("LABEL_DOWNLOADED") as CMlLabel);
+
 			Label.SetText(TrackInfo.GbxMapName);
 			LabelAuthor.SetText("{{{{by}}}} " ^ TrackInfo.Username);
 			Frame.GetFirstChild("QUAD_SELECTOR").Show();
 			(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).ModulateColor = <1.0,1.0,1.0>;
+
+			if(DownloadedMapUids.exists(TrackInfo.TrackUID)) LabelDownloaded.Show();
+			else LabelDownloaded.Hide();
 
 			Frame.DataAttributeSet("folder","");
 			Frame.DataAttributeSet("mapinfo",TrackInfo.tojson());
@@ -731,6 +744,13 @@ main() {
 						case "NicknameUpdate": {
 							declare JsonSuccess = Nicknames.fromjson(Event.CustomEventData[0]);
 							UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
+						}
+						case "Downloaded_MapUids": {
+							declare JsonSuccess = DownloadedMapUids.fromjson(Event.CustomEventData[0]);
+							if(MapLocation == "ManiaExchange")
+								UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+							else if(MapLocation == "MapManager")
+								UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
 						}
 					}
 				}
