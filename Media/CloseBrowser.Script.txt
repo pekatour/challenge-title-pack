@@ -1,6 +1,5 @@
 #RequireContext CManiaAppBrowser
 
-sleep(100);
+log("works");
 BrowserHome();
-sleep(100);
 BrowserQuit();

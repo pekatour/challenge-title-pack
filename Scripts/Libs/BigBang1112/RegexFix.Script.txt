@@ -31,10 +31,12 @@
 */
 Text RegexReplace(Text _Pattern, Text _Text, Text _Flags, Text _Replacement) {
 	declare Final = _Text;
+	
+	declare MatchFlags = TextLib::Replace(_Flags,"g","");
 
 	declare Finds = TextLib::RegexFind(_Pattern, _Text, _Flags);
 	for(i,0,Finds.count-1) {
-		declare Matches = TextLib::RegexMatch(_Pattern, Finds[i], _Flags);
+		declare Matches = TextLib::RegexMatch(_Pattern, Finds[i], MatchFlags);
 		declare Replacement = _Replacement;
 		for(j,0,Matches.count-1)
 			Replacement = TextLib::Replace(Replacement, "\\"^j, Matches[j]);

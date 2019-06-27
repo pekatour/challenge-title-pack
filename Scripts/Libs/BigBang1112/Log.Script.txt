@@ -1,0 +1,14 @@
+Void Info(Text _Name, Text _Content, Integer _Time) {
+	if(_Time == -1)
+		log("""[{{{_Name}}}] {{{_Content}}}""");
+	else
+		log("""[{{{_Name}}}] {{{_Content}}} ({{{_Time/1000.}}}s)""");
+}
+
+Void Info(Text _Name, Text _Content) {
+	Info(_Name, _Content, -1);
+}
+
+Void Warn(Text _Name, Text _Content) {
+	log("""[{{{_Name}}}] {{{_Content}}}""");
+}

@@ -7,8 +7,9 @@
 // Async requests do not require declaring variables.
 // Does not touch problematic event system.
 
-// This library does not depend on any other library from the Universe Library Set.
-// You can use this library independently, although it's recommended to use the whole set.
+// This library does depend on more libraries from the Universe Library Set:
+// - Log.Script.txt
+// You only need to use the libraries above, although it's recommended to use the whole set.
 */
 
 /*
@@ -19,26 +20,35 @@
 */
 
 /*
+// CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders, Boolean _NoLog)
 // CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
 // CHttpRequest SyncGET(Text _Url, Boolean _UseCache)
 // CHttpRequest SyncGET(Text _Url)
+// Text SyncGET_Result(Text _Url, Boolean _UseCache, Text _AdditionalHeaders, Boolean _NoLog)
 // Text SyncGET_Result(Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
 // Text SyncGET_Result(Text _Url, Boolean _UseCache)
 // Text SyncGET_Result(Text _Url)
+// CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders, Boolean _NoLog)
 // CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders)
 // CHttpRequest SyncPOST(Text _Url, Text _Resource)
+// Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders, Boolean _NoLog)
 // Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders)
 // Text SyncPOST_Result(Text _Url, Text _Resource)
+// CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders, Boolean _NoLog)
 // CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders)
 // CHttpRequest SyncPOSTFile(Text _Url, Text _FileName)
+// Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders, Boolean _NoLog)
 // Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders)
 // Text SyncPOSTFile_Result(Text _Url, Text _FileName)
 
+// Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders, Boolean _NoLog)
 // Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
 // Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache)
 // Boolean AsyncGET(Text _Name, Text _Url)
+// Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders, Boolean _NoLog)
 // Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders)
 // Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource)
+// Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHeaders, Boolean _NoLog)
 // Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHeaders)
 // Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName)
 
@@ -48,26 +58,40 @@
 // Integer GetStatusCode(Text _Name)
 */
 
+#Include "Libs/BigBang1112/Log.Script.txt" as Log
+
+#Struct SRequest {
+	Integer Timestamp;
+	Ident Request;
+}
+
 #Const C_StatusCode_Offline 10006
 
-declare Ident[Text] G_Requests;
+declare SRequest[Text] G_Requests;
 
 /*
-// CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
+// CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders, Boolean _NoLog)
 // Requests an URL as GET synchronously.
 
 // Text _Url - Url to request
 // Boolean _UseCache - If to cache the result, True recommended for expensive requests
 // Text _AdditionalHeaders - More info to the request
+// Boolean _NoLog - If to not inform to the console
 
 // Returns finished/completed request, should be destroyed manually after being used
 */
-CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
+CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders, Boolean _NoLog) {
 	if(Http.SlotsAvailable == 0) return Null;
+	
+	if(!_NoLog) log("[HTTP] Sync requesting GET: " ^ _Url);
 	
 	declare Request = Http.CreateGet(_Url, _UseCache, _AdditionalHeaders);
 	wait(Request.IsCompleted);
 	return Request;
+}
+
+CHttpRequest SyncGET(Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
+	return SyncGET(_Url, _UseCache, _AdditionalHeaders, False);
 }
 
 /*
@@ -96,23 +120,28 @@ CHttpRequest SyncGET(Text _Url) {
 }
 
 /*
-// Text SyncGET_Result(Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
+// Text SyncGET_Result(Text _Url, Boolean _UseCache, Text _AdditionalHeaders, Boolean _NoLog)
 // Requests an URL as GET synchronously as result.
 
 // Text _Url - Url to request
 // Boolean _UseCache - If to cache the result, True recommended for expensive requests
 // Text _AdditionalHeaders - More info to the request
+// Boolean _NoLog - If to not inform to the console
 
 // Returns request result, or empty string if unsuccessful
 */
-Text SyncGET_Result(Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
-	declare Request = SyncGET(_Url, _UseCache, _AdditionalHeaders);
+Text SyncGET_Result(Text _Url, Boolean _UseCache, Text _AdditionalHeaders, Boolean _NoLog) {	
+	declare Request = SyncGET(_Url, _UseCache, _AdditionalHeaders, _NoLog);
 	if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
 		declare Result = Request.Result;
 		Http.Destroy(Request);
 		return Result;
 	}
 	return "";
+}
+
+Text SyncGET_Result(Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {	
+	return SyncGET_Result(_Url, _UseCache, _AdditionalHeaders, False);
 }
 
 /*
@@ -141,21 +170,28 @@ Text SyncGET_Result(Text _Url) {
 }
 
 /*
-// CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders)
+// CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders, Boolean _NoLog)
 // Requests an URL with text content as POST synchronously.
 
 // Text _Url - Url to request
 // Text _Resource - Text to provide for the request
 // Text _AdditionalHeaders - More info to the request
+// Boolean _NoLog - If to not inform to the console
 
 // Returns finished/completed request, should be destroyed manually after being used.
 */
-CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders) {
+CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders, Boolean _NoLog) {
 	if(Http.SlotsAvailable == 0) return Null;
+	
+	if(!_NoLog) Log::Info("HTTP", "Sync requesting POST: " ^ _Url);
 	
 	declare Request = Http.CreatePost(_Url, _Resource, _AdditionalHeaders);
 	wait(Request.IsCompleted);
 	return Request;
+}
+
+CHttpRequest SyncPOST(Text _Url, Text _Resource, Text _AdditionalHeaders) {
+	return SyncPOST(_Url, _Resource, _AdditionalHeaders, False);
 }
 
 /*
@@ -172,23 +208,28 @@ CHttpRequest SyncPOST(Text _Url, Text _Resource) {
 }
 
 /*
-// Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders)
+// Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders, Boolean _NoLog)
 // Requests an URL with text content as POST synchronously as result.
 
 // Text _Url - Url to request
 // Text _Resource - Text to provide for the request
 // Text _AdditionalHeaders - More info to the request
+// Boolean _NoLog - If to not inform to the console
 
 // Returns request result, or empty string if unsuccessful.
 */
-Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders) {
-	declare Request = SyncPOST(_Url, _Resource, _AdditionalHeaders);
+Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders, Boolean _NoLog) {
+	declare Request = SyncPOST(_Url, _Resource, _AdditionalHeaders, _NoLog);
 	if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
 		declare Result = Request.Result;
 		Http.Destroy(Request);
 		return Result;
 	}
 	return "";
+}
+
+Text SyncPOST_Result(Text _Url, Text _Resource, Text _AdditionalHeaders) {
+	return SyncPOST_Result(_Url, _Resource, _AdditionalHeaders, False);
 }
 
 /*
@@ -205,21 +246,28 @@ Text SyncPOST_Result(Text _Url, Text _Resource) {
 }
 
 /*
-// CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders)
+// CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders, Boolean _NoLog)
 // Requests an URL with file content as POST synchronously.
 
 // Text _Url - Url to request
 // Text _FileName - File name relative to Maniaplanet folder
 // Text _AdditionalHeaders - More info to the request
+// Boolean _NoLog - If to not inform to the console
 
 // Returns finished/completed request, should be destroyed manually after being used.
 */
-CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders) {
+CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders, Boolean _NoLog) {
 	if(Http.SlotsAvailable == 0) return Null;
+	
+	if(!_NoLog) Log::Info("HTTP", "Sync requesting POST FILE: " ^ _Url);
 	
 	declare Request = Http.CreatePostFile(_Url, _FileName, _AdditionalHeaders);
 	wait(Request.IsCompleted);
 	return Request;
+}
+
+CHttpRequest SyncPOSTFile(Text _Url, Text _FileName, Text _AdditionalHeaders) {
+	return SyncPOSTFile(_Url, _FileName, _AdditionalHeaders, False);
 }
 
 /*
@@ -236,23 +284,28 @@ CHttpRequest SyncPOSTFile(Text _Url, Text _FileName) {
 }
 
 /*
-// Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders)
+// Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders, Boolean _NoLog)
 // Requests an URL with file content as POST synchronously as result.
 
 // Text _Url - Url to request
 // Text _FileName - File name relative to Maniaplanet folder
 // Text _AdditionalHeaders - More info to the request
+// Boolean _NoLog - If to not inform to the console
 
 // Returns request result, or empty string if unsuccessful.
 */
-Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders) {
-	declare Request = SyncPOSTFile(_Url, _FileName, _AdditionalHeaders);
+Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders, Boolean _NoLog) {
+	declare Request = SyncPOSTFile(_Url, _FileName, _AdditionalHeaders, _NoLog);
 	if(Request.StatusCode >= 200 && Request.StatusCode < 300) {
 		declare Result = Request.Result;
 		Http.Destroy(Request);
 		return Result;
 	}
 	return "";
+}
+
+Text SyncPOSTFile_Result(Text _Url, Text _FileName, Text _AdditionalHeaders) {
+	return SyncPOSTFile_Result(_Url, _FileName, _AdditionalHeaders, False);
 }
 
 /*
@@ -269,22 +322,34 @@ Text SyncPOSTFile_Result(Text _Url, Text _FileName) {
 }
 
 /*
-// Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders)
+// Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders, Boolean _NoLog)
 // Requests an URL as GET asynchronously.
 
 // Text _Name - Identification name
 // Text _Url - Url to request
 // Boolean _UseCache - If to cache the result, True recommended for expensive requests
 // Text _AdditionalHeaders - More info to the request
+// Boolean _NoLog - If to not inform to the console
 
 // Returns True if the request is possible to create, otherwise False.
 */
-Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
+Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders, Boolean _NoLog) {
 	if(Http.SlotsAvailable == 0) return False;
 	
-	if(G_Requests.existskey(_Name)) Http.Destroy(Http.Requests[G_Requests[_Name]]);
-	G_Requests[_Name] = Http.CreateGet(_Url, _UseCache, _AdditionalHeaders).Id;
+	if(!_NoLog) Log::Info("HTTP", "Async requesting GET: " ^ _Url ^ """ ({{{_Name}}})""");
+	
+	if(G_Requests.existskey(_Name)) Http.Destroy(Http.Requests[G_Requests[_Name].Request]);
+	
+	declare SRequest R;
+	R.Timestamp = Now;
+	R.Request = Http.CreateGet(_Url, _UseCache, _AdditionalHeaders).Id;
+	G_Requests[_Name] = R;
+	
 	return True;
+}
+
+Boolean AsyncGET(Text _Name, Text _Url, Boolean _UseCache, Text _AdditionalHeaders) {
+	return AsyncGET(_Name, _Url, _UseCache, _AdditionalHeaders, False);
 }
 
 /*
@@ -315,24 +380,34 @@ Boolean AsyncGET(Text _Name, Text _Url) {
 }
 
 /*
-// Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders)
+// Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders, Boolean _NoLog)
 // Requests an URL with text content as POST asynchronously.
 
 // Text _Name - Identification name
 // Text _Url - Url to request
 // Text _Resource - Text to provide for the request
 // Text _AdditionalHeaders - More info to the request
+// Boolean _NoLog - If to not inform to the console
 
 // Returns True if the request is possible to create, otherwise False.
 */
-Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders) {
+Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders, Boolean _NoLog) {
 	if(Http.SlotsAvailable == 0) return False;
 	
-	if(G_Requests.existskey(_Name)) Http.Destroy(Http.Requests[G_Requests[_Name]]);
+	if(!_NoLog) Log::Info("HTTP", "Async requesting POST: " ^ _Url ^ """ ({{{_Name}}})""");
 	
-	G_Requests[_Name] = Http.CreatePost(_Url, _Resource, _AdditionalHeaders).Id;
+	if(G_Requests.existskey(_Name)) Http.Destroy(Http.Requests[G_Requests[_Name].Request]);
+	
+	declare SRequest R;
+	R.Timestamp = Now;
+	R.Request = Http.CreatePost(_Url, _Resource, _AdditionalHeaders).Id;
+	G_Requests[_Name] = R;
 
 	return True;
+}
+
+Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource, Text _AdditionalHeaders) {
+	return AsyncPOST(_Name, _Url, _Resource, _AdditionalHeaders, False);
 }
 
 /*
@@ -350,22 +425,28 @@ Boolean AsyncPOST(Text _Name, Text _Url, Text _Resource) {
 }
 
 /*
-// Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHeaders)
+// Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHeaders, Boolean _NoLog)
 // Requests an URL with file content as POST asynchronously.
 
 // Text _Name - Identification name
 // Text _Url - Url to request
 // Text _FileName - File name relative to Maniaplanet folder
 // Text _AdditionalHeaders - More info to the request
+// Boolean _NoLog - If to not inform to the console
 
 // Returns True if the request is possible to create, otherwise False.
 */
-Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHeaders) {
+Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName, Text _AdditionalHeaders, Boolean _NoLog) {
 	if(Http.SlotsAvailable == 0) return False;
 	
-	if(G_Requests.existskey(_Name)) Http.Destroy(Http.Requests[G_Requests[_Name]]);
+	if(!_NoLog) Log::Info("HTTP", "requesting POST FILE: " ^ _Url ^ """ ({{{_Name}}})""");
 	
-	G_Requests[_Name] = Http.CreatePostFile(_Url, _FileName, _AdditionalHeaders).Id;
+	if(G_Requests.existskey(_Name)) Http.Destroy(Http.Requests[G_Requests[_Name].Request]);
+	
+	declare SRequest R;
+	R.Timestamp = Now;
+	R.Request = Http.CreatePostFile(_Url, _FileName, _AdditionalHeaders).Id;
+	G_Requests[_Name] = R;
 
 	return True;
 }
@@ -394,7 +475,7 @@ Boolean AsyncPOSTFile(Text _Name, Text _Url, Text _FileName) {
 */
 CHttpRequest Get(Text _Name) {
 	if(!G_Requests.existskey(_Name)) return Null;
-	return Http.Requests[G_Requests[_Name]];
+	return Http.Requests[G_Requests[_Name].Request];
 }
 
 /*
@@ -405,7 +486,7 @@ CHttpRequest Get(Text _Name) {
 */
 Void Destroy(Text _Name) {
 	if(!G_Requests.existskey(_Name)) return;
-	Http.Destroy(Http.Requests[G_Requests[_Name]]);
+	Http.Destroy(Http.Requests[G_Requests[_Name].Request]);
 	declare Removed = G_Requests.removekey(_Name);
 }
 
@@ -414,12 +495,21 @@ Void Destroy(Text _Name) {
 // Checks if the asynchronous request was completed.
 
 // Text _Name - Identification name
+// Boolean _NoLog - If to not inform to the console
 
 // Returns True if the request is completed but not destroyed.
 */
-Boolean IsCompleted(Text _Name) {
+Boolean IsCompleted(Text _Name, Boolean _NoLog) {
 	if(!G_Requests.existskey(_Name)) return False;
-	return Get(_Name).IsCompleted;
+	declare IsCompleted = Get(_Name).IsCompleted;
+	declare Time = Now - G_Requests[_Name].Timestamp;
+	if(IsCompleted && !_NoLog)
+		Log::Info("HTTP", "Async request completed" ^ """ ({{{_Name}}})""", Time);
+	return IsCompleted;
+}
+
+Boolean IsCompleted(Text _Name) {
+	return IsCompleted(_Name, False);
 }
 
 /*
@@ -431,7 +521,7 @@ Boolean IsCompleted(Text _Name) {
 // Returns result of a completed request, or nothing if the request is not completed or does not exist.
 */
 Text GetResult(Text _Name) {
-	if(!IsCompleted(_Name)) return "";
+	if(!IsCompleted(_Name, True)) return "";
 	return Get(_Name).Result;
 }
 
@@ -452,12 +542,24 @@ Boolean IsSuccessfulStatusCode(Integer _StatusCode) {
 // Gets status code of the asynchronous request.
 
 // Text _Name - Identification name
+// Boolean _NoLog - If to not inform to the console
 
 // Returns status code number of a completed request, or 0 if the request is not completed or does not exist.
 */
+Integer GetStatusCode(Text _Name, Boolean _NoLog) {
+	if(!IsCompleted(_Name, True)) return 0;
+	declare StatusCode = Get(_Name).StatusCode;
+	if(!_NoLog) {
+		if(IsSuccessfulStatusCode(StatusCode))
+			Log::Info("HTTP", "Async request status code: " ^ StatusCode ^ """ ({{{_Name}}})""");
+		else
+			Log::Warn("HTTP", "Async request status code: " ^ StatusCode ^ """ ({{{_Name}}})""");
+	}
+	return StatusCode;
+}
+
 Integer GetStatusCode(Text _Name) {
-	if(!IsCompleted(_Name)) return 0;
-	return Get(_Name).StatusCode;
+	return GetStatusCode(_Name, False);
 }
 
 /*
@@ -470,5 +572,5 @@ Integer GetStatusCode(Text _Name) {
 */
 Boolean IsSuccessful(Text _Name) {
 	if(!G_Requests.existskey(_Name)) return False;
-	return IsCompleted(_Name) && IsSuccessfulStatusCode(GetStatusCode(_Name));
+	return IsCompleted(_Name, True) && IsSuccessfulStatusCode(GetStatusCode(_Name, True));
 }

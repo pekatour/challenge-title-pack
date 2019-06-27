@@ -1,5 +1,6 @@
 #Include "TextLib" as TextLib
 
+#Include "Libs/BigBang1112/Http.Script.txt" as Http
 #Include "Libs/BigBang1112/MX.Script.txt" as MX
 #Include "Libs/BigBang1112/Task.Script.txt" as Task
 #Include "Libs/BigBang1112/Data.Script.txt" as Data
@@ -33,13 +34,15 @@ declare Text MapDownloadApproximateLocation;
 declare Text MapDownloadUid;
 declare SScriptInfo[] MapDownloadScripts;
 declare MX::SMXTrack MXTrack;
+declare Web::SMap ManagerTrack;
 declare Boolean MapDownload;
+declare Text MapDownloadType;
 
 declare Text[] DownloadedMapUids;
 
 Void UpdateLocalMaps(Text _Folder, Text _SearchMapName, Text _SearchAuthorName) {
 	declare FlatSearch = (_SearchMapName != "" || _SearchAuthorName != "");
-	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(2,_Folder,FlatSearch));
+	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(4,_Folder,FlatSearch));
 	Data::Set("MAPLIST_LOCAL_SEARCHMAPNAME",_SearchMapName);
 	Data::Set("MAPLIST_LOCAL_SEARCHAUTHORNAME",_SearchAuthorName);
 }
@@ -91,6 +94,8 @@ Boolean StartMapIfExists() {
 			
 			MapDownloadApproximateLocation = "";
 			DataFileMgr.TaskResult_Release(List.Id);
+
+			Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(4, "Downloaded", True));
 			
 			MapDownload = False;
 			
@@ -115,9 +120,6 @@ Void Start() {
 	UpdateOfficialScripts(OfficialScripts);
 	
 	Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(4, "Downloaded", True));
-	
-	declare Token = Menu_AuthBeta::GetAccess().Token;
-	log(Web::MeMaps(Token));
 }
 
 Void Event(CManiaAppEvent _Event) {
@@ -142,6 +144,7 @@ Void Event(CManiaAppEvent _Event) {
 						declare JsonSuccessMapInfo = MXTrack.fromjson(Event.CustomEventData[1]);
 						MapDownloadApproximateLocation = """Downloaded/TrackMania/{{{MXTrack.MapType}}}/{{{MXTrack.EnvironmentName}}}""";
 						MapDownloadUid = MXTrack.TrackUID;
+						MapDownloadType = "mx";
 					}
 				}
 				if(MapLocation == "Local") {
@@ -154,9 +157,27 @@ Void Event(CManiaAppEvent _Event) {
 					else
 						StartMap(MapLocation, MapInfo, Scripts);
 				}
+				if(MapLocation == "MapManager") {
+					declare JsonSuccessMapInfo = ManagerTrack.fromjson(Event.CustomEventData[1]);
+					declare JsonSuccessScripts = MapDownloadScripts.fromjson(Event.CustomEventData[2]);
+					
+					if(ManagerTrack.Uid == "") {
+						Dialog_Message("Please select a map.");
+					}
+					else if(MapDownloadScripts.count == 0) {
+						Dialog_Message("Please select at least one script.");
+					}
+					else {
+						declare JsonSuccessMapInfo = ManagerTrack.fromjson(Event.CustomEventData[1]);
+						MapDownloadApproximateLocation = """Downloaded/TrackMania""";
+						MapDownloadUid = ManagerTrack.Uid;
+						MapDownloadType = "manager";
+					}
+				}
 			}
 			case "MapList_Local_Folder": {
-				MX::Destroy("MX_SEARCH_UPDATE");
+				MX::AsyncDestroy("MX_SEARCH_UPDATE");
+				Web::AsyncDestroy("MAPMANAGER_MAPS");
 			
 				declare Folder = Event.CustomEventData[0];
 				declare SearchMapName = Event.CustomEventData[1];
@@ -173,7 +194,7 @@ Void Event(CManiaAppEvent _Event) {
 				
 				}
 			}
-			case "MapList_ManiaExchange_Update": {
+			case "MapList_ManiaExchange_Update": {				
 				declare MX::SMXSearchFilter Search;
 				Search.Page = Event.CustomEventData[0];
 				Search.TrackName = Event.CustomEventData[1];
@@ -184,8 +205,10 @@ Void Event(CManiaAppEvent _Event) {
 				}
 			}
 			case "MapList_MapManager_Update": {
+				MX::AsyncDestroy("MX_SEARCH_UPDATE");
+			
 				declare Token = Menu_AuthBeta::GetAccess().Token;
-				//log(Web::MeEmail(Token));
+				declare Successful = Web::AsyncMeMaps("MAPMANAGER_MAPS", Token);
 			}
 			case "ScriptList_Metadata": {
 				declare SScriptInfo Info;
@@ -220,6 +243,9 @@ declare SMetadata Script;
 			case "UpdateDownloaded": {
 				Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(4, "Downloaded", True));
 			}
+			case "MapList_DestroyMapManager": {
+				Web::AsyncDestroy("MAPMANAGER_MAPS");
+			}
 		}
 	}
 }
@@ -227,20 +253,20 @@ declare SMetadata Script;
 Void Async() {
 	Nicknames::Async();
 
-	if(MX::IsCompleted("MX_SEARCH_ADD")) {
-		if(MX::IsSuccessful("MX_SEARCH_ADD")) {
+	if(MX::AsyncIsCompleted("MX_SEARCH_ADD")) {
+		if(MX::AsyncIsSuccessful("MX_SEARCH_ADD")) {
 			Layers::SendEvent("Quickplay", "MapList_MX_Add", [MX::GetAsyncSearchResult("MX_SEARCH_ADD").tojson()]);
 		}
-		MX::Destroy("MX_SEARCH_ADD");
+		MX::AsyncDestroy("MX_SEARCH_ADD");
 	}
-	if(MX::IsCompleted("MX_SEARCH_UPDATE")) {
-		if(MX::IsSuccessful("MX_SEARCH_UPDATE")) {
+	if(MX::AsyncIsCompleted("MX_SEARCH_UPDATE")) {
+		if(MX::AsyncIsSuccessful("MX_SEARCH_UPDATE")) {
 			Layers::SendEvent("Quickplay", "MapList_MX_Update", [MX::GetAsyncSearchResult("MX_SEARCH_UPDATE").tojson()]);
 		}
 		else {
-			log("Can't load MX: " ^ MX::GetStatusCode("MX_SEARCH_UPDATE"));
+			log("Can't load MX: " ^ MX::AsyncGetStatusCode("MX_SEARCH_UPDATE"));
 		}
-		MX::Destroy("MX_SEARCH_UPDATE");
+		MX::AsyncDestroy("MX_SEARCH_UPDATE");
 	}
 	
 	if(Task::IsCompleted("MAPLIST_LOCAL_FOLDER")) {
@@ -283,16 +309,32 @@ Void Async() {
 			Task::Destroy_DataFileMgr("DOWNLOADED_MAPUIDS");
 		}
 	}
+	if(Web::AsyncIsCompleted("MAPMANAGER_MAPS")) {
+		if(Web::AsyncIsSuccessful("MAPMANAGER_MAPS")) {
+			Layers::SendEvent("Quickplay", "MapManager_Maps", [Web::GetAsyncMeMapsResult("MAPMANAGER_MAPS").tojson()]);
+		}
+		else {
+			log("Map Manager HTTP error: "^Web::AsyncGetStatusCode("MAPMANAGER_MAPS"));
+		}
+		Web::AsyncDestroy("MAPMANAGER_MAPS");
+	}
 }
 
 Void Loop() {
 	if(MapDownloadApproximateLocation != "") {
 		if(!StartMapIfExists()) {
 			if(!MapDownload) {
-				OpenLink("""challenge:downloadmap?id={{{MXTrack.TrackID}}}&displayname={{{TextLib::URLEncode(MXTrack.GbxMapName)}}}""", ::ELinkType::ManialinkBrowser);
+				switch(MapDownloadType) {
+					case "mx": {
+						OpenLink("""challenge:downloadmap?type=mx&id={{{MXTrack.TrackID}}}&displayname={{{MXTrack.GbxMapName}}}""", ::ELinkType::ManialinkBrowser);
+					}
+					case "manager": {
+						OpenLink("""challenge:downloadmap?type=manager&id={{{MapDownloadUid}}}&displayname={{{ManagerTrack.Name}}}""", ::ELinkType::ManialinkBrowser);
+					}
+				}
 				MapDownload = True;
 			}
-			if(MXTrack.MapType == "Challenge") {
+			if(MXTrack.MapType == "Challenge" && MapDownloadType == "mx") {
 				declare List = Task::SyncMapList(DataFileMgr.Map_GetFilteredGameList(4, MapDownloadApproximateLocation, True));
 				foreach(MapInfo,List.MapInfos) {
 					if(MapInfo.MapUid == MapDownloadUid) {

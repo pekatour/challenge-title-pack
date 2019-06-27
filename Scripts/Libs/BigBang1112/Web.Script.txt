@@ -7,6 +7,7 @@
 
 // This library does depend on more libraries from the Universe Library Set:
 // - Http.Script.txt
+// - RegexFix.Script.txt
 // You only need to use the libraries above, although it's recommended to use the whole set.
 */
 
@@ -42,6 +43,7 @@
 #Include "TextLib" as TextLib
 
 #Include "Libs/BigBang1112/Http.Script.txt" as Http
+#Include "Libs/BigBang1112/RegexFix.Script.txt" as RegexFix
 
 #Struct SPlayer {
 	Text Login;
@@ -145,7 +147,27 @@
 }
 
 Text Private_ToCleanerJson(Text _Json) {
-	return TextLib::RegexReplace("/(^|\\s)[a-z]/g",_Json,"gm","[A-Z]");
+	declare Final = _Json;
+	declare AllKeys = TextLib::RegexFind("\"(.*?)\":(.*?)(,|})",_Json,"g");
+	foreach(Key,AllKeys) {
+		declare PatternPrecise = "\"([a-z])(.*?)\":(.*?)(,|})";
+		
+		declare MatchFirstLetter = TextLib::RegexMatch(PatternPrecise,Key,"");
+		declare FirstLetter = TextLib::ToUpperCase(MatchFirstLetter[1]);
+		
+		declare FixedRest = MatchFirstLetter[2];
+		declare FindInnerFirstLetters = TextLib::RegexFind("_([a-z])(.*?)",FixedRest,"g");
+		foreach(InnerFirstLetter, FindInnerFirstLetters) {
+			declare MatchInnerFirstLetters = TextLib::RegexMatch("_([a-z])(.*?)",InnerFirstLetter,"");
+			declare FirstInnerLetter = TextLib::ToUpperCase(MatchInnerFirstLetters[1]);
+			FixedRest = TextLib::Replace(FixedRest, InnerFirstLetter, RegexFix::RegexReplace("_([a-z])(.*?)", InnerFirstLetter, "g", FirstInnerLetter^"\\2"));
+		}
+		
+		declare Fixed = RegexFix::RegexReplace(PatternPrecise, Key, "g", "\"" ^ FirstLetter ^ FixedRest ^ "\":\\3\\4");
+		Final = TextLib::Replace(Final,Key,Fixed);
+	}
+	
+	return Final;
 }
 
 SPlayer Me(Text _Token) {
@@ -176,7 +198,7 @@ SMap[] MeMaps(Text _Token) {
 	return Maps;
 }
 
-//not tested
+//tested, not working
 Text MeEmail(Text _Token) {
 	return Http::SyncGET_Result("https://maniaplanet.com/webservices/me/email", False, "Authorization: Bearer "^_Token);
 }
@@ -255,6 +277,114 @@ SFlashPost[] Flashes(Text _LiveUid) {
 	return Flashes(_LiveUid, 0);
 }
 
+/*
+// CHttpRequest AsyncGet(Text _Name)
+// Gets asynchonous request, completed or pending.
+
+// Text _Name - Identification name
+
+// Returns request that can or cannot be in the progress
+*/
+CHttpRequest AsyncGet(Text _Name) {
+	return Http::Get(_Name);
+}
+
+/*
+// Void AsyncDestroy(Text _Name)
+// Destroys an aynchonous request.
+
+// Text _Name - Identification name
+*/
+Void AsyncDestroy(Text _Name) {
+	Http::Destroy(_Name);
+}
+
+/*
+// Boolean AsyncIsCompleted(Text _Name, Boolean _NoLog)
+// Checks if the asynchronous request was completed.
+
+// Text _Name - Identification name
+// Boolean _NoLog - If to not inform to the console
+
+// Returns True if the request is completed but not destroyed.
+*/
+Boolean AsyncIsCompleted(Text _Name, Boolean _NoLog) {
+	return Http::IsCompleted(_Name, _NoLog);
+}
+
+/*
+// Boolean AsyncIsCompleted(Text _Name)
+// Checks if the asynchronous request was completed.
+
+// Text _Name - Identification name
+
+// Returns True if the request is completed but not destroyed.
+*/
+Boolean AsyncIsCompleted(Text _Name) {
+	return AsyncIsCompleted(_Name, False);
+}
+
+/*
+// Boolean AsyncIsSuccessful(Text _Name)
+// Checks if the asynchonous request was completed successfully.
+
+// Text _Name - Identification name
+
+// Returns True if the request is completed with a positive response (between 200 inclusively and 300 exclusively HTTP code).
+*/
+Boolean AsyncIsSuccessful(Text _Name) {
+	return Http::IsSuccessful(_Name);
+}
+
+/*
+// Integer AsyncGetStatusCode(Text _Name, Boolean _NoLog)
+// Gets status code of the asynchronous request.
+
+// Text _Name - Identification name
+// Boolean _NoLog - If to not inform to the console
+
+// Returns status code number of a completed request, or 0 if the request is not completed or does not exist.
+*/
+Integer AsyncGetStatusCode(Text _Name, Boolean _NoLog) {
+	return Http::GetStatusCode(_Name, _NoLog);
+}
+
+/*
+// Integer AsyncGetStatusCode(Text _Name)
+// Gets status code of the asynchronous request.
+
+// Text _Name - Identification name
+
+// Returns status code number of a completed request, or 0 if the request is not completed or does not exist.
+*/
+Integer AsyncGetStatusCode(Text _Name) {
+	return AsyncGetStatusCode(_Name, False);
+}
+
+/*
+// Text AsyncGetResult(Text _Name)
+// Gets result of the asynchronous request.
+
+// Text _Name - Identification name
+
+// Returns result of a completed request, or empty string if the request is not completed or does not exist.
+*/
+Text AsyncGetResult(Text _Name) {
+	return Http::GetResult(_Name);
+}
+
 Boolean AsyncMeMaps(Text _Name, Text _Token) {
 	return Http::AsyncGET(_Name, "https://maniaplanet.com/webservices/me/maps", False, "Authorization: Bearer "^_Token);
+}
+
+SMap[] GetAsyncMeMapsResult(Text _Name) {
+	declare SMap[] Result;
+	
+	if(AsyncIsCompleted(_Name, True)) {
+		if(AsyncIsSuccessful(_Name)) {
+			declare JsonSuccess = Result.fromjson(Private_ToCleanerJson(AsyncGetResult(_Name)));
+		}
+		AsyncDestroy(_Name);
+	}
+	return Result;
 }

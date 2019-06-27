@@ -21,8 +21,9 @@
 #Struct SAuthResult {
 	Boolean Received;
 	Text AppName;
+	Text[] Permissions;
 	Text AcceptUrl;
-	Text RedirectUrl; // Redirect that contains user info
+	Text RedirectUrl; // Redirect that contains user token
 	Boolean AlreadyAccepted;
 }
 
@@ -39,6 +40,9 @@ SAuthResult Private_Authorize(Text _Content) {
 	}
 	else {
 		Result.AppName = TextLib::RegexMatch("<label id=\"Label_ApplicationName\" style=\"TextTitle1\" text=\"(.*?)\"", _Content, "i")[1];
+		foreach(Permission,TextLib::RegexFind("text=\"\\$<\\$09F(.*?):", _Content, "gi")) {
+			Result.Permissions.add(TextLib::RegexMatch("text=\"\\$<\\$09F(.*?):", Permission, "i")[1]);
+		}
 		Result.AcceptUrl = AuthorizeUrl;
 	}
 
@@ -70,7 +74,7 @@ Boolean AsyncAuthorize(Text _Name, Text _AcceptUrl) {
 SAuthResult GetAsyncAuthorizeResult(Text _Name) {
 	declare SAuthResult Result;
 	
-	if(Http::IsCompleted(_Name)) {
+	if(Http::IsCompleted(_Name, True)) {
 		if(Http::IsSuccessful(_Name)) {
 			Result = Private_Authorize(Http::GetResult(_Name));
 		}

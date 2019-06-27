@@ -18,7 +18,7 @@
 
 #Setting S_Devmode True
 
-main() {	
+main() {
 	Layers::Create("Loading", "file://Media/Manialinks/Loading.xml", True, CUILayer::EUILayerType::LoadingScreen);
 	
 	//Auth::AuthorizeInManialink("b1a3d10ba7", "basic maps", "http://localhost/challenge/auth");

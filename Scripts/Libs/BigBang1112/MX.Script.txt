@@ -686,7 +686,7 @@ Boolean AsyncSearch(Text _Name, Text _Site, SMXSearchFilter _Filter, Boolean _Us
 SMXTrack[] GetAsyncSearchResult(Text _Name) {
 	declare SMXTrack[] SearchResult;
 	
-	if(Http::IsCompleted(_Name)) {
+	if(Http::IsCompleted(_Name, True)) {
 		if(Http::IsSuccessful(_Name)) {
 			declare SMXSearchResult ResultTracks;
 			declare JsonSuccess = ResultTracks.fromjson(Http::GetResult(_Name));
@@ -726,7 +726,7 @@ Boolean AsyncSearchMappack(Text _Name, Text _Site, SMXSearchMappackFilter _Filte
 SMXMappack[] GetAsyncSearchMappackResult(Text _Name) {
 	declare SMXMappack[] SearchResult;
 	
-	if(Http::IsCompleted(_Name)) {
+	if(Http::IsCompleted(_Name, True)) {
 		if(Http::IsSuccessful(_Name)) {
 			declare JsonSuccess = SearchResult.fromjson(Http::GetResult(_Name));
 		}
@@ -767,7 +767,7 @@ Boolean AsyncTrackMultiple(Text _Name, Text _Site, Integer[] _TrackIds, Boolean 
 SMXTrack[] GetAsyncTrackMultipleResult(Text _Name) {
 	declare SMXTrack[] TrackMultipleResult;
 	
-	if(Http::IsCompleted(_Name)) {
+	if(Http::IsCompleted(_Name, True)) {
 		if(Http::IsSuccessful(_Name)) {
 			declare JsonSuccess = TrackMultipleResult.fromjson(Http::GetResult(_Name));
 		}
@@ -839,7 +839,7 @@ Boolean AsyncMappackMultiple(Text _Name, Text _Site, Integer[] _MappackIds, Text
 SMXMappack[] GetAsyncMappackMultipleResult(Text _Name) {
 	declare SMXMappack[] MappackMultipleResult;
 	
-	if(Http::IsCompleted(_Name)) {
+	if(Http::IsCompleted(_Name, True)) {
 		if(Http::IsSuccessful(_Name)) {
 			declare JsonSuccess = MappackMultipleResult.fromjson(Http::GetResult(_Name));
 		}
@@ -907,7 +907,7 @@ Boolean AsyncMappackTracks(Text _Name, Text _Site, Integer _MappackId, Text _Sec
 SMXTrack[] GetAsyncMappackTracksResult(Text _Name) {
 	declare SMXTrack[] MappackTracksResult;
 	
-	if(Http::IsCompleted(_Name)) {
+	if(Http::IsCompleted(_Name, True)) {
 		if(Http::IsSuccessful(_Name)) {
 			declare JsonSuccess = MappackTracksResult.fromjson(Http::GetResult(_Name));
 		}
@@ -942,7 +942,7 @@ Boolean AsyncTrackWorldRecord(Text _Name, Text _Site, Integer _TrackId, Boolean 
 */
 SMXReplay GetAsyncTrackWorldRecordResult(Text _Name) {
 	declare SMXReplay WorldRecord;
-	if(Http::IsCompleted(_Name)) {
+	if(Http::IsCompleted(_Name, True)) {
 		if(Http::IsSuccessful(_Name))
 			declare JsonSuccess = WorldRecord.fromjson(Http::GetResult(_Name));
 		Http::Destroy(_Name);
@@ -992,7 +992,7 @@ Boolean AsyncTrackReplays(Text _Name, Text _Site, Integer _TrackId, Boolean _Use
 SMXReplay[] GetAsyncTrackReplaysResult(Text _Name) {
 	declare SMXReplay[] TrackReplaysResult;
 	
-	if(Http::IsCompleted(_Name)) {
+	if(Http::IsCompleted(_Name, True)) {
 		if(Http::IsSuccessful(_Name)) {
 			declare JsonSuccess = TrackReplaysResult.fromjson(Http::GetResult(_Name));
 		}
@@ -1027,7 +1027,7 @@ Boolean AsyncTrackEmbeddedObjects(Text _Name, Text _Site, Integer _TrackId, Bool
 SMXEmbeddedObject[] GetAsyncTrackEmbeddedObjectsResult(Text _Name) {
 	declare SMXEmbeddedObject[] TrackEmbeddedObjectsResult;
 	
-	if(Http::IsCompleted(_Name)) {
+	if(Http::IsCompleted(_Name, True)) {
 		if(Http::IsSuccessful(_Name)) {
 			declare JsonSuccess = TrackEmbeddedObjectsResult.fromjson(Http::GetResult(_Name));
 		}
@@ -1037,59 +1037,97 @@ SMXEmbeddedObject[] GetAsyncTrackEmbeddedObjectsResult(Text _Name) {
 }
 
 /*
-// CHttpRequest Get(Text _Name)
+// CHttpRequest AsyncGet(Text _Name)
 // Gets asynchonous request, completed or pending.
 
 // Text _Name - Identification name
 
 // Returns request that can or cannot be in the progress
 */
-CHttpRequest Get(Text _Name) {
+CHttpRequest AsyncGet(Text _Name) {
 	return Http::Get(_Name);
 }
 
 /*
-// Void Destroy(Text _Name)
+// Void AsyncDestroy(Text _Name)
 // Destroys an aynchonous request.
 
 // Text _Name - Identification name
 */
-Void Destroy(Text _Name) {
+Void AsyncDestroy(Text _Name) {
 	Http::Destroy(_Name);
 }
 
 /*
-// Boolean IsCompleted(Text _Name)
+// Boolean AsyncIsCompleted(Text _Name, Boolean _NoLog)
+// Checks if the asynchronous request was completed.
+
+// Text _Name - Identification name
+// Boolean _NoLog - If to not inform to the console
+
+// Returns True if the request is completed but not destroyed.
+*/
+Boolean AsyncIsCompleted(Text _Name, Boolean _NoLog) {
+	return Http::IsCompleted(_Name, _NoLog);
+}
+
+/*
+// Boolean AsyncIsCompleted(Text _Name)
 // Checks if the asynchronous request was completed.
 
 // Text _Name - Identification name
 
 // Returns True if the request is completed but not destroyed.
 */
-Boolean IsCompleted(Text _Name) {
-	return Http::IsCompleted(_Name);
+Boolean AsyncIsCompleted(Text _Name) {
+	return AsyncIsCompleted(_Name, False);
 }
 
 /*
-// Boolean IsSuccessful(Text _Name)
+// Boolean AsyncIsSuccessful(Text _Name)
 // Checks if the asynchonous request was completed successfully.
 
 // Text _Name - Identification name
 
 // Returns True if the request is completed with a positive response (between 200 inclusively and 300 exclusively HTTP code).
 */
-Boolean IsSuccessful(Text _Name) {
+Boolean AsyncIsSuccessful(Text _Name) {
 	return Http::IsSuccessful(_Name);
 }
 
 /*
-// Integer GetStatusCode(Text _Name)
+// Integer AsyncGetStatusCode(Text _Name, Boolean _NoLog)
+// Gets status code of the asynchronous request.
+
+// Text _Name - Identification name
+// Boolean _NoLog - If to not inform to the console
+
+// Returns status code number of a completed request, or 0 if the request is not completed or does not exist.
+*/
+Integer AsyncGetStatusCode(Text _Name, Boolean _NoLog) {
+	return Http::GetStatusCode(_Name, _NoLog);
+}
+
+/*
+// Integer AsyncGetStatusCode(Text _Name)
 // Gets status code of the asynchronous request.
 
 // Text _Name - Identification name
 
 // Returns status code number of a completed request, or 0 if the request is not completed or does not exist.
 */
-Integer GetStatusCode(Text _Name) {
-	return Http::GetStatusCode(_Name);
+Integer AsyncGetStatusCode(Text _Name) {
+	return AsyncGetStatusCode(_Name, False);
+}
+
+/*
+// Text AsyncGetResult(Text _Name)
+// Gets result of the asynchronous request.
+
+// Text _Name - Identification name
+
+// Returns result of a completed request, or empty string if the request is not completed or does not exist.
+*/
+Text AsyncGetResult(Text _Name) {
+	return Http::GetResult(_Name);
 }
