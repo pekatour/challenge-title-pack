@@ -113,7 +113,10 @@ Void Start() {
 		"Checkpointless.Script.txt",
 		"Reverse.Script.txt",
 		"Terrainless.Script.txt",
-		"Default.Script.txt"
+		"Default.Script.txt",
+		"NoCP.Script.txt",
+		"Comeback.Script.txt",
+		"ComebackCheckpointless.Script.txt"
 	];
 	
 	UpdateLocalMaps("","","");
@@ -225,15 +228,19 @@ declare SMetadata Script;
 {{{Dictionary::TranslateAllPhrases(ScriptContent)}}}
 
 """^File::Read("Media/API_Main_Metadata.Script.txt"));
-
+				
 				LayerAPIs[Info.Name] = LayerAPI;
 			}
 			case "ScriptMetadata": {
 				foreach(Name => API,LayerAPIs) {
 					if(API == Event.CustomEventLayer) {
-						Layers::SendEvent("Quickplay", "ScriptList_Metadata_Response", [Name, Event.CustomEventData[0]]);
-						UILayerDestroy(API);
-						declare Removed = LayerAPIs.removekey(Name);
+						declare SMetadata Metadata;
+						declare JsonSuccess = Metadata.fromjson(Event.CustomEventData[0]);
+						if(Metadata.AuthorLogin != "") {
+							Layers::SendEvent("Quickplay", "ScriptList_Metadata_Response", [Name, Metadata.tojson()]);
+							UILayerDestroy(API);
+							declare Removed = LayerAPIs.removekey(Name);
+						}
 					}
 				}
 			}

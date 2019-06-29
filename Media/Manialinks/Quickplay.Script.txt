@@ -819,7 +819,7 @@ main() {
 						}
 						case "MapList_MX_Update": {
 							declare JsonSuccess = MapBrowserMXTrackInfos.fromjson(Event.CustomEventData[0]);
-							UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+							UpdateManiaExchange(0);
 							
 							Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
 						}
@@ -851,7 +851,7 @@ main() {
 						}
 						case "MapManager_Maps": {
 							declare JsonSuccess = MapBrowserManagerTrackInfos.fromjson(Event.CustomEventData[0]);
-							UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+							UpdateMapManager(0);
 							Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
 						}
 					}
