@@ -93,18 +93,148 @@ ModifierBase::SChBlock ToSChBlock(CBlock _Block) {
 	return ChBlock;
 }
 
-ModifierBase::SChItem ToSChItem(CAnchorData _Item) {
+ModifierBase::SChItem ToSChItem(CItemAnchor _Item) {
 	declare ModifierBase::SChItem ChItem;
-	ChItem.Id = _Item.Id;
-	ChItem.DefaultTag = _Item.DefaultTag;
-	ChItem.DefaultOrder = _Item.DefaultOrder;
-	ChItem.Tag = _Item.Tag;
-	ChItem.Order = _Item.Order;
-	if(_Item.Item != Null)
-	ChItem.Position = _Item.Item.Position;
+	ChItem.Position = _Item.Position;
 	return ChItem;
+}
+
+ModifierBase::SChAnchor ToSChAnchor(CAnchorData _Anchor) {
+	declare ModifierBase::SChAnchor ChAnchor;
+	
+	ChAnchor.DefaultTag = _Anchor.DefaultTag;
+	ChAnchor.DefaultOrder = _Anchor.DefaultOrder;
+	ChAnchor.Tag = _Anchor.Tag;
+	ChAnchor.Order = _Anchor.Order;
+	
+	if(_Anchor.Block != Null) {
+		ChAnchor.IsBlock = True;
+		ChAnchor.Block = ToSChBlock(_Anchor.Block);
+	}
+	if(_Anchor.Item != Null) {
+		ChAnchor.IsItem = True;
+		ChAnchor.Item = ToSChItem(_Anchor.Item);
+	}
+	
+	return ChAnchor;
+}
+
+ModifierBase::SChAnchorBlock ToSChAnchorBlock(CAnchorData _Anchor) {
+	declare ModifierBase::SChAnchorBlock ChAnchor;
+	
+	ChAnchor.DefaultTag = _Anchor.DefaultTag;
+	ChAnchor.DefaultOrder = _Anchor.DefaultOrder;
+	ChAnchor.Tag = _Anchor.Tag;
+	ChAnchor.Order = _Anchor.Order;
+	
+	if(_Anchor.Block != Null && _Anchor.Item == Null) {
+		ChAnchor.Block = ToSChBlock(_Anchor.Block);
+	}
+	
+	return ChAnchor;
+}
+
+ModifierBase::SChAnchorBlock ToSChAnchorBlock(ModifierBase::SChAnchor _Anchor) {
+	declare ModifierBase::SChAnchorBlock ChAnchor;
+	
+	ChAnchor.DefaultTag = _Anchor.DefaultTag;
+	ChAnchor.DefaultOrder = _Anchor.DefaultOrder;
+	ChAnchor.Tag = _Anchor.Tag;
+	ChAnchor.Order = _Anchor.Order;
+	ChAnchor.Block = _Anchor.Block;
+	
+	return ChAnchor;
+}
+
+ModifierBase::SChAnchorItem ToSChAnchorItem(CAnchorData _Anchor) {
+	declare ModifierBase::SChAnchorItem ChAnchor;
+	
+	ChAnchor.DefaultTag = _Anchor.DefaultTag;
+	ChAnchor.DefaultOrder = _Anchor.DefaultOrder;
+	ChAnchor.Tag = _Anchor.Tag;
+	ChAnchor.Order = _Anchor.Order;
+	
+	if(_Anchor.Item != Null && _Anchor.Block == Null) {
+		ChAnchor.Item = ToSChItem(_Anchor.Item);
+	}
+	
+	return ChAnchor;
+}
+
+ModifierBase::SChAnchorItem ToSChAnchorItem(ModifierBase::SChAnchor _Anchor) {
+	declare ModifierBase::SChAnchorItem ChAnchor;
+	
+	ChAnchor.DefaultTag = _Anchor.DefaultTag;
+	ChAnchor.DefaultOrder = _Anchor.DefaultOrder;
+	ChAnchor.Tag = _Anchor.Tag;
+	ChAnchor.Order = _Anchor.Order;
+	ChAnchor.Item = _Anchor.Item;
+	
+	return ChAnchor;
 }
 
 Boolean ToBoolean(Text _Boolean) {
 	return _Boolean == "True";
+}
+
+Boolean SChBlockEquals(ModifierBase::SChBlock _ChBlock, CBlock _Block) {
+	if(_ChBlock.Name != _Block.BlockModel.Name) return False;
+	if(_ChBlock.Coord != _Block.Coord) return False;
+	if(_ChBlock.Direction != ToText(_Block.Direction)) return False;
+	
+	declare Text Waypoint;
+	switch(_Block.BlockModel.WaypointType) {
+		case CBlockModel::EWayPointType::Start: { Waypoint = "Start"; }
+		case CBlockModel::EWayPointType::Finish: { Waypoint = "Finish"; }
+		case CBlockModel::EWayPointType::Checkpoint: { Waypoint = "Checkpoint"; }
+		case CBlockModel::EWayPointType::None: { Waypoint = "None"; }
+		case CBlockModel::EWayPointType::StartFinish: { Waypoint = "Multilap"; }
+		case CBlockModel::EWayPointType::Dispenser: { Waypoint = "Dispenser"; }
+	}
+	
+	if(_ChBlock.Waypoint != Waypoint) return False;
+	
+	if(_ChBlock.IsRoad != _Block.BlockModel.IsRoad) return False;
+	if(_ChBlock.IsTerrain != _Block.BlockModel.IsTerrain) return False;
+	if(_ChBlock.IsPodium != _Block.BlockModel.IsPodium) return False;
+	
+	return True;
+}
+
+Boolean SChItemEquals(ModifierBase::SChItem _ChAnchor, CItemAnchor _Item) {
+	return _ChAnchor.Position == _Item.Position;
+}
+
+Boolean SChAnchorEquals(ModifierBase::SChAnchor _ChAnchor, CAnchorData _Anchor) {
+	if(_ChAnchor.DefaultTag != _Anchor.DefaultTag) return False;
+	if(_ChAnchor.DefaultOrder != _Anchor.DefaultOrder) return False;
+	if(_ChAnchor.Tag != _Anchor.Tag) return False;
+	if(_ChAnchor.Order != _Anchor.Order) return False;
+	
+	if(SChItemEquals(_ChAnchor.Item, _Anchor.Item)) return True;
+	if(SChBlockEquals(_ChAnchor.Block, _Anchor.Block)) return True;
+	
+	return False;
+}
+
+Boolean SChAnchorItemEquals(ModifierBase::SChAnchorItem _ChAnchor, CAnchorData _Anchor) {
+	if(_ChAnchor.DefaultTag != _Anchor.DefaultTag) return False;
+	if(_ChAnchor.DefaultOrder != _Anchor.DefaultOrder) return False;
+	if(_ChAnchor.Tag != _Anchor.Tag) return False;
+	if(_ChAnchor.Order != _Anchor.Order) return False;
+	
+	if(!SChItemEquals(_ChAnchor.Item, _Anchor.Item)) return False;
+	
+	return True;
+}
+
+Boolean SChAnchorBlockEquals(ModifierBase::SChAnchorBlock _ChAnchor, CAnchorData _Anchor) {
+	if(_ChAnchor.DefaultTag != _Anchor.DefaultTag) return False;
+	if(_ChAnchor.DefaultOrder != _Anchor.DefaultOrder) return False;
+	if(_ChAnchor.Tag != _Anchor.Tag) return False;
+	if(_ChAnchor.Order != _Anchor.Order) return False;
+	
+	if(!SChBlockEquals(_ChAnchor.Block, _Anchor.Block)) return False;
+	
+	return True;
 }

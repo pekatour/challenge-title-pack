@@ -396,32 +396,67 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			declare Response = Conversion::ToSChBlock(Block);
 			Respond(Event, [Response.tojson()]);
 		}
-		case "Ch_RemoveItem": {
-			declare ModifierBase::SChItem ChItem;
-			declare JsonSuccess = ChItem.fromjson(Event.CustomEventData[0]);
-			log(ChItem);
-			declare Removed = False;
-			
-			declare Scan = True;
-			declare ScanPos = 0;
-			while(Scan) {
-				if(ScanPos < AnchorData.count) {
-					declare Item <=> AnchorData[ScanPos];
-					if(Item.Item != Null)
-					if(Item.Item.Position == ChItem.Position) {
-						Removed = RemoveItem(Item);
-						Scan = False;
-					}
-					ScanPos+=1;
+		case "Ch_GetBlocks": {
+			declare ModifierBase::SChBlock[] ChBlocks;
+			foreach(Block, Blocks) ChBlocks.add(Conversion::ToSChBlock(Block));
+			Respond(Event, [ChBlocks.tojson()]);
+		}
+		case "Ch_GetAnchorData": {
+			declare ModifierBase::SChAnchor[] Anchor;
+			foreach(Data, AnchorData) Anchor.add(Conversion::ToSChAnchor(Data));
+			Respond(Event, [Anchor.tojson()]);
+		}
+		case "Ch_RemoveAnchor": {
+			declare ModifierBase::SChAnchor ChAnchor;
+			declare JsonSuccess = ChAnchor.fromjson(Event.CustomEventData[0]);
+			declare Boolean Removed;
+			foreach(Data, AnchorData) {
+				if(Conversion::SChAnchorEquals(ChAnchor, Data)) {
+					if(ChAnchor.IsItem) Removed = RemoveItem(Data);
+					if(ChAnchor.IsBlock) Removed = RemoveBlock(Data.Block.Coord);
 				}
-				else Scan = False;
+			}
+			Respond(Event, [Removed^""]);
+		}
+		
+		case "Ch_RemoveAnchorItem": {
+			declare ModifierBase::SChAnchorItem ChAnchor;
+			declare JsonSuccess = ChAnchor.fromjson(Event.CustomEventData[0]);
+			declare Boolean Removed;
+			
+			for(i,0,AnchorData.count-1) {
+				if(AnchorData.existskey(i)) {
+					declare Data <=> AnchorData[i];
+					if(Conversion::SChAnchorItemEquals(ChAnchor, Data)) {
+						Removed = RemoveItem(Data);
+					}
+				}
 			}
 			
 			Respond(Event, [Removed^""]);
 		}
-		case "Ch_SetUndergroundMode": {
-			declare Underground = Conversion::ToBoolean(Event.CustomEventData[0]);
-			UndergroundMode = Underground;
+		case "Ch_RemoveAnchorBlock": {
+			declare ModifierBase::SChAnchorBlock ChAnchor;
+			declare JsonSuccess = ChAnchor.fromjson(Event.CustomEventData[0]);
+			declare Boolean Removed;
+			
+			for(i,0,AnchorData.count-1) {
+				if(AnchorData.existskey(i)) {
+					declare Data <=> AnchorData[i];
+					if(Conversion::SChAnchorBlockEquals(ChAnchor, Data)) {
+						Removed = RemoveBlock(Data.Block.Coord);
+					}
+				}
+			}
+			
+			Respond(Event, [Removed^""]);
+		}
+		case "Ch_Underground": {
+			UndergroundMode = True;
+			Respond(Event, []);
+		}
+		case "Ch_Aboveground": {
+			UndergroundMode = False;
 			Respond(Event, []);
 		}
 		case "Ch_ReplaceBlock": {
@@ -468,18 +503,25 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 
 			Respond(Event, [""^(RemovedBlock1 && RemovedBlock2 && PlacedBlock1 && PlacedBlock2)]);
 		}
+		case "Ch_GetStartLineBlocks": {
+			declare ModifierBase::SChAnchorBlock[] ChBlocks;
+			foreach(Anchor, AnchorData)
+				if(Anchor.DefaultTag == "Spawn" && Anchor.Block != Null)
+					ChBlocks.add(Conversion::ToSChAnchorBlock(Anchor));
+			Respond(Event, [ChBlocks.tojson()]);
+		}
 		case "Ch_GetFinishLineBlocks": {
-			declare ModifierBase::SChBlock[] ChBlocks;
-			foreach(Block, Blocks)
-				if(Block.BlockModel.WaypointType == CBlockModel::EWayPointType::Finish)
-					ChBlocks.add(Conversion::ToSChBlock(Block));
+			declare ModifierBase::SChAnchorBlock[] ChBlocks;
+			foreach(Anchor, AnchorData)
+				if(Anchor.DefaultTag == "Goal" && Anchor.Block != Null)
+					ChBlocks.add(Conversion::ToSChAnchorBlock(Anchor));
 			Respond(Event, [ChBlocks.tojson()]);
 		}
 		case "Ch_GetCheckpointBlocks": {
-			declare ModifierBase::SChBlock[] ChBlocks;
-			foreach(Block, Blocks)
-				if(Block.BlockModel.WaypointType == CBlockModel::EWayPointType::Checkpoint)
-					ChBlocks.add(Conversion::ToSChBlock(Block));
+			declare ModifierBase::SChAnchorBlock[] ChBlocks;
+			foreach(Anchor, AnchorData)
+				if(Anchor.DefaultTag == "Checkpoint" && Anchor.Block != Null)
+					ChBlocks.add(Conversion::ToSChAnchorBlock(Anchor));
 			Respond(Event, [ChBlocks.tojson()]);
 		}
 		case "Ch_GetBlocksByBlockName": {
@@ -490,30 +532,25 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 					ChBlocks.add(Conversion::ToSChBlock(Block));
 			Respond(Event, [ChBlocks.tojson()]);
 		}
-		case "Ch_GetBlocks": {
-			declare ModifierBase::SChBlock[] ChBlocks;
-			foreach(Block, Blocks) ChBlocks.add(Conversion::ToSChBlock(Block));
-			Respond(Event, [ChBlocks.tojson()]);
-		}
 		case "Ch_GetStartLineItems": {
-			declare ModifierBase::SChItem[] ChItems;
-			foreach(Item, AnchorData)
-				if(Item.DefaultTag == "Spawn")
-					ChItems.add(Conversion::ToSChItem(Item));
+			declare ModifierBase::SChAnchorItem[] ChItems;
+			foreach(Anchor, AnchorData)
+				if(Anchor.DefaultTag == "Spawn" && Anchor.Item != Null)
+					ChItems.add(Conversion::ToSChAnchorItem(Anchor));
 			Respond(Event, [ChItems.tojson()]);
 		}
 		case "Ch_GetCheckpointItems": {
-			declare ModifierBase::SChItem[] ChItems;
-			foreach(Item, AnchorData)
-				if(Item.DefaultTag == "Checkpoint")
-					ChItems.add(Conversion::ToSChItem(Item));
+			declare ModifierBase::SChAnchorItem[] ChItems;
+			foreach(Anchor, AnchorData)
+				if(Anchor.DefaultTag == "Checkpoint" && Anchor.Item != Null)
+					ChItems.add(Conversion::ToSChAnchorItem(Anchor));
 			Respond(Event, [ChItems.tojson()]);
 		}
 		case "Ch_GetFinishLineItems": {
-			declare ModifierBase::SChItem[] ChItems;
-			foreach(Item, AnchorData)
-				if(Item.DefaultTag == "Goal")
-					ChItems.add(Conversion::ToSChItem(Item));
+			declare ModifierBase::SChAnchorItem[] ChItems;
+			foreach(Anchor, AnchorData)
+				if(Anchor.DefaultTag == "Goal" && Anchor.Item != Null)
+					ChItems.add(Conversion::ToSChAnchorItem(Anchor));
 			Respond(Event, [ChItems.tojson()]);
 		}
 		case "Ch_Message": {

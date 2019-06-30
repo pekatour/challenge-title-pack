@@ -1,29 +1,55 @@
 #Struct SChBlock {
-    Integer BlockScriptId;
-    Text Name;
-    Int3 Coord;
-    Text Direction;
-    Boolean IsRoad; 
-    Boolean IsTerrain;
-    Boolean IsPodium;
-    Text Waypoint;  
-    Boolean NoRespawn;
+	Integer BlockScriptId;
+	Text Name;
+	Int3 Coord;
+	Text Direction;
+	Boolean IsRoad; 
+	Boolean IsTerrain;
+	Boolean IsPodium;
+	Text Waypoint;  
+	Boolean NoRespawn;
 }
 
 #Struct SChMacroblock {
-    Boolean IsGround;
-    Boolean HasStart;
-    Boolean HasFinish;
-    Boolean HasCheckpoint;
-    Boolean HasMultilap;
-    Text Name;
+	Boolean IsGround;
+	Boolean HasStart;
+	Boolean HasFinish;
+	Boolean HasCheckpoint;
+	Boolean HasMultilap;
+	Text Name;
 }
 
 #Struct SChItem {
+	Vec3 Position;
+}
+
+#Struct SChAnchor {
 	Ident Id;
 	Text DefaultTag;
 	Integer DefaultOrder;
 	Text Tag;
 	Integer Order;
-	Vec3 Position;
+
+	Boolean IsBlock;
+	SChBlock Block;
+	Boolean IsItem;
+	SChItem Item;
+}
+
+#Struct SChAnchorBlock {
+	Ident Id;
+	Text DefaultTag;
+	Integer DefaultOrder;
+	Text Tag;
+	Integer Order;
+	SChBlock Block;
+}
+
+#Struct SChAnchorItem {
+	Ident Id;
+	Text DefaultTag;
+	Integer DefaultOrder;
+	Text Tag;
+	Integer Order;
+	SChItem Item;
 }

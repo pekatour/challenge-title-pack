@@ -208,20 +208,38 @@ SChBlock GetStartLineBlock() {
 	return Block;
 }
 
-Boolean RemoveItem(SChItem _Item) {
-	declare Params = [_Item.tojson()];
-	declare Response = Request("Ch_RemoveItem", Params);
-	return Response.Values[0] == "True";
+// Due tend to crash the game on some (possibly heavy) maps
+SChBlock[] GetBlocks() {
+	declare Response = Request("Ch_GetBlocks", []);
+	declare SChBlock[] Blocks;
+	declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
+	return Blocks;
 }
 
-Void SetUndergroundMode(Boolean _On) {
-	declare Params = [_On^""];
-	declare Response = Request("Ch_SetUndergroundMode", Params);
+SChAnchor[] GetAnchorData() {
+	declare Response = Request("Ch_GetAnchorData", []);
+	declare SChAnchor[] Anchor;
+	declare JsonSuccess = Anchor.fromjson(Response.Values[0]);
+	return Anchor;
+}
+
+// under RemoveItem in Maniascript API
+Boolean RemoveAnchor(SChAnchor _Anchor) {
+	declare Params = [_Anchor.tojson()];
+	declare Response = Request("Ch_RemoveAnchor", Params);
+	return Response.Values[0] == "True";
 }
 
 //
 /* Extensive functions */
 //
+Void Underground() {
+
+}
+
+Void Aboveground() {
+
+}
 
 SReplacementResult ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName, Boolean _OppositeDirection) {
 	declare Params = [_Block.tojson(),_ReplacementBlockName,_OppositeDirection^""];
@@ -248,16 +266,23 @@ Boolean SwapBlock(SChBlock _Block1, SChBlock _Block2) {
 	return Response.Values[0] == "True";
 }
 
-SChBlock[] GetFinishLineBlocks() {
-	declare Response = Request("Ch_GetFinishLineBlocks", []);
-	declare SChBlock[] Blocks;
+SChAnchorBlock[] GetStartLineBlocks() {
+	declare Response = Request("Ch_GetStartLineBlocks", []);
+	declare SChAnchorBlock[] Blocks;
 	declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
 	return Blocks;
 }
 
-SChBlock[] GetCheckpointBlocks() {
+SChAnchorBlock[] GetFinishLineBlocks() {
+	declare Response = Request("Ch_GetFinishLineBlocks", []);
+	declare SChAnchorBlock[] Blocks;
+	declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
+	return Blocks;
+}
+
+SChAnchorBlock[] GetCheckpointBlocks() {
 	declare Response = Request("Ch_GetCheckpointBlocks", []);
-	declare SChBlock[] Blocks;
+	declare SChAnchorBlock[] Blocks;
 	declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
 	return Blocks;   
 }
@@ -270,39 +295,43 @@ SChBlock[] GetBlocksByBlockName(Text _BlockName) {
 	return Blocks;  
 }
 
-// Due tend to crash the game on some (possibly heavy) maps
-SChBlock[] GetBlocks() {
-	declare Response = Request("Ch_GetBlocks", []);
-	declare SChBlock[] Blocks;
-	declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
-	return Blocks;
-}
-
 Integer MultipleBlocks(Int3 _Coord) {
 	declare Params = [""^_Coord];
 	declare Response = Request("Ch_MultipleBlocks", Params);
 	return TextLib::ToInteger(Response.Values[0]);
 }
 
-SChItem[] GetStartLineItems() {
+SChAnchorItem[] GetStartLineItems() {
 	declare Response = Request("Ch_GetStartLineItems", []);
-	declare SChItem[] Items;
+	declare SChAnchorItem[] Items;
 	declare JsonSuccess = Items.fromjson(Response.Values[0]);
 	return Items;
 }
 
-SChItem[] GetCheckpointItems() {
+SChAnchorItem[] GetCheckpointItems() {
 	declare Response = Request("Ch_GetCheckpointItems", []);
-	declare SChItem[] Items;
+	declare SChAnchorItem[] Items;
 	declare JsonSuccess = Items.fromjson(Response.Values[0]);
 	return Items;
 }
 
-SChItem[] GetFinishLineItems() {
+SChAnchorItem[] GetFinishLineItems() {
 	declare Response = Request("Ch_GetFinishLineItems", []);
-	declare SChItem[] Items;
+	declare SChAnchorItem[] Items;
 	declare JsonSuccess = Items.fromjson(Response.Values[0]);
 	return Items;
+}
+
+Boolean RemoveAnchorItem(SChAnchorItem _AnchorItem) {
+	declare Params = [_AnchorItem.tojson()];
+	declare Response = Request("Ch_RemoveAnchorItem", Params);
+	return Response.Values[0] == "True";
+}
+
+Boolean RemoveAnchorBlock(SChAnchorBlock _AnchorBlock) {
+	declare Params = [_AnchorBlock.tojson()];
+	declare Response = Request("Ch_RemoveAnchorBlock", Params);
+	return Response.Values[0] == "True";
 }
 
 Integer Random(Integer _Min, Integer _Max) { // Consistent randomizer
