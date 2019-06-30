@@ -19,6 +19,10 @@ main() {
 							AnimMgr.Add(Page.GetFirstChild("LABEL_STATUS"), "<label opacity=\"1\"/>", 200, CAnimManager::EAnimManagerEasing::QuadOut);
 							(Page.GetFirstChild("LABEL_STATUS") as CMlLabel).SetText(Event.CustomEventData[0]);
 						}
+						case "Color": {
+							declare ColorText = TextLib::Split(" ",Event.CustomEventData[0]);
+							(Page.GetFirstChild("GAUGE_PROGRESS") as CMlGauge).Color = <TextLib::ToReal(ColorText[0]),TextLib::ToReal(ColorText[1]),TextLib::ToReal(ColorText[2])>;
+						}
 					}
 				}
 			}

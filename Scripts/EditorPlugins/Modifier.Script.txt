@@ -553,6 +553,9 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 					ChItems.add(Conversion::ToSChAnchorItem(Anchor));
 			Respond(Event, [ChItems.tojson()]);
 		}
+		case "Ch_Problem": {
+			Respond(Event, []);
+		}
 		case "Ch_Message": {
 			Dialog_Message(Event.CustomEventData[0]);
 			Respond(Event, []);
@@ -563,6 +566,10 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 		}
 		case "Ch_SetStatusMessage": {
 			Layers::SendEvent("ModifierStatus", "Message", [Event.CustomEventData[0]]);
+			Respond(Event, []);
+		}
+		case "Ch_SetStatusColor": {
+			Layers::SendEvent("ModifierStatus", "Color", [Event.CustomEventData[0]]);
 			Respond(Event, []);
 		}
 		default: {
@@ -604,6 +611,11 @@ Void ProcessScript(Text _ScriptName, Text _ScriptContent) {
 				}
 			}
 		}
+		
+		CameraTargetPosition = <Map.Size.X*32./2,5.,Map.Size.Z*32./3>;
+		CameraToTargetDistance = 24.*Map.Size.X;
+		CameraHAngle = 0.;
+		CameraVAngle = 1.;
 	
 		yield;
 	}
@@ -624,6 +636,11 @@ main() {
 	declare ScriptNames = TextLib::Replace(S_ScriptNames,"'","\"");
 	declare SScriptInfo[] Scripts;
 	if(!Scripts.fromjson(ScriptNames) && !S_TestMode) return;
+	
+	CameraTargetPosition = <Map.Size.X*32./2,5.,Map.Size.Z*32./3>;
+	CameraToTargetDistance = 24.*Map.Size.X;
+	CameraHAngle = 0.;
+	CameraVAngle = 1.;
 	
 	Prepare();
 	

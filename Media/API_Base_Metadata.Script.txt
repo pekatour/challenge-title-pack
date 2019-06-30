@@ -1,6 +1,12 @@
 #Include "MathLib" as MathLib
 #Include "TextLib" as TextLib
 
+#Struct SResponse {
+	Text Name;
+	Text[] Values;
+	Integer Time;
+}
+
 #Struct SMetadata {
 	Text Name;
 	Text AuthorLogin;
@@ -28,7 +34,50 @@
 	Text Name;
 }
 
+#Struct SChItem {
+	Vec3 Position;
+}
+
+#Struct SChAnchor {
+	Ident Id;
+	Text DefaultTag;
+	Integer DefaultOrder;
+	Text Tag;
+	Integer Order;
+
+	Boolean IsBlock;
+	SChBlock Block;
+	Boolean IsItem;
+	SChItem Item;
+}
+
+#Struct SChAnchorBlock {
+	Ident Id;
+	Text DefaultTag;
+	Integer DefaultOrder;
+	Text Tag;
+	Integer Order;
+	SChBlock Block;
+}
+
+#Struct SChAnchorItem {
+	Ident Id;
+	Text DefaultTag;
+	Integer DefaultOrder;
+	Text Tag;
+	Integer Order;
+	SChItem Item;
+}
+
 #Struct SReplacementResult {
 	Boolean Removed;
 	Boolean Placed;
+}
+
+#Struct SChProblem {
+
+}
+
+#Struct SChNote {
+
 }

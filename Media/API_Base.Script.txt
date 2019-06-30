@@ -75,3 +75,11 @@
 	Boolean Removed;
 	Boolean Placed;
 }
+
+#Struct SChProblem {
+
+}
+
+#Struct SChNote {
+
+}

@@ -367,6 +367,25 @@ Void Message(Text _Message) {
 }
 
 //
+/* Modifier appearance control */
+//
+
+Void SetStatusProgress(Real _Progress) {
+	declare Response = Request("Ch_SetStatusProgress", [_Progress^""]);
+	yield;
+}
+
+Void SetStatusMessage(Text _Message) {
+	declare Response = Request("Ch_SetStatusMessage", [_Message]);
+	yield;
+}
+
+Void SetStatusColor(Vec3 _Color) {
+	declare Response = Request("Ch_SetStatusColor", [_Color.X^" "^_Color.Y^" "^_Color.Z]);
+	yield;
+}
+
+//
 /* Modifier technical control */
 //
 
@@ -386,8 +405,15 @@ Void Complete() { // Shouldn't be normally called
 	declare Response = Request("Ch_Complete", []);
 }
 
-Void Confusion() {
-	declare Response = Request("Ch_Confusion", []);
+Void Problem(SChProblem _Problem) {
+	SetStatusColor(<1.,.5,0.>);
+	declare Response = Request("Ch_Problem", []);
+	sleep(2000);
+	SetStatusColor(<1.,1.,1.>);
+}
+
+Void Note(SChNote _Note) {
+	
 }
 
 Void Incompatible(Text _Reason) {
@@ -395,19 +421,5 @@ Void Incompatible(Text _Reason) {
 }
 
 Void Chill() {
-	yield;
-}
-
-//
-/* Modifier appearance control */
-//
-
-Void SetStatusProgress(Real _Progress) {
-	declare Response = Request("Ch_SetStatusProgress", [_Progress^""]);
-	yield;
-}
-
-Void SetStatusMessage(Text _Message) {
-	declare Response = Request("Ch_SetStatusMessage", [_Message]);
 	yield;
 }
