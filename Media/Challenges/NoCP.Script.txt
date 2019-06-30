@@ -1,0 +1,6 @@
+***Metadata***
+***
+Script.Name = "NoCP";
+Script.AuthorLogin = "bigbang1112";
+Script.Description = "{{{{NOCP_DESCRIPTION}}}}";
+***

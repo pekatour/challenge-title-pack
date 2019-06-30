@@ -46,5 +46,18 @@
 
 	"CHECKPOINT_FOUND": "Checkpoint nalezen.",
 
-	"SCRIPT_NOTE": "Všechen napsaný a publikovaný kód je dostupný open source, což znamená, že všichni mohou vidět tvoje kódovací schopnosti. Byl jsi varován."
+	"SCRIPT_NOTE": "Všechen napsaný a publikovaný kód je dostupný open source, což znamená, že všichni mohou vidět tvoje kódovací schopnosti. Byl jsi varován.",
+
+	"AUTHBETA_WELCOME": "VÍTEJ V CHALLENGE BETA",
+	"AUTHBETA_GIVEINFO": "PROSÍM, POSKYTNI NÁM POTŘEBNÉ INFORMACE K BETA TESTOVÁNÍ",
+	"AUTHBETA_YOURLOGIN": "TVŮJ LOGIN",
+	"AUTHBETA_YOURNICKNAME": "TVŮJ NICKNAME",
+	"AUTHBETA_YOURZONE": "TVOJE ZÓNA",
+	"AUTHBETA_YOURMAPS": "TVÉ ZVEŘEJNĚNÉ MAPY",
+	"AUTHBETA_INFONOTE": "VŠECHNY TYTO INFORMACE BUDOU VEŘEJNĚ VIDITELNÉ, SPOJENÉ S TEBOU, A BUDOU AKTUALIZOVANÉ VŽDY KDYŽ SPUSTÍŠ TENTO TITLE PACK.",
+	"AUTHBETA_THANKYOU": "DĚKUJI",
+	"AUTHBETA_NOABUSE": "NIKDY NEZNEUŽIJU TYTO INFORMACE",
+	"AUTHBETA_AUTHORIZE": "AUTORIZOVAT S CHALLENGE",
+	"AUTHBETA_REQUESTTOKEN": "ZÍSKÁVÁM AUTH TOKEN",
+	"AUTHBETA_NOTPART": "NEJSI SOUČÁSTÍ BETA"
 }
