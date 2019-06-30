@@ -22,8 +22,7 @@ Void Submit(Text _Login) {
 Void Async() {
 	if(Nicknames.count != LastNicknameCount) {
 		LastNicknameCount = Nicknames.count;
-		
-		declare Stamp = Time::Stamp_CreateOnce("Nickname_Update", 100);
+		Time::Stamp_Create("Nickname_Update", 100);
 	}
 	
 	if(Time::Stamp_Reached("Nickname_Update")) {

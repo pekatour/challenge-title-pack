@@ -352,6 +352,8 @@ Void UpdateMapManager(Integer _Offset) {
 	Frame_MapList.ScrollGrid = <0.,10.>;
 	Frame_MapList.ScrollOffset = <0.,_Offset*10.0>;
 
+
+
 	if(_Offset != 0) {
 		for(i,0,_Offset-1) {
 			Maps.removekey(0);
@@ -361,7 +363,10 @@ Void UpdateMapManager(Integer _Offset) {
 	if(SelectedManagerMapInfo.Uid != "") {
 		(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl(SelectedManagerMapInfo.ThumbnailUrl);
 		(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText("$l[https://www.maniaplanet.com/maps/manager/"^SelectedManagerMapInfo.Uid^"]"^SelectedManagerMapInfo.Name);
-		(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedManagerMapInfo.AuthorLogin);
+		if(Nicknames.existskey(SelectedManagerMapInfo.AuthorLogin) && Nicknames[SelectedManagerMapInfo.AuthorLogin] != "")
+			(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^Nicknames[SelectedManagerMapInfo.AuthorLogin]);
+		else
+			(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedManagerMapInfo.AuthorLogin);
 		(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value = SelectedManagerMapInfo.Uid;
 
 		/*if(SelectedManagerMapInfo.MapType == "Challenge") {
@@ -389,7 +394,17 @@ Void UpdateMapManager(Integer _Offset) {
 			(Frame.GetFirstChild("LABEL_AWARDS") as CMlLabel).Hide();
 
 			Label.SetText(TrackInfo.Name);
-			LabelAuthor.SetText("{{{{by}}}} " ^ TrackInfo.AuthorLogin);
+			if(Nicknames.existskey(TrackInfo.AuthorLogin) && Nicknames[TrackInfo.AuthorLogin] != "")
+				LabelAuthor.SetText("{{{{by}}}} "^Nicknames[TrackInfo.AuthorLogin]);
+			else {
+				LabelAuthor.SetText("{{{{by}}}} "^TrackInfo.AuthorLogin);
+
+				if(!Nicknames.existskey(TrackInfo.AuthorLogin)) {
+					SendCustomEvent("Nickname", [TrackInfo.AuthorLogin]);
+					Nicknames[TrackInfo.AuthorLogin] = "";
+				}
+			}
+
 			Frame.GetFirstChild("QUAD_SELECTOR").Show();
 			(Frame.GetFirstChild("QUAD_SELECTOR") as CMlQuad).ModulateColor = <1.0,1.0,1.0>;
 
@@ -459,11 +474,16 @@ Void UpdateScriptList(Integer _Offset) {
 			declare Folders = TextLib::Split("\\ ",Script.Name);
 			Label.SetText(Folders[Folders.count-1]);
 
-			if(Nicknames.existskey(Script.Metadata.AuthorLogin))
+			if(Nicknames.existskey(Script.Metadata.AuthorLogin) && Nicknames[Script.Metadata.AuthorLogin] != "")
 				LabelAuthor.SetText("{{{{by}}}} "^Nicknames[Script.Metadata.AuthorLogin]);
-			else
+			else {
 				LabelAuthor.SetText("{{{{by}}}} "^Script.Metadata.AuthorLogin);
-			SendCustomEvent("Nickname", [Script.Metadata.AuthorLogin]);
+				
+				if(!Nicknames.existskey(Script.Metadata.AuthorLogin)) {
+					SendCustomEvent("Nickname", [Script.Metadata.AuthorLogin]);
+					Nicknames[Script.Metadata.AuthorLogin] = "";
+				}
+			}
 
 			Frame.GetFirstChild("QUAD_SELECTOR_SCRIPT").Show();
 			(Frame.GetFirstChild("QUAD_SELECTOR_SCRIPT") as CMlQuad).ModulateColor = <1.0,1.0,1.0>;
@@ -854,6 +874,10 @@ main() {
 						case "NicknameUpdate": {
 							declare JsonSuccess = Nicknames.fromjson(Event.CustomEventData[0]);
 							UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
+							if(MapLocation == "ManiaExchange")
+								UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+							else if(MapLocation == "MapManager")
+								UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
 						}
 						case "Downloaded_MapUids": {
 							declare JsonSuccess = DownloadedMapUids.fromjson(Event.CustomEventData[0]);
