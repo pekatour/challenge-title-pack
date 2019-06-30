@@ -33,7 +33,12 @@
 	"SCRIPT_FINISHED": "Script finished successfully.",	
 	"TEST_SCRIPT": "TEST SCRIPT",	
 	"MODIFYING": "MODIFYING",	
-	"ACTIONS": "ACTIONS",	
+	"ACTIONS": "ACTIONS",
+
+	"TRACKS": "TRACKS",
+	"SHOW_PRIVATE": "SHOW PRIVATE",
+	"SEARCH_FOR": "SEARCH FOR",
+	"MORE_FILTERS": "MORE FILTERS",
 
  	"REVERSE_DESCRIPTION": "Swaps start with finish.",	
 	"CHECKPOINTLESS_DESCRIPTION": "Removes all checkpoints and keeps the holes.",	

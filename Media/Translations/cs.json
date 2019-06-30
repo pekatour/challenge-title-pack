@@ -35,6 +35,11 @@
 	"MODIFYING": "MODIFIKUJI",
 	"ACTIONS": "AKCE",
 
+	"TRACKS": "TRATĚ",
+	"SHOW_PRIVATE": "UKAŽ TAJNÉ",
+	"SEARCH_FOR": "HLEDAT",
+	"MORE_FILTERS": "VÍCE FILTRŮ",
+
 	"REVERSE_DESCRIPTION": "Vymění start za cíl.",
 	"CHECKPOINTLESS_DESCRIPTION": "Odstraní všechny checkpointy a zanechá díry po nich.",
 	"TERRAINLESS_DESCRIPTION": "Odstraní všechen terén.",

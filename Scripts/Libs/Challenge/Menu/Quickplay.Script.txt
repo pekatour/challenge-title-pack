@@ -238,9 +238,9 @@ declare SMetadata Script;
 						declare JsonSuccess = Metadata.fromjson(Event.CustomEventData[0]);
 						if(Metadata.AuthorLogin != "") {
 							Layers::SendEvent("Quickplay", "ScriptList_Metadata_Response", [Name, Metadata.tojson()]);
-							UILayerDestroy(API);
-							declare Removed = LayerAPIs.removekey(Name);
 						}
+						UILayerDestroy(API);
+						declare Removed = LayerAPIs.removekey(Name);
 					}
 				}
 			}

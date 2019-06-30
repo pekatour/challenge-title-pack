@@ -38,7 +38,7 @@
 					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="555"/>
 					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="555"/>
 					<entry pos="3 -5" z-index="0" size="50 6" default="" valign="center2" id="ENTRY_MAPLIST_LOCAL_SEARCH"/>
-					<label pos="56 -5.3" z-index="0" size="20 5" text="$oMORE FILTERS" valign="center2" textfont="Oswald" style="TextButtonBig" scriptevents="1"/>
+					<label pos="56 -5.3" z-index="0" size="20 5" text="$o{{{{MORE_FILTERS}}}}" valign="center2" textfont="Oswald" style="TextButtonBig" scriptevents="1"/>
 					
 					<label pos="144 -5.2" z-index="0" size="10 10" text="" halign="center" valign="center2" style="TextButtonBig" scriptevents="1" textsize="3" id="LABEL_MAPLIST_REFRESH"/>
 				</frame>
@@ -46,8 +46,8 @@
 					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="555"/>
 					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="555"/>
 					<entry pos="3 -5" z-index="0" size="50 6" default="" valign="center2" id="ENTRY_MAPLIST_MX_SEARCH"/>
-					<label pos="56 -5.3" z-index="0" size="20 5" text="$oMORE FILTERS" valign="center2" textfont="Oswald" style="TextButtonBig" scriptevents="1"/>
-					<label pos="95 -5.4" z-index="0" size="20 5" text="SEARCH FOR:" valign="center2" textfont="Oswald"/>
+					<label pos="56 -5.3" z-index="0" size="20 5" text="$o{{{{MORE_FILTERS}}}}" valign="center2" textfont="Oswald" style="TextButtonBig" scriptevents="1"/>
+					<label pos="115 -5.4" z-index="0" size="20 5" text="{{{{SEARCH_FOR}}}}:" valign="center2" textfont="Oswald" halign="right"/>
 					<frame pos="117 -5">
 						<quad z-index="0" size="32 8" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" id="QUAD_MX_TRACKS"/>
 						<label pos="16 -0.25" z-index="1" size="33.33 10" text="{{{{TRACKS}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textsize="2"/>
@@ -58,10 +58,10 @@
 					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="555"/>
 					<quad size="150 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" z-index="-2"/>
 					<entry pos="3 -5" z-index="0" size="50 6" default="" valign="center2" id="ENTRY_MAPLIST_MANAGER_SEARCH"/>
-					<label pos="56 -5.3" z-index="0" size="20 5" text="$oMORE FILTERS" valign="center2" textfont="Oswald" style="TextButtonBig" scriptevents="1"/>
-					<frame pos="117 -5">
-						<quad z-index="0" size="32 8" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" id="QUAD_MANAGER_SHOWPRIVATE"/>
-						<label pos="16 -0.25" z-index="1" size="33.33 10" text="SHOW PRIVATE" halign="center" valign="center2" textfont="RajdhaniMono" textsize="2"/>
+					<label pos="56 -5.3" z-index="0" size="20 5" text="$o{{{{MORE_FILTERS}}}}" valign="center2" textfont="Oswald" style="TextButtonBig" scriptevents="1"/>
+					<frame pos="109 -5">
+						<quad z-index="0" size="40 8" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" id="QUAD_MANAGER_SHOWPRIVATE"/>
+						<label pos="20 -0.25" z-index="1" size="40 10" text="{{{{SHOW_PRIVATE}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textsize="2"/>
 					</frame>
 				</frame>
 				

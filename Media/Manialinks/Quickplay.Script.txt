@@ -263,8 +263,8 @@ Void UpdateManiaExchange(Integer _Offset) {
 
 	if(SelectedMXTrackInfo.TrackUID != "") {
 		(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("https://tm.mania-exchange.com/tracks/thumbnail/"^SelectedMXTrackInfo.TrackID^"?.jpg");
-		(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedMXTrackInfo.GbxMapName);
-		(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedMXTrackInfo.Username);
+		(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText("$l[https://tm.mania-exchange.com/tracks/"^SelectedMXTrackInfo.TrackID^"]"^SelectedMXTrackInfo.GbxMapName);
+		(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} $l[https://tm.mania-exchange.com/user/profile/"^SelectedMXTrackInfo.UserID^"]"^SelectedMXTrackInfo.Username);
 		(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value = SelectedMXTrackInfo.TrackUID;
 
 		if(SelectedMXTrackInfo.MapType == "Challenge") {
@@ -360,7 +360,7 @@ Void UpdateMapManager(Integer _Offset) {
 
 	if(SelectedManagerMapInfo.Uid != "") {
 		(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl(SelectedManagerMapInfo.ThumbnailUrl);
-		(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedManagerMapInfo.Name);
+		(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText("$l[https://www.maniaplanet.com/maps/manager/"^SelectedManagerMapInfo.Uid^"]"^SelectedManagerMapInfo.Name);
 		(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedManagerMapInfo.AuthorLogin);
 		(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value = SelectedManagerMapInfo.Uid;
 
