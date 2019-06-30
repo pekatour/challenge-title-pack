@@ -10,5 +10,6 @@ A library set programmed by BigBang1112 (also called Universe Library Set, or ju
 
 * [Reverse.Script.txt](Media/Challenges/Reverse.Script.txt)
 * [Checkpointless.Script.txt](Media/Challenges/Checkpointless.Script.txt)
+* [Comeback.Script.txt](Media/Challenges/Comeback.Script.txt)
 * [Default.Script.txt](Media/Challenges/Default.Script.txt)
-* [Terrainless.Script.txt](Media/Challenges/Terrainless.Script.txt)
+* [NoCP.Script.txt](Media/Challenges/NoCP.Script.txt)

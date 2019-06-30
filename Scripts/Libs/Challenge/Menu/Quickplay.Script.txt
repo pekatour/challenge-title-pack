@@ -112,11 +112,9 @@ Void Start() {
 	declare OfficialScripts = [
 		"Checkpointless.Script.txt",
 		"Reverse.Script.txt",
-		"Terrainless.Script.txt",
-		"Default.Script.txt",
-		"NoCP.Script.txt",
 		"Comeback.Script.txt",
-		"ComebackCheckpointless.Script.txt"
+		"Default.Script.txt",
+		"NoCP.Script.txt"
 	];
 	
 	UpdateLocalMaps("","","");
