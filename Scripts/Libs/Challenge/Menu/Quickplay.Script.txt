@@ -253,6 +253,10 @@ declare SMetadata Script;
 			case "MapList_DestroyMapManager": {
 				Web::AsyncDestroy("MAPMANAGER_MAPS");
 			}
+			case "MapList_Local_Refresh": {
+				DataFileMgr.Map_RefreshFromDisk();
+				Layers::SendEvent("Quickplay", "MapList_Local_Refresh_Response", []);
+			}
 		}
 	}
 }

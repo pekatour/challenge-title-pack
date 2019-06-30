@@ -807,6 +807,9 @@ main() {
 							}
 							UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
 						}
+						case "LABEL_MAPLIST_REFRESH": {
+							SendCustomEvent("MapList_Local_Refresh", []);
+						}
 					}
 				}
 				
@@ -890,6 +893,9 @@ main() {
 							declare JsonSuccess = MapBrowserManagerTrackInfos.fromjson(Event.CustomEventData[0]);
 							UpdateMapManager(0);
 							Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
+						}
+						case "MapList_Local_Refresh_Response": {
+							UpdateLocalMapsFolder(0);
 						}
 					}
 				}
