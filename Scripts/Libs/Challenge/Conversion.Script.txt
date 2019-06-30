@@ -93,6 +93,17 @@ ModifierBase::SChBlock ToSChBlock(CBlock _Block) {
 	return ChBlock;
 }
 
+ModifierBase::SChItem ToSChItem(CAnchorData _Item) {
+	declare ModifierBase::SChItem ChItem;
+	ChItem.Id = _Item.Id;
+	ChItem.DefaultTag = _Item.DefaultTag;
+	ChItem.DefaultOrder = _Item.DefaultOrder;
+	ChItem.Tag = _Item.Tag;
+	ChItem.Order = _Item.Order;
+	ChItem.Position = _Item.Item.Position;
+	return ChItem;
+}
+
 Boolean ToBoolean(Text _Boolean) {
 	return _Boolean == "True";
 }

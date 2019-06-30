@@ -36,6 +36,15 @@
 	Text Name;
 }
 
+#Struct SChItem {
+	Ident Id;
+	Text DefaultTag;
+	Integer DefaultOrder;
+	Text Tag;
+	Integer Order;
+	Vec3 Position;
+}
+
 #Struct SReplacementResult {
 	Boolean Removed;
 	Boolean Placed;

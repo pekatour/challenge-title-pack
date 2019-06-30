@@ -208,6 +208,12 @@ SChBlock GetStartLineBlock() {
 	return Block;
 }
 
+Boolean RemoveItem(SChItem _Item) {
+	declare Params = [_Item.tojson()];
+	declare Response = Request("Ch_RemoveItem", Params);
+	return Response.Values[0] == "True";
+}
+
 Void SetUndergroundMode(Boolean _On) {
 	declare Params = [_On^""];
 	declare Response = Request("Ch_SetUndergroundMode", Params);
@@ -276,6 +282,27 @@ Integer MultipleBlocks(Int3 _Coord) {
 	declare Params = [""^_Coord];
 	declare Response = Request("Ch_MultipleBlocks", Params);
 	return TextLib::ToInteger(Response.Values[0]);
+}
+
+SChItem[] GetStartLineItems() {
+	declare Response = Request("Ch_GetStartLineItems", []);
+	declare SChItem[] Items;
+	declare JsonSuccess = Items.fromjson(Response.Values[0]);
+	return Items;
+}
+
+SChItem[] GetCheckpointItems() {
+	declare Response = Request("Ch_GetCheckpointItems", []);
+	declare SChItem[] Items;
+	declare JsonSuccess = Items.fromjson(Response.Values[0]);
+	return Items;
+}
+
+SChItem[] GetFinishLineItems() {
+	declare Response = Request("Ch_GetFinishLineItems", []);
+	declare SChItem[] Items;
+	declare JsonSuccess = Items.fromjson(Response.Values[0]);
+	return Items;
 }
 
 Integer Random(Integer _Min, Integer _Max) { // Consistent randomizer

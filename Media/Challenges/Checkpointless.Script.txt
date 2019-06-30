@@ -8,14 +8,26 @@ Script.Description = "{{{{CHECKPOINTLESS_DESCRIPTION}}}}";
 ***Main***
 ***
 declare Checkpoints = GetCheckpointBlocks();
+declare CheckpointItems = GetCheckpointItems();
 
 for(i,0,Checkpoints.count-1) {
 	declare Block = Checkpoints[i];
 	if(Block.Waypoint == "Checkpoint") {
 		RemoveBlock(Block.Coord);
-		SetStatusProgress((i+1.0)/Checkpoints.count);
+		SetStatusProgress((i+1.0)/(Checkpoints.count + CheckpointItems.count));
 		SetStatusMessage("{{{{CHECKPOINT_FOUND}}}} " ^ Block.Name);
 	}
+	yield;
+}
+
+for(i,0,CheckpointItems.count-1) {
+	declare Item = CheckpointItems[i];
+	if(Item.DefaultTag == "Checkpoint") {
+		RemoveItem(Item);
+		SetStatusProgress((i+1.0+Checkpoints.count)/(Checkpoints.count + CheckpointItems.count));
+		SetStatusMessage("{{{{CHECKPOINT_FOUND}}}}");
+	}
+	yield;
 }
 
 Solution();

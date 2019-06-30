@@ -396,6 +396,28 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			declare Response = Conversion::ToSChBlock(Block);
 			Respond(Event, [Response.tojson()]);
 		}
+		case "Ch_RemoveItem": {
+			declare ModifierBase::SChItem ChItem;
+			declare JsonSuccess = ChItem.fromjson(Event.CustomEventData[0]);
+			log(ChItem);
+			declare Removed = False;
+			
+			declare Scan = True;
+			declare ScanPos = 0;
+			while(Scan) {
+				if(ScanPos < AnchorData.count) {
+					declare Item <=> AnchorData[ScanPos];
+					if(Item.Item.Position == ChItem.Position) {
+						Removed = RemoveItem(Item);
+						Scan = False;
+					}
+					ScanPos+=1;
+				}
+				else Scan = False;
+			}
+			
+			Respond(Event, [Removed^""]);
+		}
 		case "Ch_SetUndergroundMode": {
 			declare Underground = Conversion::ToBoolean(Event.CustomEventData[0]);
 			UndergroundMode = Underground;
@@ -471,6 +493,27 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			declare ModifierBase::SChBlock[] ChBlocks;
 			foreach(Block, Blocks) ChBlocks.add(Conversion::ToSChBlock(Block));
 			Respond(Event, [ChBlocks.tojson()]);
+		}
+		case "Ch_GetStartLineItems": {
+			declare ModifierBase::SChItem[] ChItems;
+			foreach(Item, AnchorData)
+				if(Item.DefaultTag == "Spawn")
+					ChItems.add(Conversion::ToSChItem(Item));
+			Respond(Event, [ChItems.tojson()]);
+		}
+		case "Ch_GetCheckpointItems": {
+			declare ModifierBase::SChItem[] ChItems;
+			foreach(Item, AnchorData)
+				if(Item.DefaultTag == "Checkpoint")
+					ChItems.add(Conversion::ToSChItem(Item));
+			Respond(Event, [ChItems.tojson()]);
+		}
+		case "Ch_GetFinishLineItems": {
+			declare ModifierBase::SChItem[] ChItems;
+			foreach(Item, AnchorData)
+				if(Item.DefaultTag == "Goal")
+					ChItems.add(Conversion::ToSChItem(Item));
+			Respond(Event, [ChItems.tojson()]);
 		}
 		case "Ch_Message": {
 			Dialog_Message(Event.CustomEventData[0]);
