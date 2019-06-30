@@ -407,6 +407,7 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			while(Scan) {
 				if(ScanPos < AnchorData.count) {
 					declare Item <=> AnchorData[ScanPos];
+					if(Item.Item != Null)
 					if(Item.Item.Position == ChItem.Position) {
 						Removed = RemoveItem(Item);
 						Scan = False;

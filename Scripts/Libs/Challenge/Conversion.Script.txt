@@ -100,6 +100,7 @@ ModifierBase::SChItem ToSChItem(CAnchorData _Item) {
 	ChItem.DefaultOrder = _Item.DefaultOrder;
 	ChItem.Tag = _Item.Tag;
 	ChItem.Order = _Item.Order;
+	if(_Item.Item != Null)
 	ChItem.Position = _Item.Item.Position;
 	return ChItem;
 }
