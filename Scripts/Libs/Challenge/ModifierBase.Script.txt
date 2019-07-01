@@ -53,3 +53,11 @@
 	Integer Order;
 	SChItem Item;
 }
+
+#Struct SChProblem {
+	SChBlock Block;
+}
+
+#Struct SChNote {
+	SChBlock Block;
+}

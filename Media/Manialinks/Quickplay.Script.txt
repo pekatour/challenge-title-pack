@@ -72,29 +72,29 @@
 	Text ThumbnailUrl;
 }
 
-#Struct SMetadata {
+#Struct SChMetadata {
 	Text Name;
 	Text AuthorLogin;
 	Text AuthorNickname;
 	Text Description;
 }
 
-#Struct SScriptInfo {
+#Struct SChScriptInfo {
 	Text Name;
 	Text Type;
-	SMetadata Metadata;
+	SChMetadata Metadata;
 }
 
 declare SMapInfo[] VisibleMapInfos;
 declare SMapInfo SelectedMapInfo;
 declare SMXTrackInfo SelectedMXTrackInfo;
-declare SScriptInfo[] SelectedScripts;
+declare SChScriptInfo[] SelectedScripts;
 declare SMap SelectedManagerMapInfo;
 
 declare Text[] MapBrowserSubFolders;
 declare SMapInfo[] MapBrowserMapInfos;
 
-declare SScriptInfo[] ScriptBrowserScripts;
+declare SChScriptInfo[] ScriptBrowserScripts;
 
 declare SMXTrackInfo[] MapBrowserMXTrackInfos;
 declare Integer MXPage;
@@ -665,7 +665,7 @@ main() {
 								declare Script = Event.Control.Parent.DataAttributeGet("script");
 								declare Folder = Event.Control.Parent.DataAttributeGet("folder");
 
-								declare SScriptInfo Info;
+								declare SChScriptInfo Info;
 								declare JsonSuccess = Info.fromjson(Script);
 
 								declare Text[] SelectedScriptNames;
@@ -860,13 +860,13 @@ main() {
 							Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
 						}
 						case "ScriptList_Official_Update": {
-							declare SScriptInfo[] Scripts;
+							declare SChScriptInfo[] Scripts;
 							declare JsonSuccess = Scripts.fromjson(Event.CustomEventData[0]);
 							ScriptBrowserScripts = Scripts;
 							UpdateScriptList(0);
 						}
 						case "ScriptList_Metadata_Response": {
-							declare SMetadata Metadata;
+							declare SChMetadata Metadata;
 							declare JsonSuccess = Metadata.fromjson(Event.CustomEventData[1]);
 							for(i,0,ScriptBrowserScripts.count-1) {
 								if(ScriptBrowserScripts[i].Name == Event.CustomEventData[0])

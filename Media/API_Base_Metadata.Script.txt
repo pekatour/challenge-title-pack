@@ -7,7 +7,7 @@
 	Integer Time;
 }
 
-#Struct SMetadata {
+#Struct SChMetadata {
 	Text Name;
 	Text AuthorLogin;
 	Text Description;
@@ -75,9 +75,9 @@
 }
 
 #Struct SChProblem {
-
+	SChBlock Block;
 }
 
 #Struct SChNote {
-
+	SChBlock Block;
 }

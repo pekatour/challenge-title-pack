@@ -221,7 +221,7 @@ Void Event(CManiaAppEvent _Event) {
 				
 				declare LayerAPI = UILayerCreate();
 				LayerAPI.ManialinkPage = Manialink::Construct("",File::Read("Media/API_Base_Metadata.Script.txt")^"""
-declare SMetadata Script;
+declare SChMetadata Script;
 
 {{{Dictionary::TranslateAllPhrases(ScriptContent)}}}
 

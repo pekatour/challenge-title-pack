@@ -1,4 +1,4 @@
-#Struct SMetadata {
+#Struct SChMetadata {
 	Text Name;
 	Text AuthorLogin;
 	Text AuthorNickname;
@@ -12,7 +12,7 @@ main() {
 				case CMlScriptEvent::Type::PluginCustomEvent: {
 					switch(Event.CustomEventType) {
 						case "Metadata": {
-							declare SMetadata Metadata;
+							declare SChMetadata Metadata;
 							declare JsonSuccess = Metadata.fromjson(Event.CustomEventData[0]);
 							(Page.GetFirstChild("LABEL_NAME") as CMlLabel).SetText(Metadata.Name);
 							(Page.GetFirstChild("LABEL_AUTHOR") as CMlLabel).SetText(Metadata.AuthorLogin);

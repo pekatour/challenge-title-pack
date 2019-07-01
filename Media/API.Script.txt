@@ -1,4 +1,5 @@
-declare SMetadata Script;
+declare SChMetadata Script;
+declare SChProblem[] Problems;
 
 SResponse Request(Text _Command, Text[] _Arguments) {
 	declare SResponse Response;
@@ -233,12 +234,13 @@ Boolean RemoveAnchor(SChAnchor _Anchor) {
 //
 /* Extensive functions */
 //
-Void Underground() {
 
+Void Underground() {
+	declare Response = Request("Ch_Underground", []);
 }
 
 Void Aboveground() {
-
+	declare Response = Request("Ch_Aboveground", []);
 }
 
 SReplacementResult ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName, Boolean _OppositeDirection) {
@@ -334,6 +336,10 @@ Boolean RemoveAnchorBlock(SChAnchorBlock _AnchorBlock) {
 	return Response.Values[0] == "True";
 }
 
+Boolean RemoveBlock(SChBlock _Block) {
+	return False;
+}
+
 Integer Random(Integer _Min, Integer _Max) { // Consistent randomizer
 	return MathLib::Rand(_Min, _Max, Editor.Map.CopperPrice);
 }
@@ -385,6 +391,26 @@ Void SetStatusColor(Vec3 _Color) {
 	yield;
 }
 
+Void Focus(SChBlock _Block) {
+
+}
+
+Void Focus(SChAnchor _Anchor) {
+	
+}
+
+Void Focus(SChAnchorBlock _Anchor) {
+	
+}
+
+Void Focus(SChAnchorItem _Anchor) {
+	
+}
+
+Void Focus(Vec3 _Position) {
+	
+}
+
 //
 /* Modifier technical control */
 //
@@ -406,8 +432,10 @@ Void Complete() { // Shouldn't be normally called
 }
 
 Void Problem(SChProblem _Problem) {
+	Problems.add(_Problem);
+
 	SetStatusColor(<1.,.5,0.>);
-	declare Response = Request("Ch_Problem", []);
+	declare Response = Request("Ch_Problem", [_Problem.tojson()]);
 	sleep(2000);
 	SetStatusColor(<1.,1.,1.>);
 }
