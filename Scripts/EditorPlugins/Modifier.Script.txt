@@ -71,6 +71,9 @@ Text CBlockCardinalDirectionsToText(CBlock::CardinalDirections _Direction) {
 }
 
 Boolean SafeRemoveBlock(CBlock _Block) {
+	if(_Block == Null) return False;
+	if(GetBlock(_Block.Coord) == Null) return False;
+	
 	if(GetBlock(_Block.Coord).Id == _Block.Id)
 		return RemoveBlock(_Block.Coord);
 	return False;
@@ -451,7 +454,7 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			for(i,0,AnchorData.count-1) {
 				if(AnchorData.existskey(i)) {
 					declare Data <=> AnchorData[i];
-					if(Conversion::SChAnchorBlockEquals(ChAnchor, Data) && GetBlock(Data.Block.Coord).Id == Data.Block.Id) {
+					if(Conversion::SChAnchorBlockEquals(ChAnchor, Data)) {
 						Removed = SafeRemoveBlock(Data.Block);
 					}
 				}

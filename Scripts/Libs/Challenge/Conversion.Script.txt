@@ -223,6 +223,7 @@ Boolean SChAnchorItemEquals(ModifierBase::SChAnchorItem _ChAnchor, CAnchorData _
 	if(_ChAnchor.Tag != _Anchor.Tag) return False;
 	if(_ChAnchor.Order != _Anchor.Order) return False;
 	
+	if(_Anchor.Item == Null) return False;
 	if(!SChItemEquals(_ChAnchor.Item, _Anchor.Item)) return False;
 	
 	return True;
@@ -234,6 +235,7 @@ Boolean SChAnchorBlockEquals(ModifierBase::SChAnchorBlock _ChAnchor, CAnchorData
 	if(_ChAnchor.Tag != _Anchor.Tag) return False;
 	if(_ChAnchor.Order != _Anchor.Order) return False;
 	
+	if(_Anchor.Block == Null) return False;
 	if(!SChBlockEquals(_ChAnchor.Block, _Anchor.Block)) return False;
 	
 	return True;
