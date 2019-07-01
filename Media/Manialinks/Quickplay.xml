@@ -76,7 +76,9 @@
 							<label size="150 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_MAPNAME"/>
 						</frame>
 						<label pos="70.5 0" z-index="0" size="8 10" valign="center2" text="10" textsize="1" textfont="RajdhaniMono" textcolor="FF0" textprefix="" halign="center" id="LABEL_AWARDS"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<label pos="97.5 0.3" z-index="0" size="5 5" text="" valign="center" halign="center" textsize="1" textcolor="080" hidden="1" id="LABEL_DOWNLOADED"/>
 					</frame>
 					<frame pos="0 -15" data-index="1">
@@ -85,7 +87,9 @@
 							<label size="150 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_MAPNAME"/>
 						</frame>
 						<label pos="70.5 0" z-index="0" size="8 10" valign="center2" text="10" textsize="1" textfont="RajdhaniMono" textcolor="FF0" textprefix="" halign="center" id="LABEL_AWARDS"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<label pos="97.5 0.3" z-index="0" size="5 5" text="" valign="center" halign="center" textsize="1" textcolor="080" hidden="1" id="LABEL_DOWNLOADED"/>
 					</frame>
 					<frame pos="0 -25" data-index="2">
@@ -94,7 +98,9 @@
 							<label size="150 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_MAPNAME"/>
 						</frame>
 						<label pos="70.5 0" z-index="0" size="8 10" valign="center2" text="10" textsize="1" textfont="RajdhaniMono" textcolor="FF0" textprefix="" halign="center" id="LABEL_AWARDS"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<label pos="97.5 0.3" z-index="0" size="5 5" text="" valign="center" halign="center" textsize="1" textcolor="080" hidden="1" id="LABEL_DOWNLOADED"/>
 					</frame>
 					<frame pos="0 -35" data-index="3">
@@ -103,7 +109,9 @@
 							<label size="150 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_MAPNAME"/>
 						</frame>
 						<label pos="70.5 0" z-index="0" size="8 10" valign="center2" text="10" textsize="1" textfont="RajdhaniMono" textcolor="FF0" textprefix="" halign="center" id="LABEL_AWARDS"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<label pos="97.5 0.3" z-index="0" size="5 5" text="" valign="center" halign="center" textsize="1" textcolor="080" hidden="1" id="LABEL_DOWNLOADED"/>
 					</frame>
 					<frame pos="0 -45" data-index="4">
@@ -112,7 +120,9 @@
 							<label size="150 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_MAPNAME"/>
 						</frame>
 						<label pos="70.5 0" z-index="0" size="8 10" valign="center2" text="10" textsize="1" textfont="RajdhaniMono" textcolor="FF0" textprefix="" halign="center" id="LABEL_AWARDS"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<label pos="97.5 0.3" z-index="0" size="5 5" text="" valign="center" halign="center" textsize="1" textcolor="080" hidden="1" id="LABEL_DOWNLOADED"/>
 					</frame>
 					<frame pos="0 -55" data-index="5">
@@ -121,7 +131,9 @@
 							<label size="150 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_MAPNAME"/>
 						</frame>
 						<label pos="70.5 0" z-index="0" size="8 10" valign="center2" text="10" textsize="1" textfont="RajdhaniMono" textcolor="FF0" textprefix="" halign="center" id="LABEL_AWARDS"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<label pos="97.5 0.3" z-index="0" size="5 5" text="" valign="center" halign="center" textsize="1" textcolor="080" hidden="1" id="LABEL_DOWNLOADED"/>
 					</frame>
 					<frame pos="0 -65" data-index="6">
@@ -130,7 +142,9 @@
 							<label size="150 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_MAPNAME"/>
 						</frame>
 						<label pos="70.5 0" z-index="0" size="8 10" valign="center2" text="10" textsize="1" textfont="RajdhaniMono" textcolor="FF0" textprefix="" halign="center" id="LABEL_AWARDS"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<label pos="97.5 0.3" z-index="0" size="5 5" text="" valign="center" halign="center" textsize="1" textcolor="080" hidden="1" id="LABEL_DOWNLOADED"/>
 					</frame>
 					<frame pos="0 -75" data-index="7">
@@ -139,7 +153,9 @@
 							<label size="150 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_MAPNAME"/>
 						</frame>
 						<label pos="70.5 0" z-index="0" size="8 10" valign="center2" text="10" textsize="1" textfont="RajdhaniMono" textcolor="FF0" textprefix="" halign="center" id="LABEL_AWARDS"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<label pos="97.5 0.3" z-index="0" size="5 5" text="" valign="center" halign="center" textsize="1" textcolor="080" hidden="1" id="LABEL_DOWNLOADED"/>
 					</frame>
 				</frame>
@@ -200,7 +216,9 @@
 					<frame pos="0 -5" data-index="0">
 						<quad z-index="0" size="100 10" bgcolor="FFFA" valign="center" pos="0" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" opacity="0.5" id="QUAD_SELECTOR_SCRIPT"/>
 						<label z-index="1" size="60 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_SCRIPTNAME"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<frame id="FRAME_COUNTER" z-index="1" pos="6" hidden="1">
 							<quad size="12 12" bgcolor="FFFA" valign="center" style="Bgs1" substyle="BgGlow2" halign="center"/>
 							<label z-index="1" size="7 7" text="1" halign="center" valign="center2" pos="0 -0.1" textfont="RajdhaniMono" textsize="1" opacity=".75" id="LABEL_POSITION"/>
@@ -209,7 +227,9 @@
 					<frame pos="0 -15" data-index="1">
 						<quad z-index="0" size="100 10" bgcolor="FFFA" valign="center" pos="0" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="960" opacity="0.5" id="QUAD_SELECTOR_SCRIPT"/>
 						<label z-index="1" size="60 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_SCRIPTNAME"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<frame id="FRAME_COUNTER" z-index="1" pos="6" hidden="1">
 							<quad size="12 12" bgcolor="FFFA" valign="center" style="Bgs1" substyle="BgGlow2" halign="center"/>
 							<label z-index="1" size="7 7" text="1" halign="center" valign="center2" pos="0 -0.1" textfont="RajdhaniMono" textsize="1" opacity=".75" id="LABEL_POSITION"/>
@@ -218,7 +238,9 @@
 					<frame pos="0 -25" data-index="2">
 						<quad z-index="0" size="100 10" bgcolor="FFFA" valign="center" pos="0" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="960" opacity="0.5" id="QUAD_SELECTOR_SCRIPT"/>
 						<label z-index="1" size="60 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_SCRIPTNAME"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<frame id="FRAME_COUNTER" z-index="1" pos="6" hidden="1">
 							<quad size="12 12" bgcolor="FFFA" valign="center" style="Bgs1" substyle="BgGlow2" halign="center"/>
 							<label z-index="1" size="7 7" text="1" halign="center" valign="center2" pos="0 -0.1" textfont="RajdhaniMono" textsize="1" opacity=".75" id="LABEL_POSITION"/>
@@ -227,7 +249,9 @@
 					<frame pos="0 -35" data-index="3">
 						<quad z-index="0" size="100 10" bgcolor="FFFA" valign="center" pos="0" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="960" opacity="0.5" id="QUAD_SELECTOR_SCRIPT"/>
 						<label z-index="1" size="60 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_SCRIPTNAME"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<frame id="FRAME_COUNTER" z-index="1" pos="6" hidden="1">
 							<quad size="12 12" bgcolor="FFFA" valign="center" style="Bgs1" substyle="BgGlow2" halign="center"/>
 							<label z-index="1" size="7 7" text="1" halign="center" valign="center2" pos="0 -0.1" textfont="RajdhaniMono" textsize="1" opacity=".75" id="LABEL_POSITION"/>
@@ -236,7 +260,9 @@
 					<frame pos="0 -45" data-index="4">
 						<quad z-index="0" size="100 10" bgcolor="FFFA" valign="center" pos="0" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="960" opacity="0.5" id="QUAD_SELECTOR_SCRIPT"/>
 						<label z-index="1" size="60 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_SCRIPTNAME"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<frame id="FRAME_COUNTER" z-index="1" pos="6" hidden="1">
 							<quad size="12 12" bgcolor="FFFA" valign="center" style="Bgs1" substyle="BgGlow2" halign="center"/>
 							<label z-index="1" size="7 7" text="1" halign="center" valign="center2" pos="0 -0.1" textfont="RajdhaniMono" textsize="1" opacity=".75" id="LABEL_POSITION"/>
@@ -245,7 +271,9 @@
 					<frame pos="0 -55" data-index="5">
 						<quad z-index="0" size="100 10" bgcolor="FFFA" valign="center" pos="0" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="960" opacity="0.5" id="QUAD_SELECTOR_SCRIPT"/>
 						<label z-index="1" size="60 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_SCRIPTNAME"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<frame id="FRAME_COUNTER" z-index="1" pos="6" hidden="1">
 							<quad size="12 12" bgcolor="FFFA" valign="center" style="Bgs1" substyle="BgGlow2" halign="center"/>
 							<label z-index="1" size="7 7" text="1" halign="center" valign="center2" pos="0 -0.1" textfont="RajdhaniMono" textsize="1" opacity=".75" id="LABEL_POSITION"/>
@@ -254,7 +282,9 @@
 					<frame pos="0 -65" data-index="6">
 						<quad z-index="0" size="100 10" bgcolor="FFFA" valign="center" pos="0" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="960" opacity="0.5" id="QUAD_SELECTOR_SCRIPT"/>
 						<label z-index="1" size="60 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_SCRIPTNAME"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<frame id="FRAME_COUNTER" z-index="1" pos="6" hidden="1">
 							<quad size="12 12" bgcolor="FFFA" valign="center" style="Bgs1" substyle="BgGlow2" halign="center"/>
 							<label z-index="1" size="7 7" text="1" halign="center" valign="center2" pos="0 -0.1" textfont="RajdhaniMono" textsize="1" opacity=".75" id="LABEL_POSITION"/>
@@ -263,7 +293,9 @@
 					<frame pos="0 -75" data-index="7">
 						<quad z-index="0" size="100 10" bgcolor="FFFA" valign="center" pos="0" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="960" opacity="0.5" id="QUAD_SELECTOR_SCRIPT"/>
 						<label z-index="1" size="60 10" text="Map Name Map Name Map Name Map Name" valign="center2" pos="5" textfont="BiryaniDemiBold" id="LABEL_SCRIPTNAME"/>
-						<label z-index="1" size="20 10" text="by author" valign="center2" pos="76" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize="1"/>
+						<frame z-index="1" pos="76" clip="True" clipsizen="40 10">
+							<label size="100 10" text="by author" valign="center2" textfont="BiryaniDemiBold" id="LABEL_AUTHOR" textsize=".7"/>
+						</frame>
 						<frame id="FRAME_COUNTER" z-index="1" pos="6" hidden="1">
 							<quad size="12 12" bgcolor="FFFA" valign="center" style="Bgs1" substyle="BgGlow2" halign="center"/>
 							<label z-index="1" size="7 7" text="1" halign="center" valign="center2" pos="0 -0.1" textfont="RajdhaniMono" textsize="1" opacity=".75" id="LABEL_POSITION"/>
