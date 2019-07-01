@@ -60,8 +60,8 @@ for(i,0,FinishLines.count-1) {
 		foreach(Pair, PairList) {
 			declare StartBlockName = Pair[0];
 			declare FinishBlockName = Pair[1];
-			if(FinishLine.Name == FinishBlockName) {
-				declare Replacemenet = ReplaceBlock(FinishLine, StartBlockName, True);
+			if(FinishLine.Block.Name == FinishBlockName) {
+				declare Replacemenet = ReplaceBlock(FinishLine.Block, StartBlockName, True);
 				SetStatusProgress(0.5+(i+1.0)/FinishLines.count*.5);
 				SetStatusMessage("""{{{FinishBlockName}}} replaced with {{{StartBlockName}}}.""");
 			}
