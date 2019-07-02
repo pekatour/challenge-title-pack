@@ -268,6 +268,27 @@ Boolean SwapBlock(SChBlock _Block1, SChBlock _Block2) {
 	return Response.Values[0] == "True";
 }
 
+SChAnchor[] GetStartLines() {
+	declare Response = Request("Ch_GetStartLines", []);
+	declare SChAnchor[] Anchors;
+	declare JsonSuccess = Anchors.fromjson(Response.Values[0]);
+	return Anchors;
+}
+
+SChAnchor[] GetFinishLines() {
+	declare Response = Request("Ch_GetFinishLines", []);
+	declare SChAnchor[] Anchors;
+	declare JsonSuccess = Anchors.fromjson(Response.Values[0]);
+	return Anchors;
+}
+
+SChAnchor[] GetCheckpoints() {
+	declare Response = Request("Ch_GetCheckpoints", []);
+	declare SChAnchor[] Anchors;
+	declare JsonSuccess = Anchors.fromjson(Response.Values[0]);
+	return Anchors;   
+}
+
 SChAnchorBlock[] GetStartLineBlocks() {
 	declare Response = Request("Ch_GetStartLineBlocks", []);
 	declare SChAnchorBlock[] Blocks;

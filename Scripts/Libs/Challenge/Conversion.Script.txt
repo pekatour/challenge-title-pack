@@ -73,6 +73,8 @@ Text ToText(CBlock::CardinalDirections _Direction) {
 
 ModifierBase::SChBlock ToSChBlock(CBlock _Block) {
 	declare ModifierBase::SChBlock ChBlock;
+	if(_Block == Null) return ChBlock;
+	
 	ChBlock.Name = _Block.BlockModel.Name;
 	ChBlock.Coord = _Block.Coord;
 	ChBlock.Direction = ToText(_Block.Direction);
@@ -95,12 +97,15 @@ ModifierBase::SChBlock ToSChBlock(CBlock _Block) {
 
 ModifierBase::SChItem ToSChItem(CItemAnchor _Item) {
 	declare ModifierBase::SChItem ChItem;
+	if(_Item == Null) return ChItem;
+
 	ChItem.Position = _Item.Position;
 	return ChItem;
 }
 
 ModifierBase::SChAnchor ToSChAnchor(CAnchorData _Anchor) {
 	declare ModifierBase::SChAnchor ChAnchor;
+	if(_Anchor == Null) return ChAnchor;
 	
 	ChAnchor.DefaultTag = _Anchor.DefaultTag;
 	ChAnchor.DefaultOrder = _Anchor.DefaultOrder;
@@ -121,6 +126,7 @@ ModifierBase::SChAnchor ToSChAnchor(CAnchorData _Anchor) {
 
 ModifierBase::SChAnchorBlock ToSChAnchorBlock(CAnchorData _Anchor) {
 	declare ModifierBase::SChAnchorBlock ChAnchor;
+	if(_Anchor == Null) return ChAnchor;
 	
 	ChAnchor.DefaultTag = _Anchor.DefaultTag;
 	ChAnchor.DefaultOrder = _Anchor.DefaultOrder;
@@ -148,6 +154,7 @@ ModifierBase::SChAnchorBlock ToSChAnchorBlock(ModifierBase::SChAnchor _Anchor) {
 
 ModifierBase::SChAnchorItem ToSChAnchorItem(CAnchorData _Anchor) {
 	declare ModifierBase::SChAnchorItem ChAnchor;
+	if(_Anchor == Null) return ChAnchor;
 	
 	ChAnchor.DefaultTag = _Anchor.DefaultTag;
 	ChAnchor.DefaultOrder = _Anchor.DefaultOrder;
@@ -178,6 +185,8 @@ Boolean ToBoolean(Text _Boolean) {
 }
 
 Boolean SChBlockEquals(ModifierBase::SChBlock _ChBlock, CBlock _Block) {
+	if(_Block == Null) return False;
+
 	if(_ChBlock.Name != _Block.BlockModel.Name) return False;
 	if(_ChBlock.Coord != _Block.Coord) return False;
 	if(_ChBlock.Direction != ToText(_Block.Direction)) return False;
@@ -202,10 +211,13 @@ Boolean SChBlockEquals(ModifierBase::SChBlock _ChBlock, CBlock _Block) {
 }
 
 Boolean SChItemEquals(ModifierBase::SChItem _ChAnchor, CItemAnchor _Item) {
+	if(_Item == Null) return False;
 	return _ChAnchor.Position == _Item.Position;
 }
 
 Boolean SChAnchorEquals(ModifierBase::SChAnchor _ChAnchor, CAnchorData _Anchor) {
+	if(_Anchor == Null) return False;
+
 	if(_ChAnchor.DefaultTag != _Anchor.DefaultTag) return False;
 	if(_ChAnchor.DefaultOrder != _Anchor.DefaultOrder) return False;
 	if(_ChAnchor.Tag != _Anchor.Tag) return False;
@@ -218,6 +230,8 @@ Boolean SChAnchorEquals(ModifierBase::SChAnchor _ChAnchor, CAnchorData _Anchor) 
 }
 
 Boolean SChAnchorItemEquals(ModifierBase::SChAnchorItem _ChAnchor, CAnchorData _Anchor) {
+	if(_Anchor == Null) return False;
+
 	if(_ChAnchor.DefaultTag != _Anchor.DefaultTag) return False;
 	if(_ChAnchor.DefaultOrder != _Anchor.DefaultOrder) return False;
 	if(_ChAnchor.Tag != _Anchor.Tag) return False;
@@ -230,6 +244,8 @@ Boolean SChAnchorItemEquals(ModifierBase::SChAnchorItem _ChAnchor, CAnchorData _
 }
 
 Boolean SChAnchorBlockEquals(ModifierBase::SChAnchorBlock _ChAnchor, CAnchorData _Anchor) {
+	if(_Anchor == Null) return False;
+
 	if(_ChAnchor.DefaultTag != _Anchor.DefaultTag) return False;
 	if(_ChAnchor.DefaultOrder != _Anchor.DefaultOrder) return False;
 	if(_ChAnchor.Tag != _Anchor.Tag) return False;

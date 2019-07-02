@@ -421,10 +421,13 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			declare ModifierBase::SChAnchor ChAnchor;
 			declare JsonSuccess = ChAnchor.fromjson(Event.CustomEventData[0]);
 			declare Boolean Removed;
-			foreach(Data, AnchorData) {
-				if(Conversion::SChAnchorEquals(ChAnchor, Data)) {
-					if(ChAnchor.IsItem) Removed = RemoveItem(Data);
-					if(ChAnchor.IsBlock) Removed = SafeRemoveBlock(Data.Block);
+			for(i,0,AnchorData.count-1) {
+				if(AnchorData.existskey(i)) {
+					declare Data <=> AnchorData[i];
+					if(Conversion::SChAnchorEquals(ChAnchor, Data)) {
+						if(ChAnchor.IsItem) Removed = RemoveItem(Data);
+						if(ChAnchor.IsBlock) Removed = SafeRemoveBlock(Data.Block);
+					}
 				}
 			}
 			Respond(Event, [Removed^""]);
@@ -513,6 +516,27 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			declare PlacedBlock2 = PlaceBlock(GetBlockModelFromName(Block1.Name), Block2.Coord, Conversion::ToDirectionMap(Block2.Direction));
 
 			Respond(Event, [""^(RemovedBlock1 && RemovedBlock2 && PlacedBlock1 && PlacedBlock2)]);
+		}
+		case "Ch_GetStartLines": {
+			declare ModifierBase::SChAnchor[] ChAnchors;
+			foreach(Anchor, AnchorData)
+				if(Anchor.DefaultTag == "Spawn")
+					ChAnchors.add(Conversion::ToSChAnchor(Anchor));
+			Respond(Event, [ChAnchors.tojson()]);
+		}
+		case "Ch_GetFinishLines": {
+			declare ModifierBase::SChAnchor[] ChAnchors;
+			foreach(Anchor, AnchorData)
+				if(Anchor.DefaultTag == "Goal")
+					ChAnchors.add(Conversion::ToSChAnchor(Anchor));
+			Respond(Event, [ChAnchors.tojson()]);
+		}
+		case "Ch_GetCheckpoints": {
+			declare ModifierBase::SChAnchor[] ChAnchors;
+			foreach(Anchor, AnchorData)
+				if(Anchor.DefaultTag == "Checkpoint")
+					ChAnchors.add(Conversion::ToSChAnchor(Anchor));
+			Respond(Event, [ChAnchors.tojson()]);
 		}
 		case "Ch_GetStartLineBlocks": {
 			declare ModifierBase::SChAnchorBlock[] ChBlocks;
@@ -609,15 +633,15 @@ Void ProcessScript(Text _ScriptName, Text _ScriptContent) {
 			if(Event.Type == CMapEditorPluginEvent::Type::LayerCustomEvent) {
 				if(Event.CustomEventType == "Ch_Complete") {
 					Completed = True;
-					log("[BUILDER] "^_ScriptName^" completed");
+					log("[MODIFIER] "^_ScriptName^" completed");
 				}
 				else if(Event.CustomEventType == "Ch_Incompatible") {
 					Dialog_Message(Event.CustomEventData[0]);
 					Completed = True;
-					log("[BUILDER] "^_ScriptName^" failed");
+					log("[MODIFIER] "^_ScriptName^" failed");
 				}
 				else if(TextLib::StartsWith("Ch_", Event.CustomEventType)) {
-					log("[BUILDER] Request: "^Event.CustomEventType);
+					log("[MODIFIER] Request: "^Event.CustomEventType);
 					ProcessRequest(Event);
 				}
 				if(Event.CustomEventType == "ScriptMetadata") {

@@ -9,28 +9,21 @@ Script.Description = "{{{{CHECKPOINTLESS_DESCRIPTION}}}}";
 ***
 declare SChProblem Problem_CannotRemoveCheckpoint;
 
-declare Checkpoints = GetCheckpointBlocks();
-declare CheckpointItems = GetCheckpointItems();
+declare Checkpoints = GetCheckpoints();
 
 for(i,0,Checkpoints.count-1) {
 	declare Anchor = Checkpoints[i];
 	if(Anchor.DefaultTag == "Checkpoint") {
-		declare Removed = RemoveAnchorBlock(Anchor);
-		SetStatusProgress((i+1.0)/(Checkpoints.count + CheckpointItems.count));
-		SetStatusMessage("{{{{CHECKPOINT_FOUND}}}} " ^ Anchor.Block.Name);
+		if(Anchor.IsBlock) {
+			SetStatusMessage("{{{{CHECKPOINT_FOUND}}}} " ^ Anchor.Block.Name);
+		}
+		else if(Anchor.IsItem) {
+			SetStatusMessage("{{{{CHECKPOINT_FOUND}}}}");
+		}
+		
+		SetStatusProgress((i+1.0)/(Checkpoints.count));
 
-		if(!Removed) Problem(Problem_CannotRemoveCheckpoint);
-	}
-	yield;
-}
-
-for(i,0,CheckpointItems.count-1) {
-	declare Anchor = CheckpointItems[i];
-	if(Anchor.DefaultTag == "Checkpoint") {
-		declare Removed = RemoveAnchorItem(Anchor);
-		SetStatusProgress((i+1.0+Checkpoints.count)/(Checkpoints.count + CheckpointItems.count));
-		SetStatusMessage("{{{{CHECKPOINT_FOUND}}}}");
-
+		declare Removed = RemoveAnchor(Anchor);
 		if(!Removed) Problem(Problem_CannotRemoveCheckpoint);
 	}
 	yield;
@@ -41,7 +34,7 @@ Solution();
 
 ***Main_Fast***
 ***
-foreach(Block,GetCheckpointBlocks())
-	RemoveBlock(Block.Coord);
+foreach(Anchor,GetCheckpoints())
+	RemoveAnchor(Anchor);
 Solution();
 ***

@@ -110,8 +110,8 @@ Void Start() {
 	Layers::Create("Quickplay", Manialink::FromFile("Media/Manialinks/Quickplay", True), True);
 
 	declare OfficialScripts = [
-		"Checkpointless.Script.txt",
 		"Reverse.Script.txt",
+		"Checkpointless.Script.txt",
 		"Comeback.Script.txt",
 		"Default.Script.txt",
 		"NoCP.Script.txt"
