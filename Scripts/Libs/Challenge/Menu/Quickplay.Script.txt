@@ -29,6 +29,11 @@
 	SMetadata Metadata;
 }
 
+#Struct SMapInfoFilter {
+	Text Name;
+	Text Author;
+}
+
 declare CUILayer[Text] LayerAPIs;
 
 declare Text MapDownloadApproximateLocation;
@@ -43,11 +48,10 @@ declare Text[] DownloadedMapUids;
 declare Text ManagerMapUid;
 declare Boolean ManagerShowPrivate;
 
-Void UpdateLocalMaps(Text _Folder, Text _SearchMapName, Text _SearchAuthorName) {
-	declare FlatSearch = (_SearchMapName != "" || _SearchAuthorName != "");
+Void UpdateLocalMaps(Text _Folder, SMapInfoFilter _Filter) {
+	declare FlatSearch = (_Filter.Name != "");
 	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(Scope::C_BrowserScope,_Folder,FlatSearch));
-	Data::Set("MAPLIST_LOCAL_SEARCHMAPNAME",_SearchMapName);
-	Data::Set("MAPLIST_LOCAL_SEARCHAUTHORNAME",_SearchAuthorName);
+	Data::Set("MAPLIST_LOCAL_FILTER",_Filter.tojson());
 }
 
 Void UpdateOfficialScripts(Text[] _Scripts) {
@@ -120,7 +124,8 @@ Void Start() {
 		"NoCP.Script.txt"
 	];
 	
-	UpdateLocalMaps("","","");
+	declare SMapInfoFilter Filter;
+	UpdateLocalMaps("",Filter);
 	UpdateOfficialScripts(OfficialScripts);
 	
 	Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(Scope::C_BrowserScope, "Downloaded", True));
@@ -184,9 +189,9 @@ Void Event(CManiaAppEvent _Event) {
 				Web::AsyncDestroy("MAPMANAGER_MAPS");
 			
 				declare Folder = Event.CustomEventData[0];
-				declare SearchMapName = Event.CustomEventData[1];
-				declare SearchAuthorName = Event.CustomEventData[2];
-				UpdateLocalMaps(Folder, SearchMapName, SearchAuthorName);
+				declare SMapInfoFilter Filter;
+				declare JsonSuccess = Filter.fromjson(Event.CustomEventData[1]);
+				UpdateLocalMaps(Folder, Filter);
 			}
 			case "MapList_ManiaExchange_Add": {
 				declare MX::SMXSearchFilter Search;
@@ -307,20 +312,20 @@ Void Async() {
 			
 			declare Text[] SubFolders;
 			
-			declare SearchMapName = Data::Get("MAPLIST_LOCAL_SEARCHMAPNAME");
-			declare SearchAuthorName = Data::Get("MAPLIST_LOCAL_SEARCHAUTHORNAME");
+			declare SMapInfoFilter Filter;
+			declare JsonSuccess = Filter.fromjson(Data::Get("MAPLIST_LOCAL_FILTER"));
 			
-			if(SearchMapName == "" && SearchAuthorName == "") {
+			if(Filter.Name == "") {
 				SubFolders.add("...");
 				foreach(Folder,MapList.SubFolders) SubFolders.add(Folder);
 			}
 			
 			declare Map::SMapInfo[] MapInfos;
 			foreach(MapInfo,MapList.MapInfos) {
-				if(SearchMapName != "")
-					if(!TextLib::Find(SearchMapName, MapInfo.Name, False, False)) continue;
-				if(SearchAuthorName != "")
-					if(!TextLib::Find(SearchAuthorName, MapInfo.AuthorLogin ^ MapInfo.AuthorNickName, False, False)) continue;
+				if(Filter.Name != "")
+					if(!TextLib::Find(Filter.Name, MapInfo.Name, False, False)) continue;
+				if(Filter.Author != "")
+					if(!TextLib::Find(Filter.Author, MapInfo.AuthorLogin ^ MapInfo.AuthorNickName, False, False)) continue;
 			
 				declare Map::SMapInfo Info;
 				Info = Map::ToSMapInfo(MapInfo);

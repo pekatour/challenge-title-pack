@@ -96,6 +96,11 @@
 	Boolean TMObjective_IsLapRace;
 }
 
+#Struct SMapInfoFilter {
+	Text Name;
+	Text Author;
+}
+
 #Struct SMap {
 	Text Uid;
 	Text Name;
@@ -143,6 +148,7 @@ declare Text[Text] Nicknames;
 declare Text[] DownloadedMapUids;
 
 declare SMXSearchFilter FilterMX;
+declare SMapInfoFilter FilterLocal;
 
 Text TimeToTextWithMilli(Integer _Time) {
 	return TextLib::TimeToText(_Time, True)^TextLib::SubText(""^_Time, TextLib::Length(""^_Time)-1, 1);
@@ -610,7 +616,8 @@ main() {
 						}
 						case "ENTRY_MAPLIST_LOCAL_SEARCH": {
 							if(MapLocation == "Local") {
-								SendCustomEvent("MapList_Local_Folder", ["",(Page.GetFirstChild("ENTRY_MAPLIST_LOCAL_SEARCH") as CMlEntry).Value, ""]);
+								FilterLocal.Name = (Page.GetFirstChild("ENTRY_MAPLIST_LOCAL_SEARCH") as CMlEntry).Value;
+								SendCustomEvent("MapList_Local_Folder", ["",FilterLocal.tojson()]);
 								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 							}
 						}
@@ -686,14 +693,14 @@ main() {
 									if(Folders.count > 0) {
 										Folders.removekey(Folders.count-1);
 										declare NewFolder = TextLib::Join("\\",Folders);
-										SendCustomEvent("MapList_Local_Folder", [NewFolder,(Page.GetFirstChild("ENTRY_MAPLIST_LOCAL_SEARCH") as CMlEntry).Value, ""]);
+										SendCustomEvent("MapList_Local_Folder", [NewFolder,FilterLocal.tojson()]);
 									}
 									else {
 										log("Yo, what dimension is this 8|");
 									}
 								}
 								else {
-									SendCustomEvent("MapList_Local_Folder", [Folder, (Page.GetFirstChild("ENTRY_MAPLIST_LOCAL_SEARCH") as CMlEntry).Value, ""]);
+									SendCustomEvent("MapList_Local_Folder", [Folder, FilterLocal.tojson()]);
 								}
 
 								UpdateLocalMapsFolder(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
@@ -758,7 +765,7 @@ main() {
 							}
 						}
 						case "QUAD_LOCATION_MAP_LOCAL": {
-							SendCustomEvent("MapList_Local_Folder", ["",(Page.GetFirstChild("ENTRY_MAPLIST_LOCAL_SEARCH") as CMlEntry).Value, ""]);
+							SendCustomEvent("MapList_Local_Folder", ["",FilterLocal.tojson()]);
 							MapLocation = "Local";
 						}
 						case "QUAD_LOCATION_MAP_MX": {
