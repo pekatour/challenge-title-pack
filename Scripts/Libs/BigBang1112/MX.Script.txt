@@ -430,12 +430,12 @@ SMXMappack[] SearchMappack(Text _Site, SMXSearchMappackFilter _Filter, Boolean _
 // Finds track information from track IDs synchronously.
 
 // Text _Site - "tm" or "sm" exchange
-// Integer[] _TrackIds - Array of track IDs
+// Text[] _TrackIds - Array of track IDs
 // Boolean _UseCache - If to cache the result, True recommended
 
 // Returns list of tracks found using the same indexes _TrackIds have. If track ID not found, default SMXTrack is used
 */
-SMXTrack[] TrackMultiple(Text _Site, Integer[] _TrackIds, Boolean _UseCache) {
+SMXTrack[] TrackMultiple(Text _Site, Text[] _TrackIds, Boolean _UseCache) {
 	declare SMXTrack[] Tracks;
 	
 	declare Text TrackIdText;
@@ -454,12 +454,12 @@ SMXTrack[] TrackMultiple(Text _Site, Integer[] _TrackIds, Boolean _UseCache) {
 // Finds track information from track ID synchronously.
 
 // Text _Site - "tm" or "sm" exchange
-// Integer _TrackId - Track ID
+// Text _TrackId - Track ID
 // Boolean _UseCache - If to cache the result, True recommended
 
 // Returns SMXTrack with non-default data if track found
 */
-SMXTrack Track(Text _Site, Integer _TrackId, Boolean _UseCache) {
+SMXTrack Track(Text _Site, Text _TrackId, Boolean _UseCache) {
 	declare SMXTrack Info;
 	declare Tracks = TrackMultiple(_Site, [_TrackId], _UseCache);
 	if(Tracks.count > 0) Info = Tracks[0];
@@ -742,12 +742,12 @@ SMXMappack[] GetAsyncSearchMappackResult(Text _Name) {
 
 // Text _Name - Custom request name
 // Text _Site - "tm" or "sm" exchange
-// Integer[] _TrackIds - Array of track IDs
+// Text[] _TrackIds - Array of track IDs
 // Boolean _UseCache - If to cache the result, True recommended
 
 // Returns True if request is possible
 */
-Boolean AsyncTrackMultiple(Text _Name, Text _Site, Integer[] _TrackIds, Boolean _UseCache) {
+Boolean AsyncTrackMultiple(Text _Name, Text _Site, Text[] _TrackIds, Boolean _UseCache) {
 	declare Text TrackIdText;
 	if(_TrackIds.count > 0) {
 		TrackIdText ^= _TrackIds[0];
@@ -783,12 +783,12 @@ SMXTrack[] GetAsyncTrackMultipleResult(Text _Name) {
 
 // Text _Name - Custom request name
 // Text _Site - "tm" or "sm" exchange
-// Integer[] _TrackId - Track ID
+// Text[] _TrackId - Track ID
 // Boolean _UseCache - If to cache the result, True recommended
 
 // Returns True if request is possible
 */
-Boolean AsyncTrack(Text _Name, Text _Site, Integer _TrackId, Boolean _UseCache) {
+Boolean AsyncTrack(Text _Name, Text _Site, Text _TrackId, Boolean _UseCache) {
 	return AsyncTrackMultiple(_Name, _Site, [_TrackId], _UseCache);
 }
 

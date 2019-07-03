@@ -388,3 +388,19 @@ SMap[] GetAsyncMeMapsResult(Text _Name) {
 	}
 	return Result;
 }
+
+Boolean AsyncMap(Text _Name, Text _Uid) {
+	return Http::AsyncGET(_Name, "https://maniaplanet.com/webservices/maps/"^_Uid);
+}
+
+SMap GetAsyncMapResult(Text _Name) {
+	declare SMap Result;
+	
+	if(AsyncIsCompleted(_Name, True)) {
+		if(AsyncIsSuccessful(_Name)) {
+			declare JsonSuccess = Result.fromjson(Private_ToCleanerJson(AsyncGetResult(_Name)));
+		}
+		AsyncDestroy(_Name);
+	}
+	return Result;
+}

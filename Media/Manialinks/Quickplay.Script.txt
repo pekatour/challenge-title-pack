@@ -578,6 +578,19 @@ main() {
 								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 							}
 						}
+						case "ENTRY_MAPLIST_UID": {
+							switch(MapLocation) {
+								case "Local": {
+									SendCustomEvent("MapList_Local_QuickUid", [(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value]);
+								}
+								case "ManiaExchange": {
+									SendCustomEvent("MapList_ManiaExchange_QuickUid", [(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value]);
+								}
+								case "MapManager": {
+									SendCustomEvent("MapList_MapManager_QuickUid", [(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value]);
+								}
+							}
+						}
 					}
 				}
 				case CMlScriptEvent::Type::MouseClick: {
@@ -896,6 +909,18 @@ main() {
 						}
 						case "MapList_Local_Refresh_Response": {
 							UpdateLocalMapsFolder(0);
+						}
+						case "MapList_Local_QuickUid_Response": {
+							declare JsonSuccess = SelectedMapInfo.fromjson(Event.CustomEventData[0]);
+							UpdateLocalMapsFolder(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+						}
+						case "MapList_ManiaExchange_QuickUid_Response": {
+							declare JsonSuccess = SelectedMXTrackInfo.fromjson(Event.CustomEventData[0]);
+							UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+						}
+						case "MapList_MapManager_QuickUid_Response": {
+							declare JsonSuccess = SelectedManagerMapInfo.fromjson(Event.CustomEventData[0]);
+							UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
 						}
 					}
 				}

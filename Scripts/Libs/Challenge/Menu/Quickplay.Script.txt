@@ -14,6 +14,7 @@
 #Include "Libs/Challenge/Menu/AuthBeta.Script.txt" as Menu_AuthBeta
 
 #Include "Libs/Challenge/Nicknames.Script.txt" as Nicknames
+#Include "Libs/Challenge/Scope.Script.txt" as Scope
 
 #Struct SMetadata {
 	Text Name;
@@ -39,10 +40,11 @@ declare Boolean MapDownload;
 declare Text MapDownloadType;
 
 declare Text[] DownloadedMapUids;
+declare Text ManagerMapUid;
 
 Void UpdateLocalMaps(Text _Folder, Text _SearchMapName, Text _SearchAuthorName) {
 	declare FlatSearch = (_SearchMapName != "" || _SearchAuthorName != "");
-	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(4,_Folder,FlatSearch));
+	Task::Async_DataFileMgr("MAPLIST_LOCAL_FOLDER",DataFileMgr.Map_GetFilteredGameList(Scope::C_BrowserScope,_Folder,FlatSearch));
 	Data::Set("MAPLIST_LOCAL_SEARCHMAPNAME",_SearchMapName);
 	Data::Set("MAPLIST_LOCAL_SEARCHAUTHORNAME",_SearchAuthorName);
 }
@@ -82,7 +84,7 @@ Void StartMap(Text _MapLocation, Map::SMapInfo _MapInfo, SScriptInfo[] _Scripts)
 }
 
 Boolean StartMapIfExists() {	
-	declare List = Task::SyncMapList(DataFileMgr.Map_GetFilteredGameList(4, MapDownloadApproximateLocation, True));
+	declare List = Task::SyncMapList(DataFileMgr.Map_GetFilteredGameList(Scope::C_BrowserScope, MapDownloadApproximateLocation, True));
 	foreach(MapInfo,List.MapInfos) {
 		if(MapInfo.MapUid == MapDownloadUid) {
 			wait(TitleFlow.IsReady);
@@ -95,7 +97,7 @@ Boolean StartMapIfExists() {
 			MapDownloadApproximateLocation = "";
 			DataFileMgr.TaskResult_Release(List.Id);
 
-			Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(4, "Downloaded", True));
+			Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(Scope::C_BrowserScope, "Downloaded", True));
 			
 			MapDownload = False;
 			
@@ -120,7 +122,7 @@ Void Start() {
 	UpdateLocalMaps("","","");
 	UpdateOfficialScripts(OfficialScripts);
 	
-	Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(4, "Downloaded", True));
+	Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(Scope::C_BrowserScope, "Downloaded", True));
 }
 
 Void Event(CManiaAppEvent _Event) {
@@ -246,7 +248,7 @@ declare SChMetadata Script;
 				Nicknames::Submit(Event.CustomEventData[0]);
 			}
 			case "UpdateDownloaded": {
-				Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(4, "Downloaded", True));
+				Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(Scope::C_BrowserScope, "Downloaded", True));
 			}
 			case "MapList_DestroyMapManager": {
 				Web::AsyncDestroy("MAPMANAGER_MAPS");
@@ -254,6 +256,16 @@ declare SChMetadata Script;
 			case "MapList_Local_Refresh": {
 				DataFileMgr.Map_RefreshFromDisk();
 				Layers::SendEvent("Quickplay", "MapList_Local_Refresh_Response", []);
+			}
+			case "MapList_Local_QuickUid": {
+				ManagerMapUid = Event.CustomEventData[0];
+				Task::Async_DataFileMgr("QUICKUID_LOCAL",DataFileMgr.Map_GetFilteredGameList(Scope::C_BrowserScope, "", True));
+			}
+			case "MapList_ManiaExchange_QuickUid": {
+				declare Successful = MX::AsyncTrack("MX_QUICKUID", "tm", Event.CustomEventData[0], True);
+			}
+			case "MapList_MapManager_QuickUid": {
+				declare Successful = Web::AsyncMap("QUICKUID_MAPMANAGER", Event.CustomEventData[0]);
 			}
 		}
 	}
@@ -276,6 +288,15 @@ Void Async() {
 			log("Can't load MX: " ^ MX::AsyncGetStatusCode("MX_SEARCH_UPDATE"));
 		}
 		MX::AsyncDestroy("MX_SEARCH_UPDATE");
+	}
+	if(MX::AsyncIsCompleted("MX_QUICKUID")) {
+		if(MX::AsyncIsSuccessful("MX_QUICKUID")) {
+			Layers::SendEvent("Quickplay", "MapList_ManiaExchange_QuickUid_Response", [MX::GetAsyncTrackResult("MX_QUICKUID").tojson()]);
+		}
+		else {
+			log("Can't load MX: " ^ MX::AsyncGetStatusCode("MX_QUICKUID"));
+		}
+		MX::AsyncDestroy("MX_QUICKUID");
 	}
 	
 	if(Task::IsCompleted("MAPLIST_LOCAL_FOLDER")) {
@@ -318,6 +339,18 @@ Void Async() {
 			Task::Destroy_DataFileMgr("DOWNLOADED_MAPUIDS");
 		}
 	}
+	if(Task::IsCompleted("QUICKUID_LOCAL")) {
+		if(Task::IsSuccessful("QUICKUID_LOCAL")) {
+			declare MapList = (Task::Get("QUICKUID_LOCAL") as CTaskResult_MapList);
+			
+			foreach(MapInfo,MapList.MapInfos)
+				if(MapInfo.MapUid == ManagerMapUid)
+					Layers::SendEvent("Quickplay", "MapList_Local_QuickUid_Response", [Map::ToSMapInfo(MapInfo).tojson()]);
+			
+			Task::Destroy_DataFileMgr("QUICKUID_LOCAL");
+		}
+	}
+	
 	if(Web::AsyncIsCompleted("MAPMANAGER_MAPS")) {
 		if(Web::AsyncIsSuccessful("MAPMANAGER_MAPS")) {
 			Layers::SendEvent("Quickplay", "MapManager_Maps", [Web::GetAsyncMeMapsResult("MAPMANAGER_MAPS").tojson()]);
@@ -326,6 +359,15 @@ Void Async() {
 			log("Map Manager HTTP error: "^Web::AsyncGetStatusCode("MAPMANAGER_MAPS"));
 		}
 		Web::AsyncDestroy("MAPMANAGER_MAPS");
+	}
+	if(Web::AsyncIsCompleted("QUICKUID_MAPMANAGER")) {
+		if(Web::AsyncIsSuccessful("QUICKUID_MAPMANAGER")) {
+			Layers::SendEvent("Quickplay", "MapList_MapManager_QuickUid_Response", [Web::GetAsyncMapResult("QUICKUID_MAPMANAGER").tojson()]);
+		}
+		else {
+			log("Map Manager HTTP error: "^Web::AsyncGetStatusCode("QUICKUID_MAPMANAGER"));
+		}
+		Web::AsyncDestroy("QUICKUID_MAPMANAGER");
 	}
 }
 
