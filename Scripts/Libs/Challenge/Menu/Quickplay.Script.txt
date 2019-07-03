@@ -190,9 +190,8 @@ Void Event(CManiaAppEvent _Event) {
 			}
 			case "MapList_ManiaExchange_Add": {
 				declare MX::SMXSearchFilter Search;
+				declare JsonSuccess = Search.fromjson(Event.CustomEventData[1]);
 				Search.Page = Event.CustomEventData[0];
-				Search.TrackName = Event.CustomEventData[1];
-				Search.Author = Event.CustomEventData[2];
 				Search.Limit = "20";
 				if(!MX::AsyncSearch("MX_SEARCH_ADD", "tm", Search, True)) {
 				
@@ -200,9 +199,8 @@ Void Event(CManiaAppEvent _Event) {
 			}
 			case "MapList_ManiaExchange_Update": {				
 				declare MX::SMXSearchFilter Search;
+				declare JsonSuccess = Search.fromjson(Event.CustomEventData[1]);
 				Search.Page = Event.CustomEventData[0];
-				Search.TrackName = Event.CustomEventData[1];
-				Search.Author = Event.CustomEventData[2];
 				Search.Limit = "20";
 				if(!MX::AsyncSearch("MX_SEARCH_UPDATE", "tm", Search, True)) {
 				
@@ -401,7 +399,7 @@ Void Loop() {
 				MapDownload = True;
 			}
 			if(MXTrack.MapType == "Challenge" && MapDownloadType == "mx") {
-				declare List = Task::SyncMapList(DataFileMgr.Map_GetFilteredGameList(4, MapDownloadApproximateLocation, True));
+				declare List = Task::SyncMapList(DataFileMgr.Map_GetFilteredGameList(Scope::C_BrowserScope, MapDownloadApproximateLocation, True));
 				foreach(MapInfo,List.MapInfos) {
 					if(MapInfo.MapUid == MapDownloadUid) {
 						wait(TitleFlow.IsReady);
@@ -409,7 +407,7 @@ Void Loop() {
 						
 						MapDownloadApproximateLocation = "";
 						DataFileMgr.TaskResult_Release(List.Id);
-						Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(4, "Downloaded", True));
+						Task::Async_DataFileMgr("DOWNLOADED_MAPUIDS",DataFileMgr.Map_GetFilteredGameList(Scope::C_BrowserScope, "Downloaded", True));
 						MapDownload = False;
 					}
 				}

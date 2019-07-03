@@ -47,6 +47,39 @@
 	Integer EmbeddedObjectsCount;
 }
 
+#Struct SMXSearchFilter {
+	Text Mode;
+	Text TrackName;
+	Text Author;
+	Text MPAuthor;
+	Text AnyAuthor;
+	Text Mod;
+	Text AuthorID;
+	Text[] MapType;
+	Text[] TitlePack;
+	Text ReplayType;
+	Text Style;
+	Text Length;
+	Text LengthOperator;
+	Text PrimaryOrder;
+	Text SecondaryOrder;
+	Text[] Environments;
+	Text[] Vehicles;
+	Text Unlimiter;
+	Text Page;
+	Text Limit;
+	Text Unreleased;
+	Text MapGroup;
+	Text CommentsMinLength;
+	Text CustomScreenshot;
+	Text MinExeBuild;
+	Text MaxExeBuild;
+	Text Envmix;
+	Text GhostBlocks;
+	Text EmbeddedObjects;
+	Text GameVersion;
+}
+
 #Struct SMapInfo {
 	Text Name;
 	Text AuthorLogin;
@@ -108,6 +141,8 @@ declare Text[Text] OfficialScripts;
 
 declare Text[Text] Nicknames;
 declare Text[] DownloadedMapUids;
+
+declare SMXSearchFilter FilterMX;
 
 Text TimeToTextWithMilli(Integer _Time) {
 	return TextLib::TimeToText(_Time, True)^TextLib::SubText(""^_Time, TextLib::Length(""^_Time)-1, 1);
@@ -334,7 +369,7 @@ Void UpdateManiaExchange(Integer _Offset) {
 	if(MathLib::NearestInteger(Frame_MapList.ScrollMax.Y) == MathLib::NearestInteger(Frame_MapList.ScrollOffset.Y)) { //Not equal in Real but equal in Integer, nice lol
 		//Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 		MXPage += 1;
-		SendCustomEvent("MapList_ManiaExchange_Add", [MXPage^"", (Page.GetFirstChild("ENTRY_MAPLIST_MX_SEARCH") as CMlEntry).Value, ""]);
+		SendCustomEvent("MapList_ManiaExchange_Add", [MXPage^"", FilterMX.tojson(), ""]);
 	}
 
 	if(SelectedMXTrackInfo.GbxMapName == "") (Page.GetFirstChild("LABEL_MAP_NAME") as CMlLabel).SetText("mania$0ffexchange$z / $888{{{{no_map_selected}}}}");
@@ -568,7 +603,8 @@ main() {
 					switch(Event.ControlId) {
 						case "ENTRY_MAPLIST_MX_SEARCH": {
 							if(MapLocation == "ManiaExchange") {
-								SendCustomEvent("MapList_ManiaExchange_Update", [MXPage^"", (Page.GetFirstChild("ENTRY_MAPLIST_MX_SEARCH") as CMlEntry).Value, ""]);
+								FilterMX.TrackName = (Page.GetFirstChild("ENTRY_MAPLIST_MX_SEARCH") as CMlEntry).Value;
+								SendCustomEvent("MapList_ManiaExchange_Update", [MXPage^"", FilterMX.tojson(), ""]);
 								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 							}
 						}
@@ -751,7 +787,7 @@ main() {
 								SendCustomEvent("MapList_DestroyMapManager", []);
 
 								if(MapBrowserMXTrackInfos.count == 0) {
-									SendCustomEvent("MapList_ManiaExchange_Update", ["1", (Page.GetFirstChild("ENTRY_MAPLIST_MX_SEARCH") as CMlEntry).Value, ""]);
+									SendCustomEvent("MapList_ManiaExchange_Update", ["1", FilterMX.tojson(), ""]);
 									Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 								}
 								else {
