@@ -41,6 +41,7 @@ declare Text MapDownloadType;
 
 declare Text[] DownloadedMapUids;
 declare Text ManagerMapUid;
+declare Boolean ManagerShowPrivate;
 
 Void UpdateLocalMaps(Text _Folder, Text _SearchMapName, Text _SearchAuthorName) {
 	declare FlatSearch = (_SearchMapName != "" || _SearchAuthorName != "");
@@ -209,6 +210,9 @@ Void Event(CManiaAppEvent _Event) {
 			}
 			case "MapList_MapManager_Update": {
 				MX::AsyncDestroy("MX_SEARCH_UPDATE");
+				
+				declare ManagerSearch = Event.CustomEventData[0];
+				ManagerShowPrivate = Event.CustomEventData[1] == "True";
 			
 				declare Token = Menu_AuthBeta::GetAccess().Token;
 				declare Successful = Web::AsyncMeMaps("MAPMANAGER_MAPS", Token);
@@ -353,7 +357,18 @@ Void Async() {
 	
 	if(Web::AsyncIsCompleted("MAPMANAGER_MAPS")) {
 		if(Web::AsyncIsSuccessful("MAPMANAGER_MAPS")) {
-			Layers::SendEvent("Quickplay", "MapManager_Maps", [Web::GetAsyncMeMapsResult("MAPMANAGER_MAPS").tojson()]);
+			declare Maps = Web::GetAsyncMeMapsResult("MAPMANAGER_MAPS");
+			declare Offset = 0;
+			if(!ManagerShowPrivate) {
+				for(i,0,Maps.count-1) {
+					if(Maps.existskey(i))
+					if(Maps[i].Private) {
+						declare Removed = Maps.removekey(i-Offset);
+						Offset += 1;
+					}
+				}
+			}
+			Layers::SendEvent("Quickplay", "MapManager_Maps", [Maps.tojson()]);
 		}
 		else {
 			log("Map Manager HTTP error: "^Web::AsyncGetStatusCode("MAPMANAGER_MAPS"));

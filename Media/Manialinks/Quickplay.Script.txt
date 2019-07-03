@@ -778,7 +778,7 @@ main() {
 								(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value = SelectedManagerMapInfo.Uid;
 
 								if(MapBrowserManagerTrackInfos.count == 0) {
-									SendCustomEvent("MapList_MapManager_Update", [(Page.GetFirstChild("ENTRY_MAPLIST_MANAGER_SEARCH") as CMlEntry).Value]);
+									SendCustomEvent("MapList_MapManager_Update", [(Page.GetFirstChild("ENTRY_MAPLIST_MANAGER_SEARCH") as CMlEntry).Value, ""^((Page.GetFirstChild("QUAD_MANAGER_SHOWPRIVATE") as CMlQuad).ModulateColor == <0.0,0.2,0.4>)]);
 									Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 								}
 								else {
@@ -822,6 +822,18 @@ main() {
 						}
 						case "LABEL_MAPLIST_REFRESH": {
 							SendCustomEvent("MapList_Local_Refresh", []);
+						}
+						case "QUAD_MANAGER_SHOWPRIVATE": {
+							if((Event.Control as CMlQuad).ModulateColor == <0.4,0.4,0.4>) {
+								(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
+								SendCustomEvent("MapList_MapManager_Update", [(Page.GetFirstChild("ENTRY_MAPLIST_MANAGER_SEARCH") as CMlEntry).Value, "True"]);
+								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
+							}
+							else {
+								(Event.Control as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+								SendCustomEvent("MapList_MapManager_Update", [(Page.GetFirstChild("ENTRY_MAPLIST_MANAGER_SEARCH") as CMlEntry).Value, "False"]);
+								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
+							}
 						}
 					}
 				}
