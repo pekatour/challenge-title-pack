@@ -9,6 +9,60 @@
 		
 		<frame clip="True" clipposn="75 50" clipsizen="150 100" pos="0 5">
 			<frame id="FRAME_MAP" pos="0 0" hidden="1">
+				<frame id="FRAME_FILTER_MX" pos="80 -20" z-index="10" hidden="1">
+					<quad pos="0 5" z-index="-1" size="50 50" style="Bgs1" substyle="BgDialogBlur" scriptevents="1"/>
+					<quad pos="0 5" z-index="-1" size="50 50" style="Bgs1" substyle="BgDialogBlur"/>
+					
+					<quad pos="50 5" z-index="0" size="1 10" bgcolor="FFFA" style="Bgs1" substyle="BgMetalBar" id="QUAD_SCROLL"/>
+					<frame clip="True" clipsizen="50 50" clipposn="25 -20">
+						<frame pos="0 2.5">
+							<label pos="1 0" z-index="0" size="20 5" text="Mode" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+							<entry pos="20 0" z-index="0" size="30 5" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+						</frame>
+						<frame pos="0 -2.5">
+							<quad pos="0 0" z-index="0" size="20 5" bgcolor="0002" valign="center2"/>
+							<label pos="1 0" z-index="1" size="20 5" text="TrackName" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+							<entry pos="20 0" z-index="0" size="30 5" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+						</frame>
+						<frame pos="0 -7.5">
+							<label pos="1 0" z-index="0" size="20 5" text="Author" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+							<entry pos="20 0" z-index="0" size="30 5" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+						</frame>
+						<frame pos="0 -12.5">
+							<quad z-index="0" size="20 5" bgcolor="0002" valign="center2"/>
+							<label pos="1 0" z-index="1" size="20 5" text="MPAuthor" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+							<entry pos="20 0" z-index="0" size="30 5" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+						</frame>
+						<frame pos="0 -17.5">
+							<label pos="1 0" z-index="1" size="20 5" text="AnyAuthor" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+							<entry pos="20 0" z-index="0" size="30 5" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+						</frame>
+						<frame pos="0 -22.5">
+							<quad z-index="0" size="20 5" bgcolor="0002" valign="center2"/>
+							<label pos="1 0" z-index="1" size="20 5" text="Mod" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+							<entry pos="20 0" z-index="0" size="30 5" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+						</frame>
+						<frame pos="0 -27.5">
+							<label pos="1 0" z-index="1" size="20 5" text="AuthorID" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+							<entry pos="20 0" z-index="0" size="30 5" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+						</frame>
+						<frame pos="0 -32.5">
+							<quad z-index="0" size="20 5" bgcolor="0002" valign="center2"/>
+							<label pos="1 0" z-index="1" size="20 5" text="MapType" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+							<entry pos="20 0" z-index="0" size="30 5" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+						</frame>
+						<frame pos="0 -37.5">
+							<label pos="1 0" z-index="1" size="20 5" text="TitlePack" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+							<entry pos="20 0" z-index="0" size="30 5" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+						</frame>
+						<frame pos="0 -42.5">
+							<quad z-index="0" size="20 5" bgcolor="0002" valign="center2"/>
+							<label pos="1 0" z-index="1" size="20 5" text="ReplayType" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+							<entry pos="20 0" z-index="0" size="30 5" textsize="1" valign="center2" textfont="BiryaniDemiBold"/>
+						</frame>
+					</frame>
+				</frame>
+
 				<quad z-index="-2" size="150 101" bgcolor="000A" valign="top" style="Bgs1" substyle="BgCardList" scriptevents="1"/>
 				<quad z-index="-1" size="150 101" bgcolor="FFFA" style="Bgs1" substyle="BgGradV"/>
 				<quad z-index="-1" size="150 101" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" pos="0 0"/>
@@ -38,7 +92,7 @@
 					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="555"/>
 					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="555"/>
 					<entry pos="3 -5" z-index="0" size="50 6" default="" valign="center2" id="ENTRY_MAPLIST_LOCAL_SEARCH"/>
-					<label pos="56 -5.3" z-index="0" size="20 5" text="$o{{{{MORE_FILTERS}}}}" valign="center2" textfont="Oswald" style="TextButtonBig" scriptevents="1"/>
+					<label pos="56 -5.3" z-index="0" size="20 5" text="$o{{{{MORE_FILTERS}}}}" valign="center2" textfont="Oswald" style="TextButtonBig" scriptevents="1" id="LABEL_MOREFILTERS"/>
 					
 					<label pos="144 -5.2" z-index="0" size="10 10" text="" halign="center" valign="center2" style="TextButtonBig" scriptevents="1" textsize="3" id="LABEL_MAPLIST_REFRESH"/>
 				</frame>

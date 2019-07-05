@@ -878,6 +878,11 @@ main() {
 								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 							}
 						}
+
+						case "LABEL_MOREFILTERS": {
+							if(Page.GetFirstChild("FRAME_FILTER_MX").Visible) Page.GetFirstChild("FRAME_FILTER_MX").Hide();
+							else Page.GetFirstChild("FRAME_FILTER_MX").Show();
+						}
 					}
 				}
 				
