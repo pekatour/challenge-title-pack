@@ -1,0 +1,392 @@
+{
+	"Structs": {
+		"SChMetadata": [
+			{ "Type": "Text", "Name": "Name" },
+			{ "Type": "Text", "Name": "AuthorLogin" },
+			{ "Type": "Text", "Name": "Description" }
+		],
+		"SChBlock": [
+			{ "Type": "Integer", "Name": "BlockScriptId" },
+			{ "Type": "Text", "Name": "Name" },
+			{ "Type": "Int3", "Name": "Coord" },
+			{ "Type": "Text", "Name": "Direction" },
+			{ "Type": "Boolean", "Name": "IsRoad" },
+			{ "Type": "Boolean", "Name": "IsTerrain" },
+			{ "Type": "Boolean", "Name": "IsPodium" },
+			{ "Type": "Text", "Name": "Waypoint" },
+			{ "Type": "Boolean", "Name": "NoRespawn" }
+		],
+		"SChMacroblock": [
+			{ "Type": "Boolean", "Name": "IsGround" },
+			{ "Type": "Boolean", "Name": "HasStart" },
+			{ "Type": "Boolean", "Name": "HasFinish" },
+			{ "Type": "Boolean", "Name": "HasCheckpoint" },
+			{ "Type": "Boolean", "Name": "HasMultilap" },
+			{ "Type": "Text", "Name": "Name" }
+		],
+		"SChItem": [
+			{ "Type": "Vec3", "Name": "Position" }
+		],
+		"SChAnchor": [
+			{ "Type": "Ident", "Name": "Id" },
+			{ "Type": "Text", "Name": "DefaultTag" },
+			{ "Type": "Integer", "Name": "DefaultOrder" },
+			{ "Type": "Text", "Name": "Tag" },
+			{ "Type": "Integer", "Name": "Order" },
+			{ "Type": "Boolean", "Name": "IsBlock" },
+			{ "Type": "SChBlock", "Name": "Block" },
+			{ "Type": "Boolean", "Name": "IsItem" },
+			{ "Type": "SChItem", "Name": "Item" }
+		],
+		"SChAnchorBlock": [
+			{ "Type": "Ident", "Name": "Id" },
+			{ "Type": "Text", "Name": "DefaultTag" },
+			{ "Type": "Integer", "Name": "DefaultOrder" },
+			{ "Type": "Text", "Name": "Tag" },
+			{ "Type": "Integer", "Name": "Order" },
+			{ "Type": "Boolean", "Name": "IsBlock" },
+			{ "Type": "SChBlock", "Name": "Block" }
+		],
+		"SChAnchorItem": [
+			{ "Type": "Ident", "Name": "Id" },
+			{ "Type": "Text", "Name": "DefaultTag" },
+			{ "Type": "Integer", "Name": "DefaultOrder" },
+			{ "Type": "Text", "Name": "Tag" },
+			{ "Type": "Integer", "Name": "Order" },
+			{ "Type": "Boolean", "Name": "IsBlock" },
+			{ "Type": "SChItem", "Name": "Item" }
+		],
+		"SReplacementResult": [
+			{ "Type": "Boolean", "Name": "Removed" },
+			{ "Type": "Boolean", "Name": "Placed" }
+		],
+		"SChProblem": [
+			{ "Type": "SChBlock", "Name": "Block" }
+		],
+		"SChNote": [
+			{ "Type": "SChBlock", "Name": "Block" }
+		]
+	},
+	"Functions": {
+		"ComputeShadows": {
+			"Return": "Void",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": []
+		},
+		"RemoveAllBlocks": {
+			"Return": "Void",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": []
+		},
+		"RemoveAllTerrain": {
+			"Return": "Void",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": []
+		},
+		"RemoveAllOffZone": {
+			"Return": "Void",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": []
+		},
+		"RemoveAllObjects": {
+			"Return": "Void",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": []
+		},
+		"RemoveAll": {
+			"Return": "Void",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": []
+		},
+		"RemoveAllBlocksAndTerrain": {
+			"Return": "Void",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": []
+		},
+		"PreloadAllBlocks": {
+			"Return": "Void",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": []
+		},
+		"PreloadAllItems": {
+			"Return": "Void",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": []
+		},
+		"CanPlaceBlock": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_BlockName" },
+				{ "Type": "Int3", "Name": "_Coord" },
+				{ "Type": "Text", "Name": "_Direction" },
+				{ "Type": "Boolean", "Name": "_OnGround" },
+				{ "Type": "Integer", "Name": "_VariantIndex" }
+			]
+		},
+		"CanPlaceBlock_NoDestruction": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_BlockName" },
+				{ "Type": "Int3", "Name": "_Coord" },
+				{ "Type": "Text", "Name": "_Direction" },
+				{ "Type": "Boolean", "Name": "_OnGround" },
+				{ "Type": "Integer", "Name": "_VariantIndex" }
+			]
+		},
+		"PlaceBlock": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_BlockName" },
+				{ "Type": "Int3", "Name": "_Coord" },
+				{ "Type": "Text", "Name": "_Direction" }
+			]
+		},
+		"PlaceBlock_NoDestruction": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_BlockName" },
+				{ "Type": "Int3", "Name": "_Coord" },
+				{ "Type": "Text", "Name": "_Direction" }
+			]
+		},
+		"CanPlaceRoadBlocks": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_BlockName" },
+				{ "Type": "Int3", "Name": "_StartCoord" },
+				{ "Type": "Int3", "Name": "_EndCoord" }
+			]
+		},
+		"PlaceRoadBlocks": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_BlockName" },
+				{ "Type": "Int3", "Name": "_StartCoord" },
+				{ "Type": "Int3", "Name": "_EndCoord" }
+			]
+		},
+		"CanPlaceTerrainBlocks": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_BlockName" },
+				{ "Type": "Int3", "Name": "_StartCoord" },
+				{ "Type": "Int3", "Name": "_EndCoord" }
+			]
+		},
+		"PlaceTerrainBlocks": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_BlockName" },
+				{ "Type": "Int3", "Name": "_StartCoord" },
+				{ "Type": "Int3", "Name": "_EndCoord" }
+			]
+		},
+		"PlaceTerrainBlocks_NoDestruction": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_BlockName" },
+				{ "Type": "Int3", "Name": "_StartCoord" },
+				{ "Type": "Int3", "Name": "_EndCoord" }
+			]
+		},
+		"CanPlaceMacroblock": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_MacroblockName" },
+				{ "Type": "Int3", "Name": "_Coord" },
+				{ "Type": "Text", "Name": "_Direction" }
+			]
+		},
+		"PlaceMacroblock": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_MacroblockName" },
+				{ "Type": "Int3", "Name": "_Coord" },
+				{ "Type": "Text", "Name": "_Direction" }
+			]
+		},
+		"CanPlaceMacroblock_NoDestruction": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_MacroblockName" },
+				{ "Type": "Int3", "Name": "_Coord" },
+				{ "Type": "Text", "Name": "_Direction" }
+			]
+		},
+		"PlaceMacroblock_NoDestruction": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_MacroblockName" },
+				{ "Type": "Int3", "Name": "_Coord" },
+				{ "Type": "Text", "Name": "_Direction" }
+			]
+		},
+		"CanPlaceMacroblock_NoTerrain": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_MacroblockName" },
+				{ "Type": "Int3", "Name": "_Coord" },
+				{ "Type": "Text", "Name": "_Direction" }
+			]
+		},
+		"PlaceMacroblock_NoTerrain": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_MacroblockName" },
+				{ "Type": "Int3", "Name": "_Coord" },
+				{ "Type": "Text", "Name": "_Direction" }
+			]
+		},
+		"RemoveMacroblock": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_MacroblockName" },
+				{ "Type": "Int3", "Name": "_Coord" },
+				{ "Type": "Text", "Name": "_Direction" }
+			]
+		},
+		"RemoveMacroblock_NoTerrain": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_MacroblockName" },
+				{ "Type": "Int3", "Name": "_Coord" },
+				{ "Type": "Text", "Name": "_Direction" }
+			]
+		},
+		"GetBlock": {
+			"Return": "SChBlock",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Int3", "Name": "_Coord" }
+			]
+		},
+		"RemoveBlock": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Int3", "Name": "_Coord" }
+			]
+		},
+		"RemoveTerrainBlocks": {
+			"Return": "Boolean",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Int3", "Name": "_StartCoord" },
+				{ "Type": "Int3", "Name": "_EndCoord" }
+			]
+		},
+		"GetBlockGroundHeight": {
+			"Return": "Integer",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Text", "Name": "_BlockName" },
+				{ "Type": "Integer", "Name": "_CoordX" },
+				{ "Type": "Integer", "Name": "_CoordZ" },
+				{ "Type": "Text", "Name": "_Direction" }
+			]
+		},
+		"GetGroundHeight": {
+			"Return": "Integer",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": [
+				{ "Type": "Integer", "Name": "_CoordX" },
+				{ "Type": "Integer", "Name": "_CoordZ" }
+			]
+		},
+		"GetStartLineBlock": {
+			"Return": "SChBlock",
+			"ReturnsArray": false,
+			"Kind": "Regular",
+			"Parameters": []
+		},
+		"GetBlocks": {
+			"Return": "SChBlock",
+			"ReturnsArray": true,
+			"Kind": "Regular",
+			"Parameters": []
+		},
+		"GetAnchorData": {
+			"Return": "SChAnchor",
+			"ReturnsArray": true,
+			"Kind": "Regular",
+			"Parameters": []
+		},
+
+		"Underground": {
+			"Return": "Void",
+			"ReturnsArray": false,
+			"Kind": "Extensive",
+			"Parameters": []
+		},
+		"Aboveground": {
+			"Return": "Void",
+			"ReturnsArray": false,
+			"Kind": "Extensive",
+			"Parameters": []
+		},
+
+		"SetStatusProgress": {
+			"Return": "Void",
+			"ReturnsArray": false,
+			"Kind": "Appearance",
+			"Parameters": [
+				{ "Type": "Real", "Name": "_Progress" }
+			]
+		},
+
+		"StartMultiSolution": {
+			"Return": "Void",
+			"ReturnsArray": false,
+			"Kind": "Technical",
+			"Parameters": []
+		}
+	}
+}
