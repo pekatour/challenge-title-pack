@@ -35,6 +35,6 @@ Solution();
 ***Main_Fast***
 ***
 foreach(Anchor,GetCheckpoints())
-	RemoveAnchor(Anchor);
+	if(!RemoveAnchor(Anchor)) Problem(Problem_CannotRemoveCheckpoint);
 Solution();
 ***
