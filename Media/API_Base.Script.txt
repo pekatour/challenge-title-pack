@@ -1,5 +1,3 @@
-#RequireContext CMapEditorPluginLayer
-
 #Include "MathLib" as MathLib
 #Include "TextLib" as TextLib
 
@@ -77,9 +75,21 @@
 }
 
 #Struct SChProblem {
+	Text Name;
+	SChAnchor Anchor;
+	SChAnchor[] Anchors;
 	SChBlock Block;
+	SChBlock[] Blocks;
+	SChItem Item;
+	SChItem[] Items;
 }
 
 #Struct SChNote {
+	Text Name;
+	SChAnchor Anchor;
+	SChAnchor[] Anchors;
 	SChBlock Block;
+	SChBlock[] Blocks;
+	SChItem Item;
+	SChItem[] Items;
 }

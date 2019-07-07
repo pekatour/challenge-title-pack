@@ -619,7 +619,9 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 
 Void ProcessScript(Text _ScriptName, Text _ScriptContent) {
 	LayerAPI = UILayerCreate();
-			LayerAPI.ManialinkPage = Manialink::Construct("",File::Read("Media/API_Base.Script.txt")^"""
+			LayerAPI.ManialinkPage = Manialink::Construct("","""#RequireContext CMapEditorPluginLayer
+
+"""^File::Read("Media/API_Base.Script.txt")^"""
 			
 {{{Dictionary::TranslateAllPhrases(_ScriptContent)}}}
 			

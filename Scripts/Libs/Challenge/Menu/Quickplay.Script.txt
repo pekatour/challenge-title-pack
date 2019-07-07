@@ -229,7 +229,7 @@ Void Event(CManiaAppEvent _Event) {
 				if(Info.Type == "Official") ScriptContent = File::Read("Media/Challenges/"^Info.Name);
 				
 				declare LayerAPI = UILayerCreate();
-				LayerAPI.ManialinkPage = Manialink::Construct("",File::Read("Media/API_Base_Metadata.Script.txt")^"""
+				LayerAPI.ManialinkPage = Manialink::Construct("",File::Read("Media/API_Base.Script.txt")^"""
 declare SChMetadata Script;
 
 {{{Dictionary::TranslateAllPhrases(ScriptContent)}}}
