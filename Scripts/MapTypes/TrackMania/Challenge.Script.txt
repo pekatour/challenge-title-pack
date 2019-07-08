@@ -2,27 +2,63 @@
 
 EnableEditorInputsCustomProcessing = True;
 
-Mode.UIManager.UIAll.OverlayHideCheckPointList = True;
-Mode.UIManager.UIAll.OverlayHideSpeedAndDist = True;
+declare Player <=> Mode.AllPlayers[0];
+declare UI <=> Mode.UIManager.GetUI(Player);
+
+Mode.UIManager.UIAll.OverlayHideBackground           = True;
+Mode.UIManager.UIAll.OverlayHideNotices              = True;
+Mode.UIManager.UIAll.OverlayHideMapInfo              = True;
+Mode.UIManager.UIAll.OverlayHideOpponentsInfo        = True;
+Mode.UIManager.UIAll.OverlayHideChat                 = True;
+Mode.UIManager.UIAll.OverlayHideCheckPointList       = True;
+Mode.UIManager.UIAll.OverlayHideCountdown            = True;
+Mode.UIManager.UIAll.OverlayHideChrono               = True;
+Mode.UIManager.UIAll.OverlayHideSpeedAndDist         = True;
 Mode.UIManager.UIAll.OverlayHidePersonnalBestAndRank = True;
-Mode.UIManager.UIAll.OverlayHideChrono = True;
+Mode.UIManager.UIAll.OverlayHidePosition             = True;
+Mode.UIManager.UIAll.OverlayHideMultilapInfos        = True;
+Mode.UIManager.UIAll.OverlayHideSpectatorControllers = True;
+Mode.UIManager.UIAll.OverlayHideSpectatorInfos       = True;
+Mode.UIManager.UIAll.OverlayChatHideAvatar           = True;
 
 Mode.ClientManiaAppUrl = "file://Media/ManiaApps/ChallengeSoloClient.Script.txt";
 
 while(True) {
 	foreach(Event,PendingEvents) {
-		if(Event.Type == CMapEditorPluginEvent::Type::MapModified) {
-			declare FinishCount = 0;
-			foreach(Block,Blocks)
-				if(Block != Null)
-					if(Block.BlockModel.WaypointType == CBlockModel::EWayPointType::Finish || Block.BlockModel.WaypointType == CBlockModel::EWayPointType::StartFinish)
-						FinishCount += 1;
-			if(FinishCount > 0)
-				ValidationStatus = CMapType::ValidationStatus::Validated;
-			else
-				ValidationStatus = CMapType::ValidationStatus::NotValidable;
+		switch(Event.Type) {
+			case CMapEditorPluginEvent::Type::MapModified: {
+				declare FinishCount = 0;
+				foreach(Block,Blocks)
+					if(Block != Null)
+						if(Block.BlockModel.WaypointType == CBlockModel::EWayPointType::Finish || Block.BlockModel.WaypointType == CBlockModel::EWayPointType::StartFinish)
+							FinishCount += 1;
+				if(FinishCount > 0)
+					ValidationStatus = CMapType::ValidationStatus::Validated;
+				else
+					ValidationStatus = CMapType::ValidationStatus::NotValidable;
+			}
+			case CMapEditorPluginEvent::Type::StartValidation: {
+				RequestEnterPlayground();
+				Player.RaceStartTime = -1;
+				Player.IsSpawned = True;
+				Player.Score.Clear();
+				Mode.UIManager.UIAll.UISequence = CUIConfig::EUISequence::Intro;
+				wait(Mode.UIManager.UIAll.UISequenceIsCompleted);
+				Mode.CutOffTimeLimit = -1;
+				Mode.UIManager.UIAll.UISequence = CUIConfig::EUISequence::Playing;
+				
+				while(True) {
+					if(ValidationEndRequested) RequestLeavePlayground();
+					
+					foreach(PlayerWaiting,Mode.PlayersWaiting) {
+						Mode.SpawnPlayer(PlayerWaiting, 0, Mode.Now+2500);
+					}
+					
+					yield;
+				}
+			}
 		}
 	}
-	
-  yield;
+
+	yield;
 }

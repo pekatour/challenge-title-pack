@@ -1,15 +1,25 @@
 #RequireContext CTmMode
 
+#Const  CompatibleMapTypes  "Challenge"
+#Const  Version             "1.0.0"
+#Const  ScriptName          "Modes/TrackMania/ChallengeSolo.Script.txt"
+
+ItemList_Begin();
+declare CanyonCar = ItemList_Add("CanyonCar");
+declare StadiumCar = ItemList_Add("StadiumCar");
+declare ValleyCar = ItemList_Add("ValleyCar");
+declare LagoonCar = ItemList_Add("LagoonCar");
+ItemList_End();
+
 RequestLoadMap();
 
 ClientManiaAppUrl = "file://Media/ManiaApps/ChallengeSoloClient.Script.txt";
-
-
 
 while(True) {
 	foreach(Player,PlayersWaiting) {
 		Player.RaceStartTime = Now+3000;
 		Player.IsSpawned = True;
+		Player.ForceModelId = StadiumCar;
 	}
 	
 	foreach(Player,Players) {

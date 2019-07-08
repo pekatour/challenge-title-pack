@@ -731,7 +731,7 @@ main() {
 					Quit();
 				}
 				else if(Event.CustomEventType == "Button_SavePlay") {
-					TestMapFromStart();
+					Validate();
 				}
 			}
 		}
