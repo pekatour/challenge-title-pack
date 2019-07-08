@@ -74,8 +74,14 @@ Boolean SafeRemoveBlock(CBlock _Block) {
 	if(_Block == Null) return False;
 	if(GetBlock(_Block.Coord) == Null) return False;
 	
-	if(GetBlock(_Block.Coord).Id == _Block.Id)
+	if(GetBlock(_Block.Coord).Id == _Block.Id) 
 		return RemoveBlock(_Block.Coord);
+	return False;
+}
+
+Boolean SafeRemoveBlock(ModifierBase::SChBlock _ChBlock) {
+	for(i,1,Blocks.count)
+		if(Blocks[Blocks.count-i].Coord == _ChBlock.Coord) return SafeRemoveBlock(Blocks[Blocks.count-i]);
 	return False;
 }
 
@@ -483,7 +489,7 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			declare Coord = Block.Coord;
 			if(OppositeDirection) Direction = MapUnits::GetOpposedDir(Direction);
 			
-			declare Removed = RemoveBlock(Coord);
+			declare Removed = SafeRemoveBlock(Block);
 			declare Placed = PlaceBlock(Replacement, Coord, Direction);
 			Respond(Event, [""^Removed, ""^Placed]);
 		}

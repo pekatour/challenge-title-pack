@@ -5,6 +5,64 @@ Script.AuthorLogin = "bigbang1112";
 Script.Description = "{{{{REVERSE_DESCRIPTION}}}}";
 ***
 
+SChProblem Problem_NoStartLine() {
+	declare SChProblem Problem;
+	Problem.Name = "NoStartLine";
+	Problem.IsUnsolvable = True;
+	return Problem;
+}
+
+SChProblem Problem_MoreThanOneStartLine(SChAnchor[] _Anchors) {
+	declare SChProblem Problem;
+	Problem.Name = "MoreThanOneStartLine";
+	declare JsonSuccess = Problem.Anchors.fromjson(_Anchors.tojson());
+	Problem.IsUnsolvable = True;
+	return Problem;
+}
+
+SChProblem Problem_MultilapTrack(SChAnchor _Anchor) {
+	declare SChProblem Problem;
+	Problem.Name = "MultilapTrack";
+	Problem.Anchor = _Anchor;
+	Problem.IsUnsolvable = True;
+	return Problem;
+}
+
+SChProblem Problem_ItemStart(SChAnchor _Anchor) {
+	declare SChProblem Problem;
+	Problem.Name = "ItemStart";
+	Problem.Anchor = _Anchor;
+	return Problem;
+}
+
+SChProblem Problem_ItemFinish(SChAnchor _Anchor) {
+	declare SChProblem Problem;
+	Problem.Name = "ItemFinish";
+	Problem.Anchor = _Anchor;
+	return Problem;
+}
+
+SChProblem Problem_MultipleFinishes(SChAnchor[] _Anchors) {
+	declare SChProblem Problem;
+	Problem.Name = "MultipleFinishes";
+	declare JsonSuccess = Problem.Anchors.fromjson(_Anchors.tojson());
+	return Problem;
+}
+
+SChProblem Problem_CannotReplaceStartLine(SChAnchor _Anchor) {
+	declare SChProblem Problem;
+	Problem.Name = "CannotReplaceStartLine";
+	Problem.Anchor = _Anchor;
+	return Problem;
+}
+
+SChProblem Problem_CannotReplaceFinishLine(SChAnchor _Anchor) {
+	declare SChProblem Problem;
+	Problem.Name = "CannotReplaceFinishLine";
+	Problem.Anchor = _Anchor;
+	return Problem;
+}
+
 ***Main***
 ***
 declare Pairs = [
@@ -13,8 +71,10 @@ declare Pairs = [
 		["RoadRaceStartMirror","RoadRaceFinishMirror"],
 		["ArenaStart","ArenaFinish"],
 		["RoadMainStart","RoadMainFinish"],
-		["","RoadCaveFinish"],
-		["","RoadCaveDoubleFinish"]
+		["Canyon/TubeStart.Macroblock.Gbx","TubeFinish"],
+		["Canyon/TubeStartUnderground.Macroblock.Gbx","TubeFinishUnderground"],
+		["Canyon/RoadCaveStart.Macroblock.Gbx","RoadCaveFinish"],
+		["Canyon/RoadCaveDoubleStart.Macroblock.Gbx","RoadCaveDoubleFinish"]
 	],
 	"Stadium" => [
 		["StadiumRoadMainStartLine","StadiumRoadMainFinishLine"]
@@ -23,53 +83,61 @@ declare Pairs = [
 		["Road2WayStart","Road2WayFinish"],
 		["Road2WayForestStart","Road2WayForestFinish"],
 		["Road4WayStart","Road4WayFinish"],
+		["Valley/TunnelRoad4wayStart.Macroblock.Gbx","TunnelRoad4wayFinish"],
 		["RoadForestLargeStart","RoadForestLargeFinish"]
 	],
 	"Lagoon" => [
 		["RoadMainStart","RoadMainFinish"],
 		["FreeWayStart","FreeWayFinish"],
 		["RoadThemeParkStart","RoadThemeParkFinish"],
-		["","RoadThemeParkFlipFinish"],
+		["Lagoon/RoadThemeParkFlipStart.Macroblock.Gbx","RoadThemeParkFlipFinish"],
 		["ArenaStart","ArenaFinish"],
-		["ArenaStart","ArenaFinishX2"],
-		["","RoadTunnelFinish"]
+		["ArenaStart","ArenaFinishX2"], // or Lagoon/ArenaStartX2.Macroblock.Gbx, Tom?
+		["Lagoon/RoadTunnelStart.Macroblock.Gbx","RoadTunnelFinish"]
 	]
 ];
 
-declare StartLine = GetStartLineBlock();
-if(StartLine.Waypoint == "StartFinish") Incompatible("Multilap tracks can't be reversed.");
-declare FinishLines = GetFinishLineBlocks();
+declare StartLines = GetStartLines();
+if(StartLines.count == 0) Problem(Problem_NoStartLine());
+if(StartLines.count > 1) Problem(Problem_MoreThanOneStartLine(StartLines));
+
+declare StartLine = StartLines[0];
+if(StartLine.DefaultTag == "StartFinish") Problem(Problem_MultilapTrack(StartLine));
+declare FinishLines = GetFinishLines();
+
+if(FinishLines.count > 1) Problem(Problem_MultipleFinishes(FinishLines));
 
 foreach(Env => PairList, Pairs) {
 	foreach(Pair, PairList) {
 		declare StartBlockName = Pair[0];
 		declare FinishBlockName = Pair[1];
-		if(StartLine.Name == StartBlockName) {
-			declare Replacemenet = ReplaceBlock(StartLine, FinishBlockName, True);
-			SetStatusProgress(0.5);
-			SetStatusMessage("""{{{StartBlockName}}} replaced with {{{FinishBlockName}}}.""");
+
+		if(StartLine.IsItem) Problem(Problem_ItemStart(StartLine));
+		else if(StartLine.Block.Name == StartBlockName) {
+			if(TextLib::EndsWith(".Macroblock.Gbx", FinishBlockName)) {
+
+			}
+			else {
+				declare Replacement = ReplaceBlock(StartLine.Block, FinishBlockName, True);
+				if(!Replacement.Removed || !Replacement.Placed) Problem(Problem_CannotReplaceStartLine(StartLine));
+				else SetStatusMessage("""{{{StartBlockName}}} replaced with {{{FinishBlockName}}}.""");
+			}
 		}
-	}
-}
+		if(FinishLines.count == 1) {
+			declare FinishLine = FinishLines[0];
+			if(FinishLine.IsItem) Problem(Problem_ItemFinish(FinishLine));
+			else if(FinishLine.Block.Name == FinishBlockName) {
+				if(TextLib::EndsWith(".Macroblock.Gbx", FinishBlockName)) {
 
-StartMultiSolution();
-
-for(i,0,FinishLines.count-1) {
-	declare FinishLine = FinishLines[i];
-	foreach(Env => PairList, Pairs) {
-		foreach(Pair, PairList) {
-			declare StartBlockName = Pair[0];
-			declare FinishBlockName = Pair[1];
-			if(FinishLine.Block.Name == FinishBlockName) {
-				declare Replacemenet = ReplaceBlock(FinishLine.Block, StartBlockName, True);
-				SetStatusProgress(0.5+(i+1.0)/FinishLines.count*.5);
-				SetStatusMessage("""{{{FinishBlockName}}} replaced with {{{StartBlockName}}}.""");
+				}
+				else {
+					declare Replacement = ReplaceBlock(FinishLine.Block, StartBlockName, True);
+					if(!Replacement.Removed || !Replacement.Placed) Problem(Problem_CannotReplaceFinishLine(FinishLine));
+					else SetStatusMessage("""{{{FinishBlockName}}} replaced with {{{StartBlockName}}}.""");
+				}
 			}
 		}
 	}
-	Solution();
 }
-
-EndMultiSolution();
 
 ***

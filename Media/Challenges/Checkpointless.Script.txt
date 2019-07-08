@@ -10,7 +10,6 @@ SChProblem Problem_CannotRemoveCheckpoint(SChAnchor _Anchor) {
 	Problem.Name = "CannotRemoveCheckpoint";
 	Problem.Anchor = _Anchor;
 	return Problem;
-	
 }
 
 ***Main***
@@ -34,15 +33,12 @@ for(i,0,Checkpoints.count-1) {
 	}
 	yield;
 }
-
-Solution();
 ***
 
 ***Main_Fast***
 ***
 foreach(Anchor,GetCheckpoints())
 	if(!RemoveAnchor(Anchor)) Problem(Problem_CannotRemoveCheckpoint(Anchor)); // Announce the problem to the Modifier
-Solution();
 ***
 
 ***Problems***
