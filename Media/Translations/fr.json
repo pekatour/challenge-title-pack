@@ -30,14 +30,14 @@
 	"SAVE": "ENREGISTRER",
 	"SAVE_AND_PLAY": "SAUVEGARDER ET JOUER",
 	"DONE": "FINI",
-	"SCRIPT_FINISHED": "Script fini avec succès.",
+	"SCRIPT_FINISHED": "Script accompli avec succès.",
 	"TEST_SCRIPT": "TESTER LE SCRIPT",
-	"MODIFYING": "EN TRAIN DE MODIFIER",
+	"MODIFYING": "EN COURS DE MODIFICATION",
 	"ACTIONS": "ACTIONS",
 
 	"REVERSE_DESCRIPTION": "Échange départ et fin.",
-	"CHECKPOINTLESS_DESCRIPTION": "Enlève tous les checkpoints et garde les trous.",
-	"TERRAINLESS_DESCRIPTION": "Enlève tous le terrain.",
+	"CHECKPOINTLESS_DESCRIPTION": "Enlève tous les checkpoints sans les remplacer.",
+	"TERRAINLESS_DESCRIPTION": "Enlève tout le terrain.",
 
 	"CHECKPOINT_FOUND": "Checkpoint trouvé.",
  
