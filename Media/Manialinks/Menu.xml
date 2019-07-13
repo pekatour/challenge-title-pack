@@ -3,7 +3,7 @@
 	<quad pos="0 0" z-index="-1" size="110 50" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgColorContour" opacity=".25" hidden="1"/>
 	<quad pos="0 22" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/Challenge.png" halign="center"/>
 	<quad pos="0.5 21.5" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/Challenge.png" halign="center" modulatecolor="036"/>
-	<label pos="35 30" z-index="0" size="30 5" text="{{{{MADE_BY}}}} $i$o$nBIGBANG1112" halign="center" textsize="1.5" textemboss="1" textfont="RajdhaniMono" scriptevents="1" style="TextButtonMedium"/>
+	<label pos="50 30" z-index="0" size="60 5" text="{{{{MADE_BY}}}} $i$o$nBIGBANG1112" halign="right" textsize="1.5" textemboss="1" textfont="RajdhaniMono" scriptevents="1" style="TextButtonBig"/>
 	<quad pos="-65 -15" z-index="0" size="10 10" bgcolor="FFFA" image="file://Media/Images/Sign.png" url="https://bigbang1112.eu/youtube"/>
 	<label pos="57 -20" z-index="0" size="50 5" text="" textsize="1" valign="center2" textemboss="1" textcolor="AAA" id="LABEL_VERSION"/>
 	<frame pos="0 -8">
