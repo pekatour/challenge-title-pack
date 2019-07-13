@@ -41,7 +41,7 @@
 	"MORE_FILTERS": "MORE FILTERS",
 
  	"REVERSE_DESCRIPTION": "Swaps start with finish.",	
-	"CHECKPOINTLESS_DESCRIPTION": "Removes all checkpoints and keeps the holes.",	
+	"CHECKPOINTLESS_DESCRIPTION": "Removes all checkpoints but keeps the holes.",	
 	"TERRAINLESS_DESCRIPTION": "Removes all the terrain.",	
 
 	"CHECKPOINT_FOUND": "Checkpoint found.",
