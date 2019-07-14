@@ -41,7 +41,8 @@
 	<label pos="-98 -5.25" z-index="1" size="50 5" text="{{{{SHADOW_QUALITY}}}}" valign="center2" textfont="Oswald" halign="left" textsize="2"/>
 	<frame pos="-20 0" z-index="1">
 		<quad z-index="0" size="50 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036" id="QUAD_BUTTON_SAVE" class="opacity"/>
-		<label pos="25 -5.25" z-index="1" size="50 10" text="{{{{SAVE}}}}" halign="center" valign="center2" textfont="RajdhaniMono" class="opacity"/>
+		<label pos="25 -5.25" z-index="1" size="50 10" text="{{{{SAVE}}}}" halign="center" valign="center2" textfont="RajdhaniMono" opacity=".5" id="LABEL_BUTTON_SAVE"/>
+		<quad z-index="2" size="50 10" scriptevents="1" id="QUAD_BUTTON_SAVE_BLOCK"/>
 	</frame>
 	<frame pos="30 0" z-index="1">
 		<quad z-index="0" size="70 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="060" id="QUAD_BUTTON_VALIDATE" class="opacity"/>
