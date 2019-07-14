@@ -1,0 +1,20 @@
+for(i,0,Animations_SlowSetText.count-1) {
+	if(Animations_SlowSetText.existskey(i)) {
+		declare AnimationPeriod = MathLib::NearestInteger(MathLib::ToReal(Animations_SlowSetText[i].Time)/TextLib::Length(Animations_SlowSetText[i].OldText));
+		if(Animations_SlowSetText[i].Position <= TextLib::Length(Animations_SlowSetText[i].NewText)) {
+			if(Now-Animations_SlowSetText[i].Start >= AnimationPeriod*Animations_SlowSetText[i].Position) {
+				Animations_SlowSetText[i].Label.Value = TextLib::SubText(Animations_SlowSetText[i].Label.Value, 0, TextLib::Length(Animations_SlowSetText[i].NewText)-Animations_SlowSetText[i].Position)
+				^"$o"^TextLib::SubText(Animations_SlowSetText[i].NewText, TextLib::Length(Animations_SlowSetText[i].NewText)-Animations_SlowSetText[i].Position, 1)
+				^"$z"^TextLib::SubText(Animations_SlowSetText[i].NewText, TextLib::Length(Animations_SlowSetText[i].NewText)-Animations_SlowSetText[i].Position+1, Animations_SlowSetText[i].Position-1);
+				Animations_SlowSetText[i].Position += 1;
+			}
+		}
+		else if(Animations_SlowSetText[i].Position > TextLib::Length(Animations_SlowSetText[i].NewText)) {
+			if(Now-Start >= AnimationPeriod*Animations_SlowSetText[i].Position) {
+				Animations_SlowSetText[i].Label.Value = Animations_SlowSetText[i].NewText;
+				Animations_SlowSetText.removekey(i);
+			}
+			else Animations_SlowSetText[i].Label.Value = "$o"^TextLib::SubText(Animations_SlowSetText[i].NewText, 0, 1)^"$z"^TextLib::SubText(Animations_SlowSetText[i].NewText, 1, TextLib::Length(Animations_SlowSetText[i].NewText)-1);
+		}
+	}
+}

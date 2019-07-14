@@ -3,6 +3,7 @@ Void Animate_Show() {
 	AnimMgr.Add(Page.GetFirstChild("FRAME_TOP"), "<frame pos=\"0 75\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
 }
 
-main() {
-	Animate_Show();
-}
+***Start***
+***
+Animate_Show();
+***

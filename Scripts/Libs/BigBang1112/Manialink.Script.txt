@@ -29,17 +29,51 @@
 #Include "Libs/BigBang1112/File.Script.txt" as File
 #Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
 
-Text Construct(Text _Markup, Text _Script) {		
+Text Construct(Text _Markup, Text _Script, Text[] _Extentions) {
+	declare Text ExtensionDirectives;
+	declare Text ExtensionGlobals;
+	declare Text ExtensionStarts;
+	declare Text ExtensionLoops;
+	
+	foreach(Extension,_Extentions) {
+		ExtensionDirectives ^= File::Read("Media/Extensions/"^Extension^".Directives.Script.txt")^"\n\n";
+		ExtensionGlobals ^= File::Read("Media/Extensions/"^Extension^".Global.Script.txt")^"\n\n";
+		ExtensionStarts ^= File::Read("Media/Extensions/"^Extension^".Start.Script.txt")^"\n\n";
+		ExtensionLoops ^= File::Read("Media/Extensions/"^Extension^".Loop.Script.txt")^"\n\n";
+	}
+
 	return """<manialink version="3">
 			{{{_Markup}}}
-			<script>
-			<![CDATA[{{{_Script}}}
-			]]>
-			</script>
-		</manialink>""";
+			<script><![CDATA[#Include "TextLib" as TextLib
+#Include "MathLib" as MathLib
+#Include "AnimLib" as AnimLib
+
+{{{ExtensionDirectives}}}
+
+{{{ExtensionGlobals}}}
+{{{_Script}}}
+
+Void Main() {
+	{{{ExtensionStarts}}}
+	+++Start+++
+	while(True) {
+		{{{ExtensionLoops}}}
+		+++Loop+++
+		yield;
+	}
 }
 
-Text FromFile(Text _ManialinkName, Boolean _Translate) {
+main() {
+	Main();
+}]]></script>
+	</manialink>""";
+}
+
+Text Construct(Text _Markup, Text _Script) {
+	return Construct(_Markup, _Script, []);
+}
+
+Text FromFile(Text _ManialinkName, Boolean _Translate, Text[] _Extensions) {
 	declare Markup = File::Read(_ManialinkName^".xml");
 	declare Script = File::Read(_ManialinkName^".Script.txt");
 	
@@ -48,9 +82,9 @@ Text FromFile(Text _ManialinkName, Boolean _Translate) {
 		Script = Dictionary::TranslateAllPhrases(Script);
 	}
 
-	return Construct(Markup, Script);
+	return Construct(Markup, Script, _Extensions);
 }
 
-Text FromFile(Text _ManialinkName) {
-	return FromFile(_ManialinkName, False);
+Text FromFile(Text _ManialinkName, Boolean _Translate) {
+	return FromFile(_ManialinkName, _Translate, []);
 }

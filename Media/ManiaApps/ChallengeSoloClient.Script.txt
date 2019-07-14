@@ -9,7 +9,7 @@ ClientUI.OverlayHidePersonnalBestAndRank = True;
 ClientUI.OverlayHideChrono = True;
 ClientUI.OverlayHidePosition = True;
 
-Layers::Create("Ingame", Manialink::FromFile("Media/Manialinks/SoloIngame", True), True);
+Layers::Create("Ingame", Manialink::FromFile("Media/Manialinks/SoloIngame", True, ["TextAnimation"]), True);
 
 while(True) {
 	yield;

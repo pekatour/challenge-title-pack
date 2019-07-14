@@ -1,6 +1,3 @@
-#Include "TextLib" as TextLib
-#Include "MathLib" as MathLib
-
 #Struct SMXTrackInfo {
 	Integer TrackID;
 	Integer UserID;
@@ -589,7 +586,8 @@ Void Animate_Show() {
 	AnimMgr.Add(Page.GetFirstChild("FRAME_QUICKPLAY"), "<frame pos=\"0 -75\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
 }
 
-main() {
+***Start***
+***
 	Animate_Show();
 
 	declare CurrentFolder = "";
@@ -601,428 +599,429 @@ main() {
 	MXPage = 1;
 
 	Page.GetClassChildren("LOADING", Page.MainFrame, True);
+***
 
-	while(True) {
-		foreach(Event,PendingEvents) {
-			switch(Event.Type) {
-				case CMlScriptEvent::Type::EntrySubmit: {
-					switch(Event.ControlId) {
-						case "ENTRY_MAPLIST_MX_SEARCH": {
-							if(MapLocation == "ManiaExchange") {
-								FilterMX.TrackName = (Page.GetFirstChild("ENTRY_MAPLIST_MX_SEARCH") as CMlEntry).Value;
-								SendCustomEvent("MapList_ManiaExchange_Update", [MXPage^"", FilterMX.tojson(), ""]);
-								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
-							}
+***Loop***
+***
+foreach(Event,PendingEvents) {
+	switch(Event.Type) {
+		case CMlScriptEvent::Type::EntrySubmit: {
+			switch(Event.ControlId) {
+				case "ENTRY_MAPLIST_MX_SEARCH": {
+					if(MapLocation == "ManiaExchange") {
+						FilterMX.TrackName = (Page.GetFirstChild("ENTRY_MAPLIST_MX_SEARCH") as CMlEntry).Value;
+						SendCustomEvent("MapList_ManiaExchange_Update", [MXPage^"", FilterMX.tojson(), ""]);
+						Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
+					}
+				}
+				case "ENTRY_MAPLIST_LOCAL_SEARCH": {
+					if(MapLocation == "Local") {
+						FilterLocal.Name = (Page.GetFirstChild("ENTRY_MAPLIST_LOCAL_SEARCH") as CMlEntry).Value;
+						SendCustomEvent("MapList_Local_Folder", ["",FilterLocal.tojson()]);
+						Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
+					}
+				}
+				case "ENTRY_MAPLIST_UID": {
+					switch(MapLocation) {
+						case "Local": {
+							SendCustomEvent("MapList_Local_QuickUid", [(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value]);
 						}
-						case "ENTRY_MAPLIST_LOCAL_SEARCH": {
-							if(MapLocation == "Local") {
-								FilterLocal.Name = (Page.GetFirstChild("ENTRY_MAPLIST_LOCAL_SEARCH") as CMlEntry).Value;
-								SendCustomEvent("MapList_Local_Folder", ["",FilterLocal.tojson()]);
-								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
-							}
+						case "ManiaExchange": {
+							SendCustomEvent("MapList_ManiaExchange_QuickUid", [(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value]);
 						}
-						case "ENTRY_MAPLIST_UID": {
-							switch(MapLocation) {
-								case "Local": {
-									SendCustomEvent("MapList_Local_QuickUid", [(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value]);
-								}
-								case "ManiaExchange": {
-									SendCustomEvent("MapList_ManiaExchange_QuickUid", [(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value]);
-								}
-								case "MapManager": {
-									SendCustomEvent("MapList_MapManager_QuickUid", [(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value]);
-								}
-							}
+						case "MapManager": {
+							SendCustomEvent("MapList_MapManager_QuickUid", [(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value]);
 						}
 					}
 				}
-				case CMlScriptEvent::Type::MouseClick: {
-					switch(Event.ControlId) {
-						case "QUAD_MAPLIST_FILTERS": {
-							//SendCustomEvent("MapList_ManiaExchange_Update", [MXPage^"", (Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
-							//Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
-						}
-						case "QUAD_BUTTON_START": {
-							if(MapLocation == "Local") {
-								SendCustomEvent("Button_Start", [MapLocation, SelectedMapInfo.tojson(), SelectedScripts.tojson()]);
-							}
-							if(MapLocation == "ManiaExchange") {
-								SendCustomEvent("Button_Start", [MapLocation, SelectedMXTrackInfo.tojson(), SelectedScripts.tojson()]);
-							}
-							if(MapLocation == "MapManager") {
-								SendCustomEvent("Button_Start", [MapLocation, SelectedManagerMapInfo.tojson(), SelectedScripts.tojson()]);
-							}
-						}
-						case "QUAD_BUTTON_MAP": {
-							if(Page.GetFirstChild("FRAME_MAP").DataAttributeGet("open") == "1") {
-								AnimMgr.Add(Page.GetFirstChild("FRAME_MAP"), "<frame pos=\"0 0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
-								Page.GetFirstChild("FRAME_MAP").DataAttributeSet("open","0");
-							}
-							else {
-								AnimMgr.Add(Page.GetFirstChild("FRAME_MAP"), "<frame pos=\"0 100\" hidden=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
-								Page.GetFirstChild("FRAME_MAP").DataAttributeSet("open","1");
-
-								if(MapLocation == "Local") UpdateLocalMapsFolder(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-								if(MapLocation == "ManiaExchange") UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-								if(MapLocation == "MapManager") UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-							}
-						}
-						case "QUAD_BUTTON_CHALLENGE_SCRIPT": {
-							if(Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT").DataAttributeGet("open") == "1") {
-								AnimMgr.Add(Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT"), "<frame pos=\"0 0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
-								Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT").DataAttributeSet("open","0");
-							}
-							else {
-								AnimMgr.Add(Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT"), "<frame pos=\"0 100\" hidden=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
-								Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT").DataAttributeSet("open","1");
-
-								if(ScriptLocation == "Official") UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
-							}
-						}
-						case "QUAD_SELECTOR": {
-							if(MapLocation == "Local") {
-								declare Folder = Event.Control.Parent.DataAttributeGet("folder");
-								if(Folder == "") {
-									declare Index = TextLib::ToInteger(Event.Control.Parent.DataAttributeGet("index"));
-									//log(VisibleMapInfos[Index].Name);
-									declare JsonSuccess = SelectedMapInfo.fromjson(Event.Control.Parent.DataAttributeGet("mapinfo"));
-									
-								}
-								else if (Folder == "...") {
-									declare Folders = TextLib::Split("\\",CurrentFolder);
-									if(Folders.count > 0) {
-										Folders.removekey(Folders.count-1);
-										declare NewFolder = TextLib::Join("\\",Folders);
-										SendCustomEvent("MapList_Local_Folder", [NewFolder,FilterLocal.tojson()]);
-									}
-									else {
-										log("Yo, what dimension is this 8|");
-									}
-								}
-								else {
-									SendCustomEvent("MapList_Local_Folder", [Folder, FilterLocal.tojson()]);
-								}
-
-								UpdateLocalMapsFolder(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-							}
-							if(MapLocation == "ManiaExchange") {
-								declare Index = TextLib::ToInteger(Event.Control.Parent.DataAttributeGet("index"));
-								declare JsonSuccess = SelectedMXTrackInfo.fromjson(Event.Control.Parent.DataAttributeGet("mapinfo"));
-
-								UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-							}
-							if(MapLocation == "MapManager") {
-								declare JsonSuccess = SelectedManagerMapInfo.fromjson(Event.Control.Parent.DataAttributeGet("mapinfo"));
-								UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-							}
-						}
-						case "QUAD_SELECTOR_SCRIPT": {
-							if(ScriptLocation == "Official") {
-								declare Script = Event.Control.Parent.DataAttributeGet("script");
-								declare Folder = Event.Control.Parent.DataAttributeGet("folder");
-
-								declare SChScriptInfo Info;
-								declare JsonSuccess = Info.fromjson(Script);
-
-								declare Text[] SelectedScriptNames;
-								foreach(S,SelectedScripts) {
-									SelectedScriptNames.add(S.Name);
-								}
-
-								if(SelectedScriptNames.exists(Info.Name)){
-									for(i,0,SelectedScriptNames.count-1)
-										if(SelectedScriptNames[i] == Info.Name)
-											SelectedScripts.removekey(i);
-								}
-								else if(SelectedScripts.count == 0 || (IsMultipleScript() && SelectedScripts.count < 5))
-									SelectedScripts.add(Info);
-								else if(SelectedScripts.count == 1)
-									SelectedScripts[0] = Info;
-								
-
-								/*if(Folder == "") {
-									declare Index = TextLib::ToInteger(Event.Control.Parent.DataAttributeGet("index"));
-									//log(VisibleMapInfos[Index].Name);
-									SelectedMapInfo.fromjson(Event.Control.Parent.DataAttributeGet("mapinfo"));
-									
-								}
-								else if (Folder == "...") {
-									declare Folders = TextLib::Split("\\",CurrentFolder);
-									if(Folders.count > 0) {
-										Folders.removekey(Folders.count-1);
-										declare NewFolder = TextLib::Join("\\",Folders);
-										SendCustomEvent("MapList_Local_Folder", [NewFolder,(Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
-									}
-									else {
-										log("Yo, what dimension is this 8|");
-									}
-								}
-								else {
-									SendCustomEvent("MapList_Local_Folder", [Folder, (Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
-								}*/
-
-								UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
-							}
-						}
-						case "QUAD_LOCATION_MAP_LOCAL": {
-							SendCustomEvent("MapList_Local_Folder", ["",FilterLocal.tojson()]);
-							MapLocation = "Local";
-						}
-						case "QUAD_LOCATION_MAP_MX": {
-							if(MapLocation != "ManiaExchange") {
-								MapLocation = "ManiaExchange";
-
-								Page.GetFirstChild("FRAME_MAP_BAR_LOCAL").Hide();
-								Page.GetFirstChild("FRAME_MAP_BAR_MX").Show();
-								Page.GetFirstChild("FRAME_MAP_BAR_MAPMANAGER").Hide();
-
-								(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-								(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-								(Page.GetFirstChild("QUAD_LOCATION_MAP_MAPMANAGER") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-
-								(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("https://tm.mania-exchange.com/tracks/thumbnail/"^SelectedMXTrackInfo.TrackID^"?.jpg");
-								(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedMXTrackInfo.GbxMapName);
-								if(SelectedMXTrackInfo.Username == "") (Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("");
-								else (Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedMXTrackInfo.Username);
-								(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value = SelectedMXTrackInfo.TrackUID;
-
-								(Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText("???");
-								(Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText("???");
-								(Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText("???");
-								(Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText("???");
-
-								SendCustomEvent("MapList_DestroyMapManager", []);
-
-								if(MapBrowserMXTrackInfos.count == 0) {
-									SendCustomEvent("MapList_ManiaExchange_Update", ["1", FilterMX.tojson(), ""]);
-									Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
-								}
-								else {
-									UpdateManiaExchange(0);
-									Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
-								}
-							}
-						}
-						case "QUAD_LOCATION_MAP_MAPMANAGER": {
-							if(MapLocation != "MapManager") {
-								MapLocation = "MapManager";
-
-								Page.GetFirstChild("FRAME_MAP_BAR_LOCAL").Hide();
-								Page.GetFirstChild("FRAME_MAP_BAR_MX").Hide();
-								Page.GetFirstChild("FRAME_MAP_BAR_MAPMANAGER").Show();
-
-								(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-								(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-								(Page.GetFirstChild("QUAD_LOCATION_MAP_MX") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-
-								(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedManagerMapInfo.Name);
-								if(SelectedMXTrackInfo.Username == "") (Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("");
-								else (Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedManagerMapInfo.AuthorLogin);
-								(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value = SelectedManagerMapInfo.Uid;
-
-								if(MapBrowserManagerTrackInfos.count == 0) {
-									SendCustomEvent("MapList_MapManager_Update", [(Page.GetFirstChild("ENTRY_MAPLIST_MANAGER_SEARCH") as CMlEntry).Value, ""^((Page.GetFirstChild("QUAD_MANAGER_SHOWPRIVATE") as CMlQuad).ModulateColor == <0.0,0.2,0.4>)]);
-									Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
-								}
-								else {
-									UpdateMapManager(0);
-									Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
-								}
-							}
-						}
-
-						case "QUAD_LOCATION_SCRIPT_OFFICIAL": {
-							(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-							(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-							(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_ONLINE") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-
-							ScriptLocation = "Official";
-						}
-						case "QUAD_LOCATION_SCRIPT_LOCAL": {
-							(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-							(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_OFFICIAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-							(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_ONLINE") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-
-							ScriptLocation = "Local";
-						}
-						case "QUAD_LOCATION_SCRIPT_ONLINE": {
-							(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-							(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_OFFICIAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-							(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-
-							ScriptLocation = "Online";
-						}
-						case "QUAD_SCRIPT_MULTIPLE": {
-							if((Event.Control as CMlQuad).ModulateColor == <0.4,0.4,0.4>) {
-								(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-							}
-							else {
-								(Event.Control as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-								while(SelectedScripts.count > 1)
-									SelectedScripts.removekey(SelectedScripts.count - 1);
-							}
-							UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
-						}
-						case "LABEL_MAPLIST_REFRESH": {
-							SendCustomEvent("MapList_Local_Refresh", []);
-						}
-						case "QUAD_MANAGER_SHOWPRIVATE": {
-							if((Event.Control as CMlQuad).ModulateColor == <0.4,0.4,0.4>) {
-								(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-								SendCustomEvent("MapList_MapManager_Update", [(Page.GetFirstChild("ENTRY_MAPLIST_MANAGER_SEARCH") as CMlEntry).Value, "True"]);
-								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
-							}
-							else {
-								(Event.Control as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-								SendCustomEvent("MapList_MapManager_Update", [(Page.GetFirstChild("ENTRY_MAPLIST_MANAGER_SEARCH") as CMlEntry).Value, "False"]);
-								Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
-							}
-						}
-
-						case "LABEL_MOREFILTERS": {
-							if(Page.GetFirstChild("FRAME_FILTER_MX").Visible) Page.GetFirstChild("FRAME_FILTER_MX").Hide();
-							else Page.GetFirstChild("FRAME_FILTER_MX").Show();
-						}
+			}
+		}
+		case CMlScriptEvent::Type::MouseClick: {
+			switch(Event.ControlId) {
+				case "QUAD_MAPLIST_FILTERS": {
+					//SendCustomEvent("MapList_ManiaExchange_Update", [MXPage^"", (Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
+					//Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
+				}
+				case "QUAD_BUTTON_START": {
+					if(MapLocation == "Local") {
+						SendCustomEvent("Button_Start", [MapLocation, SelectedMapInfo.tojson(), SelectedScripts.tojson()]);
+					}
+					if(MapLocation == "ManiaExchange") {
+						SendCustomEvent("Button_Start", [MapLocation, SelectedMXTrackInfo.tojson(), SelectedScripts.tojson()]);
+					}
+					if(MapLocation == "MapManager") {
+						SendCustomEvent("Button_Start", [MapLocation, SelectedManagerMapInfo.tojson(), SelectedScripts.tojson()]);
 					}
 				}
-				
-				case CMlScriptEvent::Type::PluginCustomEvent: {
-					switch(Event.CustomEventType) {
-						case "MapList_Local_Update": {
-							CurrentFolder = Event.CustomEventData[0];
-							declare Text[] SubFolders;
-							declare SMapInfo[] MapInfos;
-							declare JsonSuccessSubFolders = SubFolders.fromjson(Event.CustomEventData[1]);
-							declare JsonSuccessMapInfos = MapInfos.fromjson(Event.CustomEventData[2]);
-							MapBrowserSubFolders = SubFolders;
-							MapBrowserMapInfos = MapInfos;
-							UpdateLocalMapsFolder(0);
+				case "QUAD_BUTTON_MAP": {
+					if(Page.GetFirstChild("FRAME_MAP").DataAttributeGet("open") == "1") {
+						AnimMgr.Add(Page.GetFirstChild("FRAME_MAP"), "<frame pos=\"0 0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+						Page.GetFirstChild("FRAME_MAP").DataAttributeSet("open","0");
+					}
+					else {
+						AnimMgr.Add(Page.GetFirstChild("FRAME_MAP"), "<frame pos=\"0 100\" hidden=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+						Page.GetFirstChild("FRAME_MAP").DataAttributeSet("open","1");
 
-							(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-							(Page.GetFirstChild("QUAD_LOCATION_MAP_MX") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-							(Page.GetFirstChild("QUAD_LOCATION_MAP_MAPMANAGER") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+						if(MapLocation == "Local") UpdateLocalMapsFolder(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+						if(MapLocation == "ManiaExchange") UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+						if(MapLocation == "MapManager") UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+					}
+				}
+				case "QUAD_BUTTON_CHALLENGE_SCRIPT": {
+					if(Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT").DataAttributeGet("open") == "1") {
+						AnimMgr.Add(Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT"), "<frame pos=\"0 0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+						Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT").DataAttributeSet("open","0");
+					}
+					else {
+						AnimMgr.Add(Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT"), "<frame pos=\"0 100\" hidden=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+						Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT").DataAttributeSet("open","1");
 
-							Page.GetFirstChild("FRAME_MAP_BAR_LOCAL").Show();
-							Page.GetFirstChild("FRAME_MAP_BAR_MX").Hide();
-							Page.GetFirstChild("FRAME_MAP_BAR_MAPMANAGER").Hide();
-
-							/*
-							(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("file://Thumbnails/MapUid/"^SelectedMapInfo.MapUid);
-							(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedMapInfo.Name);
-							(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedMapInfo.AuthorNickName);
-
-							(Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_AuthorTime));
-							(Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_GoldTime));
-							(Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_SilverTime));
-							(Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_BronzeTime));*/
-
-							Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
-						}
-						case "MapList_MX_Add": {
-							declare SMXTrackInfo[] NewTracks;
-							declare JsonSuccess = NewTracks.fromjson(Event.CustomEventData[0]);
-							foreach(Track,NewTracks) MapBrowserMXTrackInfos.add(Track);
-							UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+						if(ScriptLocation == "Official") UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
+					}
+				}
+				case "QUAD_SELECTOR": {
+					if(MapLocation == "Local") {
+						declare Folder = Event.Control.Parent.DataAttributeGet("folder");
+						if(Folder == "") {
+							declare Index = TextLib::ToInteger(Event.Control.Parent.DataAttributeGet("index"));
+							//log(VisibleMapInfos[Index].Name);
+							declare JsonSuccess = SelectedMapInfo.fromjson(Event.Control.Parent.DataAttributeGet("mapinfo"));
 							
-							Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
 						}
-						case "MapList_MX_Update": {
-							declare JsonSuccess = MapBrowserMXTrackInfos.fromjson(Event.CustomEventData[0]);
+						else if (Folder == "...") {
+							declare Folders = TextLib::Split("\\",CurrentFolder);
+							if(Folders.count > 0) {
+								Folders.removekey(Folders.count-1);
+								declare NewFolder = TextLib::Join("\\",Folders);
+								SendCustomEvent("MapList_Local_Folder", [NewFolder,FilterLocal.tojson()]);
+							}
+							else {
+								log("Yo, what dimension is this 8|");
+							}
+						}
+						else {
+							SendCustomEvent("MapList_Local_Folder", [Folder, FilterLocal.tojson()]);
+						}
+
+						UpdateLocalMapsFolder(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+					}
+					if(MapLocation == "ManiaExchange") {
+						declare Index = TextLib::ToInteger(Event.Control.Parent.DataAttributeGet("index"));
+						declare JsonSuccess = SelectedMXTrackInfo.fromjson(Event.Control.Parent.DataAttributeGet("mapinfo"));
+
+						UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+					}
+					if(MapLocation == "MapManager") {
+						declare JsonSuccess = SelectedManagerMapInfo.fromjson(Event.Control.Parent.DataAttributeGet("mapinfo"));
+						UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+					}
+				}
+				case "QUAD_SELECTOR_SCRIPT": {
+					if(ScriptLocation == "Official") {
+						declare Script = Event.Control.Parent.DataAttributeGet("script");
+						declare Folder = Event.Control.Parent.DataAttributeGet("folder");
+
+						declare SChScriptInfo Info;
+						declare JsonSuccess = Info.fromjson(Script);
+
+						declare Text[] SelectedScriptNames;
+						foreach(S,SelectedScripts) {
+							SelectedScriptNames.add(S.Name);
+						}
+
+						if(SelectedScriptNames.exists(Info.Name)){
+							for(i,0,SelectedScriptNames.count-1)
+								if(SelectedScriptNames[i] == Info.Name)
+									SelectedScripts.removekey(i);
+						}
+						else if(SelectedScripts.count == 0 || (IsMultipleScript() && SelectedScripts.count < 5))
+							SelectedScripts.add(Info);
+						else if(SelectedScripts.count == 1)
+							SelectedScripts[0] = Info;
+						
+
+						/*if(Folder == "") {
+							declare Index = TextLib::ToInteger(Event.Control.Parent.DataAttributeGet("index"));
+							//log(VisibleMapInfos[Index].Name);
+							SelectedMapInfo.fromjson(Event.Control.Parent.DataAttributeGet("mapinfo"));
+							
+						}
+						else if (Folder == "...") {
+							declare Folders = TextLib::Split("\\",CurrentFolder);
+							if(Folders.count > 0) {
+								Folders.removekey(Folders.count-1);
+								declare NewFolder = TextLib::Join("\\",Folders);
+								SendCustomEvent("MapList_Local_Folder", [NewFolder,(Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
+							}
+							else {
+								log("Yo, what dimension is this 8|");
+							}
+						}
+						else {
+							SendCustomEvent("MapList_Local_Folder", [Folder, (Page.GetFirstChild("ENTRY_MAPLIST_SEARCH") as CMlEntry).Value, (Page.GetFirstChild("ENTRY_MAPLIST_AUTHOR") as CMlEntry).Value]);
+						}*/
+
+						UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
+					}
+				}
+				case "QUAD_LOCATION_MAP_LOCAL": {
+					SendCustomEvent("MapList_Local_Folder", ["",FilterLocal.tojson()]);
+					MapLocation = "Local";
+				}
+				case "QUAD_LOCATION_MAP_MX": {
+					if(MapLocation != "ManiaExchange") {
+						MapLocation = "ManiaExchange";
+
+						Page.GetFirstChild("FRAME_MAP_BAR_LOCAL").Hide();
+						Page.GetFirstChild("FRAME_MAP_BAR_MX").Show();
+						Page.GetFirstChild("FRAME_MAP_BAR_MAPMANAGER").Hide();
+
+						(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
+						(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+						(Page.GetFirstChild("QUAD_LOCATION_MAP_MAPMANAGER") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+
+						(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("https://tm.mania-exchange.com/tracks/thumbnail/"^SelectedMXTrackInfo.TrackID^"?.jpg");
+						(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedMXTrackInfo.GbxMapName);
+						if(SelectedMXTrackInfo.Username == "") (Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("");
+						else (Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedMXTrackInfo.Username);
+						(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value = SelectedMXTrackInfo.TrackUID;
+
+						(Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText("???");
+						(Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText("???");
+						(Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText("???");
+						(Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText("???");
+
+						SendCustomEvent("MapList_DestroyMapManager", []);
+
+						if(MapBrowserMXTrackInfos.count == 0) {
+							SendCustomEvent("MapList_ManiaExchange_Update", ["1", FilterMX.tojson(), ""]);
+							Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
+						}
+						else {
 							UpdateManiaExchange(0);
-							
 							Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
 						}
-						case "ScriptList_Official_Update": {
-							declare SChScriptInfo[] Scripts;
-							declare JsonSuccess = Scripts.fromjson(Event.CustomEventData[0]);
-							ScriptBrowserScripts = Scripts;
-							UpdateScriptList(0);
+					}
+				}
+				case "QUAD_LOCATION_MAP_MAPMANAGER": {
+					if(MapLocation != "MapManager") {
+						MapLocation = "MapManager";
+
+						Page.GetFirstChild("FRAME_MAP_BAR_LOCAL").Hide();
+						Page.GetFirstChild("FRAME_MAP_BAR_MX").Hide();
+						Page.GetFirstChild("FRAME_MAP_BAR_MAPMANAGER").Show();
+
+						(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
+						(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+						(Page.GetFirstChild("QUAD_LOCATION_MAP_MX") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+
+						(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedManagerMapInfo.Name);
+						if(SelectedMXTrackInfo.Username == "") (Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("");
+						else (Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedManagerMapInfo.AuthorLogin);
+						(Page.GetFirstChild("ENTRY_MAPLIST_UID") as CMlEntry).Value = SelectedManagerMapInfo.Uid;
+
+						if(MapBrowserManagerTrackInfos.count == 0) {
+							SendCustomEvent("MapList_MapManager_Update", [(Page.GetFirstChild("ENTRY_MAPLIST_MANAGER_SEARCH") as CMlEntry).Value, ""^((Page.GetFirstChild("QUAD_MANAGER_SHOWPRIVATE") as CMlQuad).ModulateColor == <0.0,0.2,0.4>)]);
+							Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 						}
-						case "ScriptList_Metadata_Response": {
-							declare SChMetadata Metadata;
-							declare JsonSuccess = Metadata.fromjson(Event.CustomEventData[1]);
-							for(i,0,ScriptBrowserScripts.count-1) {
-								if(ScriptBrowserScripts[i].Name == Event.CustomEventData[0])
-									ScriptBrowserScripts[i].Metadata = Metadata;
-							}
-							UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
-						}
-						case "NicknameUpdate": {
-							declare JsonSuccess = Nicknames.fromjson(Event.CustomEventData[0]);
-							UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
-							if(MapLocation == "ManiaExchange")
-								UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-							else if(MapLocation == "MapManager")
-								UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-						}
-						case "Downloaded_MapUids": {
-							declare JsonSuccess = DownloadedMapUids.fromjson(Event.CustomEventData[0]);
-							if(MapLocation == "ManiaExchange")
-								UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-							else if(MapLocation == "MapManager")
-								UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-						}
-						case "MapManager_Maps": {
-							declare JsonSuccess = MapBrowserManagerTrackInfos.fromjson(Event.CustomEventData[0]);
+						else {
 							UpdateMapManager(0);
 							Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
 						}
-						case "MapList_Local_Refresh_Response": {
-							UpdateLocalMapsFolder(0);
-						}
-						case "MapList_Local_QuickUid_Response": {
-							declare JsonSuccess = SelectedMapInfo.fromjson(Event.CustomEventData[0]);
-							UpdateLocalMapsFolder(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-						}
-						case "MapList_ManiaExchange_QuickUid_Response": {
-							declare JsonSuccess = SelectedMXTrackInfo.fromjson(Event.CustomEventData[0]);
-							UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-						}
-						case "MapList_MapManager_QuickUid_Response": {
-							declare JsonSuccess = SelectedManagerMapInfo.fromjson(Event.CustomEventData[0]);
-							UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-						}
+					}
+				}
+
+				case "QUAD_LOCATION_SCRIPT_OFFICIAL": {
+					(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
+					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_ONLINE") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+
+					ScriptLocation = "Official";
+				}
+				case "QUAD_LOCATION_SCRIPT_LOCAL": {
+					(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
+					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_OFFICIAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_ONLINE") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+
+					ScriptLocation = "Local";
+				}
+				case "QUAD_LOCATION_SCRIPT_ONLINE": {
+					(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
+					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_OFFICIAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+
+					ScriptLocation = "Online";
+				}
+				case "QUAD_SCRIPT_MULTIPLE": {
+					if((Event.Control as CMlQuad).ModulateColor == <0.4,0.4,0.4>) {
+						(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
+					}
+					else {
+						(Event.Control as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+						while(SelectedScripts.count > 1)
+							SelectedScripts.removekey(SelectedScripts.count - 1);
+					}
+					UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
+				}
+				case "LABEL_MAPLIST_REFRESH": {
+					SendCustomEvent("MapList_Local_Refresh", []);
+				}
+				case "QUAD_MANAGER_SHOWPRIVATE": {
+					if((Event.Control as CMlQuad).ModulateColor == <0.4,0.4,0.4>) {
+						(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
+						SendCustomEvent("MapList_MapManager_Update", [(Page.GetFirstChild("ENTRY_MAPLIST_MANAGER_SEARCH") as CMlEntry).Value, "True"]);
+						Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
+					}
+					else {
+						(Event.Control as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+						SendCustomEvent("MapList_MapManager_Update", [(Page.GetFirstChild("ENTRY_MAPLIST_MANAGER_SEARCH") as CMlEntry).Value, "False"]);
+						Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
+					}
+				}
+
+				case "LABEL_MOREFILTERS_MX": {
+					if(MapLocation == "ManiaExchange") {
+						if(Page.GetFirstChild("FRAME_FILTER_MX").Visible) AnimMgr.Add(Page.GetFirstChild("FRAME_FILTER_MX"), "<frame clipsizen=\"0 50\" hidden=\"1\"/>", 200, CAnimManager::EAnimManagerEasing::QuadOut);
+						else AnimMgr.Add(Page.GetFirstChild("FRAME_FILTER_MX"), "<frame clipsizen=\"100 50\" hidden=\"0\"/>", 200, CAnimManager::EAnimManagerEasing::QuadOut);
 					}
 				}
 			}
 		}
+		
+		case CMlScriptEvent::Type::PluginCustomEvent: {
+			switch(Event.CustomEventType) {
+				case "MapList_Local_Update": {
+					CurrentFolder = Event.CustomEventData[0];
+					declare Text[] SubFolders;
+					declare SMapInfo[] MapInfos;
+					declare JsonSuccessSubFolders = SubFolders.fromjson(Event.CustomEventData[1]);
+					declare JsonSuccessMapInfos = MapInfos.fromjson(Event.CustomEventData[2]);
+					MapBrowserSubFolders = SubFolders;
+					MapBrowserMapInfos = MapInfos;
+					UpdateLocalMapsFolder(0);
 
-		if(OldMapScrollPos != (Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y) {
-			declare Index = 0.0;
-			
-			if(MapLocation == "Local") UpdateLocalMapsFolder(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-			if(MapLocation == "ManiaExchange") UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
-			if(MapLocation == "MapManager") UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+					(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
+					(Page.GetFirstChild("QUAD_LOCATION_MAP_MX") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+					(Page.GetFirstChild("QUAD_LOCATION_MAP_MAPMANAGER") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
 
-			// Adjust selector positions and fake scrolling
-			foreach(Frame,(Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).Controls) {
-				Frame.RelativePosition_V3 = <0.0,-5 - Index * 10. - (Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y>;
-				Index += 1;
+					Page.GetFirstChild("FRAME_MAP_BAR_LOCAL").Show();
+					Page.GetFirstChild("FRAME_MAP_BAR_MX").Hide();
+					Page.GetFirstChild("FRAME_MAP_BAR_MAPMANAGER").Hide();
+
+					/*
+					(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("file://Thumbnails/MapUid/"^SelectedMapInfo.MapUid);
+					(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedMapInfo.Name);
+					(Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("{{{{by}}}} "^SelectedMapInfo.AuthorNickName);
+
+					(Page.GetFirstChild("LABEL_MAPLIST_MEDALNADEO") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_AuthorTime));
+					(Page.GetFirstChild("LABEL_MAPLIST_MEDALGOLD") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_GoldTime));
+					(Page.GetFirstChild("LABEL_MAPLIST_MEDALSILVER") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_SilverTime));
+					(Page.GetFirstChild("LABEL_MAPLIST_MEDALBRONZE") as CMlLabel).SetText(TimeToTextWithMilli(SelectedMapInfo.TMObjective_BronzeTime));*/
+
+					Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
+				}
+				case "MapList_MX_Add": {
+					declare SMXTrackInfo[] NewTracks;
+					declare JsonSuccess = NewTracks.fromjson(Event.CustomEventData[0]);
+					foreach(Track,NewTracks) MapBrowserMXTrackInfos.add(Track);
+					UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+					
+					Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
+				}
+				case "MapList_MX_Update": {
+					declare JsonSuccess = MapBrowserMXTrackInfos.fromjson(Event.CustomEventData[0]);
+					UpdateManiaExchange(0);
+					
+					Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
+				}
+				case "ScriptList_Official_Update": {
+					declare SChScriptInfo[] Scripts;
+					declare JsonSuccess = Scripts.fromjson(Event.CustomEventData[0]);
+					ScriptBrowserScripts = Scripts;
+					UpdateScriptList(0);
+				}
+				case "ScriptList_Metadata_Response": {
+					declare SChMetadata Metadata;
+					declare JsonSuccess = Metadata.fromjson(Event.CustomEventData[1]);
+					for(i,0,ScriptBrowserScripts.count-1) {
+						if(ScriptBrowserScripts[i].Name == Event.CustomEventData[0])
+							ScriptBrowserScripts[i].Metadata = Metadata;
+					}
+					UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
+				}
+				case "NicknameUpdate": {
+					declare JsonSuccess = Nicknames.fromjson(Event.CustomEventData[0]);
+					UpdateScriptList(MathLib::NearestInteger((Page.GetFirstChild("FRAME_SCRIPTLIST") as CMlFrame).ScrollOffset.Y/10.0));
+					if(MapLocation == "ManiaExchange")
+						UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+					else if(MapLocation == "MapManager")
+						UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+				}
+				case "Downloaded_MapUids": {
+					declare JsonSuccess = DownloadedMapUids.fromjson(Event.CustomEventData[0]);
+					if(MapLocation == "ManiaExchange")
+						UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+					else if(MapLocation == "MapManager")
+						UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+				}
+				case "MapManager_Maps": {
+					declare JsonSuccess = MapBrowserManagerTrackInfos.fromjson(Event.CustomEventData[0]);
+					UpdateMapManager(0);
+					Page.GetFirstChild("FRAME_MAPLIST_LOADING").Hide();
+				}
+				case "MapList_Local_Refresh_Response": {
+					UpdateLocalMapsFolder(0);
+				}
+				case "MapList_Local_QuickUid_Response": {
+					declare JsonSuccess = SelectedMapInfo.fromjson(Event.CustomEventData[0]);
+					UpdateLocalMapsFolder(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+				}
+				case "MapList_ManiaExchange_QuickUid_Response": {
+					declare JsonSuccess = SelectedMXTrackInfo.fromjson(Event.CustomEventData[0]);
+					UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+				}
+				case "MapList_MapManager_QuickUid_Response": {
+					declare JsonSuccess = SelectedManagerMapInfo.fromjson(Event.CustomEventData[0]);
+					UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+				}
 			}
-			//
-
-			OldMapScrollPos = (Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y;
 		}
-		
-		// Scroll bar stuff
-		if((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollMax.Y > 0) {
-			declare ScrollRatio = OldMapScrollPos/(Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollMax.Y;
-
-			Page.GetFirstChild("QUAD_MAPLIST_BAR").Show();
-			Page.GetFirstChild("QUAD_MAPLIST_BAR").Size.Y = 80/((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollMax.Y/10.0);
-			Page.GetFirstChild("QUAD_MAPLIST_BAR").RelativePosition_V3.Y = -20.0-ScrollRatio*(80.0-Page.GetFirstChild("QUAD_MAPLIST_BAR").Size.Y);
-
-			//(Page.GetFirstChild("QUAD_MAPLIST_BAR") as CMlGauge).Ratio = OldMapScrollPos/(Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollMax.Y;
-		}
-		else {
-			Page.GetFirstChild("QUAD_MAPLIST_BAR").Hide();
-		}
-		//
-		
-		foreach(Control,Page.GetClassChildren_Result) {
-			Control.RelativeRotation += Period / 5.0;
-		}
-
-		yield;
 	}
 }
+
+if(OldMapScrollPos != (Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y) {
+	declare Index = 0.0;
+	
+	if(MapLocation == "Local") UpdateLocalMapsFolder(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+	if(MapLocation == "ManiaExchange") UpdateManiaExchange(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+	if(MapLocation == "MapManager") UpdateMapManager(MathLib::NearestInteger((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y/10.0));
+
+	// Adjust selector positions and fake scrolling
+	foreach(Frame,(Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).Controls) {
+		Frame.RelativePosition_V3 = <0.0,-5 - Index * 10. - (Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y>;
+		Index += 1;
+	}
+	//
+
+	OldMapScrollPos = (Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y;
+}
+
+// Scroll bar stuff
+if((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollMax.Y > 0) {
+	declare ScrollRatio = OldMapScrollPos/(Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollMax.Y;
+
+	Page.GetFirstChild("QUAD_MAPLIST_BAR").Show();
+	Page.GetFirstChild("QUAD_MAPLIST_BAR").Size.Y = 80/((Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollMax.Y/10.0);
+	Page.GetFirstChild("QUAD_MAPLIST_BAR").RelativePosition_V3.Y = -20.0-ScrollRatio*(80.0-Page.GetFirstChild("QUAD_MAPLIST_BAR").Size.Y);
+
+	//(Page.GetFirstChild("QUAD_MAPLIST_BAR") as CMlGauge).Ratio = OldMapScrollPos/(Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollMax.Y;
+}
+else {
+	Page.GetFirstChild("QUAD_MAPLIST_BAR").Hide();
+}
+//
+
+foreach(Control,Page.GetClassChildren_Result) {
+	Control.RelativeRotation += Period / 5.0;
+}
+***

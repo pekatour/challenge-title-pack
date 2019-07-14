@@ -1,0 +1,8 @@
+#Struct SAnimationSlowSetText {
+	CMlLabel Label;
+	Text OldText;
+	Text NewText;
+	Integer Time;
+	Integer Start;
+	Integer Position;
+}

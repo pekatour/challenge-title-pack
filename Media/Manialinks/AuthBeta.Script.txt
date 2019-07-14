@@ -1,97 +1,95 @@
-#Include "TextLib" as TextLib
-	
-main() {
-	Page.GetFirstChild("SC_SLIDELABEL_LOGIN").DataAttributeSet("text",LocalUser.Login);
-	Page.GetFirstChild("SC_SLIDELABEL_NICKNAME").DataAttributeSet("text",LocalUser.Name);
-	Page.GetFirstChild("SC_SLIDELABEL_ZONE").DataAttributeSet("text",TextLib::Replace(LocalUser.ZonePath,"|"," | "));
+***Start***
+***
+Page.GetFirstChild("SC_SLIDELABEL_LOGIN").DataAttributeSet("text",LocalUser.Login);
+Page.GetFirstChild("SC_SLIDELABEL_NICKNAME").DataAttributeSet("text",LocalUser.Name);
+Page.GetFirstChild("SC_SLIDELABEL_ZONE").DataAttributeSet("text",TextLib::Replace(LocalUser.ZonePath,"|"," | "));
 
-	Page.GetFirstChild("FRAME_REQUESTING").RelativeScale = 0.;
-	AnimMgr.Add(Page.GetFirstChild("FRAME_REQUESTING"), "<frame scale=\"1\" hidden=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+Page.GetFirstChild("FRAME_REQUESTING").RelativeScale = 0.;
+AnimMgr.Add(Page.GetFirstChild("FRAME_REQUESTING"), "<frame scale=\"1\" hidden=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+***
 
-	while(True) {
-		foreach(Event,PendingEvents) {
-			switch(Event.Type) {
-				case CMlScriptEvent::Type::MouseClick: {
-					if(Event.ControlId == "QUAD_BUTTON_AUTHORIZE") {
-						SendCustomEvent("Authorize", []);
-					}
-				}
-				case CMlScriptEvent::Type::PluginCustomEvent: {
-					if(Event.CustomEventType == "HideRequesting") {
-						AnimMgr.Add(Page.GetFirstChild("FRAME_REQUESTING"), "<frame scale=\"0\" hidden=\"1\" />", 500, CAnimManager::EAnimManagerEasing::QuadIn);
-					}
-					if(Event.CustomEventType == "ShowAuthWindow") {
-						Page.GetFirstChild("FRAME_AUTH").RelativeScale = 0.;
-						AnimMgr.Add(Page.GetFirstChild("FRAME_AUTH"), "<frame scale=\"1\" hidden=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
-					}
-					if(Event.CustomEventType == "ShowNoAccess") {
-						AnimMgr.Add(Page.GetFirstChild("FRAME_AUTH"), "<frame scale=\"0\" hidden=\"1\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
-						Page.GetFirstChild("FRAME_NOACCESS").RelativeScale = 0.;
-						AnimMgr.Add(Page.GetFirstChild("FRAME_NOACCESS"), "<frame scale=\"1\" hidden=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadIn);
-					}
-				}
+***Loop***
+***
+foreach(Event,PendingEvents) {
+	switch(Event.Type) {
+		case CMlScriptEvent::Type::MouseClick: {
+			if(Event.ControlId == "QUAD_BUTTON_AUTHORIZE") {
+				SendCustomEvent("Authorize", []);
 			}
 		}
-
-		Page.GetClassChildren("LOADING", Page.MainFrame, True);
-		foreach(Control,Page.GetClassChildren_Result) {
-			Control.RelativeRotation += Period / 5.0;
+		case CMlScriptEvent::Type::PluginCustomEvent: {
+			if(Event.CustomEventType == "HideRequesting") {
+				AnimMgr.Add(Page.GetFirstChild("FRAME_REQUESTING"), "<frame scale=\"0\" hidden=\"1\" />", 500, CAnimManager::EAnimManagerEasing::QuadIn);
+			}
+			if(Event.CustomEventType == "ShowAuthWindow") {
+				Page.GetFirstChild("FRAME_AUTH").RelativeScale = 0.;
+				AnimMgr.Add(Page.GetFirstChild("FRAME_AUTH"), "<frame scale=\"1\" hidden=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+			}
+			if(Event.CustomEventType == "ShowNoAccess") {
+				AnimMgr.Add(Page.GetFirstChild("FRAME_AUTH"), "<frame scale=\"0\" hidden=\"1\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				Page.GetFirstChild("FRAME_NOACCESS").RelativeScale = 0.;
+				AnimMgr.Add(Page.GetFirstChild("FRAME_NOACCESS"), "<frame scale=\"1\" hidden=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadIn);
+			}
 		}
+	}
+}
 
-		Page.GetClassChildren("SC_SLIDELABEL", Page.MainFrame, True);
-		foreach(Control,Page.GetClassChildren_Result) {
-			if(Control is CMlFrame) {
-				declare Frame = (Control as CMlFrame);
-				declare LabelText = Frame.DataAttributeGet("text");
+Page.GetClassChildren("LOADING", Page.MainFrame, True);
+foreach(Control,Page.GetClassChildren_Result) {
+	Control.RelativeRotation += Period / 5.0;
+}
+
+Page.GetClassChildren("SC_SLIDELABEL", Page.MainFrame, True);
+foreach(Control,Page.GetClassChildren_Result) {
+	if(Control is CMlFrame) {
+		declare Frame = (Control as CMlFrame);
+		declare LabelText = Frame.DataAttributeGet("text");
+		
+		declare Offset = TextLib::ToReal(Frame.DataAttributeGet("offset"));
+		if(Offset == -1) Offset = 0.; 
+		Offset += Period/1000.;
+		Frame.DataAttributeSet("offset",Offset^"");
+		
+		declare Speed = TextLib::ToReal(Frame.DataAttributeGet("speed"));
+		if(Speed == -1) Speed = 10.;
+		declare Space = TextLib::ToReal(Frame.DataAttributeGet("space"));
+		if(Space == -1) Space = 5.;
+		declare Slides = TextLib::ToInteger(Frame.DataAttributeGet("slides"));
+		if(Slides == -1) Slides = 0;
+		
+		foreach(InnerControl,Frame.Controls) {
+			if(InnerControl is CMlLabel) {
+				declare Label = (InnerControl as CMlLabel);
+				declare LabelWidth = Label.ComputeWidth(LabelText);
+				Label.Size.X = LabelWidth;
+				Label.SetText(LabelText);
+				declare IsLongText = LabelWidth > Frame.ClipWindowSize.X;
+				declare Position = -Offset*Speed+Slides*(LabelWidth + Space)*2;
 				
-				declare Offset = TextLib::ToReal(Frame.DataAttributeGet("offset"));
-				if(Offset == -1) Offset = 0.; 
-				Offset += Period/1000.;
-				Frame.DataAttributeSet("offset",Offset^"");
-				
-				declare Speed = TextLib::ToReal(Frame.DataAttributeGet("speed"));
-				if(Speed == -1) Speed = 10.;
-				declare Space = TextLib::ToReal(Frame.DataAttributeGet("space"));
-				if(Space == -1) Space = 5.;
-				declare Slides = TextLib::ToInteger(Frame.DataAttributeGet("slides"));
-				if(Slides == -1) Slides = 0;
-				
-				foreach(InnerControl,Frame.Controls) {
-					if(InnerControl is CMlLabel) {
-						declare Label = (InnerControl as CMlLabel);
-						declare LabelWidth = Label.ComputeWidth(LabelText);
-						Label.Size.X = LabelWidth;
-						Label.SetText(LabelText);
-						declare IsLongText = LabelWidth > Frame.ClipWindowSize.X;
-						declare Position = -Offset*Speed+Slides*(LabelWidth + Space)*2;
-						
-						if(Label.HasClass("SC_SLIDELABEL_TEXT1")) {
-							if(IsLongText) {
-								Label.RelativePosition_V3.X = Position;
-								if(Label.RelativePosition_V3.X < -LabelWidth) Slides+=1;
-							}
-						}
-						if(Label.HasClass("SC_SLIDELABEL_TEXT2")) {
-							if(IsLongText) {
-								if(Position < 0)
-									Label.RelativePosition_V3.X = Position + (LabelWidth + Space);
-								else {
-									Label.RelativePosition_V3.X = Position - (LabelWidth + Space);
-								}
-								
-								Label.Show();
-							}
-							else {
-								Label.Hide();
-							}
-						}
+				if(Label.HasClass("SC_SLIDELABEL_TEXT1")) {
+					if(IsLongText) {
+						Label.RelativePosition_V3.X = Position;
+						if(Label.RelativePosition_V3.X < -LabelWidth) Slides+=1;
 					}
 				}
-				
-				Frame.DataAttributeSet("slides",Slides^"");
+				if(Label.HasClass("SC_SLIDELABEL_TEXT2")) {
+					if(IsLongText) {
+						if(Position < 0)
+							Label.RelativePosition_V3.X = Position + (LabelWidth + Space);
+						else {
+							Label.RelativePosition_V3.X = Position - (LabelWidth + Space);
+						}
+						
+						Label.Show();
+					}
+					else {
+						Label.Hide();
+					}
+				}
 			}
 		}
 		
-		yield;
+		Frame.DataAttributeSet("slides",Slides^"");
 	}
 }
+***
