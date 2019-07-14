@@ -767,6 +767,8 @@ main() {
 		}
 		
 		if(LastShadowsQuality != CurrentShadowsQuality) {
+			wait(IsEditorReadyForRequest);
+			sleep(200);
 			if(CurrentShadowsQuality == ::ShadowsQuality::VeryFast)
 				Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("VERY_FAST"), ""^IsUltraShadowsQualityAvailable]);
 			else if(CurrentShadowsQuality == ::ShadowsQuality::Fast)
