@@ -289,6 +289,13 @@ SChAnchor[] GetCheckpoints() {
 	return Anchors;   
 }
 
+SChAnchor[] GetMultilaps() {
+	declare Response = Request("Ch_GetMultilaps", []);
+	declare SChAnchor[] Anchors;
+	declare JsonSuccess = Anchors.fromjson(Response.Values[0]);
+	return Anchors;   
+}
+
 SChAnchorBlock[] GetStartLineBlocks() {
 	declare Response = Request("Ch_GetStartLineBlocks", []);
 	declare SChAnchorBlock[] Blocks;
@@ -305,6 +312,13 @@ SChAnchorBlock[] GetFinishLineBlocks() {
 
 SChAnchorBlock[] GetCheckpointBlocks() {
 	declare Response = Request("Ch_GetCheckpointBlocks", []);
+	declare SChAnchorBlock[] Blocks;
+	declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
+	return Blocks;   
+}
+
+SChAnchorBlock[] GetMultilapBlocks() {
+	declare Response = Request("Ch_GetMultilapBlocks", []);
 	declare SChAnchorBlock[] Blocks;
 	declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
 	return Blocks;   
@@ -340,6 +354,13 @@ SChAnchorItem[] GetCheckpointItems() {
 
 SChAnchorItem[] GetFinishLineItems() {
 	declare Response = Request("Ch_GetFinishLineItems", []);
+	declare SChAnchorItem[] Items;
+	declare JsonSuccess = Items.fromjson(Response.Values[0]);
+	return Items;
+}
+
+SChAnchorItem[] GetMultilapItems() {
+	declare Response = Request("Ch_GetMultilapItems", []);
 	declare SChAnchorItem[] Items;
 	declare JsonSuccess = Items.fromjson(Response.Values[0]);
 	return Items;
