@@ -409,27 +409,29 @@
 				]
 			}
 		],
-		"PlaceRoadBlocks": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				[
-					{
-						"Type": "Text",
-						"Name": "_BlockName"
-					},
-					{
-						"Type": "Int3",
-						"Name": "_StartCoord"
-					},
-					{
-						"Type": "Int3",
-						"Name": "_EndCoord"
-					}
+		"PlaceRoadBlocks": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_StartCoord"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_EndCoord"
+						}
+					]
 				]
-			]
-		},
+			}
+		],
 		"CanPlaceTerrainBlocks": [
 			{
 				"Return": "Boolean",
@@ -725,7 +727,6 @@
 					]
 				]
 			}
-			
 		],
 		"RemoveTerrainBlocks": [
 			{
@@ -1142,10 +1143,12 @@
 				"ReturnsArray": false,
 				"Kind": "Extensive",
 				"Parameters": [
-					{
-						"Type": "Real",
-						"Name": "_Percentage"
-					}
+					[
+						{
+							"Type": "Real",
+							"Name": "_Percentage"
+						}
+					]
 				]
 			}
 		],
@@ -1155,10 +1158,12 @@
 				"ReturnsArray": false,
 				"Kind": "Extensive",
 				"Parameters": [
-					{
-						"Type": "Text",
-						"Name": "_Message"
-					}
+					[
+						{
+							"Type": "Text",
+							"Name": "_Message"
+						}
+					]
 				]
 			}
 		],
