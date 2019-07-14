@@ -103,7 +103,7 @@ Void Prepare() {
 	Layers::Create("ModifierStatus",Manialink::FromFile("Media/Manialinks/Modifier/ModifierStatus", True));
 	Layers::Create("ModifierMetadata",Manialink::FromFile("Media/Manialinks/Modifier/ModifierMetadata", True));
 	Layers::Create("ModifierActions",Manialink::FromFile("Media/Manialinks/Modifier/ModifierActions", True));
-	Layers::Create("ModifierResult",Manialink::FromFile("Media/Manialinks/Modifier/ModifierResult", True));
+	Layers::Create("ModifierResult",Manialink::FromFile("Media/Manialinks/Modifier/ModifierResult", True, ["TextAnimation"]));
 	
 	Layers::SetAnimationInOut("ModifierScript",CUILayer::EUILayerAnimation::DownSlow);
 	Layers::SetAnimationInOut("ModifierStatus",CUILayer::EUILayerAnimation::DownSlow);

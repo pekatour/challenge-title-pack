@@ -10,7 +10,7 @@ for(i,0,Animations_SlowSetText.count-1) {
 			}
 		}
 		else if(Animations_SlowSetText[i].Position > TextLib::Length(Animations_SlowSetText[i].NewText)) {
-			if(Now-Start >= AnimationPeriod*Animations_SlowSetText[i].Position) {
+			if(Now-Animations_SlowSetText[i].Start >= AnimationPeriod*Animations_SlowSetText[i].Position) {
 				Animations_SlowSetText[i].Label.Value = Animations_SlowSetText[i].NewText;
 				Animations_SlowSetText.removekey(i);
 			}

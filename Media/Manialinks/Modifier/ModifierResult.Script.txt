@@ -95,7 +95,7 @@ foreach(Event,PendingEvents) {
 					declare Quality = Event.CustomEventData[0];
 					declare IsUltraAvailable = Event.CustomEventData[1] == "True";
 
-					Label_Button_Shadows.SetText(Quality);
+					SlowSetText(Label_Button_Shadows, Quality, 500);
 
 					Label_Button_Shadows_VeryFast.Opacity = 1.;
 					Label_Button_Shadows_Fast.Opacity = 1.;
