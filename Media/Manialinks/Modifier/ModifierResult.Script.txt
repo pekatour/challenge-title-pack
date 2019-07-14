@@ -11,6 +11,9 @@ foreach(Element,Page.GetClassChildren_Result) {
 	}
 }
 
+declare Frame_Success = (Page.GetFirstChild("FRAME_SUCCESS") as CMlFrame);
+declare Frame_Unsolvable = (Page.GetFirstChild("FRAME_UNSOLVABLE") as CMlFrame);
+
 declare Label_Button_Shadows = (Page.GetFirstChild("LABEL_BUTTON_SHADOWS") as CMlLabel);
 declare Label_Button_Shadows_VeryFast = (Page.GetFirstChild("LABEL_BUTTON_SHADOWS_VERYFAST") as CMlLabel);
 declare Label_Button_Shadows_Fast = (Page.GetFirstChild("LABEL_BUTTON_SHADOWS_FAST") as CMlLabel);
@@ -162,6 +165,14 @@ foreach(Event,PendingEvents) {
 						Quad_Button_Save_Block.Hide();
 						Label_Button_Save.Opacity = 1.;
 					}
+				}
+				case "Success": {
+					Frame_Success.Show();
+					Frame_Unsolvable.Hide();
+				}
+				case "Unsolvable": {
+					Frame_Success.Hide();
+					Frame_Unsolvable.Show();
 				}
 			}
 		}

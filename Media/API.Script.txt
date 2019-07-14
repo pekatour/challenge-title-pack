@@ -476,7 +476,12 @@ Void Complete() { // Shouldn't be normally called
 Void Problem(SChProblem _Problem) {
 	Problems.add(_Problem);
 
-	SetStatusColor(<1.,.5,0.>);
+	if(_Problem.IsUnsolvable) {
+		SetStatusColor(<1.,0.,0.>);
+		SetStatusProgress(1.);
+	}
+	else
+		SetStatusColor(<1.,.5,0.>);
 	declare Response = Request("Ch_Problem", [_Problem.tojson()]);
 	sleep(2000);
 	SetStatusColor(<1.,1.,1.>);

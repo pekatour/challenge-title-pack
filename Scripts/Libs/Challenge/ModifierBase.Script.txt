@@ -52,9 +52,22 @@
 }
 
 #Struct SChProblem {
+	Text Name;
+	SChAnchor Anchor;
+	SChAnchor[] Anchors;
 	SChBlock Block;
+	SChBlock[] Blocks;
+	SChItem Item;
+	SChItem[] Items;
+	Boolean IsUnsolvable;
 }
 
 #Struct SChNote {
+	Text Name;
+	SChAnchor Anchor;
+	SChAnchor[] Anchors;
 	SChBlock Block;
+	SChBlock[] Blocks;
+	SChItem Item;
+	SChItem[] Items;
 }

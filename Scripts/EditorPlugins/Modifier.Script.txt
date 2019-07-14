@@ -28,6 +28,7 @@
 }
 
 declare CUILayer LayerAPI;
+declare Boolean Terminate;
 
 declare ModifierBase::SChProblem[] Problems;
 
@@ -151,6 +152,9 @@ Void Finish() {
 	Layers::Hide("ModifierMetadata");
 	sleep(500);
 	Layers::Show("ModifierResult");
+
+	if(Terminate) Layers::SendEvent("ModifierResult", "Unsolvable");
+	else Layers::SendEvent("ModifierResult", "Success");
 	
 	if(CurrentShadowsQuality == ::ShadowsQuality::NotComputed) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("NOT_COMPUTED"), ""^IsUltraShadowsQualityAvailable]);
 	else if(CurrentShadowsQuality == ::ShadowsQuality::VeryFast) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("VERY_FAST"), ""^IsUltraShadowsQualityAvailable]);
@@ -176,6 +180,10 @@ Void Revert() {
 
 Void Solution() {
 
+}
+
+Void TerminateScript() {
+	Terminate = True;
 }
 
 Void Respond(CMapEditorPluginEvent _Event, Text[] _Data) {
@@ -629,7 +637,8 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			declare ModifierBase::SChProblem Problem;
 			declare JsonSuccess = Problem.fromjson(Event.CustomEventData[0]);
 			Problems.add(Problem);
-			Respond(Event, []);
+			if(Problem.IsUnsolvable) TerminateScript();
+			else Respond(Event, []);
 		}
 		case "Ch_Message": {
 			Dialog_Message(Event.CustomEventData[0]);
@@ -667,17 +676,14 @@ Void ProcessScript(Text _ScriptName, Text _ScriptContent) {
 """^File::Read("Media/API_Main.Script.txt"));
 			
 	declare Completed = False;
-	while(!Completed) {
+	while(!Completed && !Terminate) {
 		foreach(Event,PendingEvents) {
+			if(Terminate) break;
+			
 			if(Event.Type == CMapEditorPluginEvent::Type::LayerCustomEvent) {
 				if(Event.CustomEventType == "Ch_Complete") {
 					Completed = True;
 					log("[MODIFIER] "^_ScriptName^" completed");
-				}
-				else if(Event.CustomEventType == "Ch_Incompatible") {
-					Dialog_Message(Event.CustomEventData[0]);
-					Completed = True;
-					log("[MODIFIER] "^_ScriptName^" failed");
 				}
 				else if(TextLib::StartsWith("Ch_", Event.CustomEventType)) {
 					log("[MODIFIER] Request: "^Event.CustomEventType);
