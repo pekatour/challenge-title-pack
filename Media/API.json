@@ -1,392 +1,1326 @@
 {
 	"Structs": {
 		"SChMetadata": [
-			{ "Type": "Text", "Name": "Name" },
-			{ "Type": "Text", "Name": "AuthorLogin" },
-			{ "Type": "Text", "Name": "Description" }
+			{
+				"Type": "Text",
+				"Name": "Name"
+			},
+			{
+				"Type": "Text",
+				"Name": "AuthorLogin"
+			},
+			{
+				"Type": "Text",
+				"Name": "Description"
+			}
 		],
 		"SChBlock": [
-			{ "Type": "Integer", "Name": "BlockScriptId" },
-			{ "Type": "Text", "Name": "Name" },
-			{ "Type": "Int3", "Name": "Coord" },
-			{ "Type": "Text", "Name": "Direction" },
-			{ "Type": "Boolean", "Name": "IsRoad" },
-			{ "Type": "Boolean", "Name": "IsTerrain" },
-			{ "Type": "Boolean", "Name": "IsPodium" },
-			{ "Type": "Text", "Name": "Waypoint" },
-			{ "Type": "Boolean", "Name": "NoRespawn" }
+			{
+				"Type": "Integer",
+				"Name": "BlockScriptId"
+			},
+			{
+				"Type": "Text",
+				"Name": "Name"
+			},
+			{
+				"Type": "Int3",
+				"Name": "Coord"
+			},
+			{
+				"Type": "Text",
+				"Name": "Direction"
+			},
+			{
+				"Type": "Boolean",
+				"Name": "IsRoad"
+			},
+			{
+				"Type": "Boolean",
+				"Name": "IsTerrain"
+			},
+			{
+				"Type": "Boolean",
+				"Name": "IsPodium"
+			},
+			{
+				"Type": "Text",
+				"Name": "Waypoint"
+			},
+			{
+				"Type": "Boolean",
+				"Name": "NoRespawn"
+			}
 		],
 		"SChMacroblock": [
-			{ "Type": "Boolean", "Name": "IsGround" },
-			{ "Type": "Boolean", "Name": "HasStart" },
-			{ "Type": "Boolean", "Name": "HasFinish" },
-			{ "Type": "Boolean", "Name": "HasCheckpoint" },
-			{ "Type": "Boolean", "Name": "HasMultilap" },
-			{ "Type": "Text", "Name": "Name" }
+			{
+				"Type": "Boolean",
+				"Name": "IsGround"
+			},
+			{
+				"Type": "Boolean",
+				"Name": "HasStart"
+			},
+			{
+				"Type": "Boolean",
+				"Name": "HasFinish"
+			},
+			{
+				"Type": "Boolean",
+				"Name": "HasCheckpoint"
+			},
+			{
+				"Type": "Boolean",
+				"Name": "HasMultilap"
+			},
+			{
+				"Type": "Text",
+				"Name": "Name"
+			}
 		],
 		"SChItem": [
-			{ "Type": "Vec3", "Name": "Position" }
+			{
+				"Type": "Vec3",
+				"Name": "Position"
+			}
 		],
 		"SChAnchor": [
-			{ "Type": "Ident", "Name": "Id" },
-			{ "Type": "Text", "Name": "DefaultTag" },
-			{ "Type": "Integer", "Name": "DefaultOrder" },
-			{ "Type": "Text", "Name": "Tag" },
-			{ "Type": "Integer", "Name": "Order" },
-			{ "Type": "Boolean", "Name": "IsBlock" },
-			{ "Type": "SChBlock", "Name": "Block" },
-			{ "Type": "Boolean", "Name": "IsItem" },
-			{ "Type": "SChItem", "Name": "Item" }
+			{
+				"Type": "Ident",
+				"Name": "Id"
+			},
+			{
+				"Type": "Text",
+				"Name": "DefaultTag"
+			},
+			{
+				"Type": "Integer",
+				"Name": "DefaultOrder"
+			},
+			{
+				"Type": "Text",
+				"Name": "Tag"
+			},
+			{
+				"Type": "Integer",
+				"Name": "Order"
+			},
+			{
+				"Type": "Boolean",
+				"Name": "IsBlock"
+			},
+			{
+				"Type": "SChBlock",
+				"Name": "Block"
+			},
+			{
+				"Type": "Boolean",
+				"Name": "IsItem"
+			},
+			{
+				"Type": "SChItem",
+				"Name": "Item"
+			}
 		],
 		"SChAnchorBlock": [
-			{ "Type": "Ident", "Name": "Id" },
-			{ "Type": "Text", "Name": "DefaultTag" },
-			{ "Type": "Integer", "Name": "DefaultOrder" },
-			{ "Type": "Text", "Name": "Tag" },
-			{ "Type": "Integer", "Name": "Order" },
-			{ "Type": "Boolean", "Name": "IsBlock" },
-			{ "Type": "SChBlock", "Name": "Block" }
+			{
+				"Type": "Ident",
+				"Name": "Id"
+			},
+			{
+				"Type": "Text",
+				"Name": "DefaultTag"
+			},
+			{
+				"Type": "Integer",
+				"Name": "DefaultOrder"
+			},
+			{
+				"Type": "Text",
+				"Name": "Tag"
+			},
+			{
+				"Type": "Integer",
+				"Name": "Order"
+			},
+			{
+				"Type": "Boolean",
+				"Name": "IsBlock"
+			},
+			{
+				"Type": "SChBlock",
+				"Name": "Block"
+			}
 		],
 		"SChAnchorItem": [
-			{ "Type": "Ident", "Name": "Id" },
-			{ "Type": "Text", "Name": "DefaultTag" },
-			{ "Type": "Integer", "Name": "DefaultOrder" },
-			{ "Type": "Text", "Name": "Tag" },
-			{ "Type": "Integer", "Name": "Order" },
-			{ "Type": "Boolean", "Name": "IsBlock" },
-			{ "Type": "SChItem", "Name": "Item" }
+			{
+				"Type": "Ident",
+				"Name": "Id"
+			},
+			{
+				"Type": "Text",
+				"Name": "DefaultTag"
+			},
+			{
+				"Type": "Integer",
+				"Name": "DefaultOrder"
+			},
+			{
+				"Type": "Text",
+				"Name": "Tag"
+			},
+			{
+				"Type": "Integer",
+				"Name": "Order"
+			},
+			{
+				"Type": "Boolean",
+				"Name": "IsBlock"
+			},
+			{
+				"Type": "SChItem",
+				"Name": "Item"
+			}
 		],
 		"SReplacementResult": [
-			{ "Type": "Boolean", "Name": "Removed" },
-			{ "Type": "Boolean", "Name": "Placed" }
+			{
+				"Type": "Boolean",
+				"Name": "Removed"
+			},
+			{
+				"Type": "Boolean",
+				"Name": "Placed"
+			}
 		],
 		"SChProblem": [
-			{ "Type": "SChBlock", "Name": "Block" }
+			{
+				"Type": "SChBlock",
+				"Name": "Block"
+			}
 		],
 		"SChNote": [
-			{ "Type": "SChBlock", "Name": "Block" }
+			{
+				"Type": "SChBlock",
+				"Name": "Block"
+			}
 		]
 	},
 	"Functions": {
-		"ComputeShadows": {
-			"Return": "Void",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": []
-		},
-		"RemoveAllBlocks": {
-			"Return": "Void",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": []
-		},
-		"RemoveAllTerrain": {
-			"Return": "Void",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": []
-		},
-		"RemoveAllOffZone": {
-			"Return": "Void",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": []
-		},
-		"RemoveAllObjects": {
-			"Return": "Void",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": []
-		},
-		"RemoveAll": {
-			"Return": "Void",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": []
-		},
-		"RemoveAllBlocksAndTerrain": {
-			"Return": "Void",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": []
-		},
-		"PreloadAllBlocks": {
-			"Return": "Void",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": []
-		},
-		"PreloadAllItems": {
-			"Return": "Void",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": []
-		},
-		"CanPlaceBlock": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_BlockName" },
-				{ "Type": "Int3", "Name": "_Coord" },
-				{ "Type": "Text", "Name": "_Direction" },
-				{ "Type": "Boolean", "Name": "_OnGround" },
-				{ "Type": "Integer", "Name": "_VariantIndex" }
-			]
-		},
-		"CanPlaceBlock_NoDestruction": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_BlockName" },
-				{ "Type": "Int3", "Name": "_Coord" },
-				{ "Type": "Text", "Name": "_Direction" },
-				{ "Type": "Boolean", "Name": "_OnGround" },
-				{ "Type": "Integer", "Name": "_VariantIndex" }
-			]
-		},
-		"PlaceBlock": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_BlockName" },
-				{ "Type": "Int3", "Name": "_Coord" },
-				{ "Type": "Text", "Name": "_Direction" }
-			]
-		},
-		"PlaceBlock_NoDestruction": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_BlockName" },
-				{ "Type": "Int3", "Name": "_Coord" },
-				{ "Type": "Text", "Name": "_Direction" }
-			]
-		},
-		"CanPlaceRoadBlocks": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_BlockName" },
-				{ "Type": "Int3", "Name": "_StartCoord" },
-				{ "Type": "Int3", "Name": "_EndCoord" }
-			]
-		},
+		"ComputeShadows": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": []
+			}
+		],
+		"RemoveAllBlocks": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": []
+			}
+		],
+		"RemoveAllTerrain": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": []
+			}
+		],
+		"RemoveAllOffZone": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": []
+			}
+		],
+		"RemoveAllObjects": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": []
+			}
+		],
+		"RemoveAll": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": []
+			}
+		],
+		"RemoveAllBlocksAndTerrain": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": []
+			}
+		],
+		"PreloadAllBlocks": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": []
+			}
+		],
+		"PreloadAllItems": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": []
+			}
+		],
+		"CanPlaceBlock": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						},
+						{
+							"Type": "Boolean",
+							"Name": "_OnGround"
+						},
+						{
+							"Type": "Integer",
+							"Name": "_VariantIndex"
+						}
+					]
+				]
+			}
+		],
+		"CanPlaceBlock_NoDestruction": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						},
+						{
+							"Type": "Boolean",
+							"Name": "_OnGround"
+						},
+						{
+							"Type": "Integer",
+							"Name": "_VariantIndex"
+						}
+					]
+				]
+			}
+		],
+		"PlaceBlock": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						}
+					]
+				]
+			}
+		],
+		"PlaceBlock_NoDestruction": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						}
+					]
+				]
+			}
+		],
+		"CanPlaceRoadBlocks": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_StartCoord"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_EndCoord"
+						}
+					]
+				]
+			}
+		],
 		"PlaceRoadBlocks": {
 			"Return": "Boolean",
 			"ReturnsArray": false,
 			"Kind": "Regular",
 			"Parameters": [
-				{ "Type": "Text", "Name": "_BlockName" },
-				{ "Type": "Int3", "Name": "_StartCoord" },
-				{ "Type": "Int3", "Name": "_EndCoord" }
+				[
+					{
+						"Type": "Text",
+						"Name": "_BlockName"
+					},
+					{
+						"Type": "Int3",
+						"Name": "_StartCoord"
+					},
+					{
+						"Type": "Int3",
+						"Name": "_EndCoord"
+					}
+				]
 			]
 		},
-		"CanPlaceTerrainBlocks": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_BlockName" },
-				{ "Type": "Int3", "Name": "_StartCoord" },
-				{ "Type": "Int3", "Name": "_EndCoord" }
-			]
-		},
-		"PlaceTerrainBlocks": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_BlockName" },
-				{ "Type": "Int3", "Name": "_StartCoord" },
-				{ "Type": "Int3", "Name": "_EndCoord" }
-			]
-		},
-		"PlaceTerrainBlocks_NoDestruction": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_BlockName" },
-				{ "Type": "Int3", "Name": "_StartCoord" },
-				{ "Type": "Int3", "Name": "_EndCoord" }
-			]
-		},
-		"CanPlaceMacroblock": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_MacroblockName" },
-				{ "Type": "Int3", "Name": "_Coord" },
-				{ "Type": "Text", "Name": "_Direction" }
-			]
-		},
-		"PlaceMacroblock": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_MacroblockName" },
-				{ "Type": "Int3", "Name": "_Coord" },
-				{ "Type": "Text", "Name": "_Direction" }
-			]
-		},
-		"CanPlaceMacroblock_NoDestruction": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_MacroblockName" },
-				{ "Type": "Int3", "Name": "_Coord" },
-				{ "Type": "Text", "Name": "_Direction" }
-			]
-		},
-		"PlaceMacroblock_NoDestruction": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_MacroblockName" },
-				{ "Type": "Int3", "Name": "_Coord" },
-				{ "Type": "Text", "Name": "_Direction" }
-			]
-		},
-		"CanPlaceMacroblock_NoTerrain": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_MacroblockName" },
-				{ "Type": "Int3", "Name": "_Coord" },
-				{ "Type": "Text", "Name": "_Direction" }
-			]
-		},
-		"PlaceMacroblock_NoTerrain": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_MacroblockName" },
-				{ "Type": "Int3", "Name": "_Coord" },
-				{ "Type": "Text", "Name": "_Direction" }
-			]
-		},
-		"RemoveMacroblock": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_MacroblockName" },
-				{ "Type": "Int3", "Name": "_Coord" },
-				{ "Type": "Text", "Name": "_Direction" }
-			]
-		},
-		"RemoveMacroblock_NoTerrain": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_MacroblockName" },
-				{ "Type": "Int3", "Name": "_Coord" },
-				{ "Type": "Text", "Name": "_Direction" }
-			]
-		},
-		"GetBlock": {
-			"Return": "SChBlock",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Int3", "Name": "_Coord" }
-			]
-		},
-		"RemoveBlock": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Int3", "Name": "_Coord" }
-			]
-		},
-		"RemoveTerrainBlocks": {
-			"Return": "Boolean",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Int3", "Name": "_StartCoord" },
-				{ "Type": "Int3", "Name": "_EndCoord" }
-			]
-		},
-		"GetBlockGroundHeight": {
-			"Return": "Integer",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Text", "Name": "_BlockName" },
-				{ "Type": "Integer", "Name": "_CoordX" },
-				{ "Type": "Integer", "Name": "_CoordZ" },
-				{ "Type": "Text", "Name": "_Direction" }
-			]
-		},
-		"GetGroundHeight": {
-			"Return": "Integer",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": [
-				{ "Type": "Integer", "Name": "_CoordX" },
-				{ "Type": "Integer", "Name": "_CoordZ" }
-			]
-		},
-		"GetStartLineBlock": {
-			"Return": "SChBlock",
-			"ReturnsArray": false,
-			"Kind": "Regular",
-			"Parameters": []
-		},
-		"GetBlocks": {
-			"Return": "SChBlock",
-			"ReturnsArray": true,
-			"Kind": "Regular",
-			"Parameters": []
-		},
-		"GetAnchorData": {
-			"Return": "SChAnchor",
-			"ReturnsArray": true,
-			"Kind": "Regular",
-			"Parameters": []
-		},
+		"CanPlaceTerrainBlocks": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_StartCoord"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_EndCoord"
+						}
+					]
+				]
+			}
+		],
+		"PlaceTerrainBlocks": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_StartCoord"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_EndCoord"
+						}
+					]
+				]
+			}
+		],
+		"PlaceTerrainBlocks_NoDestruction": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_StartCoord"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_EndCoord"
+						}
+					]
+				]
+			}
+		],
+		"CanPlaceMacroblock": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_MacroblockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						}
+					]
+				]
+			}
+		],
+		"PlaceMacroblock": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_MacroblockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						}
+					]
+				]
+			}
+		],
+		"CanPlaceMacroblock_NoDestruction": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_MacroblockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						}
+					]
+				]
+			}
+		],
+		"PlaceMacroblock_NoDestruction": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_MacroblockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						}
+					]
+				]
+			}
+		],
+		"CanPlaceMacroblock_NoTerrain": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_MacroblockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						}
+					]
+				]
+			}
+		],
+		"PlaceMacroblock_NoTerrain": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_MacroblockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						}
+					]
+				]
+			}
+		],
+		"RemoveMacroblock": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_MacroblockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						}
+					]
+				]
+			}
+		],
+		"RemoveMacroblock_NoTerrain": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_MacroblockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						}
+					]
+				]
+			}
+		],
+		"GetBlock": [
+			{
+				"Return": "SChBlock",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						}
+					]
+				]
+			}
+		],
+		"RemoveBlock": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						}
+					]
+				]
+			},
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": [
+					[
+						{
+							"Type": "SChBlock",
+							"Name": "_Block"
+						}
+					]
+				]
+			}
+			
+		],
+		"RemoveTerrainBlocks": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Int3",
+							"Name": "_StartCoord"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_EndCoord"
+						}
+					]
+				]
+			}
+		],
+		"GetBlockGroundHeight": [
+			{
+				"Return": "Integer",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						},
+						{
+							"Type": "Integer",
+							"Name": "_CoordX"
+						},
+						{
+							"Type": "Integer",
+							"Name": "_CoordZ"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						}
+					]
+				]
+			}
+		],
+		"GetGroundHeight": [
+			{
+				"Return": "Integer",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Integer",
+							"Name": "_CoordX"
+						},
+						{
+							"Type": "Integer",
+							"Name": "_CoordZ"
+						}
+					]
+				]
+			}
+		],
+		"GetStartLineBlock": [
+			{
+				"Return": "SChBlock",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": []
+			}
+		],
+		"GetBlocks": [
+			{
+				"Return": "SChBlock",
+				"ReturnsArray": true,
+				"Kind": "Regular",
+				"Parameters": []
+			}
+		],
+		"GetAnchorData": [
+			{
+				"Return": "SChAnchor",
+				"ReturnsArray": true,
+				"Kind": "Regular",
+				"Parameters": []
+			}
+		],
+		"Underground": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"Aboveground": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"ReplaceBlock": [
+			{
+				"Return": "SReplacementResult",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": [
+					[
+						{
+							"Type": "SChBlock",
+							"Name": "_CoordX"
+						},
+						{
+							"Type": "Text",
+							"Name": "_ReplacementBlockName"
+						},
+						{
+							"Type": "Boolean",
+							"Name": "_OppositeDirection"
+						}
+					],
+					[
+						{
+							"Type": "SChBlock",
+							"Name": "_CoordX"
+						},
+						{
+							"Type": "Text",
+							"Name": "_ReplacementBlockName"
+						}
+					]
+				]
+			}
+		],
+		"ReplaceAllBlocks": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						},
+						{
+							"Type": "Text",
+							"Name": "_ReplacementBlockName"
+						}
+					]
+				]
+			}
+		],
+		"SwapBlock": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": [
+					[
+						{
+							"Type": "SChBlock",
+							"Name": "_Block1"
+						},
+						{
+							"Type": "SChBlock",
+							"Name": "_Block2"
+						}
+					]
+				]
+			}
+		],
+		"GetStartLines": [
+			{
+				"Return": "SChAnchor",
+				"ReturnsArray": true,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"GetFinishLines": [
+			{
+				"Return": "SChAnchor",
+				"ReturnsArray": true,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"GetCheckpoints": [
+			{
+				"Return": "SChAnchor",
+				"ReturnsArray": true,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"GetMultilaps": [
+			{
+				"Return": "SChAnchor",
+				"ReturnsArray": true,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"GetStartLineBlocks": [
+			{
+				"Return": "SChAnchorBlock",
+				"ReturnsArray": true,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"GetFinishLineBlocks": [
+			{
+				"Return": "SChAnchorBlock",
+				"ReturnsArray": true,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"GetCheckpointBlocks": [
+			{
+				"Return": "SChAnchorBlock",
+				"ReturnsArray": true,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"GetMultilapBlocks": [
+			{
+				"Return": "SChAnchorBlock",
+				"ReturnsArray": true,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"GetStartLineItems": [
+			{
+				"Return": "SChAnchorItem",
+				"ReturnsArray": true,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"GetFinishLineItems": [
+			{
+				"Return": "SChAnchorItem",
+				"ReturnsArray": true,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"GetCheckpointItems": [
+			{
+				"Return": "SChAnchorItem",
+				"ReturnsArray": true,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"GetMultilapItems": [
+			{
+				"Return": "SChAnchorItem",
+				"ReturnsArray": true,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"GetBlocksByBlockName": [
+			{
+				"Return": "SChBlock",
+				"ReturnsArray": true,
+				"Kind": "Extensive",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						}
+					]
+				]
+			}
+		],
+		"MultipleBlocks": [
+			{
+				"Return": "Integer",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": [
+					[
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						}
+					]
+				]
+			}
+		],
+		"RemoveAnchor": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": [
+					[
+						{
+							"Type": "SChAnchor",
+							"Name": "_Anchor"
+						}
+					]
+				]
+			}
+		],
+		"RemoveAnchorItem": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": [
+					[
+						{
+							"Type": "SChAnchorItem",
+							"Name": "_AnchorItem"
+						}
+					]
+				]
+			}
+		],
+		"RemoveAnchorBlock": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": [
+					[
+						{
+							"Type": "SChAnchorBlock",
+							"Name": "_AnchorBlock"
+						}
+					]
+				]
+			}
+		],
+		"Random": [
+			{
+				"Return": "Integer",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": [
+					[
+						{
+							"Type": "Integer",
+							"Name": "_Min"
+						},
+						{
+							"Type": "Integer",
+							"Name": "_Max"
+						}
+					],
+					[
+						{
+							"Type": "Integer",
+							"Name": "_Max"
+						}
+					]
+				]
+			},
+			{
+				"Return": "Real",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": [
+					[
+						{
+							"Type": "Real",
+							"Name": "_Min"
+						},
+						{
+							"Type": "Real",
+							"Name": "_Max"
+						}
+					],
+					[
+						{
+							"Type": "Real",
+							"Name": "_Max"
+						}
+					]
+				]
+			},
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"Percentage": [
+			{
+				"Return": "Real",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"Chance": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": [
+					{
+						"Type": "Real",
+						"Name": "_Percentage"
+					}
+				]
+			}
+		],
+		"Message": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": [
+					{
+						"Type": "Text",
+						"Name": "_Message"
+					}
+				]
+			}
+		],
 
-		"Underground": {
-			"Return": "Void",
-			"ReturnsArray": false,
-			"Kind": "Extensive",
-			"Parameters": []
-		},
-		"Aboveground": {
-			"Return": "Void",
-			"ReturnsArray": false,
-			"Kind": "Extensive",
-			"Parameters": []
-		},
+		"SetStatusProgress": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Appearance",
+				"Parameters": [
+					[
+						{
+							"Type": "Real",
+							"Name": "_Progress"
+						}
+					]
+				]
+			}
+		],
+		"SetStatusMessage": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Appearance",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_Message"
+						}
+					]
+				]
+			}
+		],
+		"SetStatusColor": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Appearance",
+				"Parameters": [
+					[
+						{
+							"Type": "Vec3",
+							"Name": "_Color"
+						}
+					]
+				]
+			}
+		],
+		"Focus": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Appearance",
+				"Parameters": [
+					[
+						{
+							"Type": "SChBlock",
+							"Name": "_Block"
+						}
+					]
+				]
+			},
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Appearance",
+				"Parameters": [
+					[
+						{
+							"Type": "SChAnchor",
+							"Name": "_Anchor"
+						}
+					]
+				]
+			},
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Appearance",
+				"Parameters": [
+					[
+						{
+							"Type": "SChAnchorBlock",
+							"Name": "_Anchor"
+						}
+					]
+				]
+			},
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Appearance",
+				"Parameters": [
+					[
+						{
+							"Type": "SChAnchorItem",
+							"Name": "_Anchor"
+						}
+					]
+				]
+			},
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Appearance",
+				"Parameters": [
+					[
+						{
+							"Type": "Vec3",
+							"Name": "_Position"
+						}
+					]
+				]
+			}
+		],
 
-		"SetStatusProgress": {
-			"Return": "Void",
-			"ReturnsArray": false,
-			"Kind": "Appearance",
-			"Parameters": [
-				{ "Type": "Real", "Name": "_Progress" }
-			]
-		},
-
-		"StartMultiSolution": {
-			"Return": "Void",
-			"ReturnsArray": false,
-			"Kind": "Technical",
-			"Parameters": []
-		}
+		"Complete": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Technical",
+				"Parameters": []
+			}
+		],
+		"Problem": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Technical",
+				"Parameters": [
+					[
+						{
+							"Type": "SChProblem",
+							"Name": "_Problem"
+						}
+					]
+				]
+			}
+		],
+		"Note": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Technical",
+				"Parameters": [
+					[
+						{
+							"Type": "SChNote",
+							"Name": "_Note"
+						}
+					]
+				]
+			}
+		],
+		"Chill": [
+			{
+				"Return": "Void",
+				"ReturnsArray": false,
+				"Kind": "Technical",
+				"Parameters": []
+			}
+		]
 	}
 }
