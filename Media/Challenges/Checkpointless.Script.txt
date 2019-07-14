@@ -5,6 +5,14 @@ Script.AuthorLogin = "bigbang1112";
 Script.Description = "{{{{CHECKPOINTLESS_DESCRIPTION}}}}";
 ***
 
+SChProblem Problem_MultilapTrack(SChAnchor _Anchor) {
+	declare SChProblem Problem;
+	Problem.Name = "MultilapTrack";
+	Problem.Anchor = _Anchor;
+	Problem.IsUnsolvable = True;
+	return Problem;
+}
+
 SChProblem Problem_CannotRemoveCheckpoint(SChAnchor _Anchor) {
 	declare SChProblem Problem;
 	Problem.Name = "CannotRemoveCheckpoint";
@@ -14,6 +22,9 @@ SChProblem Problem_CannotRemoveCheckpoint(SChAnchor _Anchor) {
 
 ***Main***
 ***
+declare Multilaps = GetMultilaps();
+if(Multilaps.count > 0) Problem(Problem_MultilapTrack(Multilaps[0]));
+
 declare Checkpoints = GetCheckpoints();
 
 for(i,0,Checkpoints.count-1) {
@@ -33,12 +44,6 @@ for(i,0,Checkpoints.count-1) {
 	}
 	yield;
 }
-***
-
-***Main_Fast***
-***
-foreach(Anchor,GetCheckpoints())
-	if(!RemoveAnchor(Anchor)) Problem(Problem_CannotRemoveCheckpoint(Anchor)); // Announce the problem to the Modifier
 ***
 
 ***Problems***

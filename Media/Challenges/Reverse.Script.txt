@@ -5,21 +5,6 @@ Script.AuthorLogin = "bigbang1112";
 Script.Description = "{{{{REVERSE_DESCRIPTION}}}}";
 ***
 
-SChProblem Problem_NoStartLine() {
-	declare SChProblem Problem;
-	Problem.Name = "NoStartLine";
-	Problem.IsUnsolvable = True;
-	return Problem;
-}
-
-SChProblem Problem_MoreThanOneStartLine(SChAnchor[] _Anchors) {
-	declare SChProblem Problem;
-	Problem.Name = "MoreThanOneStartLine";
-	declare JsonSuccess = Problem.Anchors.fromjson(_Anchors.tojson());
-	Problem.IsUnsolvable = True;
-	return Problem;
-}
-
 SChProblem Problem_MultilapTrack(SChAnchor _Anchor) {
 	declare SChProblem Problem;
 	Problem.Name = "MultilapTrack";
@@ -98,11 +83,9 @@ declare Pairs = [
 ];
 
 declare StartLines = GetStartLines();
-if(StartLines.count == 0) Problem(Problem_NoStartLine());
-if(StartLines.count > 1) Problem(Problem_MoreThanOneStartLine(StartLines));
-
+declare Multilaps = GetMultilaps();
+if(Multilaps.count > 0) Problem(Problem_MultilapTrack(Multilaps[0]));
 declare StartLine = StartLines[0];
-if(StartLine.DefaultTag == "StartFinish") Problem(Problem_MultilapTrack(StartLine));
 declare FinishLines = GetFinishLines();
 
 if(FinishLines.count > 1) Problem(Problem_MultipleFinishes(FinishLines));
@@ -139,5 +122,11 @@ foreach(Env => PairList, Pairs) {
 		}
 	}
 }
+***
 
+***Problems***
+***
+foreach(Problem,Problems) {
+
+}
 ***
