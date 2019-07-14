@@ -30,16 +30,29 @@
 	"SAVE": "ENREGISTRER",
 	"SAVE_AND_PLAY": "SAUVEGARDER ET JOUER",
 	"DONE": "FINI",
-	"SCRIPT_FINISHED": "Script fini avec succès.",
+	"SCRIPT_FINISHED": "Script accompli avec succès.",
 	"TEST_SCRIPT": "TESTER LE SCRIPT",
-	"MODIFYING": "EN TRAIN DE MODIFIER",
+	"MODIFYING": "EN COURS DE MODIFICATION",
 	"ACTIONS": "ACTIONS",
 
 	"REVERSE_DESCRIPTION": "Échange départ et fin.",
-	"CHECKPOINTLESS_DESCRIPTION": "Enlève tous les checkpoints et garde les trous.",
-	"TERRAINLESS_DESCRIPTION": "Enlève tous le terrain.",
+	"CHECKPOINTLESS_DESCRIPTION": "Enlève tous les checkpoints sans les remplacer.",
+	"TERRAINLESS_DESCRIPTION": "Enlève tout le terrain.",
 
 	"CHECKPOINT_FOUND": "Checkpoint trouvé.",
  
-	"SCRIPT_NOTE": "Tout le code écrit et publié est disponible en open-source, ce qui signifie que tout le monde peut voir tes talents de codage. Tu as été averti."
+	"SCRIPT_NOTE": "Tout le code écrit et publié est disponible en open-source, ce qui signifie que tout le monde peut voir tes talents de codage. Tu es prévenu.",
+	
+	"AUTHBETA_WELCOME": "BIENVENUE DANS LA BETA DE CHALLENGE",
+	"AUTHBETA_GIVEINFO": "REMPLIS LES INFORMATIONS CI-DESSOUS POUR PARTICIPER A LA BETA",
+	"AUTHBETA_YOURLOGIN": "TON LOGIN",
+	"AUTHBETA_YOURNICKNAME": "TON PSEUDO",
+	"AUTHBETA_YOURZONE": "TA ZONE",
+	"AUTHBETA_YOURMAPS": "TES MAPS UPLOADÉES",
+	"AUTHBETA_INFONOTE": "TOUTES CES INFORMATIONS SERONT VISIBLES PUBLIQUEMENT, TE SONT ASSOCIÉES, ET SERONT ACTUALISÉES A CHAQUE LANCEMENT DU TITLEPACK.",
+	"AUTHBETA_THANKYOU": "MERCI",
+	"AUTHBETA_NOABUSE": "JE N'UTILISERAI JAMAIS CETTE INFORMATION DE MANIÈRE ABUSIVE",
+	"AUTHBETA_AUTHORIZE": "AUTORISER AVEC CHALLENGE",
+	"AUTHBETA_REQUESTTOKEN": "DEMANDE DE L'AUTH TOKEN EN COURS",
+	"AUTHBETA_NOTPART": "TU NE FAIS PAS PARTIE DE LA BETA"
 }
