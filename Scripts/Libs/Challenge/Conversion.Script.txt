@@ -75,6 +75,7 @@ ModifierBase::SChBlock ToSChBlock(CBlock _Block) {
 	declare ModifierBase::SChBlock ChBlock;
 	if(_Block == Null) return ChBlock;
 	
+	ChBlock.Id = _Block.BlockScriptId;
 	ChBlock.Name = _Block.BlockModel.Name;
 	ChBlock.Coord = _Block.Coord;
 	ChBlock.Direction = ToText(_Block.Direction);
@@ -186,7 +187,8 @@ Boolean ToBoolean(Text _Boolean) {
 
 Boolean SChBlockEquals(ModifierBase::SChBlock _ChBlock, CBlock _Block) {
 	if(_Block == Null) return False;
-
+	
+	if(_ChBlock.Id != _Block.BlockScriptId) return False;
 	if(_ChBlock.Name != _Block.BlockModel.Name) return False;
 	if(_ChBlock.Coord != _Block.Coord) return False;
 	if(_ChBlock.Direction != ToText(_Block.Direction)) return False;

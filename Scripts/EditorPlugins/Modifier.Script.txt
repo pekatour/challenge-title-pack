@@ -76,14 +76,14 @@ Boolean SafeRemoveBlock(CBlock _Block) {
 	if(_Block == Null) return False;
 	if(GetBlock(_Block.Coord) == Null) return False;
 	
-	if(GetBlock(_Block.Coord).Id == _Block.Id) 
+	if(GetBlock(_Block.Coord).BlockScriptId == _Block.BlockScriptId) 
 		return RemoveBlock(_Block.Coord);
 	return False;
 }
 
 Boolean SafeRemoveBlock(ModifierBase::SChBlock _ChBlock) {
-	for(i,1,Blocks.count)
-		if(Blocks[Blocks.count-i].Coord == _ChBlock.Coord) return SafeRemoveBlock(Blocks[Blocks.count-i]);
+	for(i,0,Blocks.count-1)
+		if(Blocks[i].BlockScriptId == _ChBlock.Id) return SafeRemoveBlock(Blocks[i]);
 	return False;
 }
 

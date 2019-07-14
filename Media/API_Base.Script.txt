@@ -17,7 +17,7 @@
 }
 
 #Struct SChBlock {
-	Integer BlockScriptId;
+	Integer Id;
 	Text Name;
 	Int3 Coord;
 	Text Direction;

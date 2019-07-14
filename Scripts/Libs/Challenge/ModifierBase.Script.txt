@@ -1,5 +1,5 @@
 #Struct SChBlock {
-	Integer BlockScriptId;
+	Integer Id;
 	Text Name;
 	Int3 Coord;
 	Text Direction;
@@ -24,7 +24,6 @@
 }
 
 #Struct SChAnchor {
-	Ident Id;
 	Text DefaultTag;
 	Integer DefaultOrder;
 	Text Tag;
@@ -37,7 +36,6 @@
 }
 
 #Struct SChAnchorBlock {
-	Ident Id;
 	Text DefaultTag;
 	Integer DefaultOrder;
 	Text Tag;
@@ -46,7 +44,6 @@
 }
 
 #Struct SChAnchorItem {
-	Ident Id;
 	Text DefaultTag;
 	Integer DefaultOrder;
 	Text Tag;
