@@ -94,17 +94,17 @@ main() {
 
 							Label_Button_Shadows.SetText(Quality);
 
-							Label_Button_Shadows_VeryFast.TextColor = <1.,1.,1.>;
-							Label_Button_Shadows_Fast.TextColor = <1.,1.,1.>;
-							Label_Button_Shadows_Default.TextColor = <1.,1.,1.>;
-							Label_Button_Shadows_High.TextColor = <1.,1.,1.>;
+							Label_Button_Shadows_VeryFast.Opacity = 1.;
+							Label_Button_Shadows_Fast.Opacity = 1.;
+							Label_Button_Shadows_Default.Opacity = 1.;
+							Label_Button_Shadows_High.Opacity = 1.;
 							Quad_Button_Shadows_VeryFast.Show();
 							Quad_Button_Shadows_Fast.Show();
 							Quad_Button_Shadows_Default.Show();
 							Quad_Button_Shadows_High.Show();
 
 							if(IsUltraAvailable || Quality == "{{{{ULTRA}}}}") {	
-								Label_Button_Shadows_Ultra.TextColor = <1.,1.,1.>;
+								Label_Button_Shadows_Ultra.Opacity = 1.;
 								Quad_Button_Shadows_Ultra.Show();
 							}
 							else {

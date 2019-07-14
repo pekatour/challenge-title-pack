@@ -31,6 +31,8 @@ declare CUILayer LayerAPI;
 
 declare ModifierBase::SChProblem[] Problems;
 
+declare ::ShadowsQuality LastShadowsQuality;
+
 Text GetScriptFileName(Text _ScriptFullName) {
 	declare Path = TextLib::Split("\\", S_ScriptNames);
 	if(Path.count != 0) return Path[Path.count-1];
@@ -151,11 +153,11 @@ Void Finish() {
 	Layers::Show("ModifierResult");
 	
 	if(CurrentShadowsQuality == ::ShadowsQuality::NotComputed) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("NOT_COMPUTED"), ""^IsUltraShadowsQualityAvailable]);
-	if(CurrentShadowsQuality == ::ShadowsQuality::VeryFast) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("VERY_FAST"), ""^IsUltraShadowsQualityAvailable]);
-	if(CurrentShadowsQuality == ::ShadowsQuality::Fast) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("FAST"), ""^IsUltraShadowsQualityAvailable]);
-	if(CurrentShadowsQuality == ::ShadowsQuality::Default) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("DEFAULT"), ""^IsUltraShadowsQualityAvailable]);
-	if(CurrentShadowsQuality == ::ShadowsQuality::High) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("HIGH"), ""^IsUltraShadowsQualityAvailable]);
-	if(CurrentShadowsQuality == ::ShadowsQuality::Ultra) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("ULTRA"), ""^IsUltraShadowsQualityAvailable]);
+	else if(CurrentShadowsQuality == ::ShadowsQuality::VeryFast) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("VERY_FAST"), ""^IsUltraShadowsQualityAvailable]);
+	else if(CurrentShadowsQuality == ::ShadowsQuality::Fast) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("FAST"), ""^IsUltraShadowsQualityAvailable]);
+	else if(CurrentShadowsQuality == ::ShadowsQuality::Default) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("DEFAULT"), ""^IsUltraShadowsQualityAvailable]);
+	else if(CurrentShadowsQuality == ::ShadowsQuality::High) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("HIGH"), ""^IsUltraShadowsQualityAvailable]);
+	else if(CurrentShadowsQuality == ::ShadowsQuality::Ultra) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("ULTRA"), ""^IsUltraShadowsQualityAvailable]);
 	
 	Layers::SendEvent("ModifierResult", "Show");
 }
@@ -747,31 +749,36 @@ main() {
 					}
 					case "Button_Shadows_VeryFast": {
 						ComputeShadows(::ShadowsQuality::VeryFast);
-						wait(CurrentShadowsQuality == ::ShadowsQuality::VeryFast);
-						Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("VERY_FAST"), ""^IsUltraShadowsQualityAvailable]);
 					}
 					case "Button_Shadows_Fast": {
 						ComputeShadows(::ShadowsQuality::Fast);
-						wait(CurrentShadowsQuality == ::ShadowsQuality::Fast);
-						Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("FAST"), ""^IsUltraShadowsQualityAvailable]);
 					}
 					case "Button_Shadows_Default": {
 						ComputeShadows(::ShadowsQuality::Default);
-						wait(CurrentShadowsQuality == ::ShadowsQuality::Default);
-						Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("DEFAULT"), ""^IsUltraShadowsQualityAvailable]);
 					}
 					case "Button_Shadows_High": {
 						ComputeShadows(::ShadowsQuality::High);
-						wait(CurrentShadowsQuality == ::ShadowsQuality::High);
-						Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("HIGH"), ""^IsUltraShadowsQualityAvailable]);
 					}
 					case "Button_Shadows_Ultra": {
 						ComputeShadows(::ShadowsQuality::Ultra);
-						wait(CurrentShadowsQuality == ::ShadowsQuality::Ultra);
-						Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("ULTRA"), ""^IsUltraShadowsQualityAvailable]);
 					}
 				}
 			}
+		}
+		
+		if(LastShadowsQuality != CurrentShadowsQuality) {
+			if(CurrentShadowsQuality == ::ShadowsQuality::VeryFast)
+				Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("VERY_FAST"), ""^IsUltraShadowsQualityAvailable]);
+			else if(CurrentShadowsQuality == ::ShadowsQuality::Fast)
+				Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("FAST"), ""^IsUltraShadowsQualityAvailable]);
+			else if(CurrentShadowsQuality == ::ShadowsQuality::Default)
+				Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("DEFAULT"), ""^IsUltraShadowsQualityAvailable]);
+			else if(CurrentShadowsQuality == ::ShadowsQuality::High)
+				Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("HIGH"), ""^IsUltraShadowsQualityAvailable]);
+			else if(CurrentShadowsQuality == ::ShadowsQuality::Ultra)
+				Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("ULTRA"), ""^IsUltraShadowsQualityAvailable]);
+			
+			LastShadowsQuality = CurrentShadowsQuality;
 		}
 	
 		yield;
