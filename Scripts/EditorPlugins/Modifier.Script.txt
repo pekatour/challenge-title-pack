@@ -133,7 +133,7 @@ Void ValidateScript() {
 
 Void Begin(Text _ScriptName) {
 	Layers::SendEvent("ModifierScript", "ScriptName", [_ScriptName]);
-	Layers::SendEvent("ModifierStatus", "Status", [Dictionary::Get("MODIFYING",LocalUser.Language)^"..."]);
+	Layers::SendEvent("ModifierStatus", "Status", [Dictionary::Get("MODIFYING")^"..."]);
 }
 
 Void Finish() {
@@ -149,7 +149,15 @@ Void Finish() {
 	Layers::Hide("ModifierMetadata");
 	sleep(500);
 	Layers::Show("ModifierResult");
-	Layers::SendEvent("ModifierResult", "Show", []);
+	
+	if(CurrentShadowsQuality == ::ShadowsQuality::NotComputed) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("NOT_COMPUTED"), ""^IsUltraShadowsQualityAvailable]);
+	if(CurrentShadowsQuality == ::ShadowsQuality::VeryFast) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("VERY_FAST"), ""^IsUltraShadowsQualityAvailable]);
+	if(CurrentShadowsQuality == ::ShadowsQuality::Fast) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("FAST"), ""^IsUltraShadowsQualityAvailable]);
+	if(CurrentShadowsQuality == ::ShadowsQuality::Default) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("DEFAULT"), ""^IsUltraShadowsQualityAvailable]);
+	if(CurrentShadowsQuality == ::ShadowsQuality::High) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("HIGH"), ""^IsUltraShadowsQualityAvailable]);
+	if(CurrentShadowsQuality == ::ShadowsQuality::Ultra) Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("ULTRA"), ""^IsUltraShadowsQualityAvailable]);
+	
+	Layers::SendEvent("ModifierResult", "Show");
 }
 
 Void Success() {
@@ -653,7 +661,7 @@ Void ProcessScript(Text _ScriptName, Text _ScriptContent) {
 					ProcessRequest(Event);
 				}
 				if(Event.CustomEventType == "ScriptMetadata") {
-					Layers::SendEvent("ModifierMetadata", "Metadata", [Event.CustomEventData[0]]);
+					Layers::SendEvent("ModifierMetadata", "Metadata", Event.CustomEventData[0]);
 				}
 			}
 		}
@@ -668,9 +676,9 @@ Void ProcessScript(Text _ScriptName, Text _ScriptContent) {
 
 	UILayerDestroy(LayerAPI);
 
-	Layers::SendEvent("ModifierStatus", "Status", [Dictionary::Get("DONE",LocalUser.Language)]);
-	Layers::SendEvent("ModifierStatus", "Message", [Dictionary::Get("SCRIPT_FINISHED",LocalUser.Language)]);
-	Layers::SendEvent("ModifierStatus", "Progress", ["1"]);
+	Layers::SendEvent("ModifierStatus", "Status", Dictionary::Get("DONE"));
+	Layers::SendEvent("ModifierStatus", "Message", Dictionary::Get("SCRIPT_FINISHED"));
+	Layers::SendEvent("ModifierStatus", "Progress", "1");
 }
 
 main() {
@@ -693,7 +701,7 @@ main() {
 	if(S_TestMode) {
 		declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
 		Map.MapName ^= " Test Script";
-		Begin(Dictionary::Get("TEST_SCRIPT",LocalUser.Language));
+		Begin(Dictionary::Get("TEST_SCRIPT"));
 		ProcessScript("TEST SCRIPT", PERSISTENT_CHALLENGE_CODE);
 	}
 	else {
@@ -727,11 +735,41 @@ main() {
 	while(True) {
 		foreach(Event,PendingEvents) {
 			if(Event.Type == CMapEditorPluginEvent::Type::LayerCustomEvent) {
-				if(Event.CustomEventType == "Button_Exit") {
-					Quit();
-				}
-				else if(Event.CustomEventType == "Button_SavePlay") {
-					Validate();
+				switch(Event.CustomEventType) {
+					case "Button_Exit": {
+						Quit();
+					}
+					case "Button_Validate": {
+						Validate();
+					}
+					case "Button_Save": {
+						SaveMap("");
+					}
+					case "Button_Shadows_VeryFast": {
+						ComputeShadows(::ShadowsQuality::VeryFast);
+						wait(CurrentShadowsQuality == ::ShadowsQuality::VeryFast);
+						Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("VERY_FAST"), ""^IsUltraShadowsQualityAvailable]);
+					}
+					case "Button_Shadows_Fast": {
+						ComputeShadows(::ShadowsQuality::Fast);
+						wait(CurrentShadowsQuality == ::ShadowsQuality::Fast);
+						Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("FAST"), ""^IsUltraShadowsQualityAvailable]);
+					}
+					case "Button_Shadows_Default": {
+						ComputeShadows(::ShadowsQuality::Default);
+						wait(CurrentShadowsQuality == ::ShadowsQuality::Default);
+						Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("DEFAULT"), ""^IsUltraShadowsQualityAvailable]);
+					}
+					case "Button_Shadows_High": {
+						ComputeShadows(::ShadowsQuality::High);
+						wait(CurrentShadowsQuality == ::ShadowsQuality::High);
+						Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("HIGH"), ""^IsUltraShadowsQualityAvailable]);
+					}
+					case "Button_Shadows_Ultra": {
+						ComputeShadows(::ShadowsQuality::Ultra);
+						wait(CurrentShadowsQuality == ::ShadowsQuality::Ultra);
+						Layers::SendEvent("ModifierResult", "Shadows", [Dictionary::Get("ULTRA"), ""^IsUltraShadowsQualityAvailable]);
+					}
 				}
 			}
 		}

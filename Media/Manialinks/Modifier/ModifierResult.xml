@@ -1,16 +1,53 @@
-<frame pos="-150 -80">
-	<quad pos="0 0" z-index="-1" size="300 10" bgcolor="FFFA" style="Bgs1" substyle="BgCardList" valign="bottom" class="opacity"/>
-	<quad pos="0 0" z-index="0" size="300 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" valign="bottom" class="opacity"/>
+<frame pos="0 -70">
+	<quad pos="-150 0" z-index="-1" size="300 10" bgcolor="FFFA" style="Bgs1" substyle="BgCardList" class="opacity" scriptevents="1"/>
+	<quad pos="-150 0" z-index="0" size="300 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" valign="top" class="opacity"/>
+
+	<label pos="-150 120" z-index="0" size="20 5" text="Interface" style="CardButtonSmallS" scriptevents="1" id="LABEL_INTERFACE"/>
 	
-	<frame pos="130 10" z-index="1">
+	<frame pos="-125" clip="True" clipposn="0 30" clipsizen="82 60">
+		<frame pos="0 0" id="FRAME_SHADOWS" hidden="1">
+			<quad z-index="-2" size="50 51" bgcolor="000A" valign="top" style="Bgs1" substyle="BgCardList" scriptevents="1" halign="center"/>
+			<quad z-index="-1" size="50 51" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" halign="center"/>
+			<quad z-index="-1" size="50 51" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" halign="center"/>
+			<frame>
+				<frame>
+					<quad z-index="0" size="50 10" bgcolor="FFFA" style="Bgs1InRace" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="036" opacity=".5" id="QUAD_BUTTON_SHADOWS_ULTRA" pos="0 0" halign="center"/>
+					<label pos="0 -5.25" z-index="1" size="80 10" text="{{{{ULTRA}}}}" halign="center" valign="center2" textfont="RajdhaniMono" id="LABEL_BUTTON_SHADOWS_ULTRA"/>
+				</frame>
+				<frame pos="0 -10">
+					<quad z-index="0" size="50 10" bgcolor="FFFA" style="Bgs1InRace" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="036" opacity=".5" id="QUAD_BUTTON_SHADOWS_HIGH" pos="0 0" halign="center"/>
+					<label pos="0 -5.25" z-index="1" size="80 10" text="{{{{HIGH}}}}" halign="center" valign="center2" textfont="RajdhaniMono" id="LABEL_BUTTON_SHADOWS_HIGH"/>
+				</frame>
+				<frame pos="0 -20">
+					<quad z-index="0" size="50 10" bgcolor="FFFA" style="Bgs1InRace" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="036" opacity=".5" id="QUAD_BUTTON_SHADOWS_DEFAULT" pos="0 0" halign="center"/>
+					<label pos="0 -5.25" z-index="1" size="40 10" text="{{{{DEFAULT}}}}" halign="center" valign="center2" textfont="RajdhaniMono" id="LABEL_BUTTON_SHADOWS_DEFAULT"/>
+				</frame>
+				<frame pos="0 -30">
+					<quad z-index="0" size="50 10" bgcolor="FFFA" style="Bgs1InRace" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="036" opacity=".5" id="QUAD_BUTTON_SHADOWS_FAST" pos="0 0" halign="center"/>
+					<label pos="0 -5.25" z-index="1" size="40 10" text="{{{{FAST}}}}" halign="center" valign="center2" textfont="RajdhaniMono" id="LABEL_BUTTON_SHADOWS_FAST"/>
+				</frame>
+				<frame pos="0 -40">
+					<quad z-index="0" size="50 10" bgcolor="FFFA" style="Bgs1InRace" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="036" opacity=".5" id="QUAD_BUTTON_SHADOWS_VERYFAST" pos="0 0" halign="center"/>
+					<label pos="0 -5.25" z-index="1" size="40 10" text="{{{{VERY_FAST}}}}" halign="center" valign="center2" textfont="RajdhaniMono" id="LABEL_BUTTON_SHADOWS_VERYFAST"/>
+				</frame>
+			</frame>
+		</frame>
+	</frame>
+	<frame pos="-125 0" z-index="1">
+		<quad z-index="0" size="50 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" halign="center"/>
+		<quad z-index="0" size="50 10" bgcolor="FFFA" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="036" opacity=".5" id="QUAD_BUTTON_SHADOWS" pos="0 0" halign="center"/>
+		<label pos="0 -5.25" z-index="1" size="40 10" text="{{{{NOT_COMPUTED}}}}" halign="center" valign="center2" textfont="RajdhaniMono" class="opacity" id="LABEL_BUTTON_SHADOWS"/>
+	</frame>
+	<label pos="-98 -5.25" z-index="1" size="50 5" text="{{{{SHADOW_QUALITY}}}}" valign="center2" textfont="Oswald" halign="left" textsize="2"/>
+	<frame pos="-20 0" z-index="1">
 		<quad z-index="0" size="50 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036" id="QUAD_BUTTON_SAVE" class="opacity"/>
 		<label pos="25 -5.25" z-index="1" size="50 10" text="{{{{SAVE}}}}" halign="center" valign="center2" textfont="RajdhaniMono" class="opacity"/>
 	</frame>
-	<frame pos="180 10" z-index="1">
-		<quad z-index="0" size="70 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="060" id="QUAD_BUTTON_SAVEPLAY" class="opacity"/>
-		<label pos="35 -5.25" z-index="1" size="70 10" text="{{{{SAVE_AND_PLAY}}}}" halign="center" valign="center2" textfont="RajdhaniMono" class="opacity"/>
+	<frame pos="30 0" z-index="1">
+		<quad z-index="0" size="70 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="060" id="QUAD_BUTTON_VALIDATE" class="opacity"/>
+		<label pos="35 -5.25" z-index="1" size="70 10" text="{{{{VALIDATE}}}}" halign="center" valign="center2" textfont="RajdhaniMono" class="opacity"/>
 	</frame>
-	<frame pos="250 10" z-index="1">
+	<frame pos="100 0" z-index="1">
 		<quad z-index="0" size="50 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="800" id="QUAD_BUTTON_EXIT" class="opacity"/>
 		<label pos="25 -5.25" z-index="1" size="50 10" text="{{{{EXIT}}}}" halign="center" valign="center2" textfont="RajdhaniMono" class="opacity"/>
 	</frame>

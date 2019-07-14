@@ -10,19 +10,59 @@ main() {
 		}
 	}
 
+	declare Label_Button_Shadows = (Page.GetFirstChild("LABEL_BUTTON_SHADOWS") as CMlLabel);
+	declare Label_Button_Shadows_VeryFast = (Page.GetFirstChild("LABEL_BUTTON_SHADOWS_VERYFAST") as CMlLabel);
+	declare Label_Button_Shadows_Fast = (Page.GetFirstChild("LABEL_BUTTON_SHADOWS_FAST") as CMlLabel);
+	declare Label_Button_Shadows_Default = (Page.GetFirstChild("LABEL_BUTTON_SHADOWS_DEFAULT") as CMlLabel);
+	declare Label_Button_Shadows_High = (Page.GetFirstChild("LABEL_BUTTON_SHADOWS_HIGH") as CMlLabel);
+	declare Label_Button_Shadows_Ultra = (Page.GetFirstChild("LABEL_BUTTON_SHADOWS_ULTRA") as CMlLabel);
+	declare Quad_Button_Shadows_VeryFast = (Page.GetFirstChild("QUAD_BUTTON_SHADOWS_VERYFAST") as CMlQuad);
+	declare Quad_Button_Shadows_Fast = (Page.GetFirstChild("QUAD_BUTTON_SHADOWS_FAST") as CMlQuad);
+	declare Quad_Button_Shadows_Default = (Page.GetFirstChild("QUAD_BUTTON_SHADOWS_DEFAULT") as CMlQuad);
+	declare Quad_Button_Shadows_High = (Page.GetFirstChild("QUAD_BUTTON_SHADOWS_HIGH") as CMlQuad);
+	declare Quad_Button_Shadows_Ultra = (Page.GetFirstChild("QUAD_BUTTON_SHADOWS_ULTRA") as CMlQuad);
+
 	while(True) {
 		foreach(Event,PendingEvents) {
 			switch(Event.Type) {
 				case CMlScriptEvent::Type::MouseClick: {
 					switch(Event.ControlId) {
-						case "QUAD_BUTTON_SAVE": {
+						case "LABEL_INTERFACE": {
 							Editor.HideEditorInterface = False;
+						}
+						case "QUAD_BUTTON_SAVE": {
+							SendCustomEvent("Button_Save",[]);
 						}
 						case "QUAD_BUTTON_EXIT": {
 							SendCustomEvent("Button_Exit",[]);
 						}
-						case "QUAD_BUTTON_SAVEPLAY": {
-							SendCustomEvent("Button_SavePlay",[]);
+						case "QUAD_BUTTON_VALIDATE": {
+							SendCustomEvent("Button_Validate",[]);
+						}
+						case "QUAD_BUTTON_SHADOWS": {
+							if(Page.GetFirstChild("FRAME_SHADOWS").DataAttributeGet("open") == "1") {
+								AnimMgr.Add(Page.GetFirstChild("FRAME_SHADOWS"), "<frame pos=\"0 0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+								Page.GetFirstChild("FRAME_SHADOWS").DataAttributeSet("open","0");
+							}
+							else {
+								AnimMgr.Add(Page.GetFirstChild("FRAME_SHADOWS"), "<frame pos=\"0 50\" hidden=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+								Page.GetFirstChild("FRAME_SHADOWS").DataAttributeSet("open","1");
+							}
+						}
+						case "QUAD_BUTTON_SHADOWS_VERYFAST": {
+							SendCustomEvent("Button_Shadows_VeryFast",[]);
+						}
+						case "QUAD_BUTTON_SHADOWS_FAST": {
+							SendCustomEvent("Button_Shadows_Fast",[]);
+						}
+						case "QUAD_BUTTON_SHADOWS_DEFAULT": {
+							SendCustomEvent("Button_Shadows_Default",[]);
+						}
+						case "QUAD_BUTTON_SHADOWS_HIGH": {
+							SendCustomEvent("Button_Shadows_High",[]);
+						}
+						case "QUAD_BUTTON_SHADOWS_ULTRA": {
+							SendCustomEvent("Button_Shadows_Ultra",[]);
 						}
 					}
 				}
@@ -46,6 +86,59 @@ main() {
 								else if (Element is CMlQuad) {
 									AnimMgr.Add(Element, "<quad opacity=\"0\" hidden=\"1\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
 								}
+							}
+						}
+						case "Shadows": {
+							declare Quality = Event.CustomEventData[0];
+							declare IsUltraAvailable = Event.CustomEventData[1] == "True";
+
+							Label_Button_Shadows.SetText(Quality);
+
+							Label_Button_Shadows_VeryFast.TextColor = <1.,1.,1.>;
+							Label_Button_Shadows_Fast.TextColor = <1.,1.,1.>;
+							Label_Button_Shadows_Default.TextColor = <1.,1.,1.>;
+							Label_Button_Shadows_High.TextColor = <1.,1.,1.>;
+							Quad_Button_Shadows_VeryFast.Show();
+							Quad_Button_Shadows_Fast.Show();
+							Quad_Button_Shadows_Default.Show();
+							Quad_Button_Shadows_High.Show();
+
+							if(IsUltraAvailable || Quality == "{{{{ULTRA}}}}") {	
+								Label_Button_Shadows_Ultra.TextColor = <1.,1.,1.>;
+								Quad_Button_Shadows_Ultra.Show();
+							}
+							else {
+								Label_Button_Shadows_Ultra.Opacity = .5;
+								Quad_Button_Shadows_Ultra.Hide();
+							}
+
+							if(Quality == "{{{{VERY_FAST}}}}") {
+								Label_Button_Shadows_VeryFast.Opacity = .5;
+								Quad_Button_Shadows_VeryFast.Hide();
+							}
+							else if(Quality == "{{{{FAST}}}}") {
+								Label_Button_Shadows_VeryFast.Opacity = .5;
+								Label_Button_Shadows_Fast.Opacity = .5;
+								Quad_Button_Shadows_VeryFast.Hide();
+								Quad_Button_Shadows_Fast.Hide();
+							}
+							else if(Quality == "{{{{DEFAULT}}}}") {
+								Label_Button_Shadows_VeryFast.Opacity = .5;
+								Label_Button_Shadows_Fast.Opacity = .5;
+								Label_Button_Shadows_Default.Opacity = .5;
+								Quad_Button_Shadows_VeryFast.Hide();
+								Quad_Button_Shadows_Fast.Hide();
+								Quad_Button_Shadows_Default.Hide();
+							}
+							else if(Quality == "{{{{HIGH}}}}" || Quality == "{{{{ULTRA}}}}") {
+								Label_Button_Shadows_VeryFast.Opacity = .5;
+								Label_Button_Shadows_Fast.Opacity = .5;
+								Label_Button_Shadows_Default.Opacity = .5;
+								Label_Button_Shadows_High.Opacity = .5;
+								Quad_Button_Shadows_VeryFast.Hide();
+								Quad_Button_Shadows_Fast.Hide();
+								Quad_Button_Shadows_Default.Hide();
+								Quad_Button_Shadows_High.Hide();
 							}
 						}
 					}
