@@ -114,7 +114,7 @@ Boolean StartMapIfExists() {
 }
 
 Void Start() {
-	Layers::Create("Quickplay", Manialink::FromFile("Media/Manialinks/Quickplay", True), True);
+	Layers::Create("Quickplay", Manialink::FromFile("Media/Manialinks/Quickplay", True, ["TextAnimation"]), True);
 
 	declare OfficialScripts = [
 		"Reverse.Script.txt",

@@ -1,0 +1,57 @@
+#RequireContext CTmMode
+
+ItemList_Begin();
+declare CanyonCar = ItemList_Add("CanyonCar");
+declare StadiumCar = ItemList_Add("StadiumCar");
+declare ValleyCar = ItemList_Add("ValleyCar");
+declare LagoonCar = ItemList_Add("LagoonCar");
+ItemList_End();
+
+RequestLoadMap();
+
+UIManager.UIAll.OverlayHideBackground = True;
+UIManager.UIAll.OverlayHideNotices = True;
+UIManager.UIAll.OverlayHideMapInfo = True;
+UIManager.UIAll.OverlayHideOpponentsInfo = True;
+UIManager.UIAll.OverlayHideChat = True;
+UIManager.UIAll.OverlayHideCheckPointList = True;
+UIManager.UIAll.OverlayHideCountdown = True;
+UIManager.UIAll.OverlayHideChrono = True;
+UIManager.UIAll.OverlayHideSpeedAndDist = True;
+UIManager.UIAll.OverlayHidePersonnalBestAndRank = True;
+UIManager.UIAll.OverlayHidePosition = True;
+UIManager.UIAll.OverlayHideMultilapInfos = True;
+UIManager.UIAll.OverlayHideSpectatorControllers = True;
+UIManager.UIAll.OverlayHideSpectatorInfos = True;
+UIManager.UIAll.OverlayChatHideAvatar = True;
+UIManager.UIAll.ScoreTableVisibility = CUIConfig::EVisibility::ForcedHidden;
+UIManager.UIAll.SmallScoreTableVisibility = CUIConfig::EVisibility::ForcedHidden;
+UIManager.UIAll.ScoreTableOnlyManialink = True;
+
+wait(Players.count>0);
+declare Player <=> Players[0];
+Player.RaceStartTime = -1;
+Player.IsSpawned = True;
+
+while(True) {	
+	foreach(Player,PlayersWaiting) {
+		
+	}
+	
+	foreach(Event,PendingEvents) {
+		switch(Event.Type) {
+			case CTmModeEvent ::EType::WayPoint: {
+				if(Event.IsEndRace) {
+					
+				}
+				else if(Event.IsEndLap) {
+				
+				}
+				else {
+					
+				}
+			}
+		}
+	}
+	yield;
+}

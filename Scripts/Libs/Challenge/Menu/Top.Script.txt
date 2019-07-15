@@ -6,7 +6,16 @@ Void Start() {
 }
 
 Void Event(CManiaAppEvent _Event) {
-	
+	declare Event <=> _Event;
+
+	if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
+		switch(Event.CustomEventType) {
+			case "Button_Skins": {
+				if(TitleControl.IsReady)
+					TitleControl.PlayMap("SkinSelect.Map.Gbx", "TrackMania/SkinSelect.Script.txt", "");
+			}
+		}
+	}
 }
 
 Void Async() {

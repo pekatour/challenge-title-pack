@@ -50,8 +50,8 @@ Text Construct(Text _Markup, Text _Script, Text[] _Extentions) {
 
 {{{ExtensionDirectives}}}
 
-{{{ExtensionGlobals}}}
 {{{_Script}}}
+{{{ExtensionGlobals}}}
 
 Void Main() {
 	{{{ExtensionStarts}}}

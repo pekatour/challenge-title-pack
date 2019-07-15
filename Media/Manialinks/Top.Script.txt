@@ -7,3 +7,16 @@ Void Animate_Show() {
 ***
 Animate_Show();
 ***
+
+***Loop***
+***
+foreach(Event,PendingEvents) {
+	switch(Event.Type) {
+		case CMlScriptEvent::Type::MouseClick: {
+			if(Event.ControlId == "QUAD_BUTTON_SKINS") {
+				SendCustomEvent("Button_Skins", []);
+			}
+		}
+	}
+}
+***

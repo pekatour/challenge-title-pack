@@ -15,4 +15,9 @@
 		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" halign="center" valign="center2" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="8CF" opacity=".5"/>
 		<label pos="0 -0.25" z-index="1" size="30 10" text="{{{{CREDITS}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textcolor="222"/>
 	</frame>
+	<frame pos="-85 0">
+		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" style="Bgs1" substyle="BgWindow4" halign="center" valign="center" opacity=".5"/>
+		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" halign="center" valign="center2" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="8CF" opacity=".5" id="QUAD_BUTTON_SKINS"/>
+		<label pos="0 -0.25" z-index="1" size="30 10" text="{{{{SKINS}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textcolor="222"/>
+	</frame>
 </frame>
