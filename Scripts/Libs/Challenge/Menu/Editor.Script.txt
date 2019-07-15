@@ -2,9 +2,10 @@
 #Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
 #Include "Libs/BigBang1112/File.Script.txt" as File
 #Include "Libs/BigBang1112/Map.Script.txt" as Map
+#Include "Libs/BigBang1112/Settings.Script.txt" as Settings
 
 Void Start() {
-	Layers::Create("Editor", Manialink::FromFile("Media/Manialinks/Editor", True));
+	Layers::Create("Editor", Manialink::FromFile("Media/Manialinks/Editor", True, [], Settings::Get().Theme));
 
 	Layers::SendEvent("Editor", "Code_SetText", [File::Read("Media/Challenges/Default.Script.txt")]);
 }

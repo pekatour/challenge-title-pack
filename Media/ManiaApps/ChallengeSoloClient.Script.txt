@@ -2,6 +2,7 @@
 
 #Include "Libs/BigBang1112/Layers.Script.txt" as Layers
 #Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
+#Include "Libs/BigBang1112/Settings.Script.txt" as Settings
 
 ClientUI.OverlayHideCheckPointList = True;
 ClientUI.OverlayHideSpeedAndDist = True;
@@ -9,7 +10,7 @@ ClientUI.OverlayHidePersonnalBestAndRank = True;
 ClientUI.OverlayHideChrono = True;
 ClientUI.OverlayHidePosition = True;
 
-Layers::Create("Ingame", Manialink::FromFile("Media/Manialinks/SoloIngame", True, ["TextAnimation"]), True);
+Layers::Create("Ingame", Manialink::FromFile("Media/Manialinks/SoloIngame", True, ["TextAnimation"], Settings::Get().Theme), True);
 
 while(True) {
 	yield;

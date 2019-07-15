@@ -22,6 +22,20 @@ foreach(Event,PendingEvents) {
 			if(TextLib::StartsWith("QUAD_BUTTON",Event.ControlId)) {
 				//Audio.PlaySoundEvent(CAudioManager::ELibSound::Checkpoint, 0, 1.0);
 			}
+			switch(Event.ControlId) {
+				case "QUAD_SIGN": {
+					AnimMgr.Add(Page.GetFirstChild("QUAD_SIGN"), "<quad scale=\"1.1\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+					AnimMgr.Add(Page.GetFirstChild("QUAD_SIGN_GLOW"), "<quad scale=\"2\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				}
+			}
+		}
+		case CMlScriptEvent::Type::MouseOut: {
+			switch(Event.ControlId) {
+				case "QUAD_SIGN": {
+					AnimMgr.Add(Page.GetFirstChild("QUAD_SIGN"), "<quad scale=\"1\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+					AnimMgr.Add(Page.GetFirstChild("QUAD_SIGN_GLOW"), "<quad scale=\"1\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				}
+			}
 		}
 		case CMlScriptEvent::Type::MouseClick: {
 			if(Event.ControlId == "QUAD_BUTTON_CREATECHALLENGE") {

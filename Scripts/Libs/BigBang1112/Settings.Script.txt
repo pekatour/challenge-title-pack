@@ -1,0 +1,8 @@
+#Struct SSettings {
+	Text Theme;
+}
+
+SSettings Get() {
+	declare SSettings Settings;
+	return Settings;
+}

@@ -1,8 +1,11 @@
 #Include "Libs/BigBang1112/Layers.Script.txt" as Layers
 #Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
 
+#Include "Libs/BigBang1112/Settings.Script.txt" as Settings
+
 Void Start() {
-	Layers::Create("Top", Manialink::FromFile("Media/Manialinks/Top", True), True);
+	
+	Layers::Create("Top", Manialink::FromFile("Media/Manialinks/Top", True, [], Settings::Get().Theme), True);
 }
 
 Void Event(CManiaAppEvent _Event) {

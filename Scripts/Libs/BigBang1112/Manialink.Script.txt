@@ -29,7 +29,20 @@
 #Include "Libs/BigBang1112/File.Script.txt" as File
 #Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
 
-Text Construct(Text _Markup, Text _Script, Text[] _Extentions) {
+#Struct SThemeQuad {
+	Text[Text] Styles;
+}
+
+#Struct SThemeLabel {
+	Text[Text] Colors;
+}
+
+#Struct STheme {
+	SThemeQuad Quad;
+	SThemeLabel Label;
+}
+
+Text Construct(Text _Markup, Text _Script, Text[] _Extentions, Text _Theme) {
 	declare Text ExtensionDirectives;
 	declare Text ExtensionGlobals;
 	declare Text ExtensionStarts;
@@ -41,9 +54,31 @@ Text Construct(Text _Markup, Text _Script, Text[] _Extentions) {
 		ExtensionStarts ^= File::Read("Media/Extensions/"^Extension^".Start.Script.txt")^"\n\n";
 		ExtensionLoops ^= File::Read("Media/Extensions/"^Extension^".Loop.Script.txt")^"\n\n";
 	}
+	
+	declare Markup = _Markup;
+	
+	if(_Theme != "") {
+		declare STheme Theme;
+		declare JsonSuccess = Theme.fromjson(File::Read("Media/Themes/"^_Theme^".json"));
+		log(Theme);
+		
+		declare Text[] AlreadyChanged;
+		foreach(Key=>Value,Theme.Quad.Styles) {
+			if(!AlreadyChanged.exists(Key)) {
+				Markup = TextLib::Replace(Markup,"\""^Key^"\"","\""^Value^"\"");
+				AlreadyChanged.add(Key);
+			}
+		}
+		foreach(Key=>Value,Theme.Label.Colors) {
+			if(!AlreadyChanged.exists(Key)) {
+				Markup = TextLib::Replace(Markup,"textcolor=\""^Key^"\"","textcolor=\""^Value^"\"");
+				AlreadyChanged.add(Key);
+			}
+		}
+	}
 
 	return """<manialink version="3">
-			{{{_Markup}}}
+			{{{Markup}}}
 			<script><![CDATA[#Include "TextLib" as TextLib
 #Include "MathLib" as MathLib
 #Include "AnimLib" as AnimLib
@@ -69,11 +104,15 @@ main() {
 	</manialink>""";
 }
 
+Text Construct(Text _Markup, Text _Script, Text[] _Extentions) {
+	return Construct(_Markup, _Script, _Extentions, "");
+}
+
 Text Construct(Text _Markup, Text _Script) {
 	return Construct(_Markup, _Script, []);
 }
 
-Text FromFile(Text _ManialinkName, Boolean _Translate, Text[] _Extensions) {
+Text FromFile(Text _ManialinkName, Boolean _Translate, Text[] _Extensions, Text _Theme) {
 	declare Markup = File::Read(_ManialinkName^".xml");
 	declare Script = File::Read(_ManialinkName^".Script.txt");
 	
@@ -82,7 +121,11 @@ Text FromFile(Text _ManialinkName, Boolean _Translate, Text[] _Extensions) {
 		Script = Dictionary::TranslateAllPhrases(Script);
 	}
 
-	return Construct(Markup, Script, _Extensions);
+	return Construct(Markup, Script, _Extensions, _Theme);
+}
+
+Text FromFile(Text _ManialinkName, Boolean _Translate, Text[] _Extensions) {
+	return FromFile(_ManialinkName, _Translate, _Extensions, "");
 }
 
 Text FromFile(Text _ManialinkName, Boolean _Translate) {

@@ -13,8 +13,20 @@ Animate_Show();
 foreach(Event,PendingEvents) {
 	switch(Event.Type) {
 		case CMlScriptEvent::Type::MouseClick: {
-			if(Event.ControlId == "QUAD_BUTTON_SKINS") {
-				SendCustomEvent("Button_Skins", []);
+			switch(Event.ControlId) {
+				case "QUAD_BUTTON_SKINS": {
+					SendCustomEvent("Button_Skins", []);
+				}
+				case "QUAD_BUTTON_SETTINGS": {
+					if(Page.GetFirstChild("FRAME_SETTINGS").DataAttributeGet("open") == "1") {
+						AnimMgr.Add(Page.GetFirstChild("FRAME_SETTINGS"), "<frame pos=\"0 80\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+						Page.GetFirstChild("FRAME_SETTINGS").DataAttributeSet("open","0");
+					}
+					else {
+						AnimMgr.Add(Page.GetFirstChild("FRAME_SETTINGS"), "<frame pos=\"0 0\" hidden=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+						Page.GetFirstChild("FRAME_SETTINGS").DataAttributeSet("open","1");
+					}
+				}
 			}
 		}
 	}

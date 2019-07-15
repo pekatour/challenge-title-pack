@@ -11,6 +11,7 @@
 #Include "Libs/Challenge/ModifierBase.Script.txt" as ModifierBase
 
 #Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
+#Include "Libs/BigBang1112/Settings.Script.txt" as Settings
 
 #Setting S_Build True
 
@@ -99,12 +100,12 @@ Void Prepare() {
 	EditMode = CMapEditorPlugin::EditMode::FreeLook;
 	Map.MapName = MapName^"$z -";
 	
-	Layers::Create("ModifierIntro",Manialink::FromFile("Media/Manialinks/Modifier/ModifierIntro", True));
-	Layers::Create("ModifierScript",Manialink::FromFile("Media/Manialinks/Modifier/ModifierScript", True));
-	Layers::Create("ModifierStatus",Manialink::FromFile("Media/Manialinks/Modifier/ModifierStatus", True));
-	Layers::Create("ModifierMetadata",Manialink::FromFile("Media/Manialinks/Modifier/ModifierMetadata", True));
-	Layers::Create("ModifierActions",Manialink::FromFile("Media/Manialinks/Modifier/ModifierActions", True));
-	Layers::Create("ModifierResult",Manialink::FromFile("Media/Manialinks/Modifier/ModifierResult", True, ["TextAnimation"]));
+	Layers::Create("ModifierIntro",Manialink::FromFile("Media/Manialinks/Modifier/ModifierIntro", True, ["TextAnimation"], Settings::Get().Theme));
+	Layers::Create("ModifierScript",Manialink::FromFile("Media/Manialinks/Modifier/ModifierScript", True, ["TextAnimation"], Settings::Get().Theme));
+	Layers::Create("ModifierStatus",Manialink::FromFile("Media/Manialinks/Modifier/ModifierStatus", True, ["TextAnimation"], Settings::Get().Theme));
+	Layers::Create("ModifierMetadata",Manialink::FromFile("Media/Manialinks/Modifier/ModifierMetadata", True, ["TextAnimation"], Settings::Get().Theme));
+	Layers::Create("ModifierActions",Manialink::FromFile("Media/Manialinks/Modifier/ModifierActions", True, ["TextAnimation"], Settings::Get().Theme));
+	Layers::Create("ModifierResult",Manialink::FromFile("Media/Manialinks/Modifier/ModifierResult", True, ["TextAnimation"], Settings::Get().Theme));
 	
 	Layers::SetAnimationInOut("ModifierScript",CUILayer::EUILayerAnimation::DownSlow);
 	Layers::SetAnimationInOut("ModifierStatus",CUILayer::EUILayerAnimation::DownSlow);

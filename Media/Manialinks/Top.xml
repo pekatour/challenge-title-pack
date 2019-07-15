@@ -1,23 +1,34 @@
 <frame pos="0 75" id="FRAME_TOP" z-index="1">
-	<quad z-index="-1" size="300 10" bgcolor="000A" halign="center" valign="center" style="Bgs1" substyle="BgTitleGlow" hidden="0"/>
-	<frame pos="125 0">
-		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" style="Bgs1" substyle="BgWindow4" halign="center" valign="center" opacity=".5"/>
-		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" halign="center" valign="center2" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="8CF" opacity=".5"/>
-		<label pos="0 -0.25" z-index="1" size="30 10" text="{{{{SETTINGS}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textcolor="222"/>
-	</frame>
-	<frame pos="75 0">
-		<quad z-index="0" size="60 10" bgcolor="FFFA" style="Bgs1" substyle="BgWindow4" halign="center" valign="center" opacity=".5"/>
-		<quad pos="0 0" z-index="0" size="60 10" bgcolor="FFFA" halign="center" valign="center2" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="8CF" opacity=".5"/>
-		<label pos="0 -0.25" z-index="1" size="50 10" text="{{{{STATISTICS}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textcolor="222"/>
-	</frame>
+	<quad z-index="-1" size="300 10" bgcolor="000A" halign="center" valign="center" style="Bgs1" substyle="BgHealthBar" hidden="0"/>
 	<frame pos="-125 0">
-		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" style="Bgs1" substyle="BgWindow4" halign="center" valign="center" opacity=".5"/>
+		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" style="Bgs1" substyle="BgCardProperty" halign="center" valign="center" opacity=".5"/>
 		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" halign="center" valign="center2" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="8CF" opacity=".5"/>
-		<label pos="0 -0.25" z-index="1" size="30 10" text="{{{{CREDITS}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textcolor="222"/>
+		<label pos="0 -0.25" z-index="1" size="30 10" text="{{{{CREDITS}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textcolor="EEE"/>
 	</frame>
-	<frame pos="-85 0">
-		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" style="Bgs1" substyle="BgWindow4" halign="center" valign="center" opacity=".5"/>
+	<frame pos="-82.5 0">
+		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" style="Bgs1" substyle="BgCardProperty" halign="center" valign="center" opacity=".5"/>
 		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" halign="center" valign="center2" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="8CF" opacity=".5" id="QUAD_BUTTON_SKINS"/>
-		<label pos="0 -0.25" z-index="1" size="30 10" text="{{{{SKINS}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textcolor="222"/>
+		<label pos="0 -0.25" z-index="1" size="30 10" text="{{{{SKINS}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textcolor="EEE"/>
+	</frame>
+	<frame pos="-40 0">
+		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" style="Bgs1" substyle="BgCardProperty" halign="center" valign="center" opacity=".5"/>
+		<quad pos="0 0" z-index="0" size="40 10" bgcolor="FFFA" halign="center" valign="center2" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="8CF" opacity=".5" id="QUAD_BUTTON_LANGUAGES"/>
+		<label pos="0 -0.25" z-index="1" size="30 10" text="{{{{LANGUAGES}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textcolor="EEE"/>
+	</frame>
+	<frame pos="52.5 0">
+		<quad z-index="0" size="60 10" bgcolor="FFFA" style="Bgs1" substyle="BgCardProperty" halign="center" valign="center" opacity=".5"/>
+		<quad pos="0 0" z-index="0" size="60 10" bgcolor="FFFA" halign="center" valign="center2" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="8CF" opacity=".5"/>
+		<label pos="0 -0.25" z-index="1" size="50 10" text="{{{{STATISTICS}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textcolor="EEE"/>
+	</frame>
+	<frame pos="115 0">
+		<quad pos="0 0" z-index="0" size="60 10" bgcolor="FFFA" style="Bgs1" substyle="BgCardProperty" halign="center" valign="center" opacity=".5"/>
+		<quad pos="0 0" z-index="0" size="60 10" bgcolor="FFFA" halign="center" valign="center2" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="8CF" opacity=".5" id="QUAD_BUTTON_SETTINGS"/>
+		<label pos="0 -0.25" z-index="1" size="30 10" text="{{{{SETTINGS}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textcolor="EEE"/>
+	</frame>
+	<frame pos="115" clip="True" clipposn="0 -45" clipsizen="62 80">
+		<frame pos="0 80" id="FRAME_SETTINGS" hidden="1">
+			<quad z-index="-2" size="60 81" bgcolor="000A" valign="top" style="Bgs1" substyle="BgCardList" scriptevents="1" halign="center"/>
+			<quad z-index="-1" size="60 81" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" halign="center"/>
+		</frame>
 	</frame>
 </frame>

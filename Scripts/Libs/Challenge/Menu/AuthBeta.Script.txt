@@ -6,6 +6,7 @@
 #Include "Libs/BigBang1112/Http.Script.txt" as Http
 #Include "Libs/BigBang1112/Auth2.Script.txt" as Auth2
 #Include "Libs/BigBang1112/Internet.Script.txt" as Internet
+#Include "Libs/BigBang1112/Settings.Script.txt" as Settings
 
 #Include "Libs/Challenge/Backend.Script.txt" as Backend
 
@@ -22,7 +23,7 @@ SAccess GetAccess() {
 }
 
 Void Start() {
-	Layers::Create("AuthBeta", Manialink::FromFile("Media/Manialinks/AuthBeta", True), True);
+	Layers::Create("AuthBeta", Manialink::FromFile("Media/Manialinks/AuthBeta", True, [], Settings::Get().Theme), True);
 	declare Success = Auth2::AsyncAuthorize("Authorize", "b1a3d10ba7", "basic maps", Backend::GetHost()^"/auth");
 }
 

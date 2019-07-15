@@ -5,7 +5,7 @@
 			<quad z-index="1" size="60 15" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgGradV"/>
 			<label pos="0 -0.5" z-index="2" size="50 10" text="0:00.000" halign="center" valign="center2" textfont="RajdhaniMono" textsize="8" textcolor="F00" scale="1.05" hidden="1" id="LABEL_TIME_RED"/>
 			<label pos="0 -0.5" z-index="2" size="50 10" text="0:00.000" halign="center" valign="center2" textfont="RajdhaniMono" textsize="8" textcolor="00F" scale="1.05" hidden="1" id="LABEL_TIME_BLUE"/>
-			<label pos="0 -0.5" z-index="3" size="50 10" text="0:00.000" halign="center" valign="center2" textfont="RajdhaniMono" textsize="8" id="LABEL_TIME"/>
+			<label pos="0 -0.5" z-index="3" size="50 10" text="0:00.000" halign="center" valign="center2" textfont="RajdhaniMono" textsize="8" textcolor="EEE" id="LABEL_TIME"/>
 			<quad pos="0 7.5" z-index="0" size="29 0.5" bgcolor="FFFA" halign="right" valign="bottom" id="QUAD_STEER_LEFT"/>
 			<quad pos="0 7.5" z-index="0" size="29 0.5" bgcolor="FFFA" halign="left" valign="bottom" id="QUAD_STEER_RIGHT"/>
 			<quad pos="0 -7.5" z-index="1" size="58 1" halign="center" valign="bottom" id="QUAD_BRAKE" opacity="0" style="Bgs1InRace" substyle="BgMetalBar" colorize="F00"/>
@@ -14,7 +14,7 @@
 			<quad z-index="0" size="30 10" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgCardList"/>
 			<quad z-index="1" size="30 10" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgGradV"/>
 			
-			<label pos="0 -0.4" z-index="3" size="20 5" text="-:--.---" halign="center" valign="center2" textfont="RajdhaniMono" textsize="3" opacity=".9" id="LABEL_CP_START"/>
+			<label pos="0 -0.4" z-index="3" size="20 5" text="-:--.---" halign="center" valign="center2" textfont="RajdhaniMono" textsize="3" opacity=".9" id="LABEL_CP_START" textcolor="EEE"/>
 			
 			<label pos="0 -0.4" z-index="3" size="20 5" text="0:00.000" halign="center" valign="center2" textfont="RajdhaniMono" textsize="3" textcolor="6BF" opacity=".9" hidden="1" id="LABEL_CP_BLUE"/>
 			<quad z-index="2" size="30 20" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="ProgressBarSmall" opacity=".5" hidden="1" id="QUAD_CP_BLUE"/>
@@ -28,13 +28,13 @@
 		<frame pos="45 -77.5" id="FRAME_SPEED" clip="True" clipsizen="30 15">
 			<quad z-index="0" size="30 10" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgCardList"/>
 			<quad z-index="1" size="30 10" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgGradV"/>
-			<label pos="0 0.5" z-index="3" size="25 5" text="123" halign="center" valign="center2" textfont="RajdhaniMono" textsize="3" id="LABEL_SPEED"/>
+			<label pos="0 0.5" z-index="3" size="25 5" text="123" halign="center" valign="center2" textfont="RajdhaniMono" textsize="3" id="LABEL_SPEED" textcolor="EEE"/>
 			<gauge pos="0 -3" z-index="1" size="28 6.5" style="EnergyBar" halign="center" drawbg="0" valign="center" id="GAUGE_RPM" centered="1"/>
 		</frame>
 		<frame pos="64 -78.5" id="FRAME_GEAR" clip="True" clipsizen="10 10">
 			<quad z-index="0" size="8 8" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgCardList"/>
 			<quad z-index="1" size="8 8" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgGradV"/>
-			<label pos="0 -.2" z-index="3" size="8 8" text="1" halign="center" valign="center2" textfont="RajdhaniMono" textsize="2" id="LABEL_GEAR"/>
+			<label pos="0 -.2" z-index="3" size="8 8" text="1" halign="center" valign="center2" textfont="RajdhaniMono" textsize="2" id="LABEL_GEAR" textcolor="EEE"/>
 		</frame>
 		<frame pos="-64 -78.5" clip="True" clipsizen="10 10">
 			<quad z-index="0" size="8 8" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="BgCardList"/>

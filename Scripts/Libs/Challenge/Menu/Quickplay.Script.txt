@@ -10,6 +10,7 @@
 #Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
 #Include "Libs/BigBang1112/Map.Script.txt" as Map
 #Include "Libs/BigBang1112/Web.Script.txt" as Web
+#Include "Libs/BigBang1112/Settings.Script.txt" as Settings
 
 #Include "Libs/Challenge/Menu/AuthBeta.Script.txt" as Menu_AuthBeta
 
@@ -114,7 +115,7 @@ Boolean StartMapIfExists() {
 }
 
 Void Start() {
-	Layers::Create("Quickplay", Manialink::FromFile("Media/Manialinks/Quickplay", True, ["TextAnimation"]), True);
+	Layers::Create("Quickplay", Manialink::FromFile("Media/Manialinks/Quickplay", True, ["TextAnimation"], Settings::Get().Theme), True);
 
 	declare OfficialScripts = [
 		"Reverse.Script.txt",

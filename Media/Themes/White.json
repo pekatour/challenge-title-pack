@@ -1,0 +1,14 @@
+{
+	"Quad": {
+		"Styles": {
+			"BgHealthBar": "BgTitleGlow",
+			"BgCardProperty": "BgWindow4",
+			"BgCardList": "BgWindow4"
+		}
+	},
+	"Label": {
+		"Colors": {
+			"EEE": "222"
+		}
+	}
+}
