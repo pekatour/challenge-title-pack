@@ -79,8 +79,8 @@ Void StartMap(Text _MapLocation, Map::SMapInfo _MapInfo, SScriptInfo[] _Scripts)
 		return;
 	}
 
-	if(TitleFlow.IsReady) {
-		TitleFlow.EditNewMapFromBaseMap(_MapInfo.FileName, "", "", "Challenge.Script.txt", "Modifier.Script.txt", """<settings>
+	if(TitleControl.IsReady) {
+		TitleControl.EditNewMapFromBaseMap(_MapInfo.FileName, "", "", "Challenge.Script.txt", "Modifier.Script.txt", """<settings>
 		<setting name="S_Build" type="boolean" value="True"/>
 		<setting name="S_ScriptNames" type="text" value="{{{TextLib::Replace(_Scripts.tojson(), "\"", "'")}}}"/>
 		<setting name="S_OriginalMapName" type="text" value="{{{_MapInfo.Name}}}"/>
@@ -92,8 +92,8 @@ Boolean StartMapIfExists() {
 	declare List = Task::SyncMapList(DataFileMgr.Map_GetFilteredGameList(Scope::C_BrowserScope, MapDownloadApproximateLocation, True));
 	foreach(MapInfo,List.MapInfos) {
 		if(MapInfo.MapUid == MapDownloadUid) {
-			wait(TitleFlow.IsReady);
-			TitleFlow.EditNewMapFromBaseMap(MapInfo.FileName, "", "", "Challenge.Script.txt", "Modifier.Script.txt", """<settings>
+			wait(TitleControl.IsReady);
+			TitleControl.EditNewMapFromBaseMap(MapInfo.FileName, "", "", "Challenge.Script.txt", "Modifier.Script.txt", """<settings>
 			<setting name="S_Build" type="boolean" value="True"/>
 			<setting name="S_ScriptNames" type="text" value="{{{TextLib::Replace(MapDownloadScripts.tojson(), "\"", "'")}}}"/>
 			<setting name="S_OriginalMapName" type="text" value="{{{MapInfo.Name}}}"/>
@@ -162,7 +162,7 @@ Void Event(CManiaAppEvent _Event) {
 					declare SScriptInfo[] Scripts;
 					declare JsonSuccessScripts = Scripts.fromjson(Event.CustomEventData[2]);
 					if(MapInfo.MapType == "TrackMania\\Challenge")
-						TitleFlow.PlayMap(MapInfo.FileName,"","");
+						TitleControl.PlayMap(MapInfo.FileName,"","");
 					else
 						StartMap(MapLocation, MapInfo, Scripts);
 				}
@@ -407,8 +407,8 @@ Void Loop() {
 				declare List = Task::SyncMapList(DataFileMgr.Map_GetFilteredGameList(Scope::C_BrowserScope, MapDownloadApproximateLocation, True));
 				foreach(MapInfo,List.MapInfos) {
 					if(MapInfo.MapUid == MapDownloadUid) {
-						wait(TitleFlow.IsReady);
-						TitleFlow.PlayMap(MapInfo.FileName,"","");
+						wait(TitleControl.IsReady);
+						TitleControl.PlayMap(MapInfo.FileName,"","");
 						
 						MapDownloadApproximateLocation = "";
 						DataFileMgr.TaskResult_Release(List.Id);

@@ -17,10 +17,10 @@ Void Event(CManiaAppEvent _Event) {
 	if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
 		switch(Event.CustomEventType) {
 			case "Test": {
-				if(TitleFlow.IsReady) {
+				if(TitleControl.IsReady) {
 					declare Map = Map::MapInfo("2FRV EXCLUSIVE 001.Map.Gbx", 2);
 				
-					TitleFlow.EditNewMapFromBaseMap(Map.FileName, "", "", "Challenge.Script.txt", "Modifier.Script.txt","""<settings>
+					TitleControl.EditNewMapFromBaseMap(Map.FileName, "", "", "Challenge.Script.txt", "Modifier.Script.txt","""<settings>
 	<setting name="S_Build" type="boolean" value="True"/>
 	<setting name="S_TestMode" type="boolean" value="True"/>
 	<setting name="S_OriginalMapName" type="text" value="{{{Map.Name}}}"/>
@@ -43,7 +43,7 @@ Void Async() {
 }
 
 Void Loop() {
-	if(StartTest && TitleFlow.IsReady) {
+	if(StartTest && TitleControl.IsReady) {
 		Layers::SendEvent("Editor", "Loading_End_Test", []);
 		StartTest = False;
 	}

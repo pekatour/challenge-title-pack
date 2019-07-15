@@ -18,5 +18,5 @@
 #Include "Libs/BigBang1112/Maniacode.Script.txt" as Maniacode
 
 Void Execute(Maniacode::SManiaCode _ManiaCode) {
-	TitleFlow.ProcessManiaCodeXml(Maniacode::ToCode(_ManiaCode));
+	TitleControl.ProcessManiaCodeXml(Maniacode::ToCode(_ManiaCode));
 }
