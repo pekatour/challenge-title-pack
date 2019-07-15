@@ -1017,8 +1017,8 @@
 		],
 		"MultipleBlocks": [
 			{
-				"Return": "Integer",
-				"ReturnsArray": false,
+				"Return": "SChBlock",
+				"ReturnsArray": true,
 				"Kind": "Extensive",
 				"Parameters": [
 					[

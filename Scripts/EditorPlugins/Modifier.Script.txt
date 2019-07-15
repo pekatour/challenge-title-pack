@@ -606,6 +606,14 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 					ChBlocks.add(Conversion::ToSChBlock(Block));
 			Respond(Event, [ChBlocks.tojson()]);
 		}
+		case "Ch_MultipleBlocks": {
+			declare Coord = ToInt3(Event.CustomEventData[0]);
+			declare ModifierBase::SChBlock[] ChBlocks;
+			foreach(Block, Blocks)
+				if(Block.Coord == Coord)
+					ChBlocks.add(Conversion::ToSChBlock(Block));
+			Respond(Event, [ChBlocks.tojson()]);
+		}
 		case "Ch_GetStartLineItems": {
 			declare ModifierBase::SChAnchorItem[] ChItems;
 			foreach(Anchor, AnchorData)

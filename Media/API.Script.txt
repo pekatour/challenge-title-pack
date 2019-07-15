@@ -332,10 +332,12 @@ SChBlock[] GetBlocksByBlockName(Text _BlockName) {
 	return Blocks;  
 }
 
-Integer MultipleBlocks(Int3 _Coord) {
+SChBlock[] MultipleBlocks(Int3 _Coord) {
 	declare Params = [""^_Coord];
 	declare Response = Request("Ch_MultipleBlocks", Params);
-	return TextLib::ToInteger(Response.Values[0]);
+	declare SChBlock[] Blocks;
+	declare JsonSuccess = Blocks.fromjson(Response.Values[0]);
+	return Blocks;
 }
 
 SChAnchorItem[] GetStartLineItems() {
