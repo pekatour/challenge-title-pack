@@ -1,8 +1,8 @@
 <frame pos="0 -75" id="FRAME_QUICKPLAY" z-index="1">
 	<quad z-index="-1" size="300 10" bgcolor="000A" halign="center" valign="center" style="Bgs1" substyle="BgCardList"/>
+	<quad z-index="-1" size="300 10" bgcolor="000A" halign="center" valign="center" style="Bgs1" substyle="BgCardList"/>
 	
 	<frame pos="-150 0">
-		<quad z-index="0" size="150 10" bgcolor="FFFA" style="Bgs1InRace" substyle="BgGradV" valign="center"/>
 		<quad z-index="0" size="150 10" bgcolor="FFFA" style="Bgs1InRace" substyle="BgGradV" valign="center"/>
 		<quad z-index="0" size="150 10" bgcolor="FFFA" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="036" valign="center" opacity=".5" id="QUAD_BUTTON_MAP"/>
 		<label pos="5 -0.25" z-index="1" size="140 5" text="..." valign="center2" textfont="BiryaniDemiBold" id="LABEL_MAP_NAME"/>
@@ -10,22 +10,22 @@
 		<frame clip="True" clipposn="75 50" clipsizen="150 100" pos="0 5">
 			<frame id="FRAME_MAP" pos="0 0" hidden="1">
 				<quad z-index="-2" size="150 101" bgcolor="000A" valign="top" style="Bgs1" substyle="BgCardList" scriptevents="1"/>
-				<quad z-index="-1" size="150 101" bgcolor="FFFA" style="Bgs1" substyle="BgGradV"/>
+				<quad z-index="-2" size="150 101" bgcolor="000A" valign="top" style="Bgs1" substyle="BgCardList" scriptevents="1"/>
 				<quad z-index="-1" size="150 101" bgcolor="FFFA" style="Bgs1" substyle="BgGradV"/>
 				<frame pos="25 -5">
 					<quad z-index="0" size="50 10" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036" valign="center" halign="center" id="QUAD_LOCATION_MAP_LOCAL"/>
 					<label pos="0 -0.25" z-index="1" size="50 10" text="{{{{LOCAL_MAPS}}}}" valign="center2" halign="center" textfont="RajdhaniMono"/>
 				</frame>
 				<frame pos="75 -5">
-					<quad z-index="0" size="50 10" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" halign="center" id="QUAD_LOCATION_MAP_MX"/>
+					<quad z-index="0" size="50 10" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="333" valign="center" halign="center" id="QUAD_LOCATION_MAP_MX"/>
 					<label pos="0 -0.25" z-index="1" size="50 10" text="mania$0ffexchange" valign="center2" halign="center" textfont="RajdhaniMono"/>
 				</frame>
 				<frame pos="125 -5">
-					<quad z-index="0" size="50 10" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" halign="center" id="QUAD_LOCATION_MAP_MAPMANAGER"/>
+					<quad z-index="0" size="50 10" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="333" valign="center" halign="center" id="QUAD_LOCATION_MAP_MAPMANAGER"/>
 					<label pos="0 -0.25" z-index="1" size="50 10" text="{{{{MAP_MANAGER}}}}" valign="center2" halign="center" textfont="RajdhaniMono"/>
 				</frame>
 				<frame pos="145 -5" hidden="1">
-					<quad z-index="0" size="10 10" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" halign="center"/>
+					<quad z-index="0" size="10 10" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="333" valign="center" halign="center"/>
 					<label pos="0 -0.25" z-index="1" size="10 10" text="<3" valign="center2" halign="center" textfont="RajdhaniMono"/>
 				</frame>
 				
@@ -35,21 +35,21 @@
 				</frame>
 				
 				<frame pos="0 -10" z-index="1" id="FRAME_MAP_BAR_LOCAL">
-					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="555"/>
-					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="555"/>
+					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="333"/>
+					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="333"/>
 					<entry pos="3 -5" z-index="0" size="50 6" default="" valign="center2" id="ENTRY_MAPLIST_LOCAL_SEARCH"/>
 					<label pos="56 -5.3" z-index="0" size="20 5" text="$o{{{{MORE_FILTERS}}}}" valign="center2" textfont="Oswald" style="TextButtonBig" scriptevents="1" id="LABEL_MOREFILTERS_LOCAL"/>
 					
 					<label pos="144 -5.2" z-index="0" size="10 10" text="" halign="center" valign="center2" style="TextButtonBig" scriptevents="1" textsize="3" id="LABEL_MAPLIST_REFRESH"/>
 				</frame>
 				<frame pos="0 -10" z-index="1" id="FRAME_MAP_BAR_MX" hidden="1">
-					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="555"/>
-					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="555"/>
+					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="333"/>
+					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="333"/>
 					<entry pos="3 -5" z-index="0" size="50 6" default="" valign="center2" id="ENTRY_MAPLIST_MX_SEARCH"/>
 					<label pos="56 -5.3" z-index="0" size="20 5" text="$o{{{{MORE_FILTERS}}}}" valign="center2" textfont="Oswald" style="TextButtonBig" scriptevents="1" id="LABEL_MOREFILTERS_MX"/>
 					<label pos="115 -5.4" z-index="0" size="20 5" text="{{{{SEARCH_FOR}}}}:" valign="center2" textfont="Oswald" halign="right"/>
 					<frame pos="117 -5">
-						<quad z-index="0" size="32 8" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" id="QUAD_MX_TRACKS"/>
+						<quad z-index="0" size="32 8" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="333" valign="center" id="QUAD_MX_TRACKS"/>
 						<label pos="16 -0.25" z-index="1" size="33.33 10" text="{{{{TRACKS}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textsize="2"/>
 					</frame>
 					<frame id="FRAME_FILTER_MX" pos="80 -10" z-index="10" hidden="1" clip="True" clipposn="0 -20" clipsizen="100 50">
@@ -107,19 +107,18 @@
 					</frame>
 				</frame>
 				<frame pos="0 -10" z-index="1" id="FRAME_MAP_BAR_MAPMANAGER">
-					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="555"/>
-					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="555"/>
+					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="333"/>
+					<quad z-index="-1" size="150 10" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="333"/>
 					<quad size="150 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" z-index="-2"/>
 					<entry pos="3 -5" z-index="0" size="50 6" default="" valign="center2" id="ENTRY_MAPLIST_MANAGER_SEARCH"/>
 					<label pos="56 -5.3" z-index="0" size="20 5" text="$o{{{{MORE_FILTERS}}}}" valign="center2" textfont="Oswald" style="TextButtonBig" scriptevents="1" id="LABEL_MOREFILTERS_MANAGER"/>
 					<frame pos="109 -5">
-						<quad z-index="0" size="40 8" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" id="QUAD_MANAGER_SHOWPRIVATE"/>
+						<quad z-index="0" size="40 8" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="333" valign="center" id="QUAD_MANAGER_SHOWPRIVATE"/>
 						<label pos="20 -0.25" z-index="1" size="40 10" text="{{{{SHOW_PRIVATE}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textsize="2"/>
 					</frame>
 				</frame>
 				
-				<quad size="100 80" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" pos="0 -20"/>
-				<quad size="100 80" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" pos="0 -20"/>
+				<quad size="100 81" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" pos="0 -19"/>
 				<quad pos="98 -20" z-index="-1" size="2 20" bgcolor="FFFA" style="Bgs1" substyle="BgMetalBar" id="QUAD_MAPLIST_BAR"/>
 				<gauge pos="100 -8" z-index="1" size="94 9" valign="center" rot="90" ratio=".5" id="GAUGE_MAPLIST" style="BgCard" drawbg="0" hidden="1"/>
 				<frame pos="0 -20" clip="True" clipposn="50 -40" clipsizen="100 80" z-index="1" id="FRAME_MAPLIST">
@@ -213,12 +212,11 @@
 					</frame>
 				</frame>
 				<frame pos="100 -20">
-					<quad size="50 80" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" z-index="-1"/>
-					<quad size="50 80" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" z-index="-1"/>
-					<quad pos="25 -24" z-index="0" size="44 44" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgMetalBar" opacity=".9" modulatecolor="222"/>
+					<quad size="50 81" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" z-index="-1" pos="0 1"/>
+					<quad pos="25 -24" z-index="0" size="44 44" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgMetalBar" opacity=".75" modulatecolor="222"/>
 					<frame pos="25 -24" clipsizen="42.5 42.5" z-index="1">
-						<quad size="42.5 42.5" halign="center" valign="center" opacity=".9" id="QUAD_MAPLIST_THUMBNAIL"/>
-						<quad size="58.62 42.5" halign="center" valign="center" opacity=".9" id="QUAD_MAPLIST_SCREENSHOT" hidden="1"/>
+						<quad size="42.5 42.5" halign="center" valign="center" opacity=".75" id="QUAD_MAPLIST_THUMBNAIL"/>
+						<quad size="58.62 42.5" halign="center" valign="center" opacity=".75" id="QUAD_MAPLIST_SCREENSHOT" hidden="1"/>
 					</frame>
 					
 					<label pos="25 -50" z-index="1" size="40 10" halign="center" valign="center2" text="???" textfont="BiryaniDemiBold" id="LABEL_MAPLIST_MAPNAME" textsize="2"/>
@@ -240,7 +238,6 @@
 	
 	<frame>
 		<quad pos="0 0" z-index="0" size="100 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" halign="left" valign="center"/>
-		<quad pos="0 0" z-index="0" size="100 10" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" halign="left" valign="center"/>
 		<quad pos="0 5" z-index="0" size="100 10" bgcolor="FFFA" style="Bgs1" substyle="BgCardInventoryItem" scriptevents="1" modulatecolor="036" opacity=".5" id="QUAD_BUTTON_CHALLENGE_SCRIPT"/>
 		<label pos="5 -0.25" z-index="1" size="90 5" text="..." valign="center2" textfont="BiryaniDemiBold" id="LABEL_SCRIPT_NAME"/>
 		<quad pos="0 0" z-index="2" size="100 10" halign="left" valign="center" scriptevents="1" hidden="1" id="QUAD_BUTTON_CHALLENGE_SCRIPT_DISABLE"/>
@@ -248,20 +245,19 @@
 		<frame clip="True" clipposn="50 50" clipsizen="100 100" pos="0 5">
 			<frame id="FRAME_CHALLENGE_SCRIPT" pos="0 0" hidden="1">
 				<quad z-index="-2" size="100 101" valign="top" style="Bgs1" substyle="BgCardList" pos="0 0" scriptevents="1"/>
+				<quad z-index="-2" size="100 101" valign="top" style="Bgs1" substyle="BgCardList" pos="0 0" scriptevents="1"/>
 				<quad z-index="-1" size="100 101" style="Bgs1" substyle="BgGradV"/>
-				<quad z-index="-1" size="100 101" style="Bgs1" substyle="BgGradV"/>
-				<quad z-index="-1" size="100 80" pos="0 -20" style="Bgs1" substyle="BgGradV"/>
 				<quad z-index="-1" size="100 80" pos="0 -20" style="Bgs1" substyle="BgGradV"/>
 				<frame pos="0 -5">
 					<quad z-index="0" size="33.33 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="036" valign="center" id="QUAD_LOCATION_SCRIPT_OFFICIAL"/>
 					<label pos="16 -0.25" z-index="1" size="33.33 10" text="{{{{OFFICIAL}}}}" halign="center" valign="center2" textfont="RajdhaniMono"/>
 				</frame>
 				<frame pos="33.33 -5">
-					<quad z-index="0" size="33.33 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" id="QUAD_LOCATION_SCRIPT_LOCAL"/>
+					<quad z-index="0" size="33.33 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="333" valign="center" id="QUAD_LOCATION_SCRIPT_LOCAL"/>
 					<label pos="16 -0.25" z-index="1" size="33.33 10" text="{{{{LOCAL}}}}" halign="center" valign="center2" textfont="RajdhaniMono"/>
 				</frame>
 				<frame pos="66.66 -5">
-					<quad z-index="0" size="33.33 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" id="QUAD_LOCATION_SCRIPT_ONLINE"/>
+					<quad z-index="0" size="33.33 10" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="333" valign="center" id="QUAD_LOCATION_SCRIPT_ONLINE"/>
 					<label pos="16 -0.25" z-index="1" size="33.33 10" text="{{{{ONLINE}}}}" halign="center" valign="center2" textfont="RajdhaniMono"/>
 				</frame>
 
@@ -356,10 +352,11 @@
 					</frame>
 				</frame>
 				<frame pos="0 -10" z-index="1" hidden="0">
-					<quad z-index="-1" size="100 10" bgcolor="FFF" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="666"/>
+					<quad z-index="-1" size="100 10" bgcolor="FFF" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="333"/>
+					<quad z-index="-1" size="100 10" bgcolor="FFF" style="Bgs1" substyle="NavButtonBlink" hidden="0" modulatecolor="333"/>
 					<entry pos="3 -5" z-index="0" size="61.5 6" default="" valign="center2" id="ENTRY_SCRIPT_SEARCH"/>
 					<frame pos="67 -5">
-						<quad z-index="0" size="32 8" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="666" valign="center" id="QUAD_SCRIPT_MULTIPLE"/>
+						<quad z-index="0" size="32 8" halign="left" style="Bgs1" substyle="BgCard" scriptevents="1" modulatecolor="333" valign="center" id="QUAD_SCRIPT_MULTIPLE"/>
 						<label pos="16 -0.25" z-index="1" size="33.33 10" text="{{{{MULTIPLE}}}}" halign="center" valign="center2" textfont="RajdhaniMono" textsize="2"/>
 					</frame>
 				</frame>

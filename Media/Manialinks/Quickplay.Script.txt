@@ -777,8 +777,8 @@ foreach(Event,PendingEvents) {
 						Page.GetFirstChild("FRAME_MAP_BAR_MAPMANAGER").Hide();
 
 						(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-						(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-						(Page.GetFirstChild("QUAD_LOCATION_MAP_MAPMANAGER") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+						(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
+						(Page.GetFirstChild("QUAD_LOCATION_MAP_MAPMANAGER") as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
 
 						(Page.GetFirstChild("QUAD_MAPLIST_THUMBNAIL") as CMlQuad).ChangeImageUrl("https://tm.mania-exchange.com/tracks/thumbnail/"^SelectedMXTrackInfo.TrackID^"?.jpg");
 						(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedMXTrackInfo.GbxMapName);
@@ -812,8 +812,8 @@ foreach(Event,PendingEvents) {
 						Page.GetFirstChild("FRAME_MAP_BAR_MAPMANAGER").Show();
 
 						(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-						(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-						(Page.GetFirstChild("QUAD_LOCATION_MAP_MX") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+						(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
+						(Page.GetFirstChild("QUAD_LOCATION_MAP_MX") as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
 
 						(Page.GetFirstChild("LABEL_MAPLIST_MAPNAME") as CMlLabel).SetText(SelectedManagerMapInfo.Name);
 						if(SelectedMXTrackInfo.Username == "") (Page.GetFirstChild("LABEL_MAPLIST_AUTHORNAME") as CMlLabel).SetText("");
@@ -833,31 +833,31 @@ foreach(Event,PendingEvents) {
 
 				case "QUAD_LOCATION_SCRIPT_OFFICIAL": {
 					(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_ONLINE") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_LOCAL") as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
+					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_ONLINE") as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
 
 					ScriptLocation = "Official";
 				}
 				case "QUAD_LOCATION_SCRIPT_LOCAL": {
 					(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_OFFICIAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_ONLINE") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_OFFICIAL") as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
+					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_ONLINE") as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
 
 					ScriptLocation = "Local";
 				}
 				case "QUAD_LOCATION_SCRIPT_ONLINE": {
 					(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_OFFICIAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_LOCAL") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_OFFICIAL") as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
+					(Page.GetFirstChild("QUAD_LOCATION_SCRIPT_LOCAL") as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
 
 					ScriptLocation = "Online";
 				}
 				case "QUAD_SCRIPT_MULTIPLE": {
-					if((Event.Control as CMlQuad).ModulateColor == <0.4,0.4,0.4>) {
+					if((Event.Control as CMlQuad).ModulateColor == <0.2,0.2,0.2>) {
 						(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
 					}
 					else {
-						(Event.Control as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+						(Event.Control as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
 						while(SelectedScripts.count > 1)
 							SelectedScripts.removekey(SelectedScripts.count - 1);
 					}
@@ -867,13 +867,13 @@ foreach(Event,PendingEvents) {
 					SendCustomEvent("MapList_Local_Refresh", []);
 				}
 				case "QUAD_MANAGER_SHOWPRIVATE": {
-					if((Event.Control as CMlQuad).ModulateColor == <0.4,0.4,0.4>) {
+					if((Event.Control as CMlQuad).ModulateColor == <0.2,0.2,0.2>) {
 						(Event.Control as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
 						SendCustomEvent("MapList_MapManager_Update", [(Page.GetFirstChild("ENTRY_MAPLIST_MANAGER_SEARCH") as CMlEntry).Value, "True"]);
 						Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 					}
 					else {
-						(Event.Control as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+						(Event.Control as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
 						SendCustomEvent("MapList_MapManager_Update", [(Page.GetFirstChild("ENTRY_MAPLIST_MANAGER_SEARCH") as CMlEntry).Value, "False"]);
 						Page.GetFirstChild("FRAME_MAPLIST_LOADING").Show();
 					}
@@ -901,8 +901,8 @@ foreach(Event,PendingEvents) {
 					UpdateLocalMapsFolder(0);
 
 					(Page.GetFirstChild("QUAD_LOCATION_MAP_LOCAL") as CMlQuad).ModulateColor = <0.0,0.2,0.4>;
-					(Page.GetFirstChild("QUAD_LOCATION_MAP_MX") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
-					(Page.GetFirstChild("QUAD_LOCATION_MAP_MAPMANAGER") as CMlQuad).ModulateColor = <0.4,0.4,0.4>;
+					(Page.GetFirstChild("QUAD_LOCATION_MAP_MX") as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
+					(Page.GetFirstChild("QUAD_LOCATION_MAP_MAPMANAGER") as CMlQuad).ModulateColor = <0.2,0.2,0.2>;
 
 					Page.GetFirstChild("FRAME_MAP_BAR_LOCAL").Show();
 					Page.GetFirstChild("FRAME_MAP_BAR_MX").Hide();
