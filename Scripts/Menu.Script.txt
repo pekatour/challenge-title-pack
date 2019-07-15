@@ -15,66 +15,74 @@
 #Include "Libs/Challenge/Menu/AuthBeta.Script.txt" as Menu_AuthBeta
 
 #Include "Libs/Challenge/Devmode.Script.txt" as Devmode
+#Include "Libs/Challenge/Restart.Script.txt" as Restart
 
 #Setting S_Devmode True
 
 main() {
-	Layers::Create("Loading", "file://Media/Manialinks/Loading.xml", True, CUILayer::EUILayerType::LoadingScreen);
-	
-	//Auth::AuthorizeInManialink("b1a3d10ba7", "basic maps", "http://localhost/challenge/auth");
-	
-	Dictionary::SetTranslationFolder("Media/Translations");
-	Dictionary::SetTranslationLanguage(LocalUser.Language);
-	
-	Auth::Start();
-	
-	Menu_AuthBeta::Start();
-	while(!Menu_AuthBeta::GetAccess().Pass) {
-		foreach(Event,PendingEvents) {
-			Menu_AuthBeta::Event(Event);
-		}
-	
-		Menu_AuthBeta::Async();
+	while(True) { // Restart mechanism
+		Restart::Restart(False);
 		
-		Auth::Loop();
-		Menu_AuthBeta::Loop();
+		Layers::Create("Loading", "file://Media/Manialinks/Loading.xml", True, CUILayer::EUILayerType::LoadingScreen);
+		
+		//Auth::AuthorizeInManialink("b1a3d10ba7", "basic maps", "http://localhost/challenge/auth");
+		
+		Dictionary::SetTranslationFolder("Media/Translations");
+		Dictionary::SetTranslationLanguage(LocalUser.Language);
+		
+		Auth::Start();
+		
+		Menu_AuthBeta::Start();
+		while(!Menu_AuthBeta::GetAccess().Pass) {
+			foreach(Event,PendingEvents) {
+				Menu_AuthBeta::Event(Event);
+			}
+		
+			Menu_AuthBeta::Async();
+			
+			Auth::Loop();
+			Menu_AuthBeta::Loop();
+			yield;
+		}
+		Menu_AuthBeta::End();
+		
+		Menu_Main::Start();
 		yield;
-	}
-	Menu_AuthBeta::End();
-	
-	Menu_Main::Start();
-	yield;
-	Menu_Quickplay::Start();
-	yield;
-	Menu_Top::Start();
-	yield;
-	Menu_Editor::Start();
-	
-	if(S_Devmode) {
-		Devmode::Start();
-	}
-	
-	//EnableMenuNavigationInputs = True;
-
-	while(True) {
-		foreach(Event,PendingEvents) {
-			Menu_Quickplay::Event(Event);
-			Menu_Main::Event(Event);
-			Menu_Top::Event(Event);
-			Menu_Editor::Event(Event);
+		Menu_Quickplay::Start();
+		yield;
+		Menu_Top::Start();
+		yield;
+		Menu_Editor::Start();
+		
+		if(S_Devmode) {
+			Devmode::Start();
 		}
 		
-		Menu_Quickplay::Async();
-		Menu_Main::Async();
-		Menu_Top::Async();
-		Menu_Editor::Async();
-
-		Auth::Loop();
-		Menu_Quickplay::Loop();
-		Menu_Main::Loop();
-		Menu_Top::Loop();
-		Menu_Editor::Loop();
+		//EnableMenuNavigationInputs = True;
 	
-		yield;
+		while(!Restart::IsRestarting()) {
+			foreach(Event,PendingEvents) {
+				Menu_Quickplay::Event(Event);
+				Menu_Main::Event(Event);
+				Menu_Top::Event(Event);
+				Menu_Editor::Event(Event);
+			}
+			
+			Menu_Quickplay::Async();
+			Menu_Main::Async();
+			Menu_Top::Async();
+			Menu_Editor::Async();
+	
+			Auth::Loop();
+			Menu_Quickplay::Loop();
+			Menu_Main::Loop();
+			Menu_Top::Loop();
+			Menu_Editor::Loop();
+		
+			yield;
+		}
+		
+		Layers::DestroyAll();
+		UILayerDestroyAll();
 	}
 }

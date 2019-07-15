@@ -3,8 +3,9 @@
 
 #Include "Libs/BigBang1112/Settings.Script.txt" as Settings
 
+#Include "Libs/Challenge/Restart.Script.txt" as Restart
+
 Void Start() {
-	
 	Layers::Create("Top", Manialink::FromFile("Media/Manialinks/Top", True, [], Settings::Get().Theme), True);
 }
 
@@ -14,6 +15,7 @@ Void Event(CManiaAppEvent _Event) {
 	if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
 		switch(Event.CustomEventType) {
 			case "Button_Skins": {
+				//Restart::Restart();
 				if(TitleControl.IsReady)
 					TitleControl.PlayMap("SkinSelect.Map.Gbx", "TrackMania/SkinSelect.Script.txt", "");
 			}

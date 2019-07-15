@@ -1,0 +1,13 @@
+declare Boolean Restart;
+
+Boolean IsRestarting() {
+	return Restart;
+}
+
+Void Restart(Boolean _Do) {
+	Restart = _Do;
+}
+
+Void Restart() {
+	Restart(True);
+}
