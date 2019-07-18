@@ -1,12 +1,16 @@
 declare SAnimationSlowSetText[] Animations_SlowSetText;
 
-Void SlowSetText(CMlLabel _Label, Text _NewText, Integer _Time) {
+Void SlowSetText(CMlLabel _Label, Text _NewText, Integer _Start, Integer _Time) {
 	declare SAnimationSlowSetText Animation;
 	Animation.Label = _Label;
 	Animation.OldText = _Label.Value;
 	Animation.NewText = _NewText;
 	Animation.Time = _Time;
-	Animation.Start = Now;
+	Animation.Start = _Start;
 	Animation.Position = 1;
 	Animations_SlowSetText.add(Animation);
+}
+
+Void SlowSetText(CMlLabel _Label, Text _NewText, Integer _Time) {
+	SlowSetText(_Label, _NewText, Now, _Time);
 }
