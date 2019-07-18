@@ -17,6 +17,7 @@
 	"SKINS": "SKINS",
 	"LANGUAGES": "LANGUAGES",
 	"PLAYSESSIONS": "PLAYSESSIONS",
+	"NOW_PLAYING": "NOW PLAYING",
 
  	"by": "by",	
 	"scripts": "scripts",	
@@ -52,9 +53,10 @@
 	"SEARCH_FOR": "SEARCH FOR",
 	"MORE_FILTERS": "MORE FILTERS",
 
- 	"REVERSE_DESCRIPTION": "Swaps start with finish.",	
-	"CHECKPOINTLESS_DESCRIPTION": "Removes all checkpoints but keeps the holes.",	
-	"TERRAINLESS_DESCRIPTION": "Removes all the terrain.",	
+ 	"REVERSE_DESCRIPTION": "Swaps start with finish.",
+	"CHECKPOINTLESS_DESCRIPTION": "Removes all checkpoints but keeps the holes.",
+	"COMEBACK_DESCRIPTION": "Replaces start with multilap and finish with checkpoint.",
+	"NOCP_DESCRIPTION": "Replaces checkpoints with their road variant.",
 
 	"CHECKPOINT_FOUND": "Checkpoint found.",
 	 

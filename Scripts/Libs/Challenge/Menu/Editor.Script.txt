@@ -33,6 +33,7 @@ Void Event(CManiaAppEvent _Event) {
 				Layers::Show("Menu");
 				Layers::Show("Quickplay");
 				Layers::Show("Top");
+				Layers::Show("Playsessions");
 				Layers::Hide("Editor");
 			}
 		}

@@ -1,0 +1,28 @@
+Void Animate_Show() {
+	
+}
+
+***Loop***
+***
+foreach(Event,PendingEvents) {
+	switch(Event.Type) {
+		case CMlScriptEvent::Type::MouseClick: {
+			switch(Event.ControlId) {
+				case "": {
+					
+				}
+			}
+		}
+		case CMlScriptEvent::Type::PluginCustomEvent: {
+			switch(Event.CustomEventType) {
+				case "Show": {
+					Animate_Show();
+				}
+				case "Hide": {
+					SendCustomEvent("Hide_Response", []);
+				}
+			}
+		}
+	}
+}
+***

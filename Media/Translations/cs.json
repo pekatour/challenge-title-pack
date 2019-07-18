@@ -16,7 +16,8 @@
 	"ONLINE": "ONLINE",
 	"SKINS": "VZHLEDY",
 	"LANGUAGES": "JAZYKY",
-	"PLAYSESSIONS": "PRÁVĚ SE HRAJOU",
+	"PLAYSESSIONS": "PLAYSESSIONY",
+	"NOW_PLAYING": "PRÁVĚ SE HRAJE",
 
 	"by": "od",
 	"scripts": "skriptů",

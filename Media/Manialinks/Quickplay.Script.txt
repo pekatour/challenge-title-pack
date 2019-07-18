@@ -588,8 +588,6 @@ Void Animate_Show() {
 
 ***Start***
 ***
-	Animate_Show();
-
 	declare CurrentFolder = "";
 	declare CurrentFolderScript = "";
 	declare OldMapScrollPos = (Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y;
@@ -890,6 +888,12 @@ foreach(Event,PendingEvents) {
 		
 		case CMlScriptEvent::Type::PluginCustomEvent: {
 			switch(Event.CustomEventType) {
+				case "Show": {
+					Animate_Show();
+				}
+				case "Hide": {
+					SendCustomEvent("Hide_Response", []);
+				}
 				case "MapList_Local_Update": {
 					CurrentFolder = Event.CustomEventData[0];
 					declare Text[] SubFolders;

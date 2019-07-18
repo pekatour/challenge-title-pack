@@ -212,12 +212,12 @@
 						<label pos="97.5 0.3" z-index="0" size="5 5" text="" valign="center" halign="center" textsize="1" textcolor="080" hidden="1" id="LABEL_DOWNLOADED"/>
 					</frame>
 				</frame>
-				<frame pos="100 -20">
+				<frame pos="100 -20" z-index="1">
 					<quad size="50 81" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" z-index="-1" pos="0 1"/>
 					<quad pos="25 -24" z-index="0" size="44 44" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgMetalBar" opacity=".75" modulatecolor="222"/>
 					<frame pos="25 -24" clipsizen="42.5 42.5" z-index="1">
-						<quad size="42.5 42.5" halign="center" valign="center" opacity=".75" id="QUAD_MAPLIST_THUMBNAIL"/>
-						<quad size="58.62 42.5" halign="center" valign="center" opacity=".75" id="QUAD_MAPLIST_SCREENSHOT" hidden="1"/>
+						<quad size="42.5 42.5" halign="center" valign="center" opacity=".9" id="QUAD_MAPLIST_THUMBNAIL"/>
+						<quad size="58.62 42.5" halign="center" valign="center" opacity=".9" id="QUAD_MAPLIST_SCREENSHOT" hidden="1"/>
 					</frame>
 					
 					<label pos="25 -50" z-index="1" size="40 10" halign="center" valign="center2" text="???" textfont="BiryaniDemiBold" id="LABEL_MAPLIST_MAPNAME" textsize="2"/>

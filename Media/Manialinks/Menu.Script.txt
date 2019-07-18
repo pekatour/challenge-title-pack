@@ -6,7 +6,6 @@ Void Animate_Show() {
 ***Start***
 ***
 declare Start = Now;
-Animate_Show();
 
 (Page.GetFirstChild("LABEL_VERSION") as CMlLabel).SetText(TextLib::Split(" ", LoadedTitle.TitleVersion)[0]);
 ***
@@ -47,7 +46,14 @@ foreach(Event,PendingEvents) {
 		}
 		
 		case CMlScriptEvent::Type::PluginCustomEvent: {
-			
+			switch(Event.CustomEventType) {
+				case "Show": {
+					Animate_Show();
+				}
+				case "Hide": {
+					SendCustomEvent("Hide_Response", []);
+				}
+			}
 		}
 	}
 }

@@ -1,0 +1,5 @@
+<frame>
+	<quad pos="115 0" z-index="-1" size="70 70" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgCardList" class="opacity"/>
+	<quad pos="115 0" z-index="0" size="70 70" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgGradV" class="opacity"/>
+	<label pos="115 30" z-index="1" size="60 5" text="{{{{NOW_PLAYING}}}}" textfont="RajdhaniMono" halign="center" textsize="4"/>
+</frame>

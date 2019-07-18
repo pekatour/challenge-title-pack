@@ -3,11 +3,6 @@ Void Animate_Show() {
 	AnimMgr.Add(Page.GetFirstChild("FRAME_TOP"), "<frame pos=\"0 75\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
 }
 
-***Start***
-***
-Animate_Show();
-***
-
 ***Loop***
 ***
 foreach(Event,PendingEvents) {
@@ -26,6 +21,16 @@ foreach(Event,PendingEvents) {
 						AnimMgr.Add(Page.GetFirstChild("FRAME_SETTINGS"), "<frame pos=\"0 0\" hidden=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
 						Page.GetFirstChild("FRAME_SETTINGS").DataAttributeSet("open","1");
 					}
+				}
+			}
+		}
+		case CMlScriptEvent::Type::PluginCustomEvent: {
+			switch(Event.CustomEventType) {
+				case "Show": {
+					Animate_Show();
+				}
+				case "Hide": {
+					SendCustomEvent("Hide_Response", []);
 				}
 			}
 		}

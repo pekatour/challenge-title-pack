@@ -3,7 +3,7 @@
 #Include "Libs/BigBang1112/Settings.Script.txt" as Settings
 
 Void Start() {
-	Layers::Create("Menu", Manialink::FromFile("Media/Manialinks/Menu", True, [], Settings::Get().Theme), True);
+	Layers::Create("Menu", Manialink::FromFile("Media/Manialinks/Menu", True, [], Settings::Get().Theme), True, True);
 }
 
 Void Event(CManiaAppEvent _Event) {
@@ -15,10 +15,11 @@ Void Event(CManiaAppEvent _Event) {
 				Menu_Quit();
 			}
 			case "Button_CreateChallenge": {
-				Layers::Show("Editor");
-				Layers::Hide("Menu");
-				Layers::Hide("Quickplay");
-				Layers::Hide("Top");
+				Layers::Show("Editor", True);
+				Layers::Hide("Menu", True);
+				Layers::Hide("Quickplay", True);
+				Layers::Hide("Top", True);
+				Layers::Hide("Playsessions", True);
 			}
 		}
 	}

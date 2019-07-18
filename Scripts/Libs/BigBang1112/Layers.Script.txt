@@ -77,17 +77,22 @@ Void DestroyAll() {
 	}
 }
 
-Void Create(Text _LayerName, Text _LayerManialink, Boolean IsVisible, CUILayer::EUILayerType _LayerType) {
+Void Create(Text _LayerName, Text _LayerManialink, Boolean _IsVisible, Boolean _ShowEvent, CUILayer::EUILayerType _LayerType) {
 	if(Exists(_LayerName)) Destroy(_LayerName);
 	declare NewLayer = UILayerCreate();
 	NewLayer.ManialinkPage = _LayerManialink;
-	NewLayer.IsVisible = IsVisible;
+	if(_ShowEvent) LayerCustomEvent(NewLayer, "Show", []);
+	NewLayer.IsVisible = _IsVisible;
 	NewLayer.Type = _LayerType;
 	G_Layers[_LayerName] = NewLayer.Id;
 }
 
-Void Create(Text _LayerName, Text _LayerManialink, Boolean IsVisible) {
-	Create(_LayerName, _LayerManialink, IsVisible, CUILayer::EUILayerType::Normal);
+Void Create(Text _LayerName, Text _LayerManialink, Boolean _IsVisible, Boolean _ShowEvent) {
+	Create(_LayerName, _LayerManialink, _IsVisible, _ShowEvent, CUILayer::EUILayerType::Normal);
+}
+
+Void Create(Text _LayerName, Text _LayerManialink, Boolean _IsVisible) {
+	Create(_LayerName, _LayerManialink, _IsVisible, False, CUILayer::EUILayerType::Normal);
 }
 
 Void Create(Text _LayerName, Text _LayerManialink) {
@@ -122,19 +127,35 @@ Void SetAnimationInOut(Text _LayerName, CUILayer::EUILayerAnimation _Animation) 
 	Layer.InOutAnimation = _Animation;
 }
 
-Void Show(Text _LayerName) {
+Void Show(Text _LayerName, Boolean _ShowEvent) {
 	declare Layer <=> Get(_LayerName);
 	if(Layer == Null) return;
+	if(_ShowEvent) LayerCustomEvent(Layer, "Show", []);
 	Layer.IsVisible = True;
 }
 
-Void ShowOnly(Text _LayerName) {
-	foreach(Layer,G_Layers) UILayers[Layer].IsVisible = False;
-	Get(_LayerName).IsVisible = True;
+Void Show(Text _LayerName) {
+	Show(_LayerName, False);
+}
+
+Void Hide(Text _LayerName, Boolean _HideEvent) {
+	declare Layer <=> Get(_LayerName);
+	if(Layer == Null) return;
+	if(_HideEvent) LayerCustomEvent(Layer, "Hide", []);
+	else Get(_LayerName).IsVisible = False;
 }
 
 Void Hide(Text _LayerName) {
-	Get(_LayerName).IsVisible = False;
+	Hide(_LayerName, False);
+}
+
+Void ShowOnly(Text _LayerName, Boolean _ShowEvent, Boolean _HideEvent) {
+	foreach(Layer,G_Layers) Hide(_LayerName, _HideEvent);
+	Show(_LayerName, _ShowEvent);
+}
+
+Void ShowOnly(Text _LayerName) {
+	ShowOnly(_LayerName, False, False);
 }
 
 Void SendEvent(Text _LayerName, Text _Type, Text[] _Data) {
@@ -147,4 +168,16 @@ Void SendEvent(Text _LayerName, Text _Type, Text _Data) {
 
 Void SendEvent(Text _LayerName, Text _Type) {
 	LayerCustomEvent(Get(_LayerName), _Type, []);
+}
+
+Void Loop() {
+	foreach(Event,PendingEvents) {
+		if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
+			if(G_Layers.exists(Event.CustomEventLayer.Id)) {
+				if(Event.CustomEventType == "Hide_Response") {
+					Event.CustomEventLayer.IsVisible = False;
+				}
+			}
+		}
+	}
 }
