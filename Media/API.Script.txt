@@ -1,6 +1,9 @@
 declare SChMetadata Script;
 declare SChProblem[] Problems;
 declare Text[][][Text] Relation_StartFinish;
+declare Text[][][Text] Relation_StartMultilap;
+declare Text[][][Text] Relation_FinishCheckpoint;
+declare Text[][][Text] Relation_CheckpointRoad;
 
 SResponse Request(Text _Command, Text[] _Arguments) {
 	declare SResponse Response;

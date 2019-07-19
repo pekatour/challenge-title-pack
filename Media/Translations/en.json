@@ -60,6 +60,7 @@
 	"NOCP_DESCRIPTION": "Replaces all checkpoints with their road variant.",
 
 	"CHECKPOINT_FOUND": "Checkpoint found.",
+	"replaced_with": "replaced with",
 	 
 	"SCRIPT_NOTE": "All written and published code is available open source, which means everyone can see your coding skills. You have been warned.",
 

@@ -498,6 +498,18 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			UndergroundMode = False;
 			Respond(Event, []);
 		}
+		case "Ch_PlaceGhostBlock": {
+			declare BlockName = Event.CustomEventData[0];
+			declare Coord = Conversion::ToInt3(Event.CustomEventData[1]);
+			declare Direction = Conversion::ToDirectionMap(Event.CustomEventData[2]);
+
+			declare Variant = "Air";
+			if(GetGroundHeight(Coord.X, Coord.Z) == Coord.Y) Variant = "Ground";
+			
+			declare MacroblockModel = GetMacroblockModelFromFilePath("""{{{Map.CollectionName}}}\Ghost\{{{BlockName}}}-{{{Variant}}}-Ghost.Macroblock.Gbx""");
+			declare Response = PlaceMacroblock(MacroblockModel, Coord, Direction);
+			Respond(Event, [""^Response]);
+		}
 		case "Ch_ReplaceBlock": {
 			declare ModifierBase::SChBlock Block;
 			declare JsonSuccess = Block.fromjson(Event.CustomEventData[0]);

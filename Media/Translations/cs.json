@@ -60,6 +60,7 @@
 	"NOCP_DESCRIPTION": "Vymení všechny checkpointy za jejich variantu cesty.",
 
 	"CHECKPOINT_FOUND": "Checkpoint nalezen.",
+	"replaced_with": "vyměněn za",
 
 	"SCRIPT_NOTE": "Všechen napsaný a publikovaný kód je dostupný open source, což znamená, že všichni mohou vidět tvoje kódovací schopnosti. Byl jsi varován.",
 

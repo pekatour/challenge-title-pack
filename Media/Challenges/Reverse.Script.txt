@@ -28,7 +28,7 @@ foreach(Env => RelationList, Relation_StartFinish) {
 			else {
 				declare Replacement = ReplaceBlock(StartLine.Block, FinishBlockName, True);
 				if(!Replacement.Removed || !Replacement.Placed) Problem(Problem_CannotReplaceStartLine(StartLine));
-				else SetStatusMessage("""{{{StartBlockName}}} replaced with {{{FinishBlockName}}}.""");
+				else SetStatusMessage(StartBlockName ^ " {{{{replaced_with}}}} " ^ FinishBlockName ^ ".");
 			}
 		}
 		if(FinishLines.count == 1) {
@@ -41,7 +41,7 @@ foreach(Env => RelationList, Relation_StartFinish) {
 				else {
 					declare Replacement = ReplaceBlock(FinishLine.Block, StartBlockName, True);
 					if(!Replacement.Removed || !Replacement.Placed) Problem(Problem_CannotReplaceFinishLine(FinishLine));
-					else SetStatusMessage("""{{{FinishBlockName}}} replaced with {{{StartBlockName}}}.""");
+					else SetStatusMessage(FinishBlockName ^ " {{{{replaced_with}}}} " ^ StartBlockName ^ ".");
 				}
 			}
 		}

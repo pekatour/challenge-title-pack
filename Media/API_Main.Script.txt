@@ -32,6 +32,38 @@ Relation_StartFinish = [
 	]
 ];
 
+Relation_StartMultilap = [
+	"Canyon" => [
+		["RoadRaceStart","RoadRaceMultilap"],
+		["RoadRaceStartMirror","RoadRaceMultilapMirror"],
+		["ArenaStart","ArenaMultilap"],
+		["RoadMainStart","RoadMainMultilap"],
+		["Canyon/TubeStart.Macroblock.Gbx","Canyon/TubeMultilap.Macroblock.Gbx"],
+		["Canyon/TubeStartUnderground.Macroblock.Gbx","Canyon/TubeMultilapUnderground.Macroblock.Gbx"],
+		["Canyon/RoadCaveStart.Macroblock.Gbx","RoadCaveMultiLap"],
+		["Canyon/RoadCaveDoubleStart.Macroblock.Gbx","Canyon/RoadCaveDoubleMultiLap.Macroblock.Gbx"]
+	],
+	"Stadium" => [
+		["StadiumRoadMainStartLine","StadiumRoadMainStartFinishLine"]
+	],
+	"Valley" => [
+		["Road2WayStart","Road2WayMultilap"],
+		["Road2WayForestStart","Road2WayForestMultilap"],
+		["Road4WayStart","Road4WayMultiLap"],
+		["Valley/TunnelRoad4wayStart.Macroblock.Gbx","Valley/TunnelRoad4wayMultilap.Macroblock.Gbx"],
+		["RoadForestLargeStart","RoadForestLargeMultilap"]
+	],
+	"Lagoon" => [
+		["RoadMainStart","RoadMainMultilap"],
+		["FreeWayStart","FreeWayMultilap"],
+		["RoadThemeParkStart","RoadThemeParkMultilap"],
+		["Lagoon/RoadThemeParkFlipStart.Macroblock.Gbx","Lagoon/RoadThemeParkFlipMultilap.Macroblock.Gbx"],
+		["ArenaStart","ArenaMultilap"],
+		["ArenaStart","ArenaMultilapX2"], // or Lagoon/ArenaStartX2.Macroblock.Gbx, Tom?
+		["Lagoon/RoadTunnelStart.Macroblock.Gbx","Lagoon/RoadTunnelMultilap.Macroblock.Gbx"]
+	]
+];
+
 +++Metadata+++
 SendCustomEvent("ScriptMetadata", [Script.tojson()]);
 +++Main+++
