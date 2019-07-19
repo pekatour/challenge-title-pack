@@ -3,7 +3,7 @@
 #Include "Libs/BigBang1112/Settings.Script.txt" as Settings
 
 Void Start() {
-	Layers::Create("Menu", Manialink::FromFile("Media/Manialinks/Menu", True, [], Settings::Get().Theme), True, True);
+	Layers::Create("Menu", Manialink::FromFile("Media/Manialinks/Menu", True, ["TextAnimation"], Settings::Get().Theme), True, True);
 }
 
 Void Event(CManiaAppEvent _Event) {
@@ -20,6 +20,7 @@ Void Event(CManiaAppEvent _Event) {
 				Layers::Hide("Quickplay", True);
 				Layers::Hide("Top", True);
 				Layers::Hide("Playsessions", True);
+				Layers::Hide("News", True);
 			}
 		}
 	}

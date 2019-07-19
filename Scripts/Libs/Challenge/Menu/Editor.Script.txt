@@ -30,11 +30,12 @@ Void Event(CManiaAppEvent _Event) {
 				}
 			}
 			case "Button_CreateChallenge_Back": {
-				Layers::Show("Menu");
-				Layers::Show("Quickplay");
-				Layers::Show("Top");
-				Layers::Show("Playsessions");
-				Layers::Hide("Editor");
+				Layers::Show("Menu", True);
+				Layers::Show("Quickplay", True);
+				Layers::Show("Top", True);
+				Layers::Show("Playsessions", True);
+				Layers::Show("News", True);
+				Layers::Hide("Editor", True);
 			}
 		}
 	}

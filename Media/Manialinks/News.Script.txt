@@ -1,0 +1,40 @@
+***Start***
+***
+declare Start = Now;
+***
+
+***Loop***
+***
+foreach(Event,PendingEvents) {
+	switch(Event.Type) {
+		case CMlScriptEvent::Type::MouseClick: {
+			switch(Event.ControlId) {
+				case "": {
+					
+				}
+			}
+		}
+		case CMlScriptEvent::Type::PluginCustomEvent: {
+			switch(Event.CustomEventType) {
+				case "Show": {
+					Start = Now;
+					Page.GetFirstChild("FRAME_NEWS").Hide();
+					Page.GetFirstChild("FRAME_NEWS").RelativeScale = .8;
+					AnimMgr.Add(Page.GetFirstChild("FRAME_NEWS"), "<frame scale=\"1\"/>", Now + 700, 200, CAnimManager::EAnimManagerEasing::QuadOut);
+				}
+				case "Hide": {
+					SendCustomEvent("Hide_Response", []);
+				}
+			}
+		}
+	}
+}
+
+declare Time = Now - Start;
+
+if(Time > 800 && Time < 900) Page.GetFirstChild("FRAME_NEWS").Show();
+if(Time > 900 && Time < 950) Page.GetFirstChild("FRAME_NEWS").Hide();
+if(Time > 950 && Time < 1050) Page.GetFirstChild("FRAME_NEWS").Show();
+if(Time > 1050 && Time < 1100) Page.GetFirstChild("FRAME_NEWS").Hide();
+if(Time > 1100 && Time < 1300) Page.GetFirstChild("FRAME_NEWS").Show();
+***

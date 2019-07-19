@@ -170,13 +170,11 @@ Void SendEvent(Text _LayerName, Text _Type) {
 	LayerCustomEvent(Get(_LayerName), _Type, []);
 }
 
-Void Loop() {
-	foreach(Event,PendingEvents) {
-		if(Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
-			if(G_Layers.exists(Event.CustomEventLayer.Id)) {
-				if(Event.CustomEventType == "Hide_Response") {
-					Event.CustomEventLayer.IsVisible = False;
-				}
+Void Event(CManiaAppEvent _Event) {
+	if(_Event.Type == CManiaAppEvent::EType::LayerCustomEvent) {
+		if(G_Layers.exists(_Event.CustomEventLayer.Id)) {
+			if(_Event.CustomEventType == "Hide_Response") {
+				_Event.CustomEventLayer.IsVisible = False;
 			}
 		}
 	}

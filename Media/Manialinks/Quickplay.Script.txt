@@ -583,7 +583,7 @@ Void UpdateScriptList(Integer _Offset) {
 
 Void Animate_Show() {
 	Page.GetFirstChild("FRAME_QUICKPLAY").RelativePosition_V3.Y = -120.0;
-	AnimMgr.Add(Page.GetFirstChild("FRAME_QUICKPLAY"), "<frame pos=\"0 -75\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+	AnimMgr.Add(Page.GetFirstChild("FRAME_QUICKPLAY"), "<frame pos=\"0 -75\"/>", Now + 500, 500, CAnimManager::EAnimManagerEasing::QuadOut);
 }
 
 ***Start***

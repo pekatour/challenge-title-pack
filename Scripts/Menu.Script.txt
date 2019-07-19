@@ -12,6 +12,8 @@
 #Include "Libs/Challenge/Menu/Main.Script.txt" as Menu_Main
 #Include "Libs/Challenge/Menu/Top.Script.txt" as Menu_Top
 #Include "Libs/Challenge/Menu/Editor.Script.txt" as Menu_Editor
+#Include "Libs/Challenge/Menu/Playsessions.Script.txt" as Menu_Playsessions
+#Include "Libs/Challenge/Menu/News.Script.txt" as Menu_News
 #Include "Libs/Challenge/Menu/AuthBeta.Script.txt" as Menu_AuthBeta
 
 #Include "Libs/Challenge/Devmode.Script.txt" as Devmode
@@ -23,7 +25,7 @@ main() {
 	while(True) { // Restart mechanism
 		Restart::Restart(False);
 		
-		Layers::Create("Loading", "file://Media/Manialinks/Loading.xml", True, CUILayer::EUILayerType::LoadingScreen);
+		Layers::Create("Loading", "file://Media/Manialinks/Loading.xml", True, False, CUILayer::EUILayerType::LoadingScreen);
 		
 		//Auth::AuthorizeInManialink("b1a3d10ba7", "basic maps", "http://localhost/challenge/auth");
 		
@@ -47,12 +49,11 @@ main() {
 		Menu_AuthBeta::End();
 		
 		Menu_Main::Start();
-		yield;
 		Menu_Quickplay::Start();
-		yield;
 		Menu_Top::Start();
-		yield;
 		Menu_Editor::Start();
+		Menu_Playsessions::Start();
+		Menu_News::Start();
 		
 		if(S_Devmode) {
 			Devmode::Start();
@@ -62,22 +63,29 @@ main() {
 	
 		while(!Restart::IsRestarting()) {
 			foreach(Event,PendingEvents) {
+				Layers::Event(Event);
 				Menu_Quickplay::Event(Event);
 				Menu_Main::Event(Event);
 				Menu_Top::Event(Event);
 				Menu_Editor::Event(Event);
+				Menu_Playsessions::Event(Event);
+				Menu_News::Event(Event);
 			}
 			
 			Menu_Quickplay::Async();
 			Menu_Main::Async();
 			Menu_Top::Async();
 			Menu_Editor::Async();
+			Menu_Playsessions::Async();
+			Menu_News::Async();
 	
 			Auth::Loop();
 			Menu_Quickplay::Loop();
 			Menu_Main::Loop();
 			Menu_Top::Loop();
 			Menu_Editor::Loop();
+			Menu_Playsessions::Loop();
+			Menu_News::Loop();
 		
 			yield;
 		}

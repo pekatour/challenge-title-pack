@@ -119,7 +119,7 @@
 				</frame>
 				
 				<quad size="150 81" bgcolor="FFFA" style="Bgs1" substyle="BgGradV" pos="0 -19"/>
-				<quad pos="99.25 -20" z-index="0" size="2 20" bgcolor="FFFA" style="Bgs1" substyle="BgMetalBar" id="QUAD_MAPLIST_BAR"/>
+				<quad pos="99.25 -20" z-index="0" size="2 20" bgcolor="FFFA" style="Bgs1" substyle="BgMetalBar" id="QUAD_MAPLIST_BAR" scriptevents="1"/>
 				<quad pos="99.25 -20" z-index="-1" size="2 80" bgcolor="FFFA" style="Bgs1InRace" substyle="BgMetalBar" modulatecolor="222" opacity=".5"/>
 				<gauge pos="100 -8" z-index="1" size="94 9" valign="center" rot="90" ratio=".5" id="GAUGE_MAPLIST" style="BgCard" drawbg="0" hidden="1"/>
 				<frame pos="0 -20" clip="True" clipposn="50 -40" clipsizen="100 80" z-index="1" id="FRAME_MAPLIST">

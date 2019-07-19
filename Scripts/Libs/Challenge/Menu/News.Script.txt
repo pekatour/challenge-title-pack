@@ -4,7 +4,7 @@
 #Include "Libs/BigBang1112/Settings.Script.txt" as Settings
 
 Void Start() {
-	Layers::Create("Playsessions", Manialink::FromFile("Media/Manialinks/Playsessions", True, [], Settings::Get().Theme), True, True);
+	Layers::Create("News", Manialink::FromFile("Media/Manialinks/News", True, [], Settings::Get().Theme), True, True);
 }
 
 Void Event(CManiaAppEvent _Event) {
