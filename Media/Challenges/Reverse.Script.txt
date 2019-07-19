@@ -5,83 +5,8 @@ Script.AuthorLogin = "bigbang1112";
 Script.Description = "{{{{REVERSE_DESCRIPTION}}}}";
 ***
 
-SChProblem Problem_MultilapTrack(SChAnchor _Anchor) {
-	declare SChProblem Problem;
-	Problem.Name = "MultilapTrack";
-	Problem.Anchor = _Anchor;
-	Problem.IsUnsolvable = True;
-	return Problem;
-}
-
-SChProblem Problem_ItemStart(SChAnchor _Anchor) {
-	declare SChProblem Problem;
-	Problem.Name = "ItemStart";
-	Problem.Anchor = _Anchor;
-	return Problem;
-}
-
-SChProblem Problem_ItemFinish(SChAnchor _Anchor) {
-	declare SChProblem Problem;
-	Problem.Name = "ItemFinish";
-	Problem.Anchor = _Anchor;
-	return Problem;
-}
-
-SChProblem Problem_MultipleFinishes(SChAnchor[] _Anchors) {
-	declare SChProblem Problem;
-	Problem.Name = "MultipleFinishes";
-	declare JsonSuccess = Problem.Anchors.fromjson(_Anchors.tojson());
-	return Problem;
-}
-
-SChProblem Problem_CannotReplaceStartLine(SChAnchor _Anchor) {
-	declare SChProblem Problem;
-	Problem.Name = "CannotReplaceStartLine";
-	Problem.Anchor = _Anchor;
-	return Problem;
-}
-
-SChProblem Problem_CannotReplaceFinishLine(SChAnchor _Anchor) {
-	declare SChProblem Problem;
-	Problem.Name = "CannotReplaceFinishLine";
-	Problem.Anchor = _Anchor;
-	return Problem;
-}
-
 ***Main***
 ***
-declare Pairs = [
-	"Canyon" => [
-		["RoadRaceStart","RoadRaceFinish"],
-		["RoadRaceStartMirror","RoadRaceFinishMirror"],
-		["ArenaStart","ArenaFinish"],
-		["RoadMainStart","RoadMainFinish"],
-		["Canyon/TubeStart.Macroblock.Gbx","TubeFinish"],
-		["Canyon/TubeStartUnderground.Macroblock.Gbx","TubeFinishUnderground"],
-		["Canyon/RoadCaveStart.Macroblock.Gbx","RoadCaveFinish"],
-		["Canyon/RoadCaveDoubleStart.Macroblock.Gbx","RoadCaveDoubleFinish"]
-	],
-	"Stadium" => [
-		["StadiumRoadMainStartLine","StadiumRoadMainFinishLine"]
-	],
-	"Valley" => [
-		["Road2WayStart","Road2WayFinish"],
-		["Road2WayForestStart","Road2WayForestFinish"],
-		["Road4WayStart","Road4WayFinish"],
-		["Valley/TunnelRoad4wayStart.Macroblock.Gbx","TunnelRoad4wayFinish"],
-		["RoadForestLargeStart","RoadForestLargeFinish"]
-	],
-	"Lagoon" => [
-		["RoadMainStart","RoadMainFinish"],
-		["FreeWayStart","FreeWayFinish"],
-		["RoadThemeParkStart","RoadThemeParkFinish"],
-		["Lagoon/RoadThemeParkFlipStart.Macroblock.Gbx","RoadThemeParkFlipFinish"],
-		["ArenaStart","ArenaFinish"],
-		["ArenaStart","ArenaFinishX2"], // or Lagoon/ArenaStartX2.Macroblock.Gbx, Tom?
-		["Lagoon/RoadTunnelStart.Macroblock.Gbx","RoadTunnelFinish"]
-	]
-];
-
 declare StartLines = GetStartLines();
 declare Multilaps = GetMultilaps();
 if(Multilaps.count > 0) Problem(Problem_MultilapTrack(Multilaps[0]));
@@ -90,10 +15,10 @@ declare FinishLines = GetFinishLines();
 
 if(FinishLines.count > 1) Problem(Problem_MultipleFinishes(FinishLines));
 
-foreach(Env => PairList, Pairs) {
-	foreach(Pair, PairList) {
-		declare StartBlockName = Pair[0];
-		declare FinishBlockName = Pair[1];
+foreach(Env => RelationList, Relation_StartFinish) {
+	foreach(Relation, RelationList) {
+		declare StartBlockName = Relation[0];
+		declare FinishBlockName = Relation[1];
 
 		if(StartLine.IsItem) Problem(Problem_ItemStart(StartLine));
 		else if(StartLine.Block.Name == StartBlockName) {

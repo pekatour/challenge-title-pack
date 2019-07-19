@@ -1,5 +1,37 @@
 ***Start***
 ***
+Relation_StartFinish = [
+	"Canyon" => [
+		["RoadRaceStart","RoadRaceFinish"],
+		["RoadRaceStartMirror","RoadRaceFinishMirror"],
+		["ArenaStart","ArenaFinish"],
+		["RoadMainStart","RoadMainFinish"],
+		["Canyon/TubeStart.Macroblock.Gbx","TubeFinish"],
+		["Canyon/TubeStartUnderground.Macroblock.Gbx","TubeFinishUnderground"],
+		["Canyon/RoadCaveStart.Macroblock.Gbx","RoadCaveFinish"],
+		["Canyon/RoadCaveDoubleStart.Macroblock.Gbx","RoadCaveDoubleFinish"]
+	],
+	"Stadium" => [
+		["StadiumRoadMainStartLine","StadiumRoadMainFinishLine"]
+	],
+	"Valley" => [
+		["Road2WayStart","Road2WayFinish"],
+		["Road2WayForestStart","Road2WayForestFinish"],
+		["Road4WayStart","Road4WayFinish"],
+		["Valley/TunnelRoad4wayStart.Macroblock.Gbx","TunnelRoad4wayFinish"],
+		["RoadForestLargeStart","RoadForestLargeFinish"]
+	],
+	"Lagoon" => [
+		["RoadMainStart","RoadMainFinish"],
+		["FreeWayStart","FreeWayFinish"],
+		["RoadThemeParkStart","RoadThemeParkFinish"],
+		["Lagoon/RoadThemeParkFlipStart.Macroblock.Gbx","RoadThemeParkFlipFinish"],
+		["ArenaStart","ArenaFinish"],
+		["ArenaStart","ArenaFinishX2"], // or Lagoon/ArenaStartX2.Macroblock.Gbx, Tom?
+		["Lagoon/RoadTunnelStart.Macroblock.Gbx","RoadTunnelFinish"]
+	]
+];
+
 +++Metadata+++
 SendCustomEvent("ScriptMetadata", [Script.tojson()]);
 +++Main+++

@@ -1,5 +1,6 @@
 declare SChMetadata Script;
 declare SChProblem[] Problems;
+declare Text[][][Text] Relation_StartFinish;
 
 SResponse Request(Text _Command, Text[] _Arguments) {
 	declare SResponse Response;
@@ -241,6 +242,12 @@ Void Underground() {
 
 Void Aboveground() {
 	declare Response = Request("Ch_Aboveground", []);
+}
+
+Boolean PlaceGhostBlock(Text _BlockName, Int3 _Coord, Text _Direction) {
+	declare Params = [_BlockName, _Coord^"", _Direction];
+	declare Response = Request("Ch_PlaceGhostBlock", Params);
+	return Response.Values[0] == "True";
 }
 
 SReplacementResult ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName, Boolean _OppositeDirection) {
@@ -499,4 +506,58 @@ Void Incompatible(Text _Reason) {
 
 Void Chill() {
 	yield;
+}
+
+//
+/* Pre-made problem functions */
+//
+
+SChProblem Problem_MultilapTrack(SChAnchor _Anchor) {
+	declare SChProblem Problem;
+	Problem.Name = "MultilapTrack";
+	Problem.Anchor = _Anchor;
+	Problem.IsUnsolvable = True;
+	return Problem;
+}
+
+SChProblem Problem_CannotRemoveCheckpoint(SChAnchor _Anchor) {
+	declare SChProblem Problem;
+	Problem.Name = "CannotRemoveCheckpoint";
+	Problem.Anchor = _Anchor;
+	return Problem;
+}
+
+SChProblem Problem_ItemStart(SChAnchor _Anchor) {
+	declare SChProblem Problem;
+	Problem.Name = "ItemStart";
+	Problem.Anchor = _Anchor;
+	return Problem;
+}
+
+SChProblem Problem_ItemFinish(SChAnchor _Anchor) {
+	declare SChProblem Problem;
+	Problem.Name = "ItemFinish";
+	Problem.Anchor = _Anchor;
+	return Problem;
+}
+
+SChProblem Problem_MultipleFinishes(SChAnchor[] _Anchors) {
+	declare SChProblem Problem;
+	Problem.Name = "MultipleFinishes";
+	declare JsonSuccess = Problem.Anchors.fromjson(_Anchors.tojson());
+	return Problem;
+}
+
+SChProblem Problem_CannotReplaceStartLine(SChAnchor _Anchor) {
+	declare SChProblem Problem;
+	Problem.Name = "CannotReplaceStartLine";
+	Problem.Anchor = _Anchor;
+	return Problem;
+}
+
+SChProblem Problem_CannotReplaceFinishLine(SChAnchor _Anchor) {
+	declare SChProblem Problem;
+	Problem.Name = "CannotReplaceFinishLine";
+	Problem.Anchor = _Anchor;
+	return Problem;
 }

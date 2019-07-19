@@ -5,21 +5,6 @@ Script.AuthorLogin = "bigbang1112";
 Script.Description = "{{{{CHECKPOINTLESS_DESCRIPTION}}}}";
 ***
 
-SChProblem Problem_MultilapTrack(SChAnchor _Anchor) {
-	declare SChProblem Problem;
-	Problem.Name = "MultilapTrack";
-	Problem.Anchor = _Anchor;
-	Problem.IsUnsolvable = True;
-	return Problem;
-}
-
-SChProblem Problem_CannotRemoveCheckpoint(SChAnchor _Anchor) {
-	declare SChProblem Problem;
-	Problem.Name = "CannotRemoveCheckpoint";
-	Problem.Anchor = _Anchor;
-	return Problem;
-}
-
 ***Main***
 ***
 declare Multilaps = GetMultilaps();
