@@ -30,6 +30,7 @@ foreach(Event,PendingEvents) {
 			
 		}
 		if(Event.ControlId == "BUTTON_CREATECHALLENGE_BACK") {
+			if(End == -1)
 			SendCustomEvent("Button_CreateChallenge_Back", []);
 		}
 		if(Event.ControlId == "QUAD_LIGHT") {
@@ -56,6 +57,10 @@ foreach(Event,PendingEvents) {
 			}
 			case "Show": {
 				Start = Now;
+				End = -1;
+
+				Page.GetFirstChild("QUAD_FOREGROUND").Show();
+				AnimMgr.Add(Page.GetFirstChild("QUAD_FOREGROUND"), "<quad hidden=\"1\" />", 500, CAnimManager::EAnimManagerEasing::Linear);
 
 				Page.GetFirstChild("FRAME_BUTTON_SCRIPT").RelativePosition_V3 = <0.,0.>;
 				(Page.GetFirstChild("QUAD_BUTTON_SCRIPT") as CMlQuad).Opacity = 0.;
@@ -137,6 +142,11 @@ foreach(Control,Loadings) {
 	Control.RelativeRotation += Period / 5.0;
 }
 
+if(Now - Start <= 1000) {
+	(Page.GetFirstChild("FRAME_SCRIPTING") as CMlFrame).ClipWindowSize.Y = AnimLib::EaseOutQuad(Now - Start - 400, 0.0, 280.0, 500);
+	(Page.GetFirstChild("FRAME_INNER_PANEL") as CMlFrame).ClipWindowRelativePosition.Y = AnimLib::EaseOutQuad(Now - Start, 90.0, -160.0, 500);
+}
+
 if(End != -1) {
 	(Page.GetFirstChild("FRAME_SCRIPTING") as CMlFrame).ClipWindowSize.Y = AnimLib::EaseOutQuad(Now - End, 280.0, -280.0, 400);
 	(Page.GetFirstChild("FRAME_INNER_PANEL") as CMlFrame).ClipWindowRelativePosition.Y = AnimLib::EaseOutQuad(Now - End, -70.0, -160.0, 500);
@@ -144,10 +154,5 @@ if(End != -1) {
 		SendCustomEvent("Hide_Response", []);
 		End = -1;
 	}
-}
-
-if(Now - Start <= 1000) {
-	(Page.GetFirstChild("FRAME_SCRIPTING") as CMlFrame).ClipWindowSize.Y = AnimLib::EaseOutQuad(Now - Start - 400, 0.0, 280.0, 500);
-	(Page.GetFirstChild("FRAME_INNER_PANEL") as CMlFrame).ClipWindowRelativePosition.Y = AnimLib::EaseOutQuad(Now - Start, 90.0, -160.0, 500);
 }
 ***

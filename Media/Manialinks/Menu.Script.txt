@@ -3,6 +3,10 @@ Void Animate_Show() {
 	AnimMgr.Add(Page.GetFirstChild("FRAME_MENU"), "<frame scale=\"1\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
 }
 
+Boolean IsNotAnimating(Integer _Start, Integer _End) {
+	return _End == -1 && Now - _Start > 1000;
+}
+
 ***Start***
 ***
 declare Start = Now;
@@ -37,9 +41,11 @@ foreach(Event,PendingEvents) {
 		}
 		case CMlScriptEvent::Type::MouseClick: {
 			if(Event.ControlId == "QUAD_BUTTON_CREATECHALLENGE") {
+				if(End == -1)
 				SendCustomEvent("Button_CreateChallenge", []);
 			}
 			if(Event.ControlId == "QUAD_BUTTON_EXIT") {
+				if(End == -1)
 				SendCustomEvent("Button_Exit", []);
 			}
 		}
@@ -100,7 +106,9 @@ if(End != -1) {
 	(Page.GetFirstChild("FRAME_INSIDE") as CMlFrame).ClipWindowSize.X = AnimLib::EaseOutQuad(Now - End, 100.0, -100.0, 500);
 	(Page.GetFirstChild("FRAME_INSIDE") as CMlFrame).ClipWindowSize.Y = AnimLib::EaseOutQuad(Now - End - 500, 50.0, -50.0, 500);
 
-	if(Now - End > 1000)
-	SendCustomEvent("Hide_Response", []);
+	if(Now - End > 1000) {
+		SendCustomEvent("Hide_Response", []);
+		End = -1;
+	}
 }
 ***

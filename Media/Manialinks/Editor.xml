@@ -1,5 +1,6 @@
 <frame>
 	<quad pos="0 0" z-index="-2" size="320 180" bgcolor="111" halign="center" valign="center" opacity="0" id="QUAD_BACKGROUND"/>
+	<quad pos="0 0" z-index="10" size="320 180" halign="center" valign="center" hidden="1" id="QUAD_FOREGROUND" scriptevents="1"/>
 	<frame pos="-85 80" id="FRAME_BG" z-index="-1">
 		<quad size="235 160" bgcolor="FFFA" style="Bgs1" substyle="BgCardList"/>
 		<quad size="235 160" bgcolor="FFFA" style="Bgs1InRace" substyle="BgGradV"/>
