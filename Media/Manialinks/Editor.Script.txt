@@ -4,6 +4,9 @@ Page.GetClassChildren("LOADING", Page.MainFrame, True);
 declare CMlControl[] Loadings;
 foreach(Control,Page.GetClassChildren_Result) Loadings.add(Control);
 
+declare Start = Now;
+declare End = -1;
+
 declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
 ***
 
@@ -11,22 +14,22 @@ declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
 ***
 foreach(Event,PendingEvents) {
 	if(Event.Type == CMlScriptEvent::Type::MouseClick) {
-		if(Event.ControlId == "Test") {
+		if(Event.ControlId == "QUAD_BUTTON_TEST") {
 			PERSISTENT_CHALLENGE_CODE = (Page.GetFirstChild("Script") as CMlTextEdit).Value;
-			Page.GetFirstChild("LABEL_TEST").Hide();
+			Page.GetFirstChild("LABEL_BUTTON_TEST").Hide();
 			Page.GetFirstChild("QUAD_LOADING_TEST").Show();
 			SendCustomEvent("Test", []);
 		}
 		if(Event.ControlId == "Designer") {
 			SendCustomEvent("Designer", []);
 		}
-		if(Event.ControlId == "QUAD_MAINCODE") {
+		if(Event.ControlId == "QUAD_BUTTON_SCRIPT") {
 			
 		}
-		if(Event.ControlId == "QUAD_PUBLISH") {
+		if(Event.ControlId == "QUAD_BUTTON_PUBLISH") {
 			
 		}
-		if(Event.ControlId == "Button_CreateChallenge_Back") {
+		if(Event.ControlId == "BUTTON_CREATECHALLENGE_BACK") {
 			SendCustomEvent("Button_CreateChallenge_Back", []);
 		}
 		if(Event.ControlId == "QUAD_LIGHT") {
@@ -48,11 +51,83 @@ foreach(Event,PendingEvents) {
 				(Page.GetFirstChild("Script") as CMlTextEdit).Value = Event.CustomEventData[0];
 			}
 			case "Loading_End_Test": {
-				Page.GetFirstChild("LABEL_TEST").Show();
+				Page.GetFirstChild("LABEL_BUTTON_TEST").Show();
 				Page.GetFirstChild("QUAD_LOADING_TEST").Hide();
 			}
+			case "Show": {
+				Start = Now;
+
+				Page.GetFirstChild("FRAME_BUTTON_SCRIPT").RelativePosition_V3 = <0.,0.>;
+				(Page.GetFirstChild("QUAD_BUTTON_SCRIPT") as CMlQuad).Opacity = 0.;
+				(Page.GetFirstChild("LABEL_BUTTON_SCRIPT") as CMlLabel).Opacity = 0.;
+				AnimMgr.Add(Page.GetFirstChild("FRAME_BUTTON_SCRIPT"), "<frame pos=\"-55 70\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("QUAD_BUTTON_SCRIPT"), "<quad opacity=\"1\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("LABEL_BUTTON_SCRIPT"), "<label opacity=\"1\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+
+				Page.GetFirstChild("FRAME_BUTTON_DOC").RelativePosition_V3 = <0.,0.>;
+				(Page.GetFirstChild("QUAD_BUTTON_DOC") as CMlQuad).Opacity = 0.;
+				(Page.GetFirstChild("LABEL_BUTTON_DOC") as CMlLabel).Opacity = 0.;
+				AnimMgr.Add(Page.GetFirstChild("FRAME_BUTTON_DOC"), "<frame pos=\"10 70\" />", Now+100, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("QUAD_BUTTON_DOC"), "<quad opacity=\"1\" />", Now+100, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("LABEL_BUTTON_DOC"), "<label opacity=\"1\" />", Now+100, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+
+				Page.GetFirstChild("QUAD_LIGHT").RelativePosition_V3 = <0.,0.>;
+				(Page.GetFirstChild("QUAD_LIGHT") as CMlQuad).Opacity = 0.;
+				AnimMgr.Add(Page.GetFirstChild("QUAD_LIGHT"), "<quad pos=\"55 70\" />", Now+200, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("QUAD_LIGHT"), "<quad opacity=\"1\" />", Now+200, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+
+				Page.GetFirstChild("FRAME_BUTTON_PUBLISH").RelativePosition_V3 = <0.,0.>;
+				(Page.GetFirstChild("QUAD_BUTTON_PUBLISH") as CMlQuad).Opacity = 0.;
+				(Page.GetFirstChild("LABEL_BUTTON_PUBLISH") as CMlLabel).Opacity = 0.;
+				AnimMgr.Add(Page.GetFirstChild("FRAME_BUTTON_PUBLISH"), "<frame pos=\"90 70\" />", Now+300, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("QUAD_BUTTON_PUBLISH"), "<quad opacity=\"1\" />", Now+300, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("LABEL_BUTTON_PUBLISH"), "<label opacity=\"1\" />", Now+300, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+
+				Page.GetFirstChild("FRAME_BUTTON_TEST").RelativePosition_V3 = <0.,0.>;
+				(Page.GetFirstChild("QUAD_BUTTON_TEST") as CMlQuad).Opacity = 0.;
+				(Page.GetFirstChild("LABEL_BUTTON_TEST") as CMlLabel).Opacity = 0.;
+				AnimMgr.Add(Page.GetFirstChild("FRAME_BUTTON_TEST"), "<frame pos=\"132.5 70\" />", Now+400, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("QUAD_BUTTON_TEST"), "<quad opacity=\"1\" />", Now+400, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("LABEL_BUTTON_TEST"), "<label opacity=\"1\" />", Now+400, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+
+				foreach(Control,(Page.GetFirstChild("FRAME_BG") as CMlFrame).Controls) {
+					(Control as CMlQuad).Opacity = 0.;
+					AnimMgr.Add(Control, "<quad opacity=\"1\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+					Control.Size.Y = 20.;
+					AnimMgr.Add(Control, "<quad size=\"235 160\" />", Now+400, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				}
+
+				foreach(Control,(Page.GetFirstChild("FRAME_BG_SMALL") as CMlFrame).Controls) {
+					Control.Size.Y = 0.;
+					Control.RelativePosition_V3.Y = 0.;
+					AnimMgr.Add(Control, "<quad size=\"60 160\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				}
+
+				(Page.GetFirstChild("FRAME_SCRIPTING") as CMlFrame).ClipWindowSize.Y = 0.;
+				(Page.GetFirstChild("FRAME_INNER_PANEL") as CMlFrame).ClipWindowRelativePosition.Y = 90.;
+			}
 			case "Hide": {
-				SendCustomEvent("Hide_Response", []);
+				End = Now;
+
+				foreach(Control,(Page.GetFirstChild("FRAME_BG") as CMlFrame).Controls) {
+					AnimMgr.Add(Control, "<quad opacity=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+					AnimMgr.Add(Control, "<quad size=\"235 0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				}
+
+				foreach(Control,(Page.GetFirstChild("FRAME_BG_SMALL") as CMlFrame).Controls) {
+					AnimMgr.Add(Control, "<quad opacity=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+					AnimMgr.Add(Control, "<quad size=\"60 0\" pos=\"0 -160\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				}
+
+				AnimMgr.Add(Page.GetFirstChild("QUAD_BUTTON_SCRIPT"), "<quad opacity=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("LABEL_BUTTON_SCRIPT"), "<label opacity=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("QUAD_BUTTON_DOC"), "<quad opacity=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("LABEL_BUTTON_DOC"), "<label opacity=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("QUAD_LIGHT"), "<quad opacity=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("QUAD_BUTTON_PUBLISH"), "<quad opacity=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("LABEL_BUTTON_PUBLISH"), "<label opacity=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("QUAD_BUTTON_TEST"), "<quad opacity=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+				AnimMgr.Add(Page.GetFirstChild("LABEL_BUTTON_TEST"), "<label opacity=\"0\" />", 500, CAnimManager::EAnimManagerEasing::QuadOut);
 			}
 		}
 	}
@@ -60,5 +135,19 @@ foreach(Event,PendingEvents) {
 
 foreach(Control,Loadings) {
 	Control.RelativeRotation += Period / 5.0;
+}
+
+if(End != -1) {
+	(Page.GetFirstChild("FRAME_SCRIPTING") as CMlFrame).ClipWindowSize.Y = AnimLib::EaseOutQuad(Now - End, 280.0, -280.0, 400);
+	(Page.GetFirstChild("FRAME_INNER_PANEL") as CMlFrame).ClipWindowRelativePosition.Y = AnimLib::EaseOutQuad(Now - End, -70.0, -160.0, 500);
+	if(Now - End > 1000) {
+		SendCustomEvent("Hide_Response", []);
+		End = -1;
+	}
+}
+
+if(Now - Start <= 1000) {
+	(Page.GetFirstChild("FRAME_SCRIPTING") as CMlFrame).ClipWindowSize.Y = AnimLib::EaseOutQuad(Now - Start - 400, 0.0, 280.0, 500);
+	(Page.GetFirstChild("FRAME_INNER_PANEL") as CMlFrame).ClipWindowRelativePosition.Y = AnimLib::EaseOutQuad(Now - Start, 90.0, -160.0, 500);
 }
 ***

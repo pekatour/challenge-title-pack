@@ -1,4 +1,4 @@
-<frame id="FRAME_MENU">
+<frame id="FRAME_MENU" z-index="-1">
 	<frame id="FRAME_BACKGROUND" z-index="-1">
 		<quad z-index="-3" size="110 50" bgcolor="000A" halign="center" valign="center" style="Bgs1" substyle="BgCardList"/>
 		<quad z-index="-2" size="110 50" bgcolor="FFFA" style="Bgs1InRace" substyle="BgGradV" valign="center" pos="0 0" halign="center"/>

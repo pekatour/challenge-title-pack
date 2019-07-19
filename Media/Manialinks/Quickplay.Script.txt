@@ -588,15 +588,17 @@ Void Animate_Show() {
 
 ***Start***
 ***
-	declare CurrentFolder = "";
-	declare CurrentFolderScript = "";
-	declare OldMapScrollPos = (Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y;
+declare CurrentFolder = "";
+declare CurrentFolderScript = "";
+declare OldMapScrollPos = (Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y;
 
-	MapLocation = "Local";
-	ScriptLocation = "Official";
-	MXPage = 1;
+MapLocation = "Local";
+ScriptLocation = "Official";
+MXPage = 1;
 
-	Page.GetClassChildren("LOADING", Page.MainFrame, True);
+Page.GetClassChildren("LOADING", Page.MainFrame, True);
+
+declare End = -1;
 ***
 
 ***Loop***
@@ -892,7 +894,8 @@ foreach(Event,PendingEvents) {
 					Animate_Show();
 				}
 				case "Hide": {
-					SendCustomEvent("Hide_Response", []);
+					AnimMgr.Add(Page.GetFirstChild("FRAME_QUICKPLAY"), "<frame pos=\"0 -120\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+					End = Now;
 				}
 				case "MapList_Local_Update": {
 					CurrentFolder = Event.CustomEventData[0];
@@ -991,6 +994,12 @@ foreach(Event,PendingEvents) {
 			}
 		}
 	}
+}
+
+if(End != -1)
+if(Now - End > 500) {
+	SendCustomEvent("Hide_Response", []);
+	End = -1;
 }
 
 if(OldMapScrollPos != (Page.GetFirstChild("FRAME_MAPLIST") as CMlFrame).ScrollOffset.Y) {

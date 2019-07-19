@@ -3,6 +3,11 @@ Void Animate_Show() {
 	AnimMgr.Add(Page.GetFirstChild("FRAME_TOP"), "<frame pos=\"0 75\"/>", Now + 700, 500, CAnimManager::EAnimManagerEasing::QuadOut);
 }
 
+***Start***
+***
+declare End = -1;
+***
+
 ***Loop***
 ***
 foreach(Event,PendingEvents) {
@@ -30,10 +35,17 @@ foreach(Event,PendingEvents) {
 					Animate_Show();
 				}
 				case "Hide": {
-					SendCustomEvent("Hide_Response", []);
+					AnimMgr.Add(Page.GetFirstChild("FRAME_TOP"), "<frame pos=\"0 120\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
+					End = Now;
 				}
 			}
 		}
 	}
+}
+
+if(End != -1)
+if(Now - End > 500) {
+	SendCustomEvent("Hide_Response", []);
+	End = -1;
 }
 ***

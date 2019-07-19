@@ -6,6 +6,7 @@ Void Animate_Show() {
 ***Start***
 ***
 declare Start = Now;
+declare End = -1;
 ***
 
 ***Loop***
@@ -47,6 +48,7 @@ foreach(Event,PendingEvents) {
 			switch(Event.CustomEventType) {
 				case "Show": {
 					Start = Now;
+					End = -1;
 					(Page.GetFirstChild("LABEL_VERSION") as CMlLabel).Value = "";
 					(Page.GetFirstChild("LABEL_MADEBY") as CMlLabel).Value = "";
 					SlowSetText((Page.GetFirstChild("LABEL_VERSION") as CMlLabel),TextLib::Split(" ", LoadedTitle.TitleVersion)[0],Now+750,50);
@@ -58,21 +60,28 @@ foreach(Event,PendingEvents) {
 					AnimMgr.Add(Page.GetFirstChild("QUAD_SIGN_GLOW"), "<quad opacity=\"1\"/>", Now+1000, 1000, CAnimManager::EAnimManagerEasing::QuadOut);
 				}
 				case "Hide": {
-					SendCustomEvent("Hide_Response", []);
+					End = Now;
+					SlowSetText((Page.GetFirstChild("LABEL_VERSION") as CMlLabel),"",Now+750,50);
+					SlowSetText((Page.GetFirstChild("LABEL_MADEBY") as CMlLabel),"",Now+750,50);
+
+					AnimMgr.Add(Page.GetFirstChild("QUAD_SIGN"), "<quad opacity=\"0\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+					AnimMgr.Add(Page.GetFirstChild("QUAD_SIGN_GLOW"), "<quad opacity=\"0\"/>", 1000, CAnimManager::EAnimManagerEasing::QuadOut);
 				}
 			}
 		}
 	}
 }
 
-foreach(Control,(Page.GetFirstChild("FRAME_BACKGROUND") as CMlFrame).Controls) {
-	declare Quad = (Control as CMlQuad);
-	Quad.Size.X = AnimLib::EaseOutQuad(Now - Start - 500, 1.0, 110.0, 500);
-	Quad.Size.Y = AnimLib::EaseOutQuad(Now - Start, 1.0, 50.0, 500);
-}
+if(Now - Start <= 1000) {
+	foreach(Control,(Page.GetFirstChild("FRAME_BACKGROUND") as CMlFrame).Controls) {
+		declare Quad = (Control as CMlQuad);
+		Quad.Size.X = AnimLib::EaseOutQuad(Now - Start - 500, 1.0, 110.0, 500);
+		Quad.Size.Y = AnimLib::EaseOutQuad(Now - Start, 1.0, 50.0, 500);
+	}
 
-(Page.GetFirstChild("FRAME_INSIDE") as CMlFrame).ClipWindowSize.X = AnimLib::EaseOutQuad(Now - Start - 500, 0.0, 100.0, 500);
-(Page.GetFirstChild("FRAME_INSIDE") as CMlFrame).ClipWindowSize.Y = AnimLib::EaseOutQuad(Now - Start, 0.0, 50.0, 500);
+	(Page.GetFirstChild("FRAME_INSIDE") as CMlFrame).ClipWindowSize.X = AnimLib::EaseOutQuad(Now - Start - 500, 0.0, 100.0, 500);
+	(Page.GetFirstChild("FRAME_INSIDE") as CMlFrame).ClipWindowSize.Y = AnimLib::EaseOutQuad(Now - Start, 0.0, 50.0, 500);
+}
 
 (Page.GetFirstChild("QUAD_BUTTON_CREATECHALLENGE_FLASH") as CMlQuad).Opacity
 = (AnimLib::EaseOutQuad(Now - Start - 500, .0, 1.0, 200) - AnimLib::EaseOutQuad(Now - Start - 500 - 200, .0, 1.0, 200))*.75;
@@ -80,4 +89,18 @@ foreach(Control,(Page.GetFirstChild("FRAME_BACKGROUND") as CMlFrame).Controls) {
 = (AnimLib::EaseOutQuad(Now - Start - 500 - 200, .0, 1.0, 200) - AnimLib::EaseOutQuad(Now - Start - 500 - 400, .0, 1.0, 200))*.75;
 (Page.GetFirstChild("QUAD_BUTTON_EXIT_FLASH") as CMlQuad).Opacity
 = (AnimLib::EaseOutQuad(Now - Start - 500 - 400, .0, 1.0, 200) - AnimLib::EaseOutQuad(Now - Start - 500 - 600, .0, 1.0, 200))*.75;
+
+if(End != -1) {
+	foreach(Control,(Page.GetFirstChild("FRAME_BACKGROUND") as CMlFrame).Controls) {
+		declare Quad = (Control as CMlQuad);
+		Quad.Size.X = AnimLib::EaseOutQuad(Now - End, 110.0, -109.0, 500);
+		Quad.Size.Y = AnimLib::EaseOutQuad(Now - End - 500, 50.0, -49.0, 500);
+	}
+
+	(Page.GetFirstChild("FRAME_INSIDE") as CMlFrame).ClipWindowSize.X = AnimLib::EaseOutQuad(Now - End, 100.0, -100.0, 500);
+	(Page.GetFirstChild("FRAME_INSIDE") as CMlFrame).ClipWindowSize.Y = AnimLib::EaseOutQuad(Now - End - 500, 50.0, -50.0, 500);
+
+	if(Now - End > 1000)
+	SendCustomEvent("Hide_Response", []);
+}
 ***
