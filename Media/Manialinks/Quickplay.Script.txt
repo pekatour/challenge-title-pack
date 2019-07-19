@@ -894,6 +894,11 @@ foreach(Event,PendingEvents) {
 					Animate_Show();
 				}
 				case "Hide": {
+					AnimMgr.Add(Page.GetFirstChild("FRAME_MAP"), "<frame pos=\"0 0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+					Page.GetFirstChild("FRAME_MAP").DataAttributeSet("open","0");
+					AnimMgr.Add(Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT"), "<frame pos=\"0 0\" hidden=\"1\"/>", 300, CAnimManager::EAnimManagerEasing::QuadOut);
+					Page.GetFirstChild("FRAME_CHALLENGE_SCRIPT").DataAttributeSet("open","0");
+
 					AnimMgr.Add(Page.GetFirstChild("FRAME_QUICKPLAY"), "<frame pos=\"0 -120\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
 					End = Now;
 				}

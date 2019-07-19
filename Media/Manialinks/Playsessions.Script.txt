@@ -1,6 +1,7 @@
 ***Start***
 ***
 declare Start = Now;
+declare End = -1;
 ***
 
 ***Loop***
@@ -18,23 +19,51 @@ foreach(Event,PendingEvents) {
 			switch(Event.CustomEventType) {
 				case "Show": {
 					Start = Now;
-					Page.GetFirstChild("FRAME_PLAYSESSIONS").Hide();
-					Page.GetFirstChild("FRAME_PLAYSESSIONS").RelativeScale = .8;
-					AnimMgr.Add(Page.GetFirstChild("FRAME_PLAYSESSIONS"), "<frame scale=\"1\"/>", Now + 700, 200, CAnimManager::EAnimManagerEasing::QuadOut);
+					End = -1;
+
+					Page.GetFirstChild("FRAME_PLAYSESSIONS").RelativePosition_V3 = <115.,7.5>;
+					AnimMgr.Add(Page.GetFirstChild("FRAME_PLAYSESSIONS"), "<frame pos=\"115 35\"/>", Now + 500 + 500, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+
+					foreach(Control,(Page.GetFirstChild("FRAME_BACKGROUND") as CMlFrame).Controls) {
+						(Control as CMlQuad).Opacity = 0.;
+						AnimMgr.Add(Control, "<quad opacity=\"1\"/>", Now + 500, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+					}
+
+					(Page.GetFirstChild("LABEL_NOWPLAYING") as CMlLabel).Opacity = 0.;
+					AnimMgr.Add(Page.GetFirstChild("LABEL_NOWPLAYING"), "<label opacity=\"1\"/>", Now + 500, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+					
+
+					declare Delay = 0;
+					foreach(Control,(Page.GetFirstChild("FRAME_LIST") as CMlFrame).Controls) {
+						Control.Hide();
+						AnimMgr.Add(Control, "<frame hidden=\"0\"/>", Now + 500 + 500 + Delay, 500, CAnimManager::EAnimManagerEasing::QuadOut);
+						Delay += 100;
+					}
 				}
 				case "Hide": {
-					SendCustomEvent("Hide_Response", []);
+					End = Now;
+					AnimMgr.Add(Page.GetFirstChild("FRAME_PLAYSESSIONS"), "<frame pos=\"200 35\"/>", 500, CAnimManager::EAnimManagerEasing::QuadOut);
 				}
 			}
 		}
 	}
 }
 
-declare Time = Now - Start + 100;
+declare Time = Now - Start - 1000;
 
-if(Time > 800 && Time < 900) Page.GetFirstChild("FRAME_PLAYSESSIONS").Show();
-if(Time > 900 && Time < 950) Page.GetFirstChild("FRAME_PLAYSESSIONS").Hide();
-if(Time > 950 && Time < 1050) Page.GetFirstChild("FRAME_PLAYSESSIONS").Show();
-if(Time > 1050 && Time < 1100) Page.GetFirstChild("FRAME_PLAYSESSIONS").Hide();
-if(Time > 1100 && Time < 1300) Page.GetFirstChild("FRAME_PLAYSESSIONS").Show();
+if(Time <= 1500) {
+	foreach(Control,(Page.GetFirstChild("FRAME_BACKGROUND") as CMlFrame).Controls) {
+		Control.Size.Y = AnimLib::EaseOutQuad(Time, 15.0, 55.0, 500);
+	}
+	Page.GetFirstChild("QUAD_SCROLLBAR_BACKGROUND").Size.Y = AnimLib::EaseOutQuad(Time, 0.0, 50.0, 500);
+	Page.GetFirstChild("QUAD_LIST_BG").Size.Y = AnimLib::EaseOutQuad(Time, 0.0, 50.0, 500);
+	Page.GetFirstChild("QUAD_SCROLLBAR").Size.Y = AnimLib::EaseOutQuad(Time, 0.0, 20.0, 500);
+}
+
+if(End != -1) {
+	if(Now - End > 1000) {
+		SendCustomEvent("Hide_Response", []);
+		End = -1;
+	}
+}
 ***
