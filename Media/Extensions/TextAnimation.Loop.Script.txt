@@ -1,6 +1,6 @@
 for(i,0,Animations_SlowSetText.count-1) {
 	if(Animations_SlowSetText.existskey(i)) {
-		declare AnimationPeriod = MathLib::NearestInteger(MathLib::ToReal(Animations_SlowSetText[i].Time)/TextLib::Length(Animations_SlowSetText[i].OldText));
+		declare AnimationPeriod = MathLib::NearestInteger(MathLib::ToReal(Animations_SlowSetText[i].Time)/MathLib::Max(1, TextLib::Length(Animations_SlowSetText[i].OldText)));
 		if(Animations_SlowSetText[i].Position <= TextLib::Length(Animations_SlowSetText[i].NewText)) {
 			if(Now-Animations_SlowSetText[i].Start >= AnimationPeriod*Animations_SlowSetText[i].Position) {
 				Animations_SlowSetText[i].Label.Value = TextLib::SubText(Animations_SlowSetText[i].Label.Value, 0, TextLib::Length(Animations_SlowSetText[i].NewText)-Animations_SlowSetText[i].Position)
