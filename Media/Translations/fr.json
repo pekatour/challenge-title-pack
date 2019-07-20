@@ -55,9 +55,11 @@
 
 	"REVERSE_DESCRIPTION": "Échange départ et fin.",
 	"CHECKPOINTLESS_DESCRIPTION": "Enlève tous les checkpoints sans les remplacer.",
-	"TERRAINLESS_DESCRIPTION": "Enlève tout le terrain.",
+	"COMEBACK_DESCRIPTION": "Remplace le départ avec un multilap et le finish avec un checkpoint.",
+	"NOCP_DESCRIPTION": "Remplace tous les checkpoints avec leur variante route.",
 
 	"CHECKPOINT_FOUND": "Checkpoint trouvé.",
+	"replaced_with": "remplacé par",
  
 	"SCRIPT_NOTE": "Tout le code écrit et publié est disponible en open-source, ce qui signifie que tout le monde peut voir tes talents de codage. Tu es prévenu.",
 	
