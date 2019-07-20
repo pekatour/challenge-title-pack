@@ -79,9 +79,11 @@ Text Construct(Text _Markup, Text _Script, Text[] _Extentions, Text _Theme) {
 
 	return """<manialink version="3">
 			{{{Markup}}}
-			<script><![CDATA[#Include "TextLib" as TextLib
-#Include "MathLib" as MathLib
+			<script><![CDATA[#Include "MathLib" as MathLib
+#Include "TextLib" as TextLib
+#Include "ColorLib" as ColorLib
 #Include "AnimLib" as AnimLib
+#Include "TimeLib" as TimeLib
 
 {{{ExtensionDirectives}}}
 

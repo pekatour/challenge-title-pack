@@ -3,11 +3,13 @@
 #Struct SAPIVariable {
 	Text Type;
 	Text Name;
+	Boolean IsArray;
 }
 
 #Struct SAPIParameter {
 	Text Type;
 	Text Name;
+	Boolean IsArray;
 }
 
 #Struct SAPIFunction {
@@ -19,6 +21,7 @@
 
 #Struct SAPI {
 	SAPIVariable[][Text] Structs;
+	SAPIVariable[] Globals;
 	SAPIFunction[][Text] Functions;
 }
 

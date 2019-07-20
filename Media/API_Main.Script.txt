@@ -64,6 +64,38 @@ Relation_StartMultilap = [
 	]
 ];
 
+Relation_FinishCheckpoint = [
+	"Canyon" => [ //Ghostblocks not finished
+		["RoadRaceFinish", "RoadRaceCheckpoint"],
+		["RoadRaceFinishMirror", "RoadRaceCheckpointMirror"],
+		["ArenaFinish", "ArenaCheckpointBase"],
+		["RoadMainFinish", "RoadMainCheckpoint"],
+		["TubeFinish", "TubeCheckpoint"],
+		["TubeFinishUnderground", "TubeCheckpointUnderground"],
+		["RoadCaveFinish", "RoadCaveCheckpoint"],
+		["RoadCaveDoubleFinish", "RoadCaveDoubleCheckpoint"]
+	],
+	"Stadium" => [
+		["StadiumRoadMainFinishLine", "StadiumRoadMainCheckpoint"]
+	],
+	"Valley" => [
+		["Road2WayFinish", "Road2WayCheckpoint"],
+		["Road2WayForestFinish", "Road2WayForestCheckpoint"],
+		["Road4WayFinish", "Road4WayCheckpoint"],
+		["TunnelRoad4wayFinish", "TunnelRoad4wayCheckpoint"],
+		["RoadForestLargeFinish", "RoadForestLargeCheckpoint"]
+	],
+	"Lagoon" => [ //Ghostblocks not finished
+		["RoadMainFinish", "RoadMainCheckpoint"],
+		["FreeWayFinish", "FreeWayCheckpoint"],
+		["RoadThemeParkFinish", "RoadThemeParkCheckpoint"],
+		["RoadThemeParkFlipFinish", "RoadThemeParkFlip-Checkpoint"],
+		["ArenaFinish", "ArenaCheckpoint"],
+		["ArenaFinishX2", "ArenaCheckpointX2"], // or Lagoon/ArenaStartX2.Macroblock.Gbx, Tom?
+		["RoadTunnelFinish", "RoadTunnelCheckpoint"]
+	]
+];
+
 +++Metadata+++
 SendCustomEvent("ScriptMetadata", [Script.tojson()]);
 +++Main+++

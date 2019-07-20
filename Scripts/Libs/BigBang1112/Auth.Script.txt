@@ -10,6 +10,7 @@
 // - Internet.Script.txt
 // - Random.Script.txt
 // - Time.Script.txt
+// - Data.Script.txt
 // You only need to use the libraries above, although it's recommended to use the whole set.
 */
 
@@ -39,6 +40,7 @@
 #Include "Libs/BigBang1112/Internet.Script.txt" as Internet
 #Include "Libs/BigBang1112/Random.Script.txt" as Random
 #Include "Libs/BigBang1112/Time.Script.txt" as Time
+#Include "Libs/BigBang1112/Data.Script.txt" as Data
 
 #Const C_Auth_Timeout 10000
 #Const C_Auth_Tries 20
@@ -60,6 +62,7 @@
 	Boolean Verified; // If token was verified as valid
 	Integer Time; // How long the request took
 	Integer EndTime; // When request was finished
+	Integer Expires;
 	Text Response; // Short informational response
 }
 
@@ -124,6 +127,7 @@ SAuthToken GetNewToken() {
 		Token.Response = C_Response_Successful;
 		Token.Time = TimeEnd - TimeStart;
 		Token.EndTime = TimeEnd;
+		Token.Expires = TimeEnd+Token.Length;
 	}
 	else if(Authentication_ErrorCode == 10006) {
 		Token.Response = C_Response_Offline;
@@ -136,6 +140,10 @@ SAuthToken GetNewToken() {
 	Token.EndTime = TimeEnd;
 	
 	Auth_Token = Token;
+	
+	declare persistent SAuthToken PE_INGAME_TOKEN for LocalUser;
+	PE_INGAME_TOKEN = Token;
+	
 	return Token;
 }
 
@@ -269,7 +277,7 @@ Void Start() {
 
 Void Loop() {
 	if(Auth_Token.Successful) {
-		if(Now >= Auth_Token.EndTime + Auth_Token.Length) {
+		if(Now >= Auth_Token.Expires) {
 			declare Token = GetNewToken();
 			log("[Auth.Script.txt] New automatic token: "^Token.Value);
 		}

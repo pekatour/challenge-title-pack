@@ -4,3 +4,66 @@ Script.Name = "Comeback";
 Script.AuthorLogin = "bigbang1112";
 Script.Description = "{{{{COMEBACK_DESCRIPTION}}}}";
 ***
+
+***Main***
+***
+declare StartLines = GetStartLines();
+declare Multilaps = GetMultilaps();
+if(Multilaps.count > 0) Problem(Problem_MultilapTrack(Multilaps[0]));
+declare StartLine = StartLines[0];
+declare FinishLines = GetFinishLines();
+
+if(FinishLines.count > 1) Problem(Problem_MultipleFinishes(FinishLines));
+
+foreach(Env => RelationList, Relation_StartMultilap) {
+	foreach(Relation, RelationList) {
+		declare StartBlockName = Relation[0];
+		declare MultilapBlockName = Relation[1];
+		if(StartLine.IsItem) Problem(Problem_ItemStart(StartLine));
+		else if(StartLine.Block.Name == StartBlockName) {
+			if(RemoveAnchor(StartLine)) {
+				if(PlaceGhostBlock(MultilapBlockName, StartLine.Block.Coord, StartLine.Block.Direction)) {
+					SetStatusMessage(StartBlockName ^ " {{{{replaced_with}}}} " ^ MultilapBlockName ^ ".");
+				}
+				else {
+
+				}
+			}
+			else {
+
+			}
+		}
+	}
+}
+
+foreach(Env => RelationList, Relation_FinishCheckpoint) {
+	foreach(Relation, RelationList) {
+		declare FinishBlockName = Relation[0];
+		declare CheckpointBlockName = Relation[1];
+		if(FinishLines.count == 1) {
+			declare FinishLine = FinishLines[0];
+			if(FinishLine.IsItem) Problem(Problem_ItemFinish(FinishLine));
+			else if(FinishLine.Block.Name == FinishBlockName) {
+				if(RemoveAnchor(FinishLine)) {
+					if(PlaceGhostBlock(CheckpointBlockName, FinishLine.Block.Coord, FinishLine.Block.Direction)) {
+						SetStatusMessage(FinishBlockName ^ " {{{{replaced_with}}}} " ^ CheckpointBlockName ^ ".");
+					}
+					else {
+
+					}
+				}
+				else {
+
+				}
+			}
+		}
+	}
+}
+***
+
+***Problems***
+***
+foreach(Problem,Problems) {
+
+}
+***

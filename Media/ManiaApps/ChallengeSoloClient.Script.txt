@@ -3,12 +3,40 @@
 #Include "Libs/BigBang1112/Layers.Script.txt" as Layers
 #Include "Libs/BigBang1112/Manialink.Script.txt" as Manialink
 #Include "Libs/BigBang1112/Settings.Script.txt" as Settings
+#Include "Libs/BigBang1112/Http.Script.txt" as Http
+
+#Struct SAuthToken {
+	Text Value; // Token value
+	Integer Length;
+	Boolean Successful; // If token was received successfully
+	Boolean Verified; // If token was verified as valid
+	Integer Time; // How long the request took
+	Integer EndTime; // When request was finished
+	Integer Expires;
+	Text Response; // Short informational response
+}
+
+#Struct SUser {
+	Text Login;
+	Text Token;
+}
+
+#Struct SPlaysession {
+	SUser User;
+	Text MapUid;
+	Text Car;
+	Text Token;
+	Text Action;
+}
 
 ClientUI.OverlayHideCheckPointList = True;
 ClientUI.OverlayHideSpeedAndDist = True;
 ClientUI.OverlayHidePersonnalBestAndRank = True;
 ClientUI.OverlayHideChrono = True;
 ClientUI.OverlayHidePosition = True;
+
+declare persistent SAuthToken PE_INGAME_TOKEN for LocalUser;
+log(PE_INGAME_TOKEN);
 
 Layers::Create("Ingame", Manialink::FromFile("Media/Manialinks/SoloIngame", True, ["TextAnimation"], Settings::Get().Theme), True);
 

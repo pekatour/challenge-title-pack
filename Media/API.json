@@ -205,6 +205,32 @@
 			}
 		]
 	},
+	"Globals": [
+		{
+			"Type": "SChMetadata",
+			"Name": "Script"
+		},
+		{
+			"Type": "SChProblem[]",
+			"Name": "Problems"
+		},
+		{
+			"Type": "Text[][][Text]",
+			"Name": "Relation_StartFinish"
+		},
+		{
+			"Type": "Text[][][Text]",
+			"Name": "Relation_StartMultilap"
+		},
+		{
+			"Type": "Text[][][Text]",
+			"Name": "Relation_FinishCheckpoint"
+		},
+		{
+			"Type": "Text[][][Text]",
+			"Name": "Relation_CheckpointRoad"
+		}
+	],
 	"Functions": {
 		"ComputeShadows": [
 			{
@@ -831,6 +857,52 @@
 				"ReturnsArray": false,
 				"Kind": "Extensive",
 				"Parameters": []
+			}
+		],
+		"PlaceGhostBlock": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						}
+					]
+				]
+			}
+		],
+		"PlaceWaypointBlock": [
+			{
+				"Return": "Boolean",
+				"ReturnsArray": false,
+				"Kind": "Regular",
+				"Parameters": [
+					[
+						{
+							"Type": "Text",
+							"Name": "_BlockName"
+						},
+						{
+							"Type": "Int3",
+							"Name": "_Coord"
+						},
+						{
+							"Type": "Text",
+							"Name": "_Direction"
+						}
+					]
+				]
 			}
 		],
 		"ReplaceBlock": [

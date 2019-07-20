@@ -253,6 +253,12 @@ Boolean PlaceGhostBlock(Text _BlockName, Int3 _Coord, Text _Direction) {
 	return Response.Values[0] == "True";
 }
 
+Boolean PlaceWaypointBlock(Text _BlockName, Int3 _Coord, Text _Direction) {
+	declare Params = [_BlockName, _Coord^"", _Direction];
+	declare Response = Request("Ch_PlaceWaypointBlock", Params);
+	return Response.Values[0] == "True";
+}
+
 SReplacementResult ReplaceBlock(SChBlock _Block, Text _ReplacementBlockName, Boolean _OppositeDirection) {
 	declare Params = [_Block.tojson(),_ReplacementBlockName,_OppositeDirection^""];
 	declare Response = Request("Ch_ReplaceBlock", Params);
