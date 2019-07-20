@@ -843,6 +843,22 @@
 				"Parameters": []
 			}
 		],
+		"GetMapInfo": [
+			{
+				"Return": "SChMap",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
+		"GetOriginalMapInfo": [
+			{
+				"Return": "SChMap",
+				"ReturnsArray": false,
+				"Kind": "Extensive",
+				"Parameters": []
+			}
+		],
 		"Underground": [
 			{
 				"Return": "Void",

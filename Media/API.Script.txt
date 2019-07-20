@@ -239,6 +239,20 @@ Boolean RemoveAnchor(SChAnchor _Anchor) {
 /* Extensive functions */
 //
 
+SChMap GetMapInfo() {
+	declare Response = Request("Ch_GetMapInfo", []);
+	declare SChMap Map;
+	declare JsonSuccess = Map.fromjson(Response.Values[0]);
+	return Map;
+}
+
+SChMap GetOriginalMapInfo() {
+	declare Response = Request("Ch_GetOriginalMapInfo", []);
+	declare SChMap Map;
+	declare JsonSuccess = Map.fromjson(Response.Values[0]);
+	return Map;
+}
+
 Void Underground() {
 	declare Response = Request("Ch_Underground", []);
 }

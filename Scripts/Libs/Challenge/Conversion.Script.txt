@@ -1,5 +1,7 @@
 #Include "TextLib" as TextLib
 
+#Include "Libs/BigBang1112/Map.Script.txt" as Map
+
 #Include "Libs/Challenge/ModifierBase.Script.txt" as ModifierBase
 
 Int3 ToInt3(Text _Text) {
@@ -179,6 +181,12 @@ ModifierBase::SChAnchorItem ToSChAnchorItem(ModifierBase::SChAnchor _Anchor) {
 	ChAnchor.Item = _Anchor.Item;
 	
 	return ChAnchor;
+}
+
+ModifierBase::SChMap ToSChMap(CMapInfo _MapInfo) {
+	declare ModifierBase::SChMap ChMap;
+	declare JsonSuccess = ChMap.fromjson(Map::ToSMapInfo(_MapInfo).tojson());
+	return ChMap;
 }
 
 Boolean ToBoolean(Text _Boolean) {

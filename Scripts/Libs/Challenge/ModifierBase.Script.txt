@@ -71,3 +71,30 @@
 	SChItem Item;
 	SChItem[] Items;
 }
+
+#Struct SChMap {
+	Text MapUid;
+	Text Comments;
+	Integer CopperPrice;
+	Text CollectionName;
+	Text AuthorLogin;
+	Text AuthorNickName;
+	Text AuthorZonePath;
+	Text AuthorZoneFlagUrl;
+	Text AuthorCountryFlagUrl;
+	Text MapType;
+	Text MapStyle;
+	Boolean Unlocked;
+	Boolean IsPlayable;
+	Boolean CreatedWithSimpleEditor;
+	Boolean CreatedWithPartyEditor;
+	Integer TMObjective_AuthorTime;
+	Integer TMObjective_GoldTime;
+	Integer TMObjective_SilverTime;
+	Integer TMObjective_BronzeTime;
+	Integer TMObjective_NbLaps;
+	Boolean TMObjective_IsLapRace;
+	Text Name;
+	Text Path;
+	Text FileName;
+}

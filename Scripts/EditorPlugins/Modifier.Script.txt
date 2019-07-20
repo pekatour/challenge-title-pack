@@ -15,7 +15,7 @@
 
 #Setting S_Build True
 
-#Setting S_OriginalMapName ""
+#Setting S_OriginalMapInfo ""
 #Setting S_ScriptNames ""
 #Setting S_ScriptTypes ""
 
@@ -35,11 +35,13 @@ declare ModifierBase::SChProblem[] Problems;
 
 declare ::ShadowsQuality LastShadowsQuality;
 
-Text GetScriptFileName(Text _ScriptFullName) {
+declare ModifierBase::SChMap ChMap;
+
+/*Text GetScriptFileName(Text _ScriptFullName) {
 	declare Path = TextLib::Split("\\", S_ScriptNames);
 	if(Path.count != 0) return Path[Path.count-1];
 	return "";
-}
+}*/
 
 Int3 ToInt3(Text _Int3) {
 	declare Int3 Int;
@@ -89,16 +91,10 @@ Boolean SafeRemoveBlock(ModifierBase::SChBlock _ChBlock) {
 	return False;
 }
 
-Void Prepare() {
-	declare Text MapName;
-	if(S_OriginalMapName == "")
-		MapName = Map.MapInfo.Name;
-	else
-		MapName = S_OriginalMapName;
-
+Void Prepare(ModifierBase::SChMap _Map) {
 	HideEditorInterface = S_HideUI;
 	EditMode = CMapEditorPlugin::EditMode::FreeLook;
-	Map.MapName = MapName^"$z -";
+	Map.MapName = _Map.Name^"$z -";
 	
 	Layers::Create("ModifierIntro",Manialink::FromFile("Media/Manialinks/Modifier/ModifierIntro", True, ["TextAnimation"], Settings::Get().Theme));
 	Layers::Create("ModifierScript",Manialink::FromFile("Media/Manialinks/Modifier/ModifierScript", True, ["TextAnimation"], Settings::Get().Theme));
@@ -116,7 +112,7 @@ Void Prepare() {
 	
 	Layers::Show("ModifierIntro");
 	sleep(500);
-	LayerCustomEvent(Layers::Get("ModifierIntro"), "Map", [MapName]);
+	LayerCustomEvent(Layers::Get("ModifierIntro"), "Map", [_Map.Name]);
 	LayerCustomEvent(Layers::Get("ModifierIntro"), "Show", []);
 	sleep(2000);
 	LayerCustomEvent(Layers::Get("ModifierIntro"), "Hide", []);
@@ -490,6 +486,12 @@ Void ProcessRequest(CMapEditorPluginEvent _Event) {
 			
 			Respond(Event, [Removed^""]);
 		}
+		case "Ch_GetMapInfo": {
+			Respond(Event, [Conversion::ToSChMap(Map.MapInfo).tojson()]);
+		}
+		case "Ch_GetOriginalMapInfo": {
+			Respond(Event, [ChMap.tojson()]);
+		}
 		case "Ch_Underground": {
 			UndergroundMode = True;
 			Respond(Event, []);
@@ -737,6 +739,9 @@ main() {
 	Dictionary::SetTranslationFolder("Media/Translations");
 	Dictionary::SetTranslationLanguage(Settings::Get().Language);
 	
+	declare MapInfo = TextLib::Replace(S_OriginalMapInfo,"'","\"");
+	declare JsonSuccess = ChMap.fromjson(MapInfo);
+	
 	declare ScriptNames = TextLib::Replace(S_ScriptNames,"'","\"");
 	declare SChScriptInfo[] Scripts;
 	if(!Scripts.fromjson(ScriptNames) && !S_TestMode) return;
@@ -746,7 +751,7 @@ main() {
 	CameraHAngle = 0.;
 	CameraVAngle = 1.;
 	
-	Prepare();
+	Prepare(ChMap);
 	
 	if(S_TestMode) {
 		declare persistent Text PERSISTENT_CHALLENGE_CODE for LocalUser;
