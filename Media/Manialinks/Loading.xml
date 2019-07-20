@@ -4,8 +4,8 @@
 		<quad pos="0 0" z-index="-2" size="320 180" bgcolor="000" halign="center" valign="center" style="Bgs1" substyle="BgDialogBlur"/>
 		<quad pos="0 0" z-index="-1" size="320 180" bgcolor="000" halign="center" valign="center" style="Bgs1" substyle="BgDialogBlur"/>
 		<frame pos="0 2.5">
-			<quad pos="0 0" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/Challenge.png" halign="center" valign="center"/>
-			<quad pos="0.5 -0.5" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/Challenge.png" halign="center" modulatecolor="036" valign="center"/>
+			<quad pos="0 0" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/ChallengeSmall.png" halign="center" valign="center"/>
+			<quad pos="0.5 -0.5" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/ChallengeSmall.png" halign="center" modulatecolor="036" valign="center"/>
 		</frame>
 		<label pos="25 -5" z-index="0" size="30 5" text="LOADING..." halign="center" textemboss="1" textfont="BiryaniDemiBold"/>
 	</frame>

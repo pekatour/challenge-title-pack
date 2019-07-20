@@ -6,8 +6,8 @@
 	</frame>
 	<frame id="FRAME_INSIDE" clip="True" clipsizen="110 50">
 		<quad pos="0 0" size="110 50" bgcolor="FFFA" halign="center" valign="center" style="Bgs1" substyle="BgColorContour" opacity=".25" hidden="1"/>
-		<quad pos="0 22" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/Challenge.png" halign="center"/>
-		<quad pos="0.5 21.5" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/Challenge.png" halign="center" modulatecolor="036"/>
+		<quad pos="0 22" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/ChallengeSmall.png" halign="center"/>
+		<quad pos="0.5 21.5" z-index="0" size="88 20" bgcolor="FFFA" image="file://Media/Images/ChallengeSmall.png" halign="center" modulatecolor="036"/>
 		<frame pos="0 -8">
 			<frame>
 				<quad z-index="0" size="90 10" halign="center" valign="bottom" style="Bgs1InRace" substyle="BgCard" scriptevents="1" modulatecolor="036" id="QUAD_BUTTON_CREATECHALLENGE"/>
@@ -26,7 +26,7 @@
 			</frame>
 		</frame>
 	</frame>
-	<quad pos="-60 -20" z-index="0" size="10 10" bgcolor="FFFA" image="file://Media/Images/Sign.png" url="https://bigbang1112.eu/youtube" halign="center" valign="center" id="QUAD_SIGN" scriptevents="1"/>
+	<quad pos="-60 -20" z-index="0" size="10 10" bgcolor="FFFA" image="file://Media/Images/SignSmall.png" url="https://bigbang1112.eu/youtube" halign="center" valign="center" id="QUAD_SIGN" scriptevents="1"/>
 	<quad pos="-60 -20" z-index="-1" size="20 20" bgcolor="FFFA" valign="center" halign="center" style="Bgs1InRace" substyle="Glow" opacity=".75" id="QUAD_SIGN_GLOW"/>
 	<label pos="-50 30" z-index="0" size="50 5" text="" textsize="1" textemboss="1" textcolor="AAA" id="LABEL_VERSION"/>
 	<label pos="50 30" z-index="0" size="60 5" text="" halign="right" textsize="1.5" textemboss="1" textfont="RajdhaniMono" scriptevents="1" style="TextButtonBig" id="LABEL_MADEBY"/>
