@@ -7,6 +7,7 @@
 #Include "Libs/BigBang1112/Layers.Script.txt" as Layers
 #Include "Libs/BigBang1112/Auth.Script.txt" as Auth
 #Include "Libs/BigBang1112/Dictionary.Script.txt" as Dictionary
+#Include "Libs/BigBang1112/Settings.Script.txt" as Settings
 
 #Include "Libs/Challenge/Menu/Quickplay.Script.txt" as Menu_Quickplay
 #Include "Libs/Challenge/Menu/Main.Script.txt" as Menu_Main
@@ -30,7 +31,7 @@ main() {
 		//Auth::AuthorizeInManialink("b1a3d10ba7", "basic maps", "http://localhost/challenge/auth");
 		
 		Dictionary::SetTranslationFolder("Media/Translations");
-		Dictionary::SetTranslationLanguage(LocalUser.Language);
+		Dictionary::SetTranslationLanguage(Settings::Get().Language);
 		
 		Auth::Start();
 		

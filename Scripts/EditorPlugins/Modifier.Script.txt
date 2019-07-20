@@ -735,7 +735,7 @@ main() {
 	if(!S_Build) return;
 
 	Dictionary::SetTranslationFolder("Media/Translations");
-	Dictionary::SetTranslationLanguage(LocalUser.Language);
+	Dictionary::SetTranslationLanguage(Settings::Get().Language);
 	
 	declare ScriptNames = TextLib::Replace(S_ScriptNames,"'","\"");
 	declare SChScriptInfo[] Scripts;

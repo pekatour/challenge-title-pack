@@ -1,8 +1,11 @@
 #Struct SSettings {
 	Text Theme;
+	Text Language;
 }
 
 SSettings Get() {
 	declare SSettings Settings;
+	//Settings.Theme = "White";
+	Settings.Language = LocalUser.Language;
 	return Settings;
 }
